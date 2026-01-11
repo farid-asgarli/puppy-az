@@ -25,7 +25,7 @@ DB_USER="petwebsite_user"
 DB_PASS="PetWeb_Pr0d_X9k#2026!vPs"
 APP_DIR="/var/www/petwebsite"
 BACKEND_DIR="$APP_DIR/back-api"
-FRONTEND_DIR="$APP_DIR/public-front"
+FRONTEND_DIR="$APP_DIR/front-public"
 
 # =============================================================================
 # 1. System Update
