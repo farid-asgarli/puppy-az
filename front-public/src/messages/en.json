@@ -1,0 +1,2789 @@
+{
+  "navigation": {
+    "home": "Home",
+    "postAd": "Post Ad",
+    "myAds": "My Ads",
+    "favorites": "Favorites",
+    "myAccount": "My Account",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "settings": "Settings",
+    "help": "Help",
+    "about": "About",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "premium": "Premium"
+  },
+  "common": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "noResults": "No results found",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "Optional",
+    "required": "Required",
+    "adTypes": {
+      "sale": {
+        "title": "For Sale",
+        "description": "Find pets for sale"
+      },
+      "found": {
+        "title": "Found",
+        "description": "Animals found nearby"
+      },
+      "lost": {
+        "title": "Lost",
+        "description": "Help find lost animals"
+      },
+      "match": {
+        "title": "Mating",
+        "description": "For mating requests"
+      },
+      "owning": {
+        "title": "Adoption",
+        "description": "Animals looking for a home"
+      }
+    },
+    "petSize": {
+      "extraSmall": {
+        "label": "Extra Small",
+        "description": "Tiny pets"
+      },
+      "small": {
+        "label": "Small",
+        "description": "Small-sized"
+      },
+      "medium": {
+        "label": "Medium",
+        "description": "Medium-sized"
+      },
+      "large": {
+        "label": "Large",
+        "description": "Large-sized"
+      },
+      "extraLarge": {
+        "label": "Extra Large",
+        "description": "Very large pets"
+      }
+    },
+    "petGender": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "clipboard": {
+      "linkCopied": "Link copied!",
+      "copyFailed": "Copy failed"
+    }
+  },
+  "auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Register",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone number",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "loginFailed": "Login failed",
+    "registerFailed": "Registration failed. Please try again.",
+    "sessionExpired": "Session expired. Please login again.",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "verifyPhone": "Verify phone",
+    "enterCode": "Enter verification code",
+    "resendCode": "Resend code",
+    "codeExpiry": "Code expires in {minutes} minutes",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "tagline": "Find your furry friend",
+    "otp": {
+      "verifying": "Verifying...",
+      "verify": "Verify",
+      "resending": "Resending...",
+      "resendIn": "Resend in {seconds}s"
+    },
+    "register": {
+      "benefits": {
+        "title": "Get Started with Us",
+        "subtitle": "Join Azerbaijan's largest pet marketplace",
+        "quickEasy": {
+          "title": "Quick and Easy",
+          "description": "Register in minutes and post your ads"
+        },
+        "securePlatform": {
+          "title": "Secure Platform",
+          "description": "Your data is fully encrypted and protected"
+        },
+        "growingCommunity": {
+          "title": "Growing Community",
+          "description": "Connect with 50,000+ animal lovers"
+        },
+        "freeStart": {
+          "title": "Start Free",
+          "description": "No payment required, start immediately"
+        },
+        "testimonial": {
+          "quote": "Thanks to puppy.az, I found my beloved friend. The platform is very easy and secure!"
+        }
+      },
+      "verification": {
+        "verificationCode": "Verification code",
+        "editInfo": "← Edit information",
+        "codeSent": "Code sent!",
+        "codeSentDescription": "Verification code sent to +994 {phoneNumber}",
+        "codeNotSent": "Code not sent. Please try again.",
+        "generalError": "An error occurred. Please try again.",
+        "registrationFailed": "Registration failed. Please try again."
+      }
+    }
+  },
+  "login": {
+    "header": {
+      "title": "Welcome",
+      "subtitle": "Login to your account and manage your ads"
+    },
+    "tabs": {
+      "email": "Email / Password",
+      "sms": "With SMS"
+    },
+    "emailForm": {
+      "fields": {
+        "email": "Email",
+        "password": "Password"
+      },
+      "validation": {
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email",
+        "passwordRequired": "Password is required",
+        "passwordMinLength": "Password must be at least 6 characters"
+      },
+      "forgotPassword": "Forgot password?",
+      "submit": "Login",
+      "submitting": "Logging in...",
+      "errors": {
+        "loginFailed": "Login failed",
+        "unknown": "An error occurred. Please try again."
+      }
+    },
+    "smsForm": {
+      "phoneStep": {
+        "label": "Phone number",
+        "prefix": "+994",
+        "placeholder": "XX XXX XX XX",
+        "hint": "Enter your phone number to receive a verification code",
+        "submit": "Send code"
+      },
+      "otpStep": {
+        "title": "Verify your phone",
+        "subtitle": "We sent a 6-digit code to",
+        "changeNumber": "Change number",
+        "placeholder": "Enter code",
+        "resendCode": "Resend code",
+        "resendTimer": "Resend in {seconds} seconds",
+        "submit": "Verify and login",
+        "submitting": "Verifying..."
+      },
+      "validation": {
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Enter a valid phone number (9 digits)",
+        "otpRequired": "Verification code is required",
+        "otpInvalid": "Code must be 6 digits"
+      },
+      "errors": {
+        "sendFailed": "Failed to send code",
+        "verifyFailed": "Verification failed",
+        "unknown": "An error occurred. Please try again."
+      },
+      "success": {
+        "codeSent": "Verification code sent",
+        "codeResent": "Code resent successfully"
+      }
+    },
+    "footer": {
+      "noAccount": "Don't have an account?",
+      "register": "Register"
+    },
+    "sideContent": {
+      "title": "Find your perfect companion",
+      "description": "Join thousands of pet lovers connecting on puppy.az"
+    },
+    "benefits": {
+      "title": "Best platform <br />for animal lovers",
+      "subtitle": "Create an account and take full advantage of the platform features",
+      "badgeText": "puppy.az benefits",
+      "manageAds": {
+        "title": "Manage your ads",
+        "description": "Easily manage and update all your ads in one place"
+      },
+      "saveFavorites": {
+        "title": "Save favorites",
+        "description": "Save the ads you like and view them later"
+      },
+      "trackStats": {
+        "title": "Track your statistics",
+        "description": "See the performance and view count of your ads"
+      },
+      "secureSelling": {
+        "title": "Secure selling",
+        "description": "Reach verified buyers with your verified account"
+      },
+      "stats": {
+        "activeAds": "Active ads",
+        "users": "Users",
+        "satisfaction": "Satisfaction"
+      }
+    }
+  },
+  "register": {
+    "header": {
+      "title": "Register",
+      "subtitleInfo": "Create an account and get started",
+      "subtitleVerification": "Verify your phone number"
+    },
+    "personalInfoForm": {
+      "fields": {
+        "firstName": "First name",
+        "firstNamePlaceholder": "Your first name",
+        "lastName": "Last name",
+        "lastNamePlaceholder": "Your last name",
+        "email": "Email",
+        "emailPlaceholder": "email@example.com",
+        "phone": "Phone number",
+        "phonePlaceholder": "XX XXX XX XX",
+        "phonePrefix": "+994",
+        "password": "Password",
+        "passwordPlaceholder": "••••••••",
+        "confirmPassword": "Confirm password",
+        "confirmPasswordPlaceholder": "••••••••",
+        "acceptTerms": "I accept the {terms} and {privacy}",
+        "termsOfService": "Terms of Service",
+        "privacyPolicy": "Privacy Policy",
+        "acceptTermsText": "I accept the",
+        "and": "and"
+      },
+      "validation": {
+        "firstNameRequired": "First name is required",
+        "firstNameMinLength": "First name must be at least 3 characters",
+        "lastNameRequired": "Last name is required",
+        "lastNameMinLength": "Last name must be at least 3 characters",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Enter a valid email",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Enter a valid phone number (9 digits)",
+        "passwordRequired": "Password is required",
+        "passwordMinLength": "Password must be at least 6 characters",
+        "confirmPasswordRequired": "Please confirm your password",
+        "passwordMismatch": "Passwords do not match",
+        "acceptTermsRequired": "You must accept the terms"
+      },
+      "passwordStrength": {
+        "weak": "Weak",
+        "medium": "Medium",
+        "strong": "Strong"
+      },
+      "submit": "Continue",
+      "submitting": "Sending...",
+      "errors": {
+        "sendFailed": "Code not sent. Please try again.",
+        "unknown": "An error occurred. Please try again."
+      }
+    },
+    "verificationForm": {
+      "title": "Verify your phone",
+      "subtitle": "We sent a 6-digit code to",
+      "changeNumber": "Change number",
+      "resendCode": "Resend code",
+      "resendTimer": "Resend in {seconds} seconds",
+      "submit": "Complete registration",
+      "submitting": "Verifying...",
+      "validation": {
+        "codeRequired": "Verification code is required",
+        "codeInvalid": "Code must be 6 digits"
+      },
+      "errors": {
+        "verifyFailed": "Verification failed",
+        "unknown": "An error occurred. Please try again."
+      },
+      "success": {
+        "codeSent": "Verification code sent"
+      }
+    },
+    "footer": {
+      "haveAccount": "Already have an account?",
+      "login": "Login"
+    }
+  },
+  "profile": {
+    "registrationDate": "Registration date",
+    "lastLogin": "Last login",
+    "profileInfo": "Profile information",
+    "personalInfo": "Personal information",
+    "contactInfo": "Contact information",
+    "security": "Security",
+    "changePassword": "Change password",
+    "deleteAccount": "Delete account",
+    "logoutAccount": "Logout from account"
+  },
+  "ads": {
+    "postNewAd": "Post new ad",
+    "myActiveAds": "My active ads",
+    "myPendingAds": "My pending ads",
+    "myRejectedAds": "My rejected ads",
+    "adDetails": "Ad details",
+    "editAd": "Edit ad",
+    "deleteAd": "Delete ad",
+    "viewAd": "View ad",
+    "publishAd": "Publish ad",
+    "unpublishAd": "Unpublish ad",
+    "adStatus": "Ad status",
+    "active": "Active",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "expired": "Expired",
+    "noPendingAds": "You have no pending ads. They will appear here after you post a new ad.",
+    "noActiveAds": "You have no active ads",
+    "noRejectedAds": "You have no rejected ads",
+    "noFavorites": "You have no favorite ads",
+    "statistics": "Statistics",
+    "closeAd": "Close ad",
+    "rejectionReason": "Rejection reason:"
+  },
+  "adPlacement": {
+    "introTitle": "Tell us about your pet",
+    "introTitleReturning": "Welcome back!",
+    "introDescription": "In this step, we'll ask you which type of ad you want to create and what category your pet belongs to. Then we'll guide you through the details to create a compelling listing.",
+    "introDescriptionDraft": "We found your previous draft. Would you like to pick up where you left off or start with a fresh listing?",
+    "tagline": "Create your perfect pet listing",
+    "getStarted": "Get started",
+    "continueDraft": "Continue",
+    "continueDraftDescription": "Continue your previous ad and complete it",
+    "startFresh": "Start over",
+    "startFreshDescription": "Create a new ad and start from scratch",
+    "draftExpiryNote": "Saved ads are kept for 12 hours",
+    "saveAndExit": "Save & exit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "edit": "Edit",
+    "notSelected": "Not selected",
+    "fillAllFields": "Fill in all required fields",
+    "priceRequired": "Enter the price for sale ads",
+    "submitError": "Failed to submit your ad. Please try again.",
+    "unknownError": "An error occurred. Please try again.",
+    "adTypeForSale": "For Sale",
+    "adTypeFound": "Found",
+    "adTypeLost": "Lost",
+    "adTypeMatch": "Looking for Match",
+    "adTypeOwning": "Just Owning",
+    "unknown": "Unknown",
+    "category": "Category",
+    "breed": "Breed",
+    "title": "Title",
+    "description": "Description",
+    "price": "Price",
+    "location": "Location",
+    "city": "City",
+    "photos": "Photos",
+    "uploadPhotos": "Upload photos",
+    "maxPhotos": "Maximum {count} photos",
+    "age": "Age",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "vaccinated": "Vaccinated",
+    "pedigreed": "Pedigreed",
+    "metadata": {
+      "adType": {
+        "title": "Ad Type",
+        "description": "Choose the type of ad - for sale, lost, found, etc."
+      },
+      "basics": {
+        "title": "Basic Information",
+        "description": "Enter basic information about your pet"
+      },
+      "breed": {
+        "title": "Breed Selection",
+        "description": "Select your pet's breed"
+      },
+      "category": {
+        "title": "Category Selection",
+        "description": "Select your pet's category"
+      },
+      "details": {
+        "title": "Detailed Information",
+        "description": "Add detailed information about your ad"
+      },
+      "physical": {
+        "title": "Physical Characteristics",
+        "description": "Enter your pet's physical characteristics"
+      },
+      "photos": {
+        "title": "Photos",
+        "description": "Upload photos of your pet"
+      },
+      "price": {
+        "title": "Price",
+        "description": "Enter price information for your ad"
+      },
+      "review": {
+        "title": "Review",
+        "description": "Review and confirm your ad"
+      }
+    }
+  },
+  "search": {
+    "searchPlaceholder": "Search...",
+    "recentSearches": "Recent searches",
+    "clearSearches": "Clear searches",
+    "noRecentSearches": "No recent searches",
+    "popularCategories": "Popular categories",
+    "resultsFound": "{count} results found",
+    "filterBy": "Filter by",
+    "sortBy": "Sort by",
+    "adType": "Ad Type",
+    "category": "Category",
+    "breed": "Breed",
+    "adTypePlaceholder": "Offer or Request",
+    "categoryPlaceholder": "Search categories",
+    "breedPlaceholder": "Any breed",
+    "selectBreed": "Select breed",
+    "selectCategoryFirst": "Select category first",
+    "anyType": "Any type",
+    "allPets": "All pets",
+    "anyBreed": "Any breed",
+    "searchQuestion": "Which pet are you looking for?",
+    "filterSummaryPlaceholder": "Type • Category • Breed",
+    "searchTitle": "Search",
+    "filterYourSearch": "Filter your search",
+    "anyAdType": "Any type",
+    "searchTips": "Search tips",
+    "searchTipsActive": "Tap any field to change filters. Clear all to start over.",
+    "searchTipsInactive": "Select filters to find your perfect pet. You can combine multiple criteria.",
+    "clearAll": "Clear all",
+    "searchButton": "Search",
+    "yearsOld": "years old",
+    "helperText": {
+      "default": "Find your perfect pet companion",
+      "withAdType": "Search for {adType}",
+      "withCategory": "Search for {category}",
+      "withBreed": "Search for {breed} {category}",
+      "withAdTypeAndCategory": "{adType} - {category}",
+      "withAdTypeAndBreed": "{adType} - {breed} {category}",
+      "full": "{adType} - {breed} {category}"
+    }
+  },
+  "filters": {
+    "price": "Price",
+    "priceRange": "Price range",
+    "minPrice": "Min price",
+    "maxPrice": "Max price",
+    "location": "Location",
+    "category": "Category",
+    "breed": "Breed",
+    "age": "Age",
+    "gender": "Gender",
+    "features": "Features",
+    "applyFilters": "Filters",
+    "clearFilters": "Clear filters",
+    "showResults": "Show results",
+    "reset": "Reset",
+    "city": "City",
+    "allCities": "All cities",
+    "male": "Male",
+    "female": "Female",
+    "size": "Size",
+    "ageInMonths": "Age (in months)",
+    "minimum": "Minimum",
+    "maximum": "Maximum",
+    "weight": "Weight (in kg)",
+    "color": "Color",
+    "colorPlaceholder": "e.g. Brown, White, etc.",
+    "useSlider": "Use slider",
+    "enterExactNumber": "Enter exact number"
+  },
+  "home": {
+    "hero": {
+      "title": "Pet Marketplace",
+      "subtitle": "The largest platform for buying and selling pets in Azerbaijan. Listings for dogs, cats, and other pets",
+      "searchPlaceholder": "Dog, cat, bird...",
+      "postAd": "Post Ad",
+      "freeRegistration": "Free registration",
+      "titlePart1": "Find the perfect friend",
+      "titleHighlight1": "find",
+      "titleHighlight2": "love",
+      "browseAdsButton": "Browse ads",
+      "postAdButton": "Post ad",
+      "badge": "Pet marketplace in Azerbaijan",
+      "trustIndicators": {
+        "activeAds": "10,000+ active ads",
+        "safeShopping": "Safe shopping",
+        "verifiedSellers": "Verified sellers"
+      }
+    },
+    "whyChooseUs": {
+      "title": "Why puppy.az?",
+      "subtitle": "There are many reasons to choose us",
+      "activeUsers": "10,000+ active users already trust us",
+      "platformDescription": "The most reliable and convenient platform to find or sell your pet",
+      "features": {
+        "verifiedSellers": {
+          "title": "Verified sellers",
+          "description": "Only verified and trusted sellers can post ads on our platform. Each seller has ratings and reviews."
+        },
+        "safeShopping": {
+          "title": "Safe shopping",
+          "description": "All ads are checked and verified. The shopping process is fully protected with secure payment methods and advice."
+        },
+        "support": {
+          "title": "24/7 support service",
+          "description": "You can contact our team at any time. We are always ready to help with your questions and problems."
+        },
+        "care": {
+          "title": "Care with love",
+          "description": "Animal welfare is our main priority. We encourage responsible ownership and care."
+        },
+        "largest": {
+          "title": "Largest platform",
+          "description": "The largest online marketplace for pets in Azerbaijan. Thousands of ads and tens of thousands of active users."
+        },
+        "easyUse": {
+          "title": "Easy to use",
+          "description": "With a user-friendly interface and simple design, finding the pet you're looking for has never been easier."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How does it work?",
+      "subtitle": "Finding a pet has never been this easy",
+      "badge": "Simple and fast process",
+      "readyMessage": "Ready? It only takes a few minutes to find your perfect pet",
+      "secure": "100% secure",
+      "verifiedSellers": "Verified sellers",
+      "support": "24/7 support",
+      "steps": {
+        "search": {
+          "title": "Search ads",
+          "description": "Search among thousands of ads to find the pet you want. Use filters for category, breed, age and more."
+        },
+        "contact": {
+          "title": "Contact the seller",
+          "description": "Connect directly with the seller of the ad you like. Ask questions, request additional information and photos."
+        },
+        "meet": {
+          "title": "Meet safely",
+          "description": "See and check the pet live. Use secure payment methods and get all documents."
+        },
+        "adopt": {
+          "title": "Take your new friend home",
+          "description": "Responsibly care for your pet. Have happy moments with them and build a loving friendship."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Ready? Let's get started!",
+      "subtitle": "You're just one step away from finding or selling the perfect pet. Join now and start happy friendships.",
+      "browseAdsButton": "Browse ads",
+      "postAdButton": "Post ad",
+      "trustIndicators": {
+        "freeRegistration": "Free registration",
+        "activeAds": "10,000+ active ads",
+        "safePlatform": "Safe platform"
+      }
+    },
+    "categories": {
+      "title": "Popular categories",
+      "viewAll": "View all"
+    },
+    "premiumAds": {
+      "title": "Featured pets",
+      "subtitle": "Premium ads from verified and trusted sellers",
+      "badge": "Premium Ads",
+      "carouselTitle": "Premium ads",
+      "viewAll": "View all"
+    }
+  },
+  "about": {
+    "header": {
+      "title": "About Us",
+      "subtitle": "Platform created for animal lovers"
+    },
+    "hero": {
+      "title": "The platform that makes animal buying and selling safe and easy in Azerbaijan",
+      "description1": "puppy.az was founded in 2023 with the mission of creating a reliable and user-friendly platform for animal lovers in Azerbaijan.",
+      "description2": "We want to help animals find worthy homes and meet responsible owners who will care for them.",
+      "imageCaption": "A world full of animals"
+    },
+    "sections": {
+      "stats": {
+        "title": "puppy.az in numbers",
+        "subtitle": "Our achievements and the impact of our platform"
+      },
+      "values": {
+        "title": "Our values",
+        "subtitle": "The principles that drive us forward"
+      },
+      "timeline": {
+        "title": "Our journey",
+        "subtitle": "The development history of puppy.az"
+      },
+      "team": {
+        "title": "Our team",
+        "subtitle": "The team behind puppy.az"
+      },
+      "contact": {
+        "title": "Contact us",
+        "subtitle": "Have any questions? Contact us"
+      }
+    },
+    "stats": {
+      "activeAds": "Active ads",
+      "users": "Users",
+      "satisfaction": "Customer satisfaction",
+      "support": "Support service"
+    },
+    "values": {
+      "security": {
+        "title": "Security",
+        "description": "The safety of our users is our top priority. All ads are checked and verified."
+      },
+      "animalLove": {
+        "title": "Animal love",
+        "description": "We love animals and encourage being responsible towards them."
+      },
+      "community": {
+        "title": "Community",
+        "description": "We are creating a strong community for animal lovers and supporting each other."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "We deliver the best user experience by harnessing the power of technology."
+      }
+    },
+    "team": {
+      "founder": {
+        "name": "Ali Mammadov",
+        "role": "Founder and CEO",
+        "description": "Created puppy.az with the desire to build a bridge between animal love and technology."
+      },
+      "productManager": {
+        "name": "Leyla Hasanova",
+        "role": "Chief Product Manager",
+        "description": "Product designer and animal rights activist with 10 years of experience."
+      },
+      "technicalDirector": {
+        "name": "Rashad Ismayilov",
+        "role": "Technical Director",
+        "description": "Manages platform architecture and technical solutions."
+      }
+    },
+    "milestones": {
+      "launch": {
+        "title": "Platform launched",
+        "description": "puppy.az started operating as the first online platform for animal trading in Azerbaijan."
+      },
+      "tenKAds": {
+        "title": "10,000+ ads",
+        "description": "In the first year, more than 10,000 successful ads were posted and thousands of animals found new homes."
+      },
+      "premium": {
+        "title": "Premium services",
+        "description": "Premium services and additional features were introduced for users."
+      },
+      "future": {
+        "year": "Future",
+        "title": "Expansion plans",
+        "description": "We are working on regional expansion and mobile application."
+      }
+    },
+    "contact": {
+      "info": {
+        "title": "Contact information",
+        "email": "Email",
+        "support": "Support",
+        "supportLink": "Help center",
+        "socialMedia": "Social media"
+      },
+      "cta": {
+        "title": "Share with us",
+        "description": "Help us reach more people with puppy.az and create conditions for more animals to find happy homes.",
+        "button": "Post ad"
+      }
+    }
+  },
+  "footer": {
+    "company": "Company",
+    "about": "About",
+    "careers": "Careers",
+    "press": "Press",
+    "blog": "Blog",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "safety": "Safety",
+    "contact": "Contact",
+    "report": "Report",
+    "community": "Community",
+    "communityForum": "Community Forum",
+    "events": "Events",
+    "guides": "Guides",
+    "stories": "Stories",
+    "premium": "Premium",
+    "premiumAds": "Premium Ads",
+    "pricing": "Pricing",
+    "forBreeders": "For Breeders",
+    "forShelters": "For Shelters",
+    "copyright": "© 2025 Puppy.az",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "sitemap": "Site Map",
+    "allRightsReserved": "All rights reserved",
+    "followUs": "Follow us"
+  },
+  "language": {
+    "az": "Azərbaycan",
+    "en": "English",
+    "ru": "Русский",
+    "selectLanguage": "Select language"
+  },
+  "accessibility": {
+    "userMenu": "User menu",
+    "menu": "Menu",
+    "selectLanguage": "Select language",
+    "openSearch": "Open search",
+    "closeSearch": "Close search",
+    "clear": "Clear",
+    "close": "Close",
+    "search": "Search",
+    "share": "Share",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites",
+    "filterOptionsDescription": "Filter options for pet ads",
+    "lostPuppyAnimation": "Lost puppy animation",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "premiumFeature": "Premium feature",
+    "pageNavigation": "Page navigation",
+    "page": "Page {number}",
+    "viewMode": "View mode",
+    "gridView": "Grid view",
+    "listView": "List view",
+    "closeMessage": "Close message",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "priceRange": "Price range",
+    "minPrice": "Minimum price",
+    "maxPrice": "Maximum price",
+    "filters": "Filters",
+    "dismissError": "Dismiss error",
+    "appLogo": "puppy.az home page",
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "selectAdType": "Select ad type",
+    "selectCategory": "Select category",
+    "selectBreed": "Select breed"
+  },
+  "errors": {
+    "generic": "An error occurred. Please try again.",
+    "network": "Check your internet connection",
+    "notFound": "Page not found",
+    "unauthorized": "You don't have access to this page",
+    "serverError": "Server error. Please try again in a moment.",
+    "validation": "Please enter the data correctly",
+    "fetchAdsFailed": "Failed to load ads",
+    "fetchBreedsFailed": "Failed to load breeds"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Enter a valid email",
+    "phone": "Enter a valid phone number",
+    "minLength": "Must be at least {count} characters",
+    "maxLength": "Must be at most {count} characters",
+    "minPrice": "Minimum price must be {price}",
+    "maxPrice": "Maximum price can be {price}"
+  },
+  "form": {
+    "select": {
+      "placeholder": "Not selected",
+      "searchPlaceholder": "Search...",
+      "noResults": "No results found",
+      "loading": "Loading...",
+      "currentlySelected": "Currently selected:",
+      "notSelected": "Not selected"
+    }
+  },
+  "dateTime": {
+    "justNow": "Just now",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hours ago",
+    "yesterday": "Yesterday",
+    "daysAgo": "days ago",
+    "noDate": "No date",
+    "months": {
+      "0": "january",
+      "1": "february",
+      "2": "march",
+      "3": "april",
+      "4": "may",
+      "5": "june",
+      "6": "july",
+      "7": "august",
+      "8": "september",
+      "9": "october",
+      "10": "november",
+      "11": "december"
+    }
+  },
+  "premium": {
+    "title": "Premium ad",
+    "subtitle": "Feature your ad and sell faster",
+    "hero": {
+      "badge": "Best choice for faster sales",
+      "title": "Make your ad premium and get 10x more visibility",
+      "description": "Premium ads sell 5-7 times faster on average. Your ad appears at the top of search results and homepage, gets a special premium badge, and reaches more potential buyers."
+    },
+    "benefitsTitle": "Premium ad benefits",
+    "benefitsSubtitle": "Why choose premium?",
+    "benefits": {
+      "featured": {
+        "title": "Featured placement",
+        "description": "Your ad appears at the very top in search results and homepage"
+      },
+      "badge": {
+        "title": "Premium badge",
+        "description": "Your ad displays a premium badge and increases credibility"
+      },
+      "visibility": {
+        "title": "10x more visibility",
+        "description": "Your ad is shown to 10 times more potential buyers"
+      },
+      "priority": {
+        "title": "Priority placement",
+        "description": "Appears in top positions across all categories and filters"
+      },
+      "analytics": {
+        "title": "Detailed analytics",
+        "description": "Get view count, click count, and contact statistics"
+      },
+      "design": {
+        "title": "Custom design",
+        "description": "Your ad stands out with special premium design"
+      }
+    },
+    "stats": {
+      "fasterSale": "Sells faster",
+      "moreViews": "More views",
+      "satisfaction": "Customer satisfaction",
+      "hours": "hours",
+      "avgSaleTime": "Average sale time"
+    },
+    "pricingTitle": "Pricing packages",
+    "pricingSubtitle": "Discounts on long-term packages",
+    "pricing": {
+      "1month": "1 month",
+      "3months": "3 months",
+      "6months": "6 months",
+      "popularChoice": "Most popular choice",
+      "discount": "{percent}% discount",
+      "perMonth": "{amount} ₼ per month"
+    },
+    "selectedPackage": {
+      "title": "Selected package",
+      "1month": "1-month premium ad",
+      "3months": "3-month premium ad (15% discount)",
+      "6months": "6-month premium ad (25% discount)",
+      "discountApplied": "{percent}% discount applied",
+      "features": {
+        "0": "Featured placement and priority positioning",
+        "1": "Premium badge and custom design",
+        "2": "10x more visibility and detailed analytics",
+        "3": "Top position on homepage and in categories"
+      }
+    },
+    "contactAdmin": "Contact admin",
+    "paymentNote": "Contact admin for payment. Your ad will become premium immediately after payment.",
+    "comparisonTitle": "Free vs Premium",
+    "comparisonSubtitle": "What benefits will you get?",
+    "comparisonTable": {
+      "feature": "Feature",
+      "free": "Free",
+      "premium": "Premium"
+    },
+    "comparison": {
+      "adPosting": "Ad posting",
+      "standardVisibility": "Standard visibility",
+      "featured": "Featured placement",
+      "premiumBadge": "Premium badge",
+      "tenXVisibility": "10x more visibility",
+      "priorityPlacement": "Priority placement",
+      "detailedAnalytics": "Detailed analytics",
+      "customDesign": "Custom design",
+      "homepageDisplay": "Homepage display"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faqSubtitle": "Information about premium ads",
+    "faqs": {
+      "whatIsPremium": {
+        "question": "What is the premium ad service?",
+        "answer": "Premium ad service is a paid service that ensures your ad gets more visibility on the platform and sells faster. Your ad is featured in search results, category pages, and on the homepage."
+      },
+      "howPayment": {
+        "question": "How is payment processed?",
+        "answer": "You must contact the admin for payment. Payment can be made by bank card, mobile payment, or bank transfer. Your ad will immediately become premium after payment."
+      },
+      "duration": {
+        "question": "How long is the premium status valid?",
+        "answer": "Premium status is valid for 1, 3, or 6 months depending on the package you choose. After expiration, your ad returns to standard status. You can extend the duration if you wish."
+      },
+      "effectiveness": {
+        "question": "How effective are premium ads?",
+        "answer": "According to statistics, premium ads sell 5-7 times faster on average and get 10 times more views. Thanks to featured placement and premium badge, trust increases and more buyers show interest."
+      },
+      "multipleAds": {
+        "question": "Can I get premium for multiple ads?",
+        "answer": "Yes, you can get premium service for as many ads as you want. Separate payment is required for each ad. Discounts are available for multiple ads, contact admin for details."
+      }
+    },
+    "cta": {
+      "title": "Ready?",
+      "description": "Contact admin and make your ad premium. Your ad will be featured immediately after payment.",
+      "chatButton": "Chat with admin",
+      "helpCenter": "Help center",
+      "contactEmail": "Have any questions? You can write to us at <a href=\"mailto:premium@puppy.az\" class=\"text-white hover:underline\">premium@puppy.az</a>."
+    }
+  },
+  "metadata": {
+    "defaultTitle": "puppy.az - Pet Marketplace",
+    "defaultDescription": "The largest platform for buying and selling pets in Azerbaijan",
+    "register": {
+      "title": "Register",
+      "description": "Create an account and post your ads"
+    },
+    "auth": {
+      "title": "Login",
+      "description": "Login to your account and manage your ads"
+    },
+    "help": {
+      "title": "Help Center",
+      "description": "Frequently asked questions and support center"
+    },
+    "about": {
+      "title": "About Us",
+      "description": "puppy.az - A reliable platform for pets in Azerbaijan"
+    },
+    "myAccount": {
+      "title": "My Account",
+      "description": "Manage your account information",
+      "profileInfo": {
+        "title": "Profile Information",
+        "description": "Edit your account information"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Change your password and protect your account"
+      },
+      "settings": {
+        "title": "Settings",
+        "description": "Configure your account settings"
+      },
+      "questions": {
+        "title": "Questions & Answers",
+        "description": "Manage questions about your pet ads"
+      },
+      "myAds": {
+        "title": "My Ads",
+        "description": "Manage all your pet advertisements"
+      }
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "puppy.az platform privacy policy and user data protection"
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "description": "puppy.az platform terms of service and usage rules"
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Make your ad premium and sell faster"
+    },
+    "myAds": {
+      "active": {
+        "title": "Active Ads",
+        "description": "Manage your active ads"
+      },
+      "pending": {
+        "title": "Pending Ads",
+        "description": "View your ads awaiting approval"
+      },
+      "rejected": {
+        "title": "Rejected Ads",
+        "description": "View your rejected ads and learn the reasons"
+      }
+    },
+    "favorites": {
+      "title": "Favorites",
+      "description": "Your favorite ads"
+    },
+    "adPlacement": {
+      "intro": {
+        "title": "Post Ad",
+        "description": "Post an ad for your pet"
+      },
+      "edit": {
+        "title": "Edit Ad",
+        "description": "Update your ad and save changes"
+      },
+      "location": {
+        "title": "Location",
+        "description": "Enter location information for your ad"
+      }
+    },
+    "search": {
+      "title": "Search",
+      "description": "Search for pets and apply filters"
+    },
+    "home": {
+      "title": "Home",
+      "description": "The largest platform for buying and selling pets in Azerbaijan. Listings for dogs, cats, and other pets"
+    }
+  },
+  "myAccount": {
+    "title": "My Account",
+    "subtitle": "Manage your profile and track your ads",
+    "defaultLocation": "Baku, Azerbaijan",
+    "changeProfilePicture": "Change profile picture",
+    "memberSince": "Member since {date}",
+    "editProfile": "Edit profile",
+    "quickActionsTitle": "Quick actions",
+    "logout": "Logout",
+    "logoutDescription": "Sign out from your account",
+    "stats": {
+      "totalAds": "Total ads",
+      "viewsThisMonth": "Views this month",
+      "favorites": "Favorites"
+    },
+    "quickActions": {
+      "newAd": {
+        "title": "New Ad",
+        "subtitle": "Post pet ad"
+      },
+      "favorites": {
+        "title": "Favorites",
+        "subtitle": "{count} animals"
+      },
+      "messages": {
+        "title": "Messages",
+        "subtitle": "{count} new messages"
+      }
+    },
+    "sections": {
+      "account": "Account",
+      "myAds": "My Ads",
+      "premium": "Premium",
+      "support": "Support"
+    },
+    "menu": {
+      "profileInfo": {
+        "title": "Profile Information",
+        "subtitle": "Name, email, phone"
+      },
+      "security": {
+        "title": "Security",
+        "subtitle": "Password and verification"
+      },
+      "notifications": {
+        "title": "Notifications",
+        "subtitle": "Email and push notifications"
+      },
+      "myAds": {
+        "title": "My Ads",
+        "subtitle": "{count, plural, =0 {No ads} one {# ad} other {# ads}}"
+      },
+      "activeAds": {
+        "title": "Active Ads",
+        "subtitle": "{count} active ads"
+      },
+      "pendingAds": {
+        "title": "Pending Ads",
+        "subtitle": "{count} awaiting approval"
+      },
+      "rejectedAds": {
+        "title": "Rejected Ads",
+        "subtitle": "{count} rejected"
+      },
+      "questions": {
+        "title": "Questions & Answers",
+        "subtitle": "{count} unanswered questions"
+      },
+      "stats": {
+        "title": "Statistics",
+        "subtitle": "Views and performance"
+      },
+      "premiumServices": {
+        "title": "Premium Services",
+        "subtitle": "Packages and pricing"
+      },
+      "helpCenter": {
+        "title": "Help Center",
+        "subtitle": "FAQ and support"
+      },
+      "settings": {
+        "title": "Settings",
+        "subtitle": "App and privacy"
+      }
+    },
+    "questions": {
+      "title": "Questions & Answers",
+      "subtitle": "Manage questions about your ads",
+      "tabs": {
+        "all": "All Questions",
+        "unanswered": "Unanswered",
+        "answered": "Answered"
+      },
+      "summary": {
+        "totalQuestions": "Total Questions",
+        "unansweredQuestions": "Unanswered",
+        "answeredQuestions": "Answered",
+        "adsWithQuestions": "Ads with Questions",
+        "latestQuestion": "Latest Question"
+      },
+      "card": {
+        "askedBy": "Asked by {name}",
+        "askedAt": "Asked {time}",
+        "answeredAt": "Answered {time}",
+        "answerPlaceholder": "Write your answer...",
+        "sendAnswer": "Send Answer",
+        "viewAd": "View Ad",
+        "yourAnswer": "Your answer:",
+        "question": "Question:",
+        "noAnswer": "Not answered yet"
+      },
+      "emptyStates": {
+        "noQuestions": {
+          "title": "No Questions Yet",
+          "description": "When users ask questions about your ads, they will appear here."
+        },
+        "noUnanswered": {
+          "title": "All Caught Up!",
+          "description": "You've answered all questions. Great job!"
+        },
+        "noAnswered": {
+          "title": "No Answered Questions",
+          "description": "Questions you answer will appear here."
+        }
+      },
+      "search": {
+        "placeholder": "Search questions...",
+        "noResults": "No questions found matching your search"
+      },
+      "actions": {
+        "markAsRead": "Mark as read",
+        "delete": "Delete question",
+        "report": "Report"
+      },
+      "notifications": {
+        "answerSuccess": "Answer sent successfully!",
+        "answerError": "Failed to send answer. Please try again.",
+        "loadError": "Failed to load questions. Please refresh the page."
+      },
+      "loadMore": "Load more questions"
+    },
+    "myAds": {
+      "title": "My Ads",
+      "subtitle": "{count, plural, =0 {No ads yet} one {# ad} other {# ads}}",
+      "tabs": {
+        "active": "Active",
+        "pending": "Pending",
+        "rejected": "Rejected",
+        "all": "All"
+      },
+      "summary": {
+        "totalAds": "Total Ads",
+        "activeAds": "Active",
+        "pendingAds": "Pending Review",
+        "rejectedAds": "Rejected"
+      },
+      "emptyStates": {
+        "noAds": {
+          "title": "No Ads Yet",
+          "description": "Post your first ad and start connecting with buyers!"
+        },
+        "noActive": {
+          "title": "No Active Ads",
+          "description": "You don't have any active ads at the moment. Your pending ads will appear here once approved."
+        },
+        "noPending": {
+          "title": "No Pending Ads",
+          "description": "You have no ads awaiting review. All your ads are either active or you haven't posted any yet."
+        },
+        "noRejected": {
+          "title": "No Rejected Ads",
+          "description": "Great! None of your ads have been rejected. All your posted ads are either active or pending."
+        }
+      },
+      "actions": {
+        "newAd": "New Ad",
+        "refresh": "Refresh",
+        "refreshing": "Refreshing..."
+      },
+      "notifications": {
+        "refreshSuccess": "All ads refreshed successfully!",
+        "refreshError": "Failed to refresh ads. Please try again.",
+        "closeSuccess": "Ad closed successfully!",
+        "closeError": "Failed to close ad. Please try again."
+      },
+      "errors": {
+        "loadFailed": "Failed to load ads. Please try again."
+      },
+      "endOfList": "You've reached the end"
+    }
+  },
+  "Demo": {
+    "title": "Welcome to Puppy.az",
+    "description": "Find your perfect pet companion",
+    "serverComponent": "This is a Server Component",
+    "clientComponent": "This is a Client Component",
+    "currentLanguage": "Current Language",
+    "changeLanguage": "Change Language",
+    "greeting": "Hello, {name}!"
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "mobileBottomNav": {
+    "home": "Home"
+  },
+  "help": {
+    "data": {
+      "lastUpdated": "November 4, 2025",
+      "supportEmail": "support@puppy.az",
+      "phoneNumber": "+994 12 345 67 89",
+      "workingHours": "Monday - Friday, 09:00 - 18:00"
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "Getting Started",
+        "description": "Platform's main features and first steps",
+        "faqs": {
+          "whatIsPuppy": {
+            "question": "What is Puppy.az and how does it work?",
+            "answer": "Puppy.az is a platform created for buying, selling, searching, and protecting pets in Azerbaijan.\n\n**Main features:**\n• Buy and sell pets\n• Search for lost and found animals\n• Find mating partners\n• Adoption listings\n\nThe platform allows users to connect with animal lovers safely and conveniently."
+          },
+          "howToRegister": {
+            "question": "How do I register?",
+            "answer": "The registration process is very simple:\n\n1. Click the \"Login\" button\n2. Select \"Register\" option\n3. Enter your email, phone, and password\n4. Open the email confirmation link\n5. Complete your profile\n\nRegistration is completely free and takes 2-3 minutes."
+          },
+          "isFree": {
+            "question": "Is the platform free to use?",
+            "answer": "Yes, Puppy.az is completely free to use.\n\n**Free services:**\n• Registration and account creation\n• Posting ads\n• Searching and viewing ads\n• Contacting sellers\n• Adding to favorites\n\nPremium features may be added in the future (promoting ads, statistics, etc.), but core functions will always remain free."
+          },
+          "mobileApp": {
+            "question": "Is there a mobile app?",
+            "answer": "Currently there is no mobile app, but our site is fully optimized for mobile devices.\n\n**Mobile browser features:**\n• Full functionality\n• Fast loading\n• Convenient interface\n• Push notifications (in browser)\n\nWork is underway on iOS and Android apps and will be released soon."
+          }
+        }
+      },
+      "postingAds": {
+        "title": "Posting Ads",
+        "description": "Information about creating and editing ads",
+        "faqs": {
+          "howToPost": {
+            "question": "How do I post an ad?",
+            "answer": "To post an ad:\n\n1. Log in to your account\n2. Click \"New Ad\" or \"+\" button\n3. Select animal type (dog, cat, etc.)\n4. Select ad type (sale, lost, found, mating, adoption)\n5. Fill out the form:\n   • Animal information (type, breed, age, gender)\n   • Upload photos (minimum 3, maximum 10)\n   • Write description\n   • Price and contact information\n6. Click \"Publish\" button\n\nYour ad will be sent for moderation and reviewed within 24 hours."
+          },
+          "howManyPhotos": {
+            "question": "How many photos can I upload?",
+            "answer": "You can upload a minimum of 3 and a maximum of 10 photos per ad.\n\n**Photo requirements:**\n• Format: JPG, PNG, WebP\n• Maximum size: 5MB per photo\n• Recommended size: 1200x800 pixels\n• Must be high quality and clear\n\n**Recommendations:**\n• First photo should be the best and clearest\n• Photograph the animal from different angles\n• Use photos taken in natural light\n• Don't add watermarks or logos"
+          },
+          "approvalTime": {
+            "question": "How long does it take for my ad to be approved?",
+            "answer": "Ads are usually checked and approved within 24 hours.\n\n**Moderation process:**\n1. You posted your ad → \"Pending\" status\n2. Moderator reviews → 2-24 hours\n3. Approved → \"Active\" status and visible on site\n4. Or rejected → reason provided\n\n**Rejection reasons:**\n• Inappropriate content or photos\n• Wrong category or information\n• Unethical ad (animal cruelty, etc.)\n• Duplicate ad\n\nYou can correct and republish a rejected ad."
+          },
+          "howToEdit": {
+            "question": "How can I edit my ad?",
+            "answer": "You can edit active ads at any time:\n\n1. Go to \"My Account\" page\n2. Enter \"Active Ads\" section\n3. Find the ad you want to edit\n4. Click \"Edit\" button\n5. Make changes and save\n\n**Note:** Updating an ad does not require re-moderation (if core information hasn't changed). However, significant changes (e.g., price, breed) may be re-checked."
+          },
+          "adDuration": {
+            "question": "How long does an ad last?",
+            "answer": "Ads remain active for 90 days.\n\n**Ad duration:**\n• Standard period: 90 days\n• You receive a warning 7 days before expiration\n• You can renew the ad at any time\n• If sold or no longer needed, delete with \"Close\" button\n\n**Renewal:** When you refresh an ad, it moves to the top and gets another 90 days."
+          }
+        }
+      },
+      "buyingSelling": {
+        "title": "Buying & Selling",
+        "description": "The process of buying and selling animals",
+        "faqs": {
+          "howToContact": {
+            "question": "How do I contact the seller?",
+            "answer": "You can contact the seller via the \"Contact\" button at the bottom of the ad.\n\n**Contact methods:**\n• Phone call (number displayed)\n• WhatsApp message\n• Internal messaging system (coming soon)\n\n**Recommendations:**\n• Introduce yourself in the first message\n• Ask questions about the animal\n• Schedule a meeting time\n• Be cautious of suspicious ads"
+          },
+          "howPayment": {
+            "question": "How is payment made?",
+            "answer": "Puppy.az is a classified ads platform, payment is made directly between buyer and seller.\n\n**Payment methods (depends on seller):**\n• Cash payment (at meeting)\n• Bank card transfer\n• Mobile payment systems\n\n**Security rules:**\n• Never pay the full amount in advance\n• Don't pay without seeing the animal\n• Request veterinary check\n• Verify documents (passport, vaccination card)\n\nThe platform is not an intermediary in the payment process, it only connects buyers and sellers."
+          },
+          "beforeMeeting": {
+            "question": "What should I pay attention to before going to see the animal?",
+            "answer": "Follow these steps before going to a meeting:\n\n**Preparation:**\n1. Talk to the seller in detail and ask questions\n2. Verify that photos are original\n3. Ask about veterinary examination\n4. Discuss price and payment terms\n\n**At the meeting:**\n• Meet in a public place (for security)\n• If possible, bring a familiar veterinarian\n• Check the animal's health\n• Request documents (passport, vaccination sheet)\n• Observe behavior\n\n**Warnings:**\n• Be suspicious of very cheap prices\n• Be careful with phrases like \"urgent sale\" or \"emergency\"\n• Avoid ads requesting advance payment"
+          },
+          "avoidScams": {
+            "question": "How do I protect myself from fraud?",
+            "answer": "Follow these rules for your safety:\n\n**Red flags:**\n• Suspiciously low prices\n• Requesting only advance payment\n• Refusing to meet\n• Fake ads with internet photos\n• Excuses like \"urgent sale\", \"I'm abroad\"\n\n**Safe transaction:**\n1. Always see the animal in person\n2. Cash payment, only at meeting\n3. Meet in public places\n4. Verify documents and passport\n5. Conduct veterinary examination\n\n**When you see a suspicious ad:**\nReport it to us with the \"Report\" button. We will immediately investigate and take action."
+          }
+        }
+      },
+      "accountSettings": {
+        "title": "Account & Settings",
+        "description": "Managing your account and settings",
+        "faqs": {
+          "changePassword": {
+            "question": "How do I change my password?",
+            "answer": "To change your password:\n\n1. Go to \"My Account\" page\n2. Enter \"Security\" section\n3. Click \"Change Password\" button\n4. Enter your old password\n5. Set a new password (minimum 8 characters)\n6. Confirm new password\n\n**Password requirements:**\n• Minimum 8 characters\n• At least 1 uppercase letter\n• At least 1 lowercase letter\n• At least 1 number\n• Special character recommended"
+          },
+          "forgotPassword": {
+            "question": "I forgot my password, what should I do?",
+            "answer": "If you forgot your password:\n\n1. Click \"Forgot password?\" link on login page\n2. Enter the email you used during registration\n3. Open the link sent to your email (within 5-10 minutes)\n4. Set a new password\n5. Log in with new password\n\n**Email not arriving:**\n• Check spam folder\n• Wait 5 minutes\n• Make sure you entered the correct email\n• Contact support: {supportEmail}"
+          },
+          "updateProfile": {
+            "question": "How do I update my profile information?",
+            "answer": "You can update your profile information at any time:\n\n1. \"My Account\" → \"Profile Information\"\n2. Edit the field you want to change:\n   • First and last name\n   • Profile photo\n   • Phone number\n   • Location\n   • About me\n3. Click \"Save\" button\n\n**Note:** To change email address, you must verify the new email."
+          },
+          "deleteAccount": {
+            "question": "How can I delete my account?",
+            "answer": "If you want to delete your account:\n\n1. \"My Account\" → \"Security\"\n2. Scroll down to \"Delete Account\" section\n3. Click \"Delete my account\" button\n4. Select reason (optional)\n5. Confirm by entering your password\n\n**Warning:** This action cannot be undone!\n\n**Data to be deleted:**\n• All your ads\n• Your favorites\n• Your messages\n• Profile information\n\nDon't forget to close your active ads before deleting your account."
+          }
+        }
+      },
+      "safetySecurity": {
+        "title": "Safety & Security",
+        "description": "Platform security and rules",
+        "faqs": {
+          "isDataSafe": {
+            "question": "Is my data secure?",
+            "answer": "Yes, the security of your data is our priority.\n\n**Security measures:**\n• SSL encryption (HTTPS)\n• Passwords stored with hash algorithm\n• Two-factor authentication (coming soon)\n• Constant server security checks\n• Compliance with GDPR and Azerbaijan laws\n\n**Privacy:**\n• Your phone number is only visible to ad owners\n• Email is not shown to anyone\n• Personal data is not sold to third parties\n\nFor detailed information, see the [Privacy Policy](/privacy) page."
+          },
+          "reportAd": {
+            "question": "What should I do when I see inappropriate or fake ads?",
+            "answer": "Report violations to us immediately:\n\n**To file a complaint:**\n1. Click the \"⋮\" menu in the upper right corner of the ad\n2. Select \"Report\" option\n3. Note the reason for complaint:\n   • Fake ad\n   • Fraud\n   • Inappropriate content\n   • Animal cruelty\n   • Duplicate ad\n4. Write additional comment (optional)\n5. Submit\n\nYour complaint will be reviewed within 24 hours and action will be taken."
+          },
+          "prohibitedAds": {
+            "question": "What ads are prohibited?",
+            "answer": "These types of ads are prohibited on the platform:\n\n**Prohibited content:**\n• Illegal animal species\n• Animal fighting and cruelty\n• Unethical sale of sick or injured animals\n• Sale of babies under 2 months\n• Sexual content\n• Spam and advertisements\n\n**Prohibited behavior:**\n• Fake information and photos\n• Fraud attempts\n• Repeated duplicate ads\n• Harassment of other users\n• Violation of platform rules\n\nViolations may result in account blocking by moderators."
+          }
+        }
+      },
+      "paymentsPricing": {
+        "title": "Payments & Pricing",
+        "description": "Payment process and pricing policy",
+        "faqs": {
+          "isPaid": {
+            "question": "Is Puppy.az paid?",
+            "answer": "No, using the Puppy.az platform is completely free.\n\n**Free services:**\n• Registration and account creation\n• Ad posting (unlimited)\n• Ad search and viewing\n• Contact with sellers\n• Favorite ads\n\n**Future premium services (planned):**\n• Ad promotion\n• Special badges and labels\n• Detailed statistics\n• Priority support\n\nCore functions will always remain free."
+          },
+          "premiumAds": {
+            "question": "Why are some ads marked \"Premium\"?",
+            "answer": "Currently there is no premium ad system. All ads are displayed equally.\n\nIn the future, ad owners will be able to get premium services to promote their ads:\n\n**Premium ad features (planned):**\n• Featured in search results\n• Display on homepage\n• Special \"Premium\" badge\n• More statistics\n• Longer ad duration\n\nMore information about these services will be announced soon."
+          }
+        }
+      },
+      "technicalSupport": {
+        "title": "Technical Support",
+        "description": "Technical issues and support",
+        "faqs": {
+          "technicalIssue": {
+            "question": "What should I do if a technical problem occurs?",
+            "answer": "If you're experiencing a technical problem, follow these steps:\n\n**First steps:**\n1. Refresh the page (F5 or Ctrl+R)\n2. Clear browser cache\n3. Try a different browser\n4. Check your internet connection\n\n**If problem persists:**\n• Take a screenshot\n• Contact support: {supportEmail}\n• Phone: {phoneNumber}\n• Working hours: {workingHours}\n\n**Information to send:**\n• Problem description\n• Screenshot\n• Browser and device information\n• Step-by-step what you did"
+          },
+          "photoUpload": {
+            "question": "I can't upload my photos, what should I do?",
+            "answer": "If you're having photo upload issues:\n\n**Check:**\n• Photo format: Must be JPG, PNG, WebP\n• Photo size: Maximum 5MB\n• Internet speed: Weak connection can cause problems\n• Browser permissions: Allow file upload\n\n**Solutions:**\n• Reduce photo size (online compression)\n• Upload a different photo\n• Refresh browser\n• Try uploading from mobile device\n\nIf problem persists, contact support."
+          },
+          "emailNotifications": {
+            "question": "I'm not receiving email notifications, what should I do?",
+            "answer": "If email notifications aren't coming:\n\n**Check:**\n1. Check **Spam/Junk** folder\n2. Make sure you entered email address correctly\n3. Enable notifications in account settings\n4. Check email provider (Gmail, Outlook) filters\n\n**Change email address:**\n1. My Account → Profile Information\n2. Enter new email\n3. Confirm with confirmation link\n\n**Notification settings:**\nIn My Account → Notifications section, select which notifications you want to receive."
+          },
+          "contactSupport": {
+            "question": "How can I contact support?",
+            "answer": "Our support team is ready to help you:\n\n**Contact methods:**\n📧 Email: {supportEmail}\n📞 Phone: {phoneNumber}\n⏰ Working hours: {workingHours}\n\n**For quick response:**\n• Explain the problem in detail\n• Add screenshot\n• Note your account information\n• Write step-by-step what happened\n\nAverage response time: 2-24 hours\n\n**For urgent problems:**\nPhone contact provides faster resolution."
+          }
+        }
+      },
+      "other": {
+        "title": "Other Questions",
+        "description": "General questions and information",
+        "faqs": {
+          "whoRuns": {
+            "question": "Who runs Puppy.az?",
+            "answer": "Puppy.az is a platform created and managed by animal lovers in Azerbaijan.\n\n**Our mission:**\nTo facilitate safe and ethical buying, selling, protecting, and adopting pets in Azerbaijan.\n\n**Our values:**\n• Animal welfare\n• Transparency and ethics\n• User security\n• Community support\n\nEvery ad and user is checked by moderators to ensure rules are followed."
+          },
+          "commercialUse": {
+            "question": "Can I use Puppy.az for commercial purposes?",
+            "answer": "Yes, professional breeders and pet shops can use our platform.\n\n**For commercial users:**\n• You can create a company account\n• You can post unlimited ads\n• You can add your brand name and logo\n• You can receive customer reviews\n\n**Requirements:**\n• Legal license and documents\n• Compliance with animal welfare rules\n• Transparency and ethical behavior\n• Providing accurate information\n\nTo create a professional account, contact {supportEmail}."
+          },
+          "languageSupport": {
+            "question": "Is there language support? Will there be an English version?",
+            "answer": "Currently Puppy.az is only in Azerbaijani.\n\n**Future plans:**\n• English language support (by end of 2025)\n• Russian language support\n• Multilingual interface\n\nThe platform is primarily designed for the Azerbaijan market, but we are also developing for international users."
+          },
+          "feedback": {
+            "question": "How do I send feedback and suggestions?",
+            "answer": "Your feedback and suggestions are very valuable to us!\n\n**Send feedback:**\n📧 Email: {supportEmail}\n💬 \"Contact\" form on site\n📞 Phone: {phoneNumber}\n\n**Topics you can suggest:**\n• New features\n• Design improvements\n• Technical issues\n• User experience\n• Content and category suggestions\n\nEvery suggestion is carefully considered and implemented if possible. Thank you! 🙏"
+          }
+        }
+      }
+    }
+  },
+  "helpCenter": {
+    "subtitle": "Frequently asked questions and answers",
+    "searchPlaceholder": "Type your question...",
+    "contactBanner": {
+      "title": "Can't find the answer you're looking for?",
+      "description": "Our support team is ready to help you"
+    },
+    "noResultsMessage": "Try changing your search query",
+    "lastUpdated": "Last updated"
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: {date}",
+    "banner": {
+      "title": "Your Privacy is Our Priority",
+      "description": "This policy is effective from {date}. We explain in detail how your personal data is collected, processed, and protected. Read to fully understand your rights."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "list": {
+        "access": "Access Information",
+        "correct": "Make Corrections",
+        "delete": "Delete",
+        "transfer": "Transfer",
+        "object": "Object"
+      },
+      "descriptions": {
+        "access": "Learn what information we store about you",
+        "correct": "Correct incorrect information",
+        "delete": "Delete your account and information completely",
+        "transfer": "Transfer your data to another service",
+        "object": "Object to certain processing activities"
+      }
+    },
+    "contact": {
+      "title": "Privacy Questions",
+      "description": "If you have questions about our privacy policy or want to exercise your rights:"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: {date}",
+    "banner": {
+      "title": "Important Notice",
+      "description": "These terms are effective from {date}. By using the service, you agree to these terms. Please read carefully."
+    },
+    "contact": {
+      "title": "Questions or Issues?",
+      "description": "If you have questions about the terms of service, you can contact us:"
+    },
+    "data": {
+      "lastUpdated": "August 15, 2025",
+      "effectiveDate": "January 1, 2025",
+      "companyName": "PetMarket",
+      "website": "petmarket.az",
+      "contactEmail": "info@petmarket.az",
+      "supportEmail": "support@petmarket.az"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "content": "These Terms of Service (\"Terms\") govern the use of the PetMarket platform and mobile application (\"Service\"). By using the Service, you fully accept these terms and undertake to comply with them.\n\nIf you do not agree with these terms, do not use the service. These terms constitute a legal contract and are binding on you."
+      },
+      "services": {
+        "title": "Service Description",
+        "content": "PetMarket is an online platform for buying and selling animals in Azerbaijan. Our service offers:\n\n• Posting ads for sale of pets and other animals\n• Establishing contact between buyers and sellers\n• Sharing and searching pet information\n• Premium ad services\n• Payment systems and secure transactions\n\nOur platform supports only legal animal trade and does not allow any illegal activities."
+      }
+    }
+  },
+  "viewTransitionsDemo": {
+    "title": "View Transitions Demo",
+    "subtitle": "React 19.2 View Transitions for smooth navigation",
+    "navigating": "Navigating...",
+    "sections": {
+      "declarative": {
+        "title": "Declarative Navigation",
+        "links": {
+          "viewAllAds": "View All Ads",
+          "myFavorites": "My Favorites",
+          "myAccount": "My Account"
+        }
+      },
+      "programmatic": {
+        "title": "Programmatic Navigation",
+        "buttons": {
+          "createNewAd": "Create New Ad",
+          "goPremium": "Go Premium"
+        }
+      },
+      "browser": {
+        "title": "Browser Navigation",
+        "buttons": {
+          "back": "Back",
+          "forward": "Forward",
+          "refresh": "Refresh"
+        }
+      },
+      "filters": {
+        "title": "Filter Updates (With Transitions)",
+        "description": "All filter changes in the app now use view transitions for smooth updates",
+        "links": {
+          "dogs": "Filter: Dogs",
+          "cats": "Filter: Cats",
+          "forSale": "Filter: For Sale"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Benefits",
+      "list": {
+        "smoother": "Smoother page transitions",
+        "performance": "Better perceived performance",
+        "loadingStates": "Built-in loading states",
+        "concurrent": "Concurrent rendering optimizations",
+        "progressive": "Progressive enhancement (graceful fallback)"
+      }
+    }
+  },
+  "sliderDemo": {
+    "title": "Price range",
+    "subtitle": "Trip price, includes all fees",
+    "minimum": "Minimum",
+    "maximum": "Maximum"
+  },
+  "notFound": {
+    "hero": {
+      "oops": "Oops!",
+      "title": "Page not found",
+      "description": "Sorry, the page you're looking for has gone missing. Looks like one of our puppies hid it! 🐾",
+      "tipLabel": "Tip:",
+      "tipDescription": "Make sure the address is entered correctly or use the buttons below to navigate to the main pages."
+    },
+    "navigationHelp": {
+      "title": "Where to start?",
+      "subtitle": "Choose one of the buttons below to continue",
+      "actions": {
+        "home": {
+          "label": "Home",
+          "description": "Return to the main page"
+        },
+        "browseAds": {
+          "label": "Browse Ads",
+          "description": "View all pet ads"
+        },
+        "search": {
+          "label": "Search",
+          "description": "Find the pet you want"
+        }
+      },
+      "helpText": {
+        "beforeLink": "If your problem persists,",
+        "helpCenter": "Help Center",
+        "middleText": "contact or",
+        "contactUs": "contact us"
+      }
+    },
+    "popularLinks": {
+      "title": "Popular sections",
+      "subtitle": "Our most visited pages",
+      "promotionalText": "Hundreds of new puppy ads are added every day!",
+      "links": {
+        "favorites": {
+          "title": "Favorites",
+          "description": "View your favorite ads"
+        },
+        "myAccount": {
+          "title": "My Account",
+          "description": "Manage your profile information"
+        },
+        "premium": {
+          "title": "Premium",
+          "description": "Get special features"
+        },
+        "help": {
+          "title": "Help Center",
+          "description": "View frequently asked questions"
+        },
+        "about": {
+          "title": "About Us",
+          "description": "Information about puppy.az"
+        },
+        "privacy": {
+          "title": "Privacy",
+          "description": "Our privacy policy"
+        }
+      }
+    },
+    "searchBar": {
+      "title": "Still can't find it?",
+      "subtitle": "Search to find the pet you're looking for",
+      "placeholder": "E.g., Golden Retriever puppy, Persian cat...",
+      "ariaLabel": "Search for pet",
+      "searchButton": "Search",
+      "popularSearchesLabel": "Popular searches:",
+      "popularSearches": {
+        "goldenRetriever": "Golden Retriever",
+        "germanShepherd": "German Shepherd",
+        "labrador": "Labrador",
+        "persianCat": "Persian Cat",
+        "britishCat": "British Cat"
+      },
+      "encouragement": {
+        "ariaLabel": "Love",
+        "text": "Your perfect friend is waiting for you!"
+      }
+    }
+  },
+  "privacy": {
+    "data": {
+      "lastUpdated": "August 15, 2025",
+      "effectiveDate": "January 1, 2025",
+      "companyName": "PetMarket",
+      "website": "petmarket.az",
+      "contactEmail": "privacy@petmarket.az",
+      "supportEmail": "support@petmarket.az"
+    },
+    "sections": {
+      "dataCollection": {
+        "title": "Data Collection",
+        "content": "We collect only necessary information to protect your privacy and use it transparently.\n\n**Information we collect:**\n\n• **Account information**: Name, surname, email, phone number, password\n• **Profile information**: Profile photo, location, experience information\n• **Ad information**: Pet photos, descriptions, prices, contact details\n• **Technical information**: IP address, device type, browser information\n• **Usage statistics**: Which pages you visit, time spent in the app\n\n**Automatically collected information:**\nWhen you enter the site, some information is automatically collected - cookies, IP address, browser type and usage statistics. This information is for improving service quality."
+      },
+      "dataUsage": {
+        "title": "Data Usage",
+        "content": "We use the information we collect only for legitimate purposes and never sell it to third parties.\n\n**Main usage purposes:**\n\n• **Service provision**: Account management and platform operation\n• **Contact establishment**: Secure communication between buyers and sellers\n• **Security**: Fraud prevention and account protection\n• **Support service**: Resolving technical problems and customer support\n• **Improvement**: Increasing platform functionality\n\n**Marketing and notifications:**\nWe send you suitable ad recommendations, information about new services and important updates. You can opt out of these notifications at any time.\n\n**Legal requirements:**\nIn accordance with Azerbaijan laws, we may provide information with a court order or request from law enforcement agencies."
+      },
+      "dataSharing": {
+        "title": "Data Sharing",
+        "content": "We share your personal information only in the following cases and in a limited manner:\n\n**Service providers:**\n• **Payment systems**: For secure payment transactions\n• **Hosting services**: For data storage and platform operation\n• **Email services**: For sending notifications\n• **SMS services**: For verification codes and important notifications\n\nAll these companies have signed confidentiality agreements and use the information only under our instructions.\n\n**With other users:**\nWhen you post an ad, your contact information is shown to potential buyers. You manage this information yourself.\n\n**Legal requirements:**\nWe may provide information in case of court order, law enforcement request, or national security matters.\n\n**We never sell:**\nWe do not sell your personal information to advertising companies, data brokers, or other commercial organizations."
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "content": "Your data security is our priority and we apply the highest standards.\n\n**Technical protection measures:**\n• **SSL encryption**: All data transmission is encrypted\n• **Strong encryption**: Data is encrypted with AES-256 standard\n• **Secure servers**: Data is stored in protected centers\n• **Regular backup**: Backup copies to prevent data loss\n\n**Access control:**\n• **Two-factor authentication**: For account security\n• **Limited access**: Only authorized employees access data\n• **Audit log**: All operations are recorded and monitored\n\n**Security checks:**\nWe regularly conduct security tests and look for potential vulnerabilities.\n\n**Incident response:**\nIn case of data breach, we inform you and relevant authorities within 72 hours."
+      }
+    }
+  },
+  "adsSearch": {
+    "resultsHeader": {
+      "searching": "Searching...",
+      "adsCount": "{count} ads",
+      "foundInCategory": "{count} ads found in {category}",
+      "found": "{count} ads found",
+      "sortButton": "Sort",
+      "sortOptions": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "priceLow": "Price: Low to High",
+        "priceHigh": "Price: High to Low"
+      }
+    },
+    "activeFilters": {
+      "activeFilters": "Active Filters",
+      "category": "Category",
+      "city": "City",
+      "gender": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "size": {
+        "extraSmall": "Extra Small",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "extraLarge": "Extra Large"
+      },
+      "priceMin": "Min: {value} AZN",
+      "priceMax": "Max: {value} AZN",
+      "ageMin": "Age: {value}+",
+      "ageMax": "Age: -{value}",
+      "weightMin": "Weight: {value}+ kg",
+      "weightMax": "Weight: -{value} kg",
+      "color": "Color: {value}",
+      "clearAll": "Clear all"
+    },
+    "resultsGrid": {
+      "error": "An error occurred",
+      "noResults": "No ads found",
+      "noResultsWithFilters": "Try changing your search criteria.",
+      "noResultsNoFilters": "There are no ads in this category yet.",
+      "showAllAds": "Show all ads",
+      "loadMore": "Load more",
+      "loading": "Loading...",
+      "allShown": "All ads shown"
+    },
+    "recentSearches": {
+      "title": "Recent searches",
+      "clearAll": "Clear all"
+    },
+    "recentlyViewed": {
+      "title": "Recently Viewed",
+      "description": "Ads you've viewed recently"
+    }
+  },
+  "petAdDetails": {
+    "hero": {
+      "premium": "Premium",
+      "priceNotApplicable": "Price not applicable",
+      "views": "{count} views",
+      "premiumBanner": {
+        "title": "Premium Ad",
+        "description": "This ad is featured and has priority visibility"
+      }
+    },
+    "quickInfo": {
+      "title": "Key Information",
+      "category": "Category",
+      "breed": "Breed",
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "age": {
+        "label": "Age",
+        "months": "{count} months",
+        "years": "{count} years",
+        "yearsMonths": "{years} years {months} months"
+      },
+      "weight": {
+        "label": "Weight",
+        "kg": "{value} kg"
+      },
+      "color": {
+        "label": "Color"
+      },
+      "size": {
+        "label": "Size",
+        "extraSmall": "Extra Small",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "extraLarge": "Extra Large",
+        "unknown": "Unknown"
+      },
+      "city": "City"
+    },
+    "description": {
+      "title": "Description"
+    },
+    "contactCard": {
+      "price": "Price",
+      "contact": "Contact",
+      "memberSince": "Member since {date}",
+      "seller": "Seller",
+      "sendMessage": "Message",
+      "call": "Call",
+      "email": "Email",
+      "callAriaLabel": "Call",
+      "sendMessageAriaLabel": "Send message"
+    },
+    "questions": {
+      "title": "Questions & Answers",
+      "askQuestion": "Ask question",
+      "noQuestions": "No questions yet",
+      "beFirst": "Be the first to ask",
+      "showAll": "Show all questions ({count})",
+      "showLess": "Show less",
+      "answer": "Answer",
+      "answerPlaceholder": "Write your answer...",
+      "sendAnswer": "Send Answer",
+      "answerQuestion": "Answer",
+      "cancel": "Cancel",
+      "submitting": "Sending...",
+      "answerSuccess": "Answer sent successfully",
+      "answerError": "Failed to send answer. Please try again.",
+      "modal": {
+        "title": "Ask a question",
+        "close": "Close",
+        "questionLabel": "Your question",
+        "placeholder": "Write your question about the pet...",
+        "helper": "Seller will answer and it will be displayed here",
+        "characterCount": "{current}/500",
+        "cancel": "Cancel",
+        "submit": "Send question",
+        "submitting": "Sending...",
+        "success": {
+          "title": "Your question was sent",
+          "message": "Seller will answer and it will be displayed here"
+        },
+        "error": {
+          "title": "An error occurred",
+          "default": "An error occurred. Please try again."
+        }
+      }
+    },
+    "stats": {
+      "title": "Statistics",
+      "viewCount": "View count",
+      "publishedDate": "Published date",
+      "updatedDate": "Last updated",
+      "expiresAt": "Ad expires at",
+      "premiumExpiry": {
+        "title": "Premium status expires at",
+        "ownerNote": "This information is only visible to you"
+      },
+      "adNumber": "Ad number"
+    },
+    "relatedAds": {
+      "title": "Similar Ads",
+      "description": "Other pets that match your interest",
+      "viewAll": "View all",
+      "moreAds": "More similar ads",
+      "discover": "Explore →"
+    },
+    "stickyHeader": {
+      "price": "{price} AZN"
+    },
+    "metadata": {
+      "notFound": {
+        "title": "Ad not found",
+        "description": "The ad you are looking for does not exist"
+      },
+      "currency": "AZN",
+      "priceNegotiable": "Price negotiable",
+      "pet": "Pet",
+      "listing": "listing",
+      "detailedInfo": "Detailed information"
+    }
+  },
+  "favorites": {
+    "title": "Favorites",
+    "loading": "Loading...",
+    "loadingAds": "Loading favorite ads...",
+    "subtitle": {
+      "withCount": "{count} favorite ads",
+      "empty": "No favorite ads yet"
+    },
+    "error": {
+      "title": "Error",
+      "loadFailed": "Failed to load favorites"
+    },
+    "loginBanner": {
+      "title": "Log in to your account",
+      "description": "Log in to save your favorites and access them on all your devices"
+    },
+    "search": {
+      "placeholder": "Search in favorites..."
+    },
+    "emptyState": {
+      "authenticated": {
+        "title": "No favorite ads",
+        "description": "Your favorite ads will appear here"
+      },
+      "unauthenticated": {
+        "title": "You haven't liked anything yet",
+        "description": "Log in and save your favorite ads"
+      },
+      "loginButton": "Log in",
+      "exploreButton": "Explore ads"
+    },
+    "loadMore": {
+      "completed": "All favorites loaded"
+    }
+  },
+  "myAds": {
+    "card": {
+      "premium": "Premium",
+      "noPrice": "No price",
+      "adNumber": "Ad number",
+      "viewDetails": "View details",
+      "status": {
+        "pending": "Pending Review",
+        "published": "Published",
+        "rejected": "Rejected",
+        "expired": "Expired",
+        "closed": "Closed",
+        "draft": "Draft"
+      }
+    },
+    "common": {
+      "newAd": "New ad",
+      "newAdButton": "Post new ad",
+      "searchPlaceholder": "Search in ads...",
+      "cancelButton": "Cancel",
+      "loading": "Loading...",
+      "allAdsLoaded": "All ads loaded",
+      "closeError": "An error occurred while closing the ad",
+      "generalError": "An error occurred. Please try again.",
+      "noSearchResults": "No results found",
+      "noSearchResultsDescription": "No ads match your search. Try different keywords.",
+      "clearSearch": "Clear search",
+      "searchResultsCount": "Showing {count} of {total} ads"
+    },
+    "active": {
+      "pageTitle": "Active Ads",
+      "subtitle": {
+        "withCount": "{count} active ads",
+        "empty": "No active ads"
+      },
+      "emptyState": {
+        "title": "You have no active ads yet",
+        "description": "Post your first ad and let buyers find it"
+      },
+      "confirmDialog": {
+        "title": "Close ad",
+        "message": "Are you sure you want to close this ad? This action cannot be undone.",
+        "confirmButton": "Close"
+      }
+    },
+    "pending": {
+      "pageTitle": "Pending Ads",
+      "subtitle": {
+        "withCount": "{count} ads under review",
+        "empty": "No pending ads"
+      },
+      "infoBanner": {
+        "title": "Review Process",
+        "description": "Your ads are being reviewed by moderators. This process usually takes up to 24 hours. You will be notified when your ad is approved or if any changes are needed."
+      },
+      "emptyState": {
+        "title": "No pending ads",
+        "description": "You currently have no ads awaiting review. All your ads are either active or you haven't posted any yet."
+      },
+      "confirmDialog": {
+        "title": "Close ad",
+        "message": "Are you sure you want to close this ad? This action cannot be undone.",
+        "confirmButton": "Close"
+      }
+    },
+    "rejected": {
+      "pageTitle": "Rejected Ads",
+      "subtitle": {
+        "withCount": "{count} ads rejected",
+        "empty": "No rejected ads"
+      },
+      "infoBanner": {
+        "title": "Ads Rejected",
+        "description": "These ads were reviewed by moderators and did not meet our community guidelines. You can review the rejection reasons below and make necessary corrections before reposting."
+      },
+      "emptyState": {
+        "title": "No rejected ads",
+        "description": "You currently have no rejected ads. All your posted ads have been approved or are awaiting review."
+      },
+      "confirmDialog": {
+        "title": "Delete ad",
+        "message": "Are you sure you want to delete this ad? This action cannot be undone and all ad data will be permanently removed.",
+        "confirmButton": "Delete"
+      }
+    },
+    "drawer": {
+      "title": "Ad Details",
+      "loadError": "Failed to load ad details",
+      "premium": "Premium",
+      "noPrice": "No price set",
+      "category": "Category",
+      "breed": "Breed",
+      "location": "Location",
+      "age": "Age",
+      "months": "months",
+      "views": "Views",
+      "description": "Description",
+      "additionalDetails": "Additional Details",
+      "timeline": "Timeline",
+      "rejectionReason": "Rejection Reason",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "color": "Color",
+      "weight": "Weight",
+      "kg": "kg",
+      "size": "Size",
+      "sizes": {
+        "1": "Extra Small",
+        "2": "Small",
+        "3": "Medium",
+        "4": "Large",
+        "5": "Extra Large"
+      },
+      "created": "Created",
+      "published": "Published",
+      "expires": "Expires",
+      "edit": "Edit",
+      "closeAd": "Close Ad",
+      "delete": "Delete",
+      "viewPublicPage": "View Public Page",
+      "status": {
+        "pending": "Pending Review",
+        "published": "Published",
+        "rejected": "Rejected",
+        "expired": "Expired",
+        "closed": "Closed",
+        "draft": "Draft"
+      }
+    }
+  },
+  "myAccountPages": {
+    "profileInfo": {
+      "pageTitle": "Profile Information",
+      "pageSubtitle": "Update your personal information",
+      "profilePicture": {
+        "title": "Profile Picture",
+        "uploadButton": "Upload picture",
+        "uploadLabel": "Upload profile picture",
+        "formatInfo": "PNG, JPG format, maximum 5MB"
+      },
+      "personalInfo": {
+        "title": "Personal Information",
+        "email": {
+          "label": "Email",
+          "helperText": "Email cannot be changed"
+        },
+        "firstName": {
+          "label": "First Name",
+          "placeholder": "Enter your first name",
+          "required": "First name is required",
+          "minLength": "First name must be at least 2 characters",
+          "maxLength": "First name must not exceed 50 characters"
+        },
+        "lastName": {
+          "label": "Last Name",
+          "placeholder": "Enter your last name",
+          "required": "Last name is required",
+          "minLength": "Last name must be at least 2 characters",
+          "maxLength": "Last name must not exceed 50 characters"
+        },
+        "phoneNumber": {
+          "label": "Phone Number",
+          "placeholder": "50 123 45 67",
+          "required": "Phone number is required",
+          "invalid": "Please enter a valid phone number"
+        }
+      },
+      "accountInfo": {
+        "title": "Account Information",
+        "registrationDate": "Registration Date",
+        "lastLogin": "Last Login"
+      },
+      "actions": {
+        "save": "Save Changes",
+        "saving": "Saving...",
+        "cancel": "Cancel"
+      },
+      "messages": {
+        "success": {
+          "title": "Successfully Updated",
+          "message": "Your profile information has been saved"
+        },
+        "error": {
+          "title": "Error Occurred",
+          "updateFailed": "Failed to update information",
+          "generalError": "An error occurred. Please try again."
+        }
+      },
+      "infoBanner": {
+        "title": "Data Security",
+        "description": "Your personal information is stored securely and is not shared with third parties."
+      }
+    },
+    "security": {
+      "pageTitle": "Security",
+      "pageSubtitle": "Change your password and protect your account",
+      "messages": {
+        "success": {
+          "title": "Password changed successfully",
+          "message": "Your new password has been securely saved"
+        },
+        "error": {
+          "title": "Error occurred",
+          "updateFailed": "Password could not be changed",
+          "generalError": "An error occurred. Please try again."
+        }
+      },
+      "changePassword": {
+        "title": "Change Password",
+        "subtitle": "Protect your account security",
+        "currentPassword": {
+          "label": "Current password",
+          "placeholder": "Enter your current password",
+          "required": "Current password is required"
+        },
+        "newPassword": {
+          "label": "New password",
+          "placeholder": "Enter your new password",
+          "required": "New password is required",
+          "minLength": "Password must be at least 8 characters",
+          "pattern": "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+        },
+        "confirmPassword": {
+          "label": "Confirm new password",
+          "placeholder": "Confirm your new password",
+          "required": "Password confirmation is required",
+          "mustMatch": "Passwords do not match"
+        },
+        "strength": {
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "veryStrong": "Very Strong"
+        }
+      },
+      "requirements": {
+        "title": "Password Requirements",
+        "minLength": "At least 8 characters",
+        "upperLower": "Both uppercase and lowercase letters",
+        "number": "At least one number",
+        "special": "At least one special character (recommended)",
+        "noPersonal": "Do not use personal information (name, date of birth)"
+      },
+      "actions": {
+        "save": "Change Password",
+        "saving": "Changing...",
+        "cancel": "Cancel"
+      },
+      "infoBanner": {
+        "title": "Security Tips",
+        "description": "Use a strong and unique password. Never share your password with others. Change your password regularly to keep your account secure."
+      }
+    },
+    "settings": {
+      "pageTitle": "Settings",
+      "pageSubtitle": "Manage your preferences and account settings",
+      "themeSystem": "System",
+      "themeSystemDesc": "Automatically switch based on system settings",
+      "languageTitle": "Language",
+      "langEnglish": "English",
+      "langEnglishDesc": "English",
+      "langRussian": "Russian",
+      "langRussianDesc": "Russian language",
+      "showEmail": "Show email address",
+      "showEmailDesc": "Display your email address in profile",
+      "showOnlineStatus": "Show online status",
+      "showOnlineStatusDesc": "Let others see when you're online",
+      "notifications": {
+        "title": "Notifications",
+        "subtitle": "Choose which notifications you want to receive",
+        "email": {
+          "title": "Email Notifications",
+          "newMessages": {
+            "label": "New messages",
+            "description": "Get notified when you receive a new message"
+          },
+          "adStatus": {
+            "label": "Ad status updates",
+            "description": "Notifications about your ad approvals, rejections, or expirations"
+          },
+          "favorites": {
+            "label": "Favorite ads",
+            "description": "Notifications when your favorite ads are updated"
+          },
+          "newsletter": {
+            "label": "Newsletter",
+            "description": "Receive news, tips, and special offers"
+          }
+        },
+        "push": {
+          "title": "Push Notifications",
+          "enabled": {
+            "label": "Enable push notifications",
+            "description": "Receive instant notifications on your device"
+          },
+          "notSupported": "Your browser does not support push notifications"
+        }
+      },
+      "dataManagement": {
+        "title": "Data & Analytics",
+        "manageData": {
+          "title": "Manage your data",
+          "subtitle": "Full control over your data"
+        },
+        "downloadData": {
+          "title": "Download your data",
+          "description": "Download and save all data associated with your account",
+          "button": "Download data"
+        },
+        "dataUsage": {
+          "title": "Data usage policy",
+          "description": "Learn how your data is used",
+          "button": "View policy"
+        }
+      },
+      "dangerZone": {
+        "title": "Danger Zone",
+        "deleteAccount": {
+          "title": "Delete Account",
+          "description": "Permanently delete your account and all your data",
+          "button": "Delete my account",
+          "warning": "This action cannot be undone!"
+        }
+      },
+      "actions": {
+        "save": "Save changes",
+        "saving": "Saving...",
+        "saved": "Settings saved successfully"
+      },
+      "infoBanner": {
+        "title": "Privacy",
+        "description": "Your data is encrypted and protected. No information is shared without your permission. For more information, see our",
+        "privacyPolicy": "Privacy Policy"
+      }
+    }
+  },
+  "adPlacementDetails": {
+    "titleView": {
+      "heading": "Now, let's give your listing a title",
+      "subheading": "Short titles work best. Have fun with it—you can always change it later.",
+      "titleLabel": "Title",
+      "titlePlaceholder": "e.g., Adorable Golden Retriever Puppy Looking for Forever Home",
+      "titleTips": "Title tips",
+      "tips": {
+        "includeBreed": "Include breed and key characteristics",
+        "keepClear": "Keep it clear and descriptive",
+        "avoidSpecial": "Avoid special characters and excessive punctuation"
+      },
+      "descriptionHeading": "Create your description",
+      "descriptionSubheading": "Share what makes your pet special and what potential owners should know.",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe your pet's personality, temperament, health, training, and any special needs or characteristics...",
+      "whatToInclude": "What to include",
+      "includeItems": {
+        "personality": "Personality traits and temperament",
+        "health": "Health status and vaccination history",
+        "training": "Training level and behavior",
+        "specialNeeds": "Special needs or requirements",
+        "reason": "Why you're listing (for sale/adoption/found/lost)",
+        "unique": "What makes this pet unique"
+      }
+    },
+    "basicsView": {
+      "heading": "Share some basics about your pet",
+      "subheading": "Tell us about gender, size, and age",
+      "genderLabel": "Gender",
+      "sizeLabel": "Size",
+      "ageLabel": "Age",
+      "ageQuestion": "How old is your pet?",
+      "yearsLabel": "Years",
+      "monthsLabel": "Months",
+      "exampleLabel": "Example:",
+      "exampleAge": "2 years 6 months"
+    },
+    "reviewView": {
+      "heading": "Review your listing",
+      "subheading": "Take a moment to review all the details before submitting your ad",
+      "primaryImageBadge": "Primary",
+      "photosTitle": "Photos",
+      "photosCount": "{count} photo{plural}",
+      "photoAlt": "Photo {number}",
+      "primary": "Primary",
+      "noPhotos": "No photos uploaded",
+      "titleDescriptionTitle": "Title & Description",
+      "titleLabel": "Title",
+      "descriptionLabel": "Description",
+      "notSet": "Not set",
+      "petDetailsTitle": "Pet Details",
+      "editDetails": "Edit details",
+      "adTypeLabel": "Ad Type",
+      "breedLabel": "Breed",
+      "genderLabel": "Gender",
+      "sizeLabel": "Size",
+      "ageLabel": "Age",
+      "colorLabel": "Color",
+      "weightLabel": "Weight",
+      "locationLabel": "Location",
+      "loading": "Loading...",
+      "notSelected": "Not selected",
+      "notSpecified": "Not specified",
+      "weightValue": "{weight} kg",
+      "priceTitle": "Price",
+      "whatHappensTitle": "What happens next?",
+      "whatHappensText": "After you submit, your ad will be reviewed and published within 24 hours. You'll receive a notification once it's live.",
+      "submittingLabel": "Submitting...",
+      "submitLabel": "Submit Ad",
+      "successDialog": {
+        "title": "Ad submitted successfully!",
+        "message": "Congratulations! Your ad has been submitted and will be published after moderation.",
+        "buttonText": "View My Ads"
+      }
+    },
+    "photosView": {
+      "heading": "Add some photos of your pet",
+      "subheading": "Add at least {minPhotos} photo{plural} to continue",
+      "primaryBadge": "Primary",
+      "photoCount": "Photos ({current}/{max})",
+      "uploading": "uploading",
+      "minimumMet": "Minimum met",
+      "imageAlt": "Image {number}",
+      "primary": "Primary",
+      "moveLeft": "Move left",
+      "removePhoto": "Remove photo",
+      "moveRight": "Move right",
+      "addPhotos": "Add Photos",
+      "addMorePhotos": "Add More Photos",
+      "dragDropText": "Drag and drop or click to browse",
+      "uploadRemaining": "You can upload {count} more photo{plural}",
+      "uploadingProgress": "Uploading {count} photos...",
+      "tipsHeading": "Photo tips",
+      "tip1": "Use clear, well-lit photos",
+      "tip2": "Show your pet from different angles",
+      "tip3": "The first photo will be the primary image",
+      "tip4": "Make sure photos are in focus",
+      "tip5": "Natural lighting works best",
+      "errorMaxPhotos": "Maximum {maxPhotos} photos allowed",
+      "errorImageOnly": "Only image files are allowed",
+      "errorTooLarge": "{fileName} is too large (max 5MB)",
+      "dropzoneText": "Drag and drop or click to browse",
+      "photoTips": "Photo tips",
+      "tips": {
+        "firstPhoto": "The first photo will be the primary image shown in listings",
+        "uploadImmediate": "Images are uploaded immediately and saved automatically",
+        "reorder": "You can reorder photos by using the arrow buttons"
+      }
+    },
+    "priceView": {
+      "heading": "Set your price",
+      "subheading": "Enter the selling price for your pet",
+      "priceLabel": "Price (₼)",
+      "helperText": "Enter the price you want to sell your pet for",
+      "listingPrice": "Listing price:",
+      "tipsTitle": "Pricing tips",
+      "tip1": "Research similar pets in your area to set a competitive price",
+      "tip2": "Consider age, breed, training, and health condition",
+      "tip3": "Factor in any medical expenses, vaccinations, or supplies included",
+      "tip4": "Be transparent and honest to attract serious buyers",
+      "tip5": "Highlight if you're open to negotiation on price",
+      "freeTitle": "Free for adoption",
+      "freeText": "If you're offering your pet for free adoption, you can set the price to 0",
+      "redirecting": "Redirecting...",
+      "tips": {
+        "research": "Research similar pets in your area to set a competitive price",
+        "adjust": "You can always adjust the price later if needed"
+      }
+    },
+    "locationView": {
+      "heading": "Where is your pet located?",
+      "subtitle": "{count} cities available",
+      "noCities": "No cities available",
+      "searchPlaceholder": "Search for a city...",
+      "noResults": "No results found",
+      "resultsCount": "{count} {plural}",
+      "noMatch": "No cities match \"{query}\"",
+      "clearSearch": "Clear search",
+      "loading": "Loading cities..."
+    },
+    "breedView": {
+      "heading": "Select your pet's breed",
+      "subtitle": "{count} breeds available",
+      "noBreeds": "No breeds available",
+      "searchPlaceholder": "Search for a breed...",
+      "noResults": "No results found",
+      "resultsCount": "{count} breed{plural}",
+      "loading": "Loading breeds..."
+    },
+    "categoryView": {
+      "heading": "What type of pet are you listing?",
+      "subheading": "Select the category that fits your pet",
+      "activeListings": "{count} active listings"
+    },
+    "adTypeView": {
+      "heading": "What type of ad would you like to create?",
+      "subheading": "Choose the option that best describes your situation"
+    },
+    "physicalView": {
+      "heading": "Tell us about physical characteristics",
+      "subheading": "Color is required, weight is optional",
+      "colorLabel": "Color",
+      "colorHeading": "Color",
+      "colorQuestion": "What color is your pet?",
+      "colorBlack": "Black",
+      "colorWhite": "White",
+      "colorBrown": "Brown",
+      "colorGray": "Gray",
+      "colorGolden": "Golden",
+      "colorCream": "Cream",
+      "colorTan": "Tan",
+      "colorOrange": "Orange",
+      "colorSpotted": "Spotted",
+      "colorStriped": "Striped",
+      "colorMixed": "Mixed",
+      "colorOther": "Other",
+      "customColorPlaceholder": "Enter your color...",
+      "backToCommonColors": "← Back to common colors",
+      "weightLabel": "Weight",
+      "weightHeading": "Weight",
+      "optional": "(optional)",
+      "weightPlaceholder": "e.g., 5.5",
+      "weightHelper": "Weight in kilograms",
+      "weightLessThan1": "less than 1kg",
+      "weightSmall": "small pet",
+      "weightMedium": "medium pet",
+      "weightLarge": "large pet",
+      "weightVeryLarge": "very large pet",
+      "skipWeightText": "You can leave weight empty if you're unsure or don't want to specify"
+    },
+    "introView": {
+      "tagline": "Create your perfect pet listing"
+    }
+  },
+  "imageGallery": {
+    "noImage": "No image available",
+    "primaryImage": "Primary image",
+    "primaryBadge": "Primary",
+    "imageCount_one": "{count} image",
+    "imageCount_other": "{count} images",
+    "singleImage": "1 image",
+    "imageCounter": "{current} / {total}",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "goToSlide": "Go to slide {number}",
+    "imageAlt": "{title} - image {number}",
+    "morePhotos": "More photos",
+    "morePhotosAlt": "{title} - more"
+  },
+  "petAdDetailsPage": {
+    "categories": {
+      "title": "Categories",
+      "subtitle": "Choose from animals suitable for adoption",
+      "showAll": "Show all categories",
+      "previousCategories": "Previous categories",
+      "nextCategories": "Next categories"
+    },
+    "premium": {
+      "badge": "Premium"
+    },
+    "price": {
+      "notApplicable": "Price does not apply"
+    }
+  },
+  "adEdit": {
+    "pageTitle": "Edit Ad",
+    "validation": {
+      "breedRequired": "Breed must be selected",
+      "genderRequired": "Gender must be selected",
+      "ageRequired": "Age must be entered",
+      "sizeRequired": "Size must be selected",
+      "colorRequired": "Color must be entered",
+      "cityRequired": "City must be selected",
+      "imagesRequired": "At least one photo must be uploaded",
+      "titleMinLength": "Title must be at least 10 characters",
+      "titleMaxLength": "Title can be maximum 100 characters",
+      "descriptionMinLength": "Description must be at least 30 characters",
+      "descriptionMaxLength": "Description can be maximum 2000 characters",
+      "pricePositive": "Price must be greater than 0",
+      "fillAllRequired": "Please fill all required fields correctly",
+      "authRequired": "Authentication required. Please login again",
+      "saveError": "Changes were not saved",
+      "generalError": "An error occurred. Please try again",
+      "deleteError": "Ad was not deleted"
+    },
+    "confirmations": {
+      "unsavedChanges": "There are unsaved changes. Are you sure?",
+      "deleteAd": "Are you sure you want to delete this ad?"
+    },
+    "overview": {
+      "heading": "About the Ad",
+      "subheading": "General information about your ad",
+      "status": "Status",
+      "viewCount": "View count",
+      "publishedDate": "Published date",
+      "statusExpired": "Expired",
+      "statusActive": "Active",
+      "statusPending": "Pending",
+      "adType": "Ad type",
+      "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      "noteTitle": "Note",
+      "noteDescription": "Ad type and category cannot be changed. You can only update the main details of the ad."
+    },
+    "basicInfo": {
+      "heading": "Basic Information",
+      "subheading": "Basic information about your pet",
+      "category": "Category",
+      "categoryLocked": "Cannot be changed",
+      "breed": "Breed",
+      "breedPlaceholder": "Select breed...",
+      "breedSearch": "Search breed...",
+      "breedNoResults": "No results found",
+      "gender": "Gender",
+      "age": "Age",
+      "ageQuestion": "How old is your pet?",
+      "years": "years",
+      "months": "months",
+      "totalAge": "Total age:",
+      "year": "year",
+      "month": "month",
+      "size": "Size"
+    },
+    "physicalCharacteristics": {
+      "heading": "Physical Characteristics",
+      "subheading": "Color is required, weight is optional",
+      "color": "Color",
+      "colorQuestion": "What is the color of your pet?",
+      "customColorPlaceholder": "Enter your own color...",
+      "backToCommonColors": "← Back to common colors",
+      "weight": "Weight",
+      "weightOptional": "(optional)",
+      "weightPlaceholder": "e.g., 5.5",
+      "weightUnit": "kg",
+      "weightQuestion": "How much does your pet weigh in kilograms?",
+      "weightDisplay": "Weight:",
+      "weightLessThan1": "under 1 kg",
+      "weightSmall": "small animal",
+      "weightMedium": "medium animal",
+      "weightLarge": "large animal",
+      "weightExtraLarge": "very large animal",
+      "weightSkipNote": "You can leave the weight blank if you're not sure or don't want to show",
+      "colors": {
+        "black": "Black",
+        "white": "White",
+        "brown": "Brown",
+        "gray": "Gray",
+        "golden": "Golden",
+        "cream": "Cream",
+        "yellow": "Yellow",
+        "orange": "Orange",
+        "spotted": "Spotted",
+        "striped": "Striped",
+        "mixed": "Mixed",
+        "other": "Other"
+      }
+    },
+    "location": {
+      "heading": "Location",
+      "subheading": "Where is your pet located?",
+      "city": "City",
+      "cityPlaceholder": "Select city...",
+      "citySearch": "Search city...",
+      "cityNoResults": "No results found",
+      "unknownCity": "Unknown City",
+      "citiesAvailable": "{count} cities available",
+      "selectedLocation": "Selected location"
+    },
+    "photosSection": {
+      "heading": "Photos",
+      "subheading": "Add high-quality photos of your pet to attract more buyers",
+      "errorMaxPhotos": "Maximum {maxPhotos} photos allowed",
+      "errorImageOnly": "Only image files are allowed",
+      "errorTooLarge": "{fileName} is too large (max 5MB)",
+      "uploadError": "{fileName} could not be uploaded",
+      "deleteError": "Failed to delete image",
+      "photoCount": "Photos ({current}/{max})",
+      "uploading": "uploading",
+      "minimumMet": "Minimum requirement met",
+      "imageAlt": "Image {number}",
+      "primary": "Primary",
+      "moveLeft": "Move left",
+      "removePhoto": "Remove photo",
+      "moveRight": "Move right",
+      "addPhotos": "Add photos",
+      "addMorePhotos": "Add more photos",
+      "dropzoneText": "Drag and drop or click to select",
+      "remainingPhotos": "{count} more photos can be uploaded",
+      "uploadingPhotos": "{count} photos uploading...",
+      "photoTips": "Photo tips",
+      "tip1": "Use high-quality, well-lit photos",
+      "tip2": "Show your pet from different angles",
+      "tip3": "The first photo will be the main photo",
+      "tip4": "Make sure the photos are clear and in focus",
+      "tip5": "Natural lighting is best for photos"
+    },
+    "details": {
+      "heading": "Ad Details",
+      "subheading": "Add a title and description to your ad",
+      "title": "Title",
+      "titlePlaceholder": "e.g., Adorable Golden Retriever Puppies Looking for Home",
+      "titleRequired": "*",
+      "titleMinRemaining": "At least {count} more characters required",
+      "titleMinMet": "Great! Minimum length met",
+      "titleTips": "Title tips",
+      "titleTip1": "Include the breed and main features",
+      "titleTip2": "Keep it clear and descriptive",
+      "titleTip3": "Avoid special characters and excessive punctuation",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your pet's personality, temperament, health, training, and any special needs or characteristics...",
+      "descriptionRequired": "*",
+      "descriptionSubtitle": "Share what makes your pet special and what potential owners should know",
+      "descriptionMinRemaining": "At least {count} more characters required",
+      "descriptionMinMet": "Great! Minimum length met",
+      "descriptionTips": "Description tips",
+      "descriptionTip1": "Be honest and specific about your pet",
+      "descriptionTip2": "Mention health status, vaccinations, and medical history",
+      "descriptionTip3": "Describe temperament and behavior with other pets and people",
+      "descriptionTip4": "Mention any training or special skills",
+      "descriptionTip5": "Include your contact preferences and availability"
+    },
+    "pricing": {
+      "heading": "Price",
+      "subheading": "Set a price for your ad",
+      "price": "Price",
+      "priceRequired": "*",
+      "pricePlaceholder": "0.00",
+      "priceNote": "You can change the price anytime after posting",
+      "adPrice": "Ad price:",
+      "pricingTips": "Pricing tips",
+      "pricingTip1": "Research similar animals in your area to set a competitive price",
+      "pricingTip2": "Consider the age, breed, training, and health condition of the pet",
+      "pricingTip3": "Factor in any medical expenses, vaccinations, or supplies included",
+      "pricingTip4": "Be transparent and fair to attract serious buyers",
+      "pricingTip5": "Emphasize that you're open to price negotiation",
+      "budgetRange": "Budget range",
+      "midRange": "Mid-range",
+      "premium": "Premium",
+      "lowPrice": "Low price",
+      "lowPriceRange": "0 - 200",
+      "lowPriceNote": "Great for adoption",
+      "mediumPrice": "Medium price",
+      "mediumPriceRange": "200 - 1000",
+      "mediumPriceNote": "Ideal for most sales",
+      "highPrice": "High price",
+      "highPriceRange": "1000+",
+      "highPriceNote": "Premium or rare breeds"
+    },
+    "actions": {
+      "errorOccurred": "An error occurred",
+      "saving": "Saving...",
+      "saveChanges": "Save changes",
+      "cancel": "Cancel",
+      "preview": "Preview ad",
+      "unsavedChanges": "There are unsaved changes.",
+      "unsavedChangesNote": "Save to avoid losing your changes.",
+      "allChangesSaved": "All changes saved",
+      "dangerZone": "Danger Zone",
+      "dangerZoneWarning": "Deleting an ad is permanent",
+      "deleteAd": "Delete this ad",
+      "deleteAdDescription": "Once deleted, the ad cannot be recovered",
+      "deleteConfirm": "Are you sure you want to delete this ad?",
+      "deleteWarning": "This action cannot be undone. All data will be permanently deleted.",
+      "confirmDelete": "Yes, delete ad",
+      "cancelDelete": "No, keep it"
+    }
+  },
+  "settings": {
+    "language": {
+      "automatic": "Automatic",
+      "english": "English",
+      "russian": "Russian language",
+      "azerbaijani": "Azerbaijani",
+      "interfaceLanguage": "Interface Language"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "subtitle": "Choose the application's appearance",
+      "light": {
+        "title": "Light",
+        "description": "Day mode"
+      },
+      "dark": {
+        "title": "Dark",
+        "description": "Night mode"
+      }
+    },
+    "notificationChannels": {
+      "title": "Notification Channels",
+      "subtitle": "Ways you want to receive notifications",
+      "email": {
+        "label": "Email notifications",
+        "description": "Get notified of important updates via email"
+      },
+      "push": {
+        "label": "Push notifications",
+        "description": "Receive real-time notifications in the app"
+      },
+      "sms": {
+        "label": "SMS notifications",
+        "description": "Send SMS for urgent cases"
+      },
+      "whatsapp": {
+        "label": "WhatsApp notifications",
+        "description": "Receive information via WhatsApp"
+      }
+    },
+    "notificationTypes": {
+      "title": "Notification Types",
+      "subtitle": "Which notifications do you want to receive",
+      "newMessages": {
+        "label": "New messages",
+        "description": "Get notified when you receive a new message"
+      },
+      "adUpdates": {
+        "label": "Ad updates",
+        "description": "Notify when your ad status changes"
+      },
+      "priceDrops": {
+        "label": "Price drops",
+        "description": "When the price of ads in favorites drops"
+      },
+      "newMatches": {
+        "label": "New matches",
+        "description": "New ads matching your search filters"
+      },
+      "marketingEmails": {
+        "label": "Marketing emails",
+        "description": "About special offers and campaigns"
+      }
+    },
+    "privacy": {
+      "title": "Profile Privacy",
+      "subtitle": "What to show to others",
+      "showPhone": {
+        "label": "Show phone number",
+        "description": "Ad owners can see your phone number"
+      },
+      "showEmail": {
+        "label": "Show email address",
+        "description": "Display your email address in profile"
+      },
+      "showOnlineStatus": {
+        "label": "Show online status",
+        "description": "Let others see when you're online"
+      },
+      "showInSearch": {
+        "label": "Show in search",
+        "description": "Your profile appears in search results"
+      }
+    },
+    "dataAnalytics": {
+      "title": "Data & Analytics",
+      "subtitle": "Help improve our services",
+      "analytics": {
+        "label": "Analytics and statistics",
+        "description": "Share anonymous data to improve the app"
+      },
+      "personalization": {
+        "label": "Personalization",
+        "description": "Get content and recommendations tailored to you"
+      }
+    }
+  },
+  "adEditPhotos": {
+    "heading": "Add Photos",
+    "subheading": "Upload photos of your pet",
+    "uploadError": "{fileName} failed to upload",
+    "addPhotos": "Add photos",
+    "addMorePhotos": "Add more photos",
+    "dropzoneText": "Drag and drop or click to select",
+    "remainingPhotos": "You can upload {count} more photos",
+    "uploadingPhotos": "{count} photos uploading...",
+    "photoTips": "Photo tips"
+  },
+  "security": {
+    "passwordStrength": "Password strength:"
+  },
+  "adListing": {
+    "moreAds": {
+      "viewAll": "View all",
+      "description": "More {category} ads"
+    }
+  }
+}

@@ -1,0 +1,2789 @@
+{
+  "navigation": {
+    "home": "Ana Səhifə",
+    "postAd": "Elan yerləşdir",
+    "myAds": "Elanlarım",
+    "favorites": "Seçilmişlər",
+    "myAccount": "Hesabım",
+    "login": "Daxil ol",
+    "register": "Qeydiyyat",
+    "logout": "Çıxış",
+    "settings": "Parametrlər",
+    "help": "Kömək",
+    "about": "Haqqımızda",
+    "privacy": "Məxfilik Siyasəti",
+    "terms": "İstifadə Şərtləri",
+    "premium": "Premium"
+  },
+  "common": {
+    "submit": "Göndər",
+    "cancel": "Ləğv et",
+    "save": "Yadda saxla",
+    "delete": "Sil",
+    "edit": "Redaktə et",
+    "close": "Bağla",
+    "back": "Geri",
+    "next": "Növbəti",
+    "previous": "Əvvəlki",
+    "search": "Axtar",
+    "filter": "Filtr",
+    "sort": "Sırala",
+    "loading": "Yüklənir...",
+    "error": "Xəta",
+    "success": "Uğurlu",
+    "noResults": "Nəticə tapılmadı",
+    "showMore": "Daha çox göstər",
+    "showLess": "Daha az göstər",
+    "all": "Hamısı",
+    "yes": "Bəli",
+    "no": "Xeyr",
+    "optional": "İstəyə bağlı",
+    "required": "Məcburi",
+    "adTypes": {
+      "sale": {
+        "title": "Satış",
+        "description": "Satılıq ev heyvanları tapın"
+      },
+      "found": {
+        "title": "Tapılıb",
+        "description": "Yaxınlıqda tapılmış heyvanlar"
+      },
+      "lost": {
+        "title": "İtirilmişdir",
+        "description": "İtirilmiş heyvanların tapılmasına kömək edin"
+      },
+      "match": {
+        "title": "Cütləşmə",
+        "description": "Cütləşmə sorğuları üçün"
+      },
+      "owning": {
+        "title": "Sahiblənmə",
+        "description": "Ev axtaran heyvanlar"
+      }
+    },
+    "petSize": {
+      "extraSmall": {
+        "label": "Çox kiçik",
+        "description": "Miniatür ev heyvanları"
+      },
+      "small": {
+        "label": "Kiçik",
+        "description": "Kiçik ölçülü"
+      },
+      "medium": {
+        "label": "Orta",
+        "description": "Orta ölçülü"
+      },
+      "large": {
+        "label": "Böyük",
+        "description": "Böyük ölçülü"
+      },
+      "extraLarge": {
+        "label": "Çox böyük",
+        "description": "Çox iri ev heyvanları"
+      }
+    },
+    "petGender": {
+      "male": "Erkək",
+      "female": "Dişi"
+    },
+    "clipboard": {
+      "linkCopied": "Link kopyalandı!",
+      "copyFailed": "Kopyalama uğursuz oldu"
+    }
+  },
+  "auth": {
+    "loginTitle": "Daxil ol",
+    "registerTitle": "Qeydiyyat",
+    "email": "E-poçt",
+    "password": "Şifrə",
+    "phone": "Telefon nömrəsi",
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "forgotPassword": "Şifrəni unutmusunuz?",
+    "rememberMe": "Məni xatırla",
+    "noAccount": "Hesabınız yoxdur?",
+    "haveAccount": "Artıq hesabınız var?",
+    "loginFailed": "Giriş uğursuz oldu",
+    "registerFailed": "Qeydiyyat uğursuz oldu. Zəhmət olmasa yenidən cəhd edin.",
+    "sessionExpired": "Sessiyanın vaxtı bitib. Zəhmət olmasa yenidən daxil olun.",
+    "logoutConfirm": "Çıxış etmək istədiyinizdən əminsiniz?",
+    "verifyPhone": "Telefonu təsdiqlə",
+    "enterCode": "Təsdiq kodunu daxil edin",
+    "resendCode": "Kodu yenidən göndər",
+    "codeExpiry": "Kod {minutes} dəqiqə ərzində etibarsız olacaq",
+    "showPassword": "Şifrəni göstər",
+    "hidePassword": "Şifrəni gizlət",
+    "tagline": "Sevimli dostunuzu tapın",
+    "otp": {
+      "verifying": "Təsdiq edilir...",
+      "verify": "Təsdiqlə",
+      "resending": "Yenidən göndərilir...",
+      "resendIn": "{seconds} saniyədən sonra yenidən göndər"
+    },
+    "register": {
+      "benefits": {
+        "title": "Bizimlə işə başlayın",
+        "subtitle": "Azərbaycanın ən böyük ev heyvanları bazarına qoşulun",
+        "quickEasy": {
+          "title": "Sürətli və asan",
+          "description": "Dəqiqələr ərzində qeydiyyatdan keçin və elanlarınızı yerləşdirin"
+        },
+        "securePlatform": {
+          "title": "Təhlükəsiz platforma",
+          "description": "Məlumatlarınız tamamilə şifrələnir və qorunur"
+        },
+        "growingCommunity": {
+          "title": "Böyüyən icma",
+          "description": "50,000+ heyvan sevər ilə əlaqə qurun"
+        },
+        "freeStart": {
+          "title": "Pulsuz başlayın",
+          "description": "Heç bir ödəniş tələb olunmur, dərhal başlayın"
+        },
+        "testimonial": {
+          "quote": "puppy.az sayəsində sevimli dostumu tapdım. Platforma çox asan və təhlükəsizdir!"
+        }
+      },
+      "verification": {
+        "verificationCode": "Təsdiq kodu",
+        "editInfo": "← Məlumatları redaktə et",
+        "codeSent": "Kod göndərildi!",
+        "codeSentDescription": "Təsdiq kodu +994 {phoneNumber} nömrəsinə göndərildi",
+        "codeNotSent": "Kod göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+        "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+        "registrationFailed": "Qeydiyyat uğursuz oldu. Zəhmət olmasa yenidən cəhd edin."
+      }
+    }
+  },
+  "login": {
+    "header": {
+      "title": "Xoş gəlmisiniz",
+      "subtitle": "Hesabınıza daxil olun və elanlarınızı idarə edin"
+    },
+    "tabs": {
+      "email": "E-poçt / Şifrə",
+      "sms": "SMS ilə"
+    },
+    "emailForm": {
+      "fields": {
+        "email": "E-poçt",
+        "password": "Şifrə"
+      },
+      "validation": {
+        "emailRequired": "E-poçt tələb olunur",
+        "emailInvalid": "Düzgün e-poçt daxil edin",
+        "passwordRequired": "Şifrə tələb olunur",
+        "passwordMinLength": "Şifrə ən azı 6 simvol olmalıdır"
+      },
+      "forgotPassword": "Şifrəni unutmusunuz?",
+      "submit": "Daxil ol",
+      "submitting": "Daxil olunur...",
+      "errors": {
+        "loginFailed": "Giriş uğursuz oldu",
+        "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+      }
+    },
+    "smsForm": {
+      "phoneStep": {
+        "label": "Telefon nömrəsi",
+        "prefix": "+994",
+        "placeholder": "XX XXX XX XX",
+        "hint": "Təsdiq kodu almaq üçün telefon nömrənizi daxil edin",
+        "submit": "Kod göndər"
+      },
+      "otpStep": {
+        "title": "Telefonunuzu təsdiqləyin",
+        "subtitle": "6 rəqəmli kod göndərdik",
+        "changeNumber": "Nömrəni dəyiş",
+        "placeholder": "Kodu daxil edin",
+        "resendCode": "Kodu yenidən göndər",
+        "resendTimer": "{seconds} saniyədən sonra yenidən göndər",
+        "submit": "Təsdiqlə və daxil ol",
+        "submitting": "Təsdiq edilir..."
+      },
+      "validation": {
+        "phoneRequired": "Telefon nömrəsi tələb olunur",
+        "phoneInvalid": "Düzgün telefon nömrəsi daxil edin (9 rəqəm)",
+        "otpRequired": "Təsdiq kodu tələb olunur",
+        "otpInvalid": "Kod 6 rəqəm olmalıdır"
+      },
+      "errors": {
+        "sendFailed": "Kod göndərilmədi",
+        "verifyFailed": "Təsdiq uğursuz oldu",
+        "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+      },
+      "success": {
+        "codeSent": "Təsdiq kodu göndərildi",
+        "codeResent": "Kod uğurla yenidən göndərildi"
+      }
+    },
+    "footer": {
+      "noAccount": "Hesabınız yoxdur?",
+      "register": "Qeydiyyat"
+    },
+    "sideContent": {
+      "title": "Mükəmməl yoldaşınızı tapın",
+      "description": "puppy.az-da birləşən minlərlə heyvan sevərinə qoşulun"
+    },
+    "benefits": {
+      "title": "Heyvan sevərlər üçün <br />ən yaxşı platforma",
+      "subtitle": "Hesab yaradın və platformanın bütün imkanlarından faydalanın",
+      "badgeText": "puppy.az üstünlükləri",
+      "manageAds": {
+        "title": "Elanlarınızı idarə edin",
+        "description": "Bütün elanlarınızı bir yerdə asanlıqla idarə edin və yeniləyin"
+      },
+      "saveFavorites": {
+        "title": "Seçilmişləri saxlayın",
+        "description": "Bəyəndiyiniz elanları saxlayın və sonra baxın"
+      },
+      "trackStats": {
+        "title": "Statistikanızı izləyin",
+        "description": "Elanlarınızın performansını və baxış sayını görün"
+      },
+      "secureSelling": {
+        "title": "Təhlükəsiz satış",
+        "description": "Təsdiqlənmiş hesabınızla təsdiqlənmiş alıcılara çatın"
+      },
+      "stats": {
+        "activeAds": "Aktiv elanlar",
+        "users": "İstifadəçilər",
+        "satisfaction": "Məmnuniyyət"
+      }
+    }
+  },
+  "register": {
+    "header": {
+      "title": "Qeydiyyat",
+      "subtitleInfo": "Hesab yaradın və başlayın",
+      "subtitleVerification": "Telefon nömrənizi təsdiqləyin"
+    },
+    "personalInfoForm": {
+      "fields": {
+        "firstName": "Ad",
+        "firstNamePlaceholder": "Adınız",
+        "lastName": "Soyad",
+        "lastNamePlaceholder": "Soyadınız",
+        "email": "E-poçt",
+        "emailPlaceholder": "email@example.com",
+        "phone": "Telefon nömrəsi",
+        "phonePlaceholder": "XX XXX XX XX",
+        "phonePrefix": "+994",
+        "password": "Şifrə",
+        "passwordPlaceholder": "••••••••",
+        "confirmPassword": "Şifrəni təsdiqlə",
+        "confirmPasswordPlaceholder": "••••••••",
+        "acceptTerms": "{terms} və {privacy} qəbul edirəm",
+        "termsOfService": "İstifadə Şərtləri",
+        "privacyPolicy": "Məxfilik Siyasəti",
+        "acceptTermsText": "Qəbul edirəm",
+        "and": "və"
+      },
+      "validation": {
+        "firstNameRequired": "Ad tələb olunur",
+        "firstNameMinLength": "Ad ən azı 3 simvol olmalıdır",
+        "lastNameRequired": "Soyad tələb olunur",
+        "lastNameMinLength": "Soyad ən azı 3 simvol olmalıdır",
+        "emailRequired": "E-poçt tələb olunur",
+        "emailInvalid": "Düzgün e-poçt daxil edin",
+        "phoneRequired": "Telefon nömrəsi tələb olunur",
+        "phoneInvalid": "Düzgün telefon nömrəsi daxil edin (9 rəqəm)",
+        "passwordRequired": "Şifrə tələb olunur",
+        "passwordMinLength": "Şifrə ən azı 6 simvol olmalıdır",
+        "confirmPasswordRequired": "Zəhmət olmasa şifrəni təsdiqləyin",
+        "passwordMismatch": "Şifrələr uyğun gəlmir",
+        "acceptTermsRequired": "Şərtləri qəbul etməlisiniz"
+      },
+      "passwordStrength": {
+        "weak": "Zəif",
+        "medium": "Orta",
+        "strong": "Güclü"
+      },
+      "submit": "Davam et",
+      "submitting": "Göndərilir...",
+      "errors": {
+        "sendFailed": "Kod göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+        "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+      }
+    },
+    "verificationForm": {
+      "title": "Telefonunuzu təsdiqləyin",
+      "subtitle": "6 rəqəmli kod göndərdik",
+      "changeNumber": "Nömrəni dəyiş",
+      "resendCode": "Kodu yenidən göndər",
+      "resendTimer": "{seconds} saniyədən sonra yenidən göndər",
+      "submit": "Qeydiyyatı tamamla",
+      "submitting": "Təsdiq edilir...",
+      "validation": {
+        "codeRequired": "Təsdiq kodu tələb olunur",
+        "codeInvalid": "Kod 6 rəqəm olmalıdır"
+      },
+      "errors": {
+        "verifyFailed": "Təsdiq uğursuz oldu",
+        "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+      },
+      "success": {
+        "codeSent": "Təsdiq kodu göndərildi"
+      }
+    },
+    "footer": {
+      "haveAccount": "Artıq hesabınız var?",
+      "login": "Daxil ol"
+    }
+  },
+  "profile": {
+    "registrationDate": "Qeydiyyat tarixi",
+    "lastLogin": "Son giriş",
+    "profileInfo": "Profil məlumatları",
+    "personalInfo": "Şəxsi məlumat",
+    "contactInfo": "Əlaqə məlumatları",
+    "security": "Təhlükəsizlik",
+    "changePassword": "Şifrəni dəyiş",
+    "deleteAccount": "Hesabı sil",
+    "logoutAccount": "Hesabdan çıxış et"
+  },
+  "ads": {
+    "postNewAd": "Yeni elan yerləşdir",
+    "myActiveAds": "Aktiv elanlarım",
+    "myPendingAds": "Gözləyən elanlarım",
+    "myRejectedAds": "Rədd edilmiş elanlarım",
+    "adDetails": "Elan təfərrüatları",
+    "editAd": "Elanı redaktə et",
+    "deleteAd": "Elanı sil",
+    "viewAd": "Elana bax",
+    "publishAd": "Elanı dərc et",
+    "unpublishAd": "Elanı ləğv et",
+    "adStatus": "Elan statusu",
+    "active": "Aktiv",
+    "pending": "Gözləyir",
+    "rejected": "Rədd edilib",
+    "expired": "Vaxtı bitib",
+    "noPendingAds": "Gözləyən elanınız yoxdur. Yeni elan yerləşdirdikdən sonra burada görünəcək.",
+    "noActiveAds": "Aktiv elanınız yoxdur",
+    "noRejectedAds": "Rədd edilmiş elanınız yoxdur",
+    "noFavorites": "Seçilmiş elanınız yoxdur",
+    "statistics": "Statistika",
+    "closeAd": "Elanı bağla",
+    "rejectionReason": "Rədd səbəbi:"
+  },
+  "adPlacement": {
+    "introTitle": "Ev heyvanınız haqqında bizə danışın",
+    "introTitleReturning": "Yenidən xoş gəlmisiniz!",
+    "introDescription": "Bu addımda sizə hansı növ elan yaratmaq istədiyinizi və ev heyvanınızın hansı kateqoriyaya aid olduğunu soruşacağıq. Sonra maraqlı elan yaratmaq üçün sizi təfərrüatlarla tanış edəcəyik.",
+    "introDescriptionDraft": "Əvvəlki qara-layihənizi tapdıq. Qaldığınız yerdən davam etmək və ya təmiz elan yaratmaq istərdiniz?",
+    "tagline": "Mükəmməl ev heyvanı elanınızı yaradın",
+    "getStarted": "Başla",
+    "continueDraft": "Davam et",
+    "continueDraftDescription": "Əvvəlki elanınıza davam edin və tamamlayın",
+    "startFresh": "Yenidən başla",
+    "startFreshDescription": "Yeni elan yaradın və sıfırdan başlayın",
+    "draftExpiryNote": "Saxlanmış elanlar 12 saat saxlanılır",
+    "saveAndExit": "Yadda saxla və çıx",
+    "back": "Geri",
+    "next": "Növbəti",
+    "submit": "Göndər",
+    "edit": "Redaktə et",
+    "notSelected": "Seçilməyib",
+    "fillAllFields": "Bütün məcburi sahələri doldurun",
+    "priceRequired": "Satış elanları üçün qiyməti daxil edin",
+    "submitError": "Elanınız göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+    "unknownError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "adTypeForSale": "Satılır",
+    "adTypeFound": "Tapılıb",
+    "adTypeLost": "İtirilmişdir",
+    "adTypeMatch": "Cütləşmə axtarılır",
+    "adTypeOwning": "Sadəcə sahiblənmə",
+    "unknown": "Naməlum",
+    "category": "Kateqoriya",
+    "breed": "Cins",
+    "title": "Başlıq",
+    "description": "Təsvir",
+    "price": "Qiymət",
+    "location": "Yer",
+    "city": "Şəhər",
+    "photos": "Şəkillər",
+    "uploadPhotos": "Şəkil yüklə",
+    "maxPhotos": "Maksimum {count} şəkil",
+    "age": "Yaş",
+    "gender": "Cins",
+    "male": "Erkək",
+    "female": "Dişi",
+    "vaccinated": "Peyvəndli",
+    "pedigreed": "Soylu",
+    "metadata": {
+      "adType": {
+        "title": "Elan növü",
+        "description": "Elan növünü seçin - satış, itmə, tapılma və s."
+      },
+      "basics": {
+        "title": "Əsas məlumatlar",
+        "description": "Ev heyvanınızın əsas məlumatlarını daxil edin"
+      },
+      "breed": {
+        "title": "Cins seçimi",
+        "description": "Ev heyvanınızın cinsini seçin"
+      },
+      "category": {
+        "title": "Kateqoriya seçimi",
+        "description": "Ev heyvanınızın kateqoriyasını seçin"
+      },
+      "details": {
+        "title": "Ətraflı məlumat",
+        "description": "Elanınız üçün ətraflı məlumat əlavə edin"
+      },
+      "physical": {
+        "title": "Fiziki xüsusiyyətlər",
+        "description": "Ev heyvanınızın fiziki xüsusiyyətlərini daxil edin"
+      },
+      "photos": {
+        "title": "Şəkillər",
+        "description": "Ev heyvanınızın şəkillərini yükləyin"
+      },
+      "price": {
+        "title": "Qiymət",
+        "description": "Elanınız üçün qiymət məlumatını daxil edin"
+      },
+      "review": {
+        "title": "Nəzərdən keçir",
+        "description": "Elanınızı yoxlayın və təsdiqləyin"
+      }
+    }
+  },
+  "search": {
+    "searchPlaceholder": "Axtar...",
+    "recentSearches": "Son axtarışlar",
+    "clearSearches": "Axtarışları təmizlə",
+    "noRecentSearches": "Son axtarış yoxdur",
+    "popularCategories": "Populyar kateqoriyalar",
+    "resultsFound": "{count} nəticə tapıldı",
+    "filterBy": "Filtr",
+    "sortBy": "Sırala",
+    "adType": "Elan növü",
+    "category": "Kateqoriya",
+    "breed": "Cins",
+    "adTypePlaceholder": "Təklif və ya sorğu",
+    "categoryPlaceholder": "Kateqoriya axtar",
+    "breedPlaceholder": "Cins",
+    "selectBreed": "Cins seç",
+    "selectCategoryFirst": "Əvvəlcə kateqoriya seçin",
+    "anyType": "Növ",
+    "allPets": "Kateqoriya",
+    "anyBreed": "Cins",
+    "searchQuestion": "Hansı ev heyvanını axtarırsınız?",
+    "filterSummaryPlaceholder": "Növ • Kateqoriya • Cins",
+    "searchTitle": "Axtar",
+    "filterYourSearch": "Axtarışınızı filtrləyin",
+    "anyAdType": "Növ",
+    "searchTips": "Axtarış məsləhətləri",
+    "searchTipsActive": "Filtrləri dəyişmək üçün istənilən sahəyə toxunun. Hamısını təmizləmək üçün sıfırdan başlayın.",
+    "searchTipsInactive": "Mükəmməl ev heyvanınızı tapmaq üçün filtrləri seçin. Bir neçə meyar birləşdirə bilərsiniz.",
+    "clearAll": "Hamısını təmizlə",
+    "searchButton": "Axtar",
+    "yearsOld": "yaşında",
+    "helperText": {
+      "default": "Mükəmməl ev heyvanı yoldaşınızı tapın",
+      "withAdType": "{adType} üçün axtar",
+      "withCategory": "{category} axtar",
+      "withBreed": "{breed} cinsli {category} axtar",
+      "withAdTypeAndCategory": "{adType} - {category}",
+      "withAdTypeAndBreed": "{adType} - {breed} cinsli {category}",
+      "full": "{adType} - {breed} cinsli {category}"
+    }
+  },
+  "filters": {
+    "price": "Qiymət",
+    "priceRange": "Qiymət aralığı",
+    "minPrice": "Minimum qiymət",
+    "maxPrice": "Maksimum qiymət",
+    "location": "Yer",
+    "category": "Kateqoriya",
+    "breed": "Cins",
+    "age": "Yaş",
+    "gender": "Cins",
+    "features": "Xüsusiyyətlər",
+    "applyFilters": "Filterlər",
+    "clearFilters": "Filterləri təmizlə",
+    "showResults": "Nəticələri göstər",
+    "reset": "Sıfırla",
+    "city": "Şəhər",
+    "allCities": "Bütün şəhərlər",
+    "male": "Erkək",
+    "female": "Dişi",
+    "size": "Ölçü",
+    "ageInMonths": "Yaş (aylıq)",
+    "minimum": "Minimum",
+    "maximum": "Maksimum",
+    "weight": "Çəki (kq)",
+    "color": "Rəng",
+    "colorPlaceholder": "məs. Qəhvəyi, Ağ və s.",
+    "useSlider": "Sürüşdürücü istifadə et",
+    "enterExactNumber": "Dəqiq rəqəm daxil et"
+  },
+  "home": {
+    "hero": {
+      "title": "Ev Heyvanları Bazarı",
+      "subtitle": "Azərbaycanda ev heyvanlarının alqı-satqısı üçün ən böyük platforma. İt, pişik və digər ev heyvanları üçün elanlar",
+      "searchPlaceholder": "İt, pişik, quş...",
+      "postAd": "Elan yerləşdir",
+      "freeRegistration": "Pulsuz qeydiyyat",
+      "titlePart1": "Mükəmməl dostu",
+      "titleHighlight1": "tapın",
+      "titleHighlight2": "sevin",
+      "browseAdsButton": "Elanlara baxın",
+      "postAdButton": "Elan yerləşdir",
+      "badge": "Azərbaycanda ev heyvanları bazarı",
+      "trustIndicators": {
+        "activeAds": "10,000+ aktiv elan",
+        "safeShopping": "Təhlükəsiz alış-veriş",
+        "verifiedSellers": "Təsdiqlənmiş satıcılar"
+      }
+    },
+    "whyChooseUs": {
+      "title": "Niyə puppy.az?",
+      "subtitle": "Bizi seçmək üçün çoxlu səbəblər var",
+      "activeUsers": "10,000+ aktiv istifadəçi artıq bizə etibar edir",
+      "platformDescription": "Ev heyvanınızı tapmaq və ya satmaq üçün ən etibarlı və rahat platforma",
+      "features": {
+        "verifiedSellers": {
+          "title": "Təsdiqlənmiş satıcılar",
+          "description": "Yalnız təsdiqlənmiş və etibarlı satıcılar platformamızda elan yerləşdirə bilər. Hər satıcının reytinqi və rəyləri var."
+        },
+        "safeShopping": {
+          "title": "Təhlükəsiz alış-veriş",
+          "description": "Bütün elanlar yoxlanılır və təsdiqlənir. Alış-veriş prosesi təhlükəsiz ödəniş üsulları və məsləhətlərlə tam qorunur."
+        },
+        "support": {
+          "title": "24/7 dəstək xidməti",
+          "description": "İstənilən vaxt komandamızla əlaqə saxlaya bilərsiniz. Suallarınız və problemlərinizlə bağlı həmişə kömək etməyə hazırıq."
+        },
+        "care": {
+          "title": "Sevgi ilə qayğı",
+          "description": "Heyvanların rifahı əsas prioritetimizdir. Məsuliyyətli sahibliyi və qayğını təşviq edirik."
+        },
+        "largest": {
+          "title": "Ən böyük platforma",
+          "description": "Azərbaycanda ev heyvanları üçün ən böyük onlayn bazar. Minlərlə elan və on minlərlə aktiv istifadəçi."
+        },
+        "easyUse": {
+          "title": "İstifadəsi asan",
+          "description": "İstifadəçi dostu interfeys və sadə dizayn ilə axtardığınız ev heyvanını tapmaq heç vaxt bu qədər asan olmamışdı."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "Necə işləyir?",
+      "subtitle": "Ev heyvanı tapmaq heç vaxt bu qədər asan olmamışdı",
+      "badge": "Sadə və sürətli proses",
+      "readyMessage": "Hazırsınız? Mükəmməl ev heyvanınızı tapmaq üçün yalnız bir neçə dəqiqə lazımdır",
+      "secure": "100% təhlükəsiz",
+      "verifiedSellers": "Təsdiqlənmiş satıcılar",
+      "support": "24/7 dəstək",
+      "steps": {
+        "search": {
+          "title": "Elanları axtarın",
+          "description": "İstədiyiniz ev heyvanını tapmaq üçün minlərlə elan arasında axtarış edin. Kateqoriya, cins, yaş və daha çox üçün filtrlər istifadə edin."
+        },
+        "contact": {
+          "title": "Satıcı ilə əlaqə saxlayın",
+          "description": "Bəyəndiyiniz elanın satıcısı ilə birbaşa əlaqə qurun. Suallar verin, əlavə məlumat və şəkillər istəyin."
+        },
+        "meet": {
+          "title": "Təhlükəsiz görüşün",
+          "description": "Ev heyvanını canlı görün və yoxlayın. Təhlükəsiz ödəniş üsullarından istifadə edin və bütün sənədləri alın."
+        },
+        "adopt": {
+          "title": "Yeni dostunuzu evə aparın",
+          "description": "Ev heyvanınıza məsuliyyətlə qayğı göstərin. Onunla xoşbəxt anlar yaşayın və sevgi dolu dostluq qurun."
+        }
+      }
+    },
+    "finalCta": {
+      "title": "Hazırsınız? Gəlin başlayaq!",
+      "subtitle": "Mükəmməl ev heyvanını tapmaq və ya satmaq üçün yalnız bir addım uzağındasınız. İndi qoşulun və xoşbəxt dostluqlara başlayın.",
+      "browseAdsButton": "Elanlara baxın",
+      "postAdButton": "Elan yerləşdir",
+      "trustIndicators": {
+        "freeRegistration": "Pulsuz qeydiyyat",
+        "activeAds": "10,000+ aktiv elan",
+        "safePlatform": "Təhlükəsiz platforma"
+      }
+    },
+    "categories": {
+      "title": "Populyar kateqoriyalar",
+      "viewAll": "Hamısına bax"
+    },
+    "premiumAds": {
+      "title": "Seçilmiş ev heyvanları",
+      "subtitle": "Təsdiqlənmiş və etibarlı satıcılardan premium elanlar",
+      "badge": "Premium Elanlar",
+      "carouselTitle": "Premium elanlar",
+      "viewAll": "Hamısına bax"
+    }
+  },
+  "about": {
+    "header": {
+      "title": "Haqqımızda",
+      "subtitle": "Heyvan sevərlər üçün yaradılmış platforma"
+    },
+    "hero": {
+      "title": "Azərbaycanda heyvan alqı-satqısını təhlükəsiz və asan edən platforma",
+      "description1": "puppy.az 2023-cü ildə Azərbaycanda heyvan sevərlər üçün etibarlı və istifadəçi dostu platforma yaratmaq missiyası ilə təsis edilmişdir.",
+      "description2": "Heyvanların layiqli evlər tapmasına və onlara qayğı göstərəcək məsuliyyətli sahiblərlə tanış olmasına kömək etmək istəyirik.",
+      "imageCaption": "Heyvanlarla dolu dünya"
+    },
+    "sections": {
+      "stats": {
+        "title": "Rəqəmlərlə puppy.az",
+        "subtitle": "Nailiyyətlərimiz və platformamızın təsiri"
+      },
+      "values": {
+        "title": "Dəyərlərimiz",
+        "subtitle": "Bizi irəli aparan prinsiplər"
+      },
+      "timeline": {
+        "title": "Səyahətimiz",
+        "subtitle": "puppy.az-ın inkişaf tarixi"
+      },
+      "team": {
+        "title": "Komandamız",
+        "subtitle": "puppy.az arxasında duran komanda"
+      },
+      "contact": {
+        "title": "Bizimlə əlaqə",
+        "subtitle": "Sualınız var? Bizimlə əlaqə saxlayın"
+      }
+    },
+    "stats": {
+      "activeAds": "Aktiv elanlar",
+      "users": "İstifadəçilər",
+      "satisfaction": "Müştəri məmnuniyyəti",
+      "support": "Dəstək xidməti"
+    },
+    "values": {
+      "security": {
+        "title": "Təhlükəsizlik",
+        "description": "İstifadəçilərimizin təhlükəsizliyi əsas prioritetimizdir. Bütün elanlar yoxlanılır və təsdiqlənir."
+      },
+      "animalLove": {
+        "title": "Heyvan sevgisi",
+        "description": "Heyvanları sevirik və onlara qarşı məsuliyyətli olmağı təşviq edirik."
+      },
+      "community": {
+        "title": "İcma",
+        "description": "Heyvan sevərlər üçün güclü icma yaradırıq və bir-birimizi dəstəkləyirik."
+      },
+      "innovation": {
+        "title": "İnnovasiya",
+        "description": "Texnologiyanın gücündən istifadə edərək ən yaxşı istifadəçi təcrübəsini təqdim edirik."
+      }
+    },
+    "team": {
+      "founder": {
+        "name": "Əli Məmmədov",
+        "role": "Təsisçi və CEO",
+        "description": "Heyvan sevgisi və texnologiya arasında körpü qurmaq istəyi ilə puppy.az-ı yaratdı."
+      },
+      "productManager": {
+        "name": "Leyla Həsənova",
+        "role": "Baş Məhsul Meneceri",
+        "description": "10 illik təcrübəyə malik məhsul dizayneri və heyvan hüquqları fəalı."
+      },
+      "technicalDirector": {
+        "name": "Rəşad İsmayılov",
+        "role": "Texniki Direktor",
+        "description": "Platforma arxitekturasını və texniki həlləri idarə edir."
+      }
+    },
+    "milestones": {
+      "launch": {
+        "title": "Platforma işə salındı",
+        "description": "puppy.az Azərbaycanda heyvan ticarəti üçün ilk onlayn platforma kimi fəaliyyətə başladı."
+      },
+      "tenKAds": {
+        "title": "10,000+ elan",
+        "description": "İlk ildə 10,000-dən çox uğurlu elan yerləşdirildi və minlərlə heyvan yeni evlər tapdı."
+      },
+      "premium": {
+        "title": "Premium xidmətlər",
+        "description": "İstifadəçilər üçün premium xidmətlər və əlavə funksiyalar təqdim edildi."
+      },
+      "future": {
+        "year": "Gələcək",
+        "title": "Genişlənmə planları",
+        "description": "Regional genişlənmə və mobil tətbiq üzərində işləyirik."
+      }
+    },
+    "contact": {
+      "info": {
+        "title": "Əlaqə məlumatları",
+        "email": "E-poçt",
+        "support": "Dəstək",
+        "supportLink": "Yardım mərkəzi",
+        "socialMedia": "Sosial media"
+      },
+      "cta": {
+        "title": "Bizimlə paylaşın",
+        "description": "puppy.az-la daha çox insana çatmağımıza və daha çox heyvanın xoşbəxt evlər tapması üçün şərait yaratmağımıza kömək edin.",
+        "button": "Elan yerləşdir"
+      }
+    }
+  },
+  "footer": {
+    "company": "Şirkət",
+    "about": "Haqqımızda",
+    "careers": "Karyera",
+    "press": "Mətbuat",
+    "blog": "Bloq",
+    "support": "Dəstək",
+    "helpCenter": "Yardım Mərkəzi",
+    "safety": "Təhlükəsizlik",
+    "contact": "Əlaqə",
+    "report": "Şikayət",
+    "community": "İcma",
+    "communityForum": "İcma Forumu",
+    "events": "Tədbirlər",
+    "guides": "Bələdçilər",
+    "stories": "Hekayələr",
+    "premium": "Premium",
+    "premiumAds": "Premium Elanlar",
+    "pricing": "Qiymətlər",
+    "forBreeders": "Yetişdiricilər üçün",
+    "forShelters": "Sığınacaqlar üçün",
+    "copyright": "© 2025 Puppy.az",
+    "terms": "Şərtlər",
+    "privacy": "Məxfilik",
+    "sitemap": "Sayt Xəritəsi",
+    "allRightsReserved": "Bütün hüquqlar qorunur",
+    "followUs": "Bizi izləyin"
+  },
+  "language": {
+    "az": "Azərbaycan",
+    "en": "English",
+    "ru": "Русский",
+    "selectLanguage": "Dil seçin"
+  },
+  "accessibility": {
+    "userMenu": "İstifadəçi menyusu",
+    "menu": "Menyu",
+    "selectLanguage": "Dil seçin",
+    "openSearch": "Axtarışı aç",
+    "closeSearch": "Axtarışı bağla",
+    "clear": "Təmizlə",
+    "close": "Bağla",
+    "search": "Axtar",
+    "share": "Paylaş",
+    "addToFavorites": "Seçilmişlərə əlavə et",
+    "removeFromFavorites": "Seçilmişlərdən sil",
+    "filterOptionsDescription": "Ev heyvanları elanları üçün filtr seçimləri",
+    "lostPuppyAnimation": "İtirilmiş bala animasiyası",
+    "previousPage": "Əvvəlki səhifə",
+    "nextPage": "Növbəti səhifə",
+    "premiumFeature": "Premium funksiya",
+    "pageNavigation": "Səhifə naviqasiyası",
+    "page": "Səhifə {number}",
+    "viewMode": "Görünüş rejimi",
+    "gridView": "Şəbəkə görünüşü",
+    "listView": "Siyahı görünüşü",
+    "closeMessage": "Mesajı bağla",
+    "facebook": "Facebook",
+    "instagram": "Instagram",
+    "twitter": "Twitter",
+    "priceRange": "Qiymət aralığı",
+    "minPrice": "Minimum qiymət",
+    "maxPrice": "Maksimum qiymət",
+    "filters": "Filtrlər",
+    "dismissError": "Xətanı rədd et",
+    "appLogo": "puppy.az ana səhifə",
+    "previousSlide": "Əvvəlki slayd",
+    "nextSlide": "Növbəti slayd",
+    "selectAdType": "Elan növünü seç",
+    "selectCategory": "Kateqoriya seç",
+    "selectBreed": "Cins seç"
+  },
+  "errors": {
+    "generic": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "network": "İnternet bağlantınızı yoxlayın",
+    "notFound": "Səhifə tapılmadı",
+    "unauthorized": "Bu səhifəyə girişiniz yoxdur",
+    "serverError": "Server xətası. Zəhmət olmasa bir az sonra yenidən cəhd edin.",
+    "validation": "Zəhmət olmasa məlumatları düzgün daxil edin",
+    "fetchAdsFailed": "Elanlar yüklənmədi",
+    "fetchBreedsFailed": "Cinslər yüklənmədi"
+  },
+  "validation": {
+    "required": "Bu sahə məcburidir",
+    "email": "Düzgün e-poçt daxil edin",
+    "phone": "Düzgün telefon nömrəsi daxil edin",
+    "minLength": "Ən azı {count} simvol olmalıdır",
+    "maxLength": "Maksimum {count} simvol olmalıdır",
+    "minPrice": "Minimum qiymət {price} olmalıdır",
+    "maxPrice": "Maksimum qiymət {price} ola bilər"
+  },
+  "form": {
+    "select": {
+      "placeholder": "Seçilməyib",
+      "searchPlaceholder": "Axtar...",
+      "noResults": "Nəticə tapılmadı",
+      "loading": "Yüklənir...",
+      "currentlySelected": "Hazırda seçilmiş:",
+      "notSelected": "Seçilməyib"
+    }
+  },
+  "dateTime": {
+    "justNow": "İndicə",
+    "minutesAgo": "dəqiqə əvvəl",
+    "hoursAgo": "saat əvvəl",
+    "yesterday": "Dünən",
+    "daysAgo": "gün əvvəl",
+    "noDate": "Tarix yoxdur",
+    "months": {
+      "0": "yanvar",
+      "1": "fevral",
+      "2": "mart",
+      "3": "aprel",
+      "4": "may",
+      "5": "iyun",
+      "6": "iyul",
+      "7": "avqust",
+      "8": "sentyabr",
+      "9": "oktyabr",
+      "10": "noyabr",
+      "11": "dekabr"
+    }
+  },
+  "premium": {
+    "title": "Premium elan",
+    "subtitle": "Elanınızı önə çıxarın və daha tez satın",
+    "hero": {
+      "badge": "Daha sürətli satış üçün ən yaxşı seçim",
+      "title": "Elanınızı premium edin və 10 dəfə çox görünürlük əldə edin",
+      "description": "Premium elanlar orta hesabla 5-7 dəfə daha tez satılır. Elanınız axtarış nəticələrində və ana səhifədə ən üstdə görünür, xüsusi premium nişanı alır və daha çox potensial alıcıya çatır."
+    },
+    "benefitsTitle": "Premium elan üstünlükləri",
+    "benefitsSubtitle": "Niyə premium seçməli?",
+    "benefits": {
+      "featured": {
+        "title": "Önə çıxan yerləşdirmə",
+        "description": "Elanınız axtarış nəticələrində və ana səhifədə ən üstdə görünür"
+      },
+      "badge": {
+        "title": "Premium nişanı",
+        "description": "Elanınız premium nişanı göstərir və etibarlılığı artırır"
+      },
+      "visibility": {
+        "title": "10 dəfə çox görünürlük",
+        "description": "Elanınız 10 dəfə çox potensial alıcıya göstərilir"
+      },
+      "priority": {
+        "title": "Prioritet yerləşdirmə",
+        "description": "Bütün kateqoriyalarda və filtrlərdə üst mövqelərdə görünür"
+      },
+      "analytics": {
+        "title": "Ətraflı analitika",
+        "description": "Baxış sayı, klik sayı və əlaqə statistikası alın"
+      },
+      "design": {
+        "title": "Xüsusi dizayn",
+        "description": "Elanınız xüsusi premium dizaynı ilə seçilir"
+      }
+    },
+    "stats": {
+      "fasterSale": "Daha sürətli satılır",
+      "moreViews": "Daha çox baxış",
+      "satisfaction": "Müştəri məmnuniyyəti",
+      "hours": "saat",
+      "avgSaleTime": "Orta satış müddəti"
+    },
+    "pricingTitle": "Qiymət paketləri",
+    "pricingSubtitle": "Uzunmüddətli paketlərdə endirimlər",
+    "pricing": {
+      "1month": "1 ay",
+      "3months": "3 ay",
+      "6months": "6 ay",
+      "popularChoice": "Ən populyar seçim",
+      "discount": "{percent}% endirim",
+      "perMonth": "Aylıq {amount} ₼"
+    },
+    "selectedPackage": {
+      "title": "Seçilmiş paket",
+      "1month": "1 aylıq premium elan",
+      "3months": "3 aylıq premium elan (15% endirim)",
+      "6months": "6 aylıq premium elan (25% endirim)",
+      "discountApplied": "{percent}% endirim tətbiq edildi",
+      "features": {
+        "0": "Önə çıxan yerləşdirmə və prioritet mövqe",
+        "1": "Premium nişanı və xüsusi dizayn",
+        "2": "10 dəfə çox görünürlük və ətraflı analitika",
+        "3": "Ana səhifə və kateqoriyalarda üst mövqe"
+      }
+    },
+    "contactAdmin": "Admin ilə əlaqə",
+    "paymentNote": "Ödəniş üçün admin ilə əlaqə saxlayın. Ödənişdən dərhal sonra elanınız premium olacaq.",
+    "comparisonTitle": "Pulsuz və Premium",
+    "comparisonSubtitle": "Hansı üstünlükləri əldə edəcəksiniz?",
+    "comparisonTable": {
+      "feature": "Funksiya",
+      "free": "Pulsuz",
+      "premium": "Premium"
+    },
+    "comparison": {
+      "adPosting": "Elan yerləşdirmə",
+      "standardVisibility": "Standart görünürlük",
+      "featured": "Önə çıxan yerləşdirmə",
+      "premiumBadge": "Premium nişanı",
+      "tenXVisibility": "10 dəfə çox görünürlük",
+      "priorityPlacement": "Prioritet yerləşdirmə",
+      "detailedAnalytics": "Ətraflı analitika",
+      "customDesign": "Xüsusi dizayn",
+      "homepageDisplay": "Ana səhifədə göstərilmə"
+    },
+    "faqTitle": "Tez-tez verilən suallar",
+    "faqSubtitle": "Premium elanlar haqqında məlumat",
+    "faqs": {
+      "whatIsPremium": {
+        "question": "Premium elan xidməti nədir?",
+        "answer": "Premium elan xidməti elanınızın platformada daha çox görünürlük əldə etməsini və daha tez satılmasını təmin edən ödənişli xidmətdir. Elanınız axtarış nəticələrində, kateqoriya səhifələrində və ana səhifədə önə çıxır."
+      },
+      "howPayment": {
+        "question": "Ödəniş necə həyata keçirilir?",
+        "answer": "Ödəniş üçün admin ilə əlaqə saxlamalısınız. Ödəniş bank kartı, mobil ödəniş və ya bank köçürməsi ilə edilə bilər. Ödənişdən dərhal sonra elanınız premium olacaq."
+      },
+      "duration": {
+        "question": "Premium status nə qədər keçərlidir?",
+        "answer": "Premium status seçdiyiniz paketdən asılı olaraq 1, 3 və ya 6 ay keçərlidir. Müddət bitdikdən sonra elanınız standart statusa qayıdır. İstəsəniz müddəti uzada bilərsiniz."
+      },
+      "effectiveness": {
+        "question": "Premium elanlar nə qədər effektivdir?",
+        "answer": "Statistikaya görə premium elanlar orta hesabla 5-7 dəfə daha tez satılır və 10 dəfə çox baxış alır. Önə çıxan yerləşdirmə və premium nişanı sayəsində etibar artır və daha çox alıcı maraq göstərir."
+      },
+      "multipleAds": {
+        "question": "Bir neçə elan üçün premium ala bilərəmmi?",
+        "answer": "Bəli, istədiyiniz qədər elan üçün premium xidmət ala bilərsiniz. Hər elan üçün ayrıca ödəniş tələb olunur. Bir neçə elan üçün endirimlər mövcuddur, təfərrüat üçün admin ilə əlaqə saxlayın."
+      }
+    },
+    "cta": {
+      "title": "Hazırsınız?",
+      "description": "Admin ilə əlaqə saxlayın və elanınızı premium edin. Ödənişdən dərhal sonra elanınız önə çıxacaq.",
+      "chatButton": "Admin ilə söhbət",
+      "helpCenter": "Yardım mərkəzi",
+      "contactEmail": "Sualınız var? <a href=\"mailto:premium@puppy.az\" class=\"text-white hover:underline\">premium@puppy.az</a> ünvanına yaza bilərsiniz."
+    }
+  },
+  "metadata": {
+    "defaultTitle": "puppy.az - Ev Heyvanları Bazarı",
+    "defaultDescription": "Azərbaycanda ev heyvanlarının alqı-satqısı üçün ən böyük platforma",
+    "register": {
+      "title": "Qeydiyyat",
+      "description": "Hesab yaradın və elanlarınızı yerləşdirin"
+    },
+    "auth": {
+      "title": "Daxil ol",
+      "description": "Hesabınıza daxil olun və elanlarınızı idarə edin"
+    },
+    "help": {
+      "title": "Yardım Mərkəzi",
+      "description": "Tez-tez verilən suallar və dəstək mərkəzi"
+    },
+    "about": {
+      "title": "Haqqımızda",
+      "description": "puppy.az - Azərbaycanda ev heyvanları üçün etibarlı platforma"
+    },
+    "myAccount": {
+      "title": "Hesabım",
+      "description": "Hesab məlumatlarınızı idarə edin",
+      "profileInfo": {
+        "title": "Profil Məlumatları",
+        "description": "Hesab məlumatlarınızı redaktə edin"
+      },
+      "security": {
+        "title": "Təhlükəsizlik",
+        "description": "Şifrənizi dəyişin və hesabınızı qoruyun"
+      },
+      "settings": {
+        "title": "Parametrlər",
+        "description": "Hesab parametrlərinizi konfiqurasiya edin"
+      },
+      "questions": {
+        "title": "Sual və Cavablar",
+        "description": "Ev heyvanı elanlarınız haqqında sualları idarə edin"
+      },
+      "myAds": {
+        "title": "Elanlarım",
+        "description": "Bütün ev heyvanı elanlarınızı idarə edin"
+      }
+    },
+    "privacy": {
+      "title": "Məxfilik Siyasəti",
+      "description": "puppy.az platformasının məxfilik siyasəti və istifadəçi məlumatlarının qorunması"
+    },
+    "terms": {
+      "title": "İstifadə Şərtləri",
+      "description": "puppy.az platformasının istifadə şərtləri və qaydaları"
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Elanınızı premium edin və daha tez satın"
+    },
+    "myAds": {
+      "active": {
+        "title": "Aktiv Elanlar",
+        "description": "Aktiv elanlarınızı idarə edin"
+      },
+      "pending": {
+        "title": "Gözləyən Elanlar",
+        "description": "Təsdiq gözləyən elanlarınıza baxın"
+      },
+      "rejected": {
+        "title": "Rədd Edilmiş Elanlar",
+        "description": "Rədd edilmiş elanlarınıza baxın və səbəbləri öyrənin"
+      }
+    },
+    "favorites": {
+      "title": "Seçilmişlər",
+      "description": "Seçilmiş elanlarınız"
+    },
+    "adPlacement": {
+      "intro": {
+        "title": "Elan yerləşdir",
+        "description": "Ev heyvanınız üçün elan yerləşdirin"
+      },
+      "edit": {
+        "title": "Elanı Redaktə Et",
+        "description": "Elanınızı yeniləyin və dəyişiklikləri saxlayın"
+      },
+      "location": {
+        "title": "Yer",
+        "description": "Elanınız üçün yer məlumatını daxil edin"
+      }
+    },
+    "search": {
+      "title": "Axtar",
+      "description": "Ev heyvanları axtarın və filtr tətbiq edin"
+    },
+    "home": {
+      "title": "Ana Səhifə",
+      "description": "Azərbaycanda ev heyvanlarının alqı-satqısı üçün ən böyük platforma. İt, pişik və digər ev heyvanları üçün elanlar"
+    }
+  },
+  "myAccount": {
+    "title": "Hesabım",
+    "subtitle": "Profilinizi idarə edin və elanlarınızı izləyin",
+    "defaultLocation": "Bakı, Azərbaycan",
+    "changeProfilePicture": "Profil şəklini dəyiş",
+    "memberSince": "{date} tarixindən bəri üzv",
+    "editProfile": "Profili redaktə et",
+    "quickActionsTitle": "Sürətli əməliyyatlar",
+    "logout": "Çıxış",
+    "logoutDescription": "Hesabınızdan çıxış edin",
+    "stats": {
+      "totalAds": "Ümumi elanlar",
+      "viewsThisMonth": "Bu ay baxışlar",
+      "favorites": "Seçilmişlər"
+    },
+    "quickActions": {
+      "newAd": {
+        "title": "Yeni Elan",
+        "subtitle": "Ev heyvanı elanı yerləşdir"
+      },
+      "favorites": {
+        "title": "Seçilmişlər",
+        "subtitle": "{count} heyvan"
+      },
+      "messages": {
+        "title": "Mesajlar",
+        "subtitle": "{count} yeni mesaj"
+      }
+    },
+    "sections": {
+      "account": "Hesab",
+      "myAds": "Elanlarım",
+      "premium": "Premium",
+      "support": "Dəstək"
+    },
+    "menu": {
+      "profileInfo": {
+        "title": "Profil Məlumatları",
+        "subtitle": "Ad, e-poçt, telefon"
+      },
+      "security": {
+        "title": "Təhlükəsizlik",
+        "subtitle": "Şifrə və təsdiq"
+      },
+      "notifications": {
+        "title": "Bildirişlər",
+        "subtitle": "E-poçt və push bildirişləri"
+      },
+      "myAds": {
+        "title": "Elanlarım",
+        "subtitle": "{count, plural, =0 {Elan yoxdur} one {# elan} other {# elan}}"
+      },
+      "activeAds": {
+        "title": "Aktiv Elanlar",
+        "subtitle": "{count} aktiv elan"
+      },
+      "pendingAds": {
+        "title": "Gözləyən Elanlar",
+        "subtitle": "{count} təsdiq gözləyir"
+      },
+      "rejectedAds": {
+        "title": "Rədd Edilmiş Elanlar",
+        "subtitle": "{count} rədd edilib"
+      },
+      "questions": {
+        "title": "Sual və Cavablar",
+        "subtitle": "{count} cavabsız sual"
+      },
+      "stats": {
+        "title": "Statistika",
+        "subtitle": "Baxışlar və performans"
+      },
+      "premiumServices": {
+        "title": "Premium Xidmətlər",
+        "subtitle": "Paketlər və qiymətlər"
+      },
+      "helpCenter": {
+        "title": "Yardım Mərkəzi",
+        "subtitle": "Tez-tez verilən suallar və dəstək"
+      },
+      "settings": {
+        "title": "Parametrlər",
+        "subtitle": "Tətbiq və məxfilik"
+      }
+    },
+    "questions": {
+      "title": "Sual və Cavablar",
+      "subtitle": "Elanlarınızla bağlı sualları idarə edin",
+      "tabs": {
+        "all": "Bütün Suallar",
+        "unanswered": "Cavabsız",
+        "answered": "Cavablanmış"
+      },
+      "summary": {
+        "totalQuestions": "Ümumi Suallar",
+        "unansweredQuestions": "Cavabsız",
+        "answeredQuestions": "Cavablanmış",
+        "adsWithQuestions": "Suallı Elanlar",
+        "latestQuestion": "Son Sual"
+      },
+      "card": {
+        "askedBy": "{name} tərəfindən soruşulub",
+        "askedAt": "{time} soruşulub",
+        "answeredAt": "{time} cavablandırılıb",
+        "answerPlaceholder": "Cavabınızı yazın...",
+        "sendAnswer": "Cavabı Göndər",
+        "viewAd": "Elanı Gör",
+        "yourAnswer": "Cavabınız:",
+        "question": "Sual:",
+        "noAnswer": "Hələ cavablandırılmayıb"
+      },
+      "emptyStates": {
+        "noQuestions": {
+          "title": "Hələ Sual Yoxdur",
+          "description": "İstifadəçilər elanlarınızla bağlı sual verdikdə burada görünəcək."
+        },
+        "noUnanswered": {
+          "title": "Hamısına Cavab Verildi!",
+          "description": "Bütün suallara cavab verdiniz. Əla iş!"
+        },
+        "noAnswered": {
+          "title": "Cavablanmış Sual Yoxdur",
+          "description": "Cavabladığınız suallar burada görünəcək."
+        }
+      },
+      "search": {
+        "placeholder": "Sualları axtar...",
+        "noResults": "Axtarışa uyğun sual tapılmadı"
+      },
+      "actions": {
+        "markAsRead": "Oxunmuş kimi işarələ",
+        "delete": "Sualı sil",
+        "report": "Şikayət et"
+      },
+      "notifications": {
+        "answerSuccess": "Cavab uğurla göndərildi!",
+        "answerError": "Cavab göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+        "loadError": "Suallar yüklənmədi. Zəhmət olmasa səhifəni yeniləyin."
+      },
+      "loadMore": "Daha çox sual yüklə"
+    },
+    "myAds": {
+      "title": "Elanlarım",
+      "subtitle": "{count, plural, =0 {Hələ elan yoxdur} one {# elan} other {# elan}}",
+      "tabs": {
+        "active": "Aktiv",
+        "pending": "Gözləmədə",
+        "rejected": "Rədd edilmiş",
+        "all": "Hamısı"
+      },
+      "summary": {
+        "totalAds": "Ümumi Elanlar",
+        "activeAds": "Aktiv",
+        "pendingAds": "Təsdiq Gözləyir",
+        "rejectedAds": "Rədd Edilmiş"
+      },
+      "emptyStates": {
+        "noAds": {
+          "title": "Hələ Elan Yoxdur",
+          "description": "İlk elanınızı yerləşdirin və alıcılarla əlaqə qurmağa başlayın!"
+        },
+        "noActive": {
+          "title": "Aktiv Elan Yoxdur",
+          "description": "Hal-hazırda aktiv elanınız yoxdur. Təsdiq gözləyən elanlarınız təsdiqlənəndən sonra burada görünəcək."
+        },
+        "noPending": {
+          "title": "Gözləyən Elan Yoxdur",
+          "description": "Təsdiq gözləyən elanınız yoxdur. Bütün elanlarınız aktiv və ya hələ elan yerləşdirməmisiniz."
+        },
+        "noRejected": {
+          "title": "Rədd Edilmiş Elan Yoxdur",
+          "description": "Əla! Heç bir elanınız rədd edilməmişdir. Bütün elanlarınız aktiv və ya gözləmədədir."
+        }
+      },
+      "actions": {
+        "newAd": "Yeni Elan",
+        "refresh": "Yenilə",
+        "refreshing": "Yenilənir..."
+      },
+      "notifications": {
+        "refreshSuccess": "Bütün elanlar uğurla yeniləndi!",
+        "refreshError": "Elanlar yenilənmədi. Zəhmət olmasa yenidən cəhd edin.",
+        "closeSuccess": "Elan uğurla bağlandı!",
+        "closeError": "Elan bağlanmadı. Zəhmət olmasa yenidən cəhd edin."
+      },
+      "errors": {
+        "loadFailed": "Elanlar yüklənmədi. Zəhmət olmasa yenidən cəhd edin."
+      },
+      "endOfList": "Siyahının sonuna çatdınız"
+    }
+  },
+  "Demo": {
+    "title": "Puppy.az-a xoş gəlmisiniz",
+    "description": "Mükəmməl ev heyvanı dostunuzu tapın",
+    "serverComponent": "Bu Server Komponentidir",
+    "clientComponent": "Bu Klient Komponentidir",
+    "currentLanguage": "Cari Dil",
+    "changeLanguage": "Dili Dəyiş",
+    "greeting": "Salam, {name}!"
+  },
+  "Navigation": {
+    "home": "Ana Səhifə",
+    "about": "Haqqımızda",
+    "contact": "Əlaqə"
+  },
+  "mobileBottomNav": {
+    "home": "Ana Səhifə"
+  },
+  "help": {
+    "data": {
+      "lastUpdated": "15 Yanvar 2025",
+      "supportEmail": "support@puppy.az",
+      "phoneNumber": "+994 12 345 67 89",
+      "workingHours": "Bazar ertəsi - Cümə, 09:00-18:00"
+    },
+    "categories": {
+      "gettingStarted": {
+        "title": "Başlanğıc",
+        "description": "puppy.az ilə işə başlamaq üçün əsas məlumatlar",
+        "faqs": {
+          "whatIsPuppy": {
+            "question": "puppy.az nədir?",
+            "answer": "puppy.az Azərbaycanda ev heyvanlarının alqı-satqısı üçün ən böyük onlayn platformadır. Platformamızda ev heyvanları axtara, sat və ya övladlığa götürə bilərsiniz. İt, pişik, quş və digər ev heyvanları üçün minlərlə elan var."
+          },
+          "howToRegister": {
+            "question": "Necə qeydiyyatdan keçə bilərəm?",
+            "answer": "Qeydiyyat çox sadədir. Səhifənin yuxarı sağ küncündə 'Qeydiyyat' düyməsinə basın və ad, soyad, e-poçt və telefon nömrənizi daxil edin. Telefon nömrənizi SMS ilə təsdiqləyin və hazırsınız!"
+          },
+          "isFree": {
+            "question": "Platformadan istifadə pulsuzdur?",
+            "answer": "Bəli, puppy.az-dan istifadə tamamilə pulsuzdur. Qeydiyyat, elan yerləşdirmə və digər əsas funksiyalar heç bir ödəniş tələb etmir. Yalnız elanınızı önə çıxarmaq istəsəniz, premium xidmətlərdən istifadə edə bilərsiniz."
+          },
+          "mobileApp": {
+            "question": "Mobil tətbiq varmı?",
+            "answer": "Hal-hazırda mobil tətbiq üzərində işləyirik. Ancaq saytımız mobil cihazlar üçün tam optimallaşdırılmışdır və telefon brauzerinizdən rahat istifadə edə bilərsiniz."
+          }
+        }
+      },
+      "postingAds": {
+        "title": "Elan yerləşdirmə",
+        "description": "Ev heyvanı elanı yerləşdirmək haqqında məlumat",
+        "faqs": {
+          "howToPost": {
+            "question": "Necə elan yerləşdirə bilərəm?",
+            "answer": "Elan yerləşdirmək üçün əvvəlcə hesabınıza daxil olun. Sonra 'Elan yerləşdir' düyməsinə basın və addım-addım təlimatları izləyin. Elan növü, kateqoriya, şəkillər, qiymət və digər məlumatları daxil edin. Bütün məlumatlar daxil edildikdən sonra elanınız təsdiq üçün göndəriləcək."
+          },
+          "howManyPhotos": {
+            "question": "Neçə şəkil əlavə edə bilərəm?",
+            "answer": "Hər elan üçün maksimum 10 şəkil əlavə edə bilərsiniz. Şəkillərinizi sıralamaqla hansının əsas şəkil olacağını seçə bilərsiniz. Yüksək keyfiyyətli və aydın şəkillər istifadə etməyi tövsiyə edirik."
+          },
+          "approvalTime": {
+            "question": "Elanım nə qədər müddətdə təsdiqlənəcək?",
+            "answer": "Elanlar adətən 24 saat ərzində yoxlanılır və təsdiqlənir. Bəzi hallarda bu proses daha tez də ola bilər. Elanınızın statusunu 'Hesabım' bölməsindən izləyə bilərsiniz."
+          },
+          "howToEdit": {
+            "question": "Elanımı necə redaktə edə bilərəm?",
+            "answer": "'Hesabım' bölməsinə keçin, 'Elanlarım' sekmesini açın və redaktə etmək istədiyiniz elanın üzərinə klikləyin. Redaktə düyməsinə basaraq elanınızda dəyişikliklər edə bilərsiniz."
+          },
+          "adDuration": {
+            "question": "Elanlar nə qədər aktiv qalır?",
+            "answer": "Standart elanlar 60 gün aktiv qalır. Premium elanlar isə premium müddəti ərzində aktiv olur. Müddəti bitən elanları yeniləyə və ya yenidən yerləşdirə bilərsiniz."
+          }
+        }
+      },
+      "buyingSelling": {
+        "title": "Alış-veriş",
+        "description": "Ev heyvanı almaq və satmaq haqqında məlumat",
+        "faqs": {
+          "howToContact": {
+            "question": "Satıcı ilə necə əlaqə saxlaya bilərəm?",
+            "answer": "Hər elanın səhifəsində satıcı ilə əlaqə qurmaq üçün düymələr var. 'Mesaj göndər', 'Zəng et' və ya 'E-poçt göndər' seçimlərindən istifadə edə bilərsiniz. Əlaqə məlumatları yalnız qeydiyyatdan keçmiş istifadəçilərə göstərilir."
+          },
+          "howPayment": {
+            "question": "Ödəniş necə edilir?",
+            "answer": "Ödəniş bilavasitə satıcı və alıcı arasında həyata keçirilir. Platformamız yalnız vasitəçidir və ödəniş prosesində iştirak etmir. Təhlükəsizlik üçün nağd ödəniş və ya bank köçürməsi tövsiyə edirik. Heç vaxt əvvəlcədən ödəniş etməyin."
+          },
+          "beforeMeeting": {
+            "question": "Görüşdən əvvəl nəyə diqqət etməliyəm?",
+            "answer": "İctimai yerdə görüşmək, ev heyvanının sağlamlıq vəsiqələrini yoxlamaq, satıcı haqqında məlumat toplamaq vacibdir. Əgər mümkünsə, tanışlarınızla birlikdə gedin və gündüz saatlarında görüşün."
+          },
+          "avoidScams": {
+            "question": "Fırıldaq hallarından necə qorunmalıyam?",
+            "answer": "Şübhəli dərəcədə ucuz qiymətlərdən, əvvəlcədən ödəniş tələb edənlərdən, şəkil göndərməkdən imtina edənlərdən ehtiyatlı olun. Həmişə ev heyvanını görün və yoxlayın. Şübhəli elanları platformamıza bildirin."
+          }
+        }
+      },
+      "accountSettings": {
+        "title": "Hesab parametrləri",
+        "description": "Hesabınızı idarə etmək haqqında məlumat",
+        "faqs": {
+          "changePassword": {
+            "question": "Şifrəmi necə dəyişə bilərəm?",
+            "answer": "'Hesabım' > 'Təhlükəsizlik' bölməsinə keçin və 'Şifrəni dəyiş' seçimini seçin. Köhnə şifrənizi daxil edin və yeni şifrənizi təyin edin. Təhlükəsizlik üçün güclü şifrə istifadə etməyi tövsiyə edirik."
+          },
+          "forgotPassword": {
+            "question": "Şifrəmi unutmuşam, nə etməliyəm?",
+            "answer": "Giriş səhifəsində 'Şifrəni unutmusunuz?' linkini klikləyin. Qeydiyyat zamanı istifadə etdiyiniz e-poçtu daxil edin və yeni şifrə təyin etmək üçün linki izləyin."
+          },
+          "updateProfile": {
+            "question": "Profil məlumatlarımı necə yeniləyə bilərəm?",
+            "answer": "'Hesabım' > 'Profil Məlumatları' bölməsinə keçin. Burada ad, soyad, telefon və digər məlumatlarınızı yeniləyə bilərsiniz. Dəyişiklikləri saxlamağı unutmayın."
+          },
+          "deleteAccount": {
+            "question": "Hesabımı necə silə bilərəm?",
+            "answer": "'Hesabım' > 'Parametrlər' bölməsinə keçin və səhifənin aşağı hissəsində 'Hesabı sil' seçimini tapın. Bu əməliyyat geri qaytarıla bilməz və bütün məlumatlarınız silinəcək."
+          }
+        }
+      },
+      "safetySecurity": {
+        "title": "Təhlükəsizlik",
+        "description": "Platformanın təhlükəsizliyi və qaydaları haqqında məlumat",
+        "faqs": {
+          "isDataSafe": {
+            "question": "Məlumatlarım təhlükəsizdirmi?",
+            "answer": "Bəli, bütün şəxsi məlumatlarınız şifrələnir və qorunur. Məxfilik siyasətimizə uyğun olaraq, məlumatlarınız üçüncü tərəflərlə paylaşılmır. Platforma SSL sertifikatı ilə qorunur."
+          },
+          "reportAd": {
+            "question": "Şübhəli elanı necə bildirə bilərəm?",
+            "answer": "Hər elan səhifəsində 'Şikayət et' düyməsi var. Bu düyməyə basaraq şübhəli elanları, uyğunsuz məzmunu və ya qayda pozuntularını bildirə bilərsiniz. Hər şikayət yoxlanılır və lazımi tədbirlər görülür."
+          },
+          "prohibitedAds": {
+            "question": "Hansı elanlar qadağandır?",
+            "answer": "Qeyri-qanuni heyvan ticarəti, xəstə və ya zədələnmiş heyvanların satışı, saxta məlumatlar, cinsi yetkinlik yaşına çatmamış heyvanların satışı qadağandır. İstifadə şərtlərimizi oxuyun."
+          }
+        }
+      },
+      "paymentsPricing": {
+        "title": "Ödənişlər və qiymətlər",
+        "description": "Premium xidmətlər və qiymətlər haqqında məlumat",
+        "faqs": {
+          "isPaid": {
+            "question": "Elan yerləşdirmə ödənişlimi?",
+            "answer": "Xeyr, standart elan yerləşdirmə tamamilə pulsuzdur. Yalnız elanınızı önə çıxarmaq, daha çox görünürlük əldə etmək üçün premium xidmətlərdən istifadə edə bilərsiniz."
+          },
+          "premiumAds": {
+            "question": "Premium elan xidməti nə qədərdir?",
+            "answer": "Premium elan qiymətləri paketdən asılıdır: 1 ay - 10 AZN, 3 ay - 25 AZN (15% endirim), 6 ay - 45 AZN (25% endirim). Premium elanlar axtarış nəticələrində və ana səhifədə ön planda görünür."
+          }
+        }
+      },
+      "technicalSupport": {
+        "title": "Texniki dəstək",
+        "description": "Texniki problemlər və həllər haqqında məlumat",
+        "faqs": {
+          "technicalIssue": {
+            "question": "Texniki problem yaşayıram, nə etməliyəm?",
+            "answer": "Əvvəlcə səhifəni yeniləməyi, brauzeri və ya cihazı dəyişməyi sınayın. Problem davam edərsə, support@puppy.az ünvanına və ya +994 12 345 67 89 nömrəsinə müraciət edin. Problem haqqında ətraflı məlumat verin."
+          },
+          "photoUpload": {
+            "question": "Şəkil yükləyə bilmirəm, niyə?",
+            "answer": "Şəkil formatının JPG, PNG və ya WEBP olduğundan, ölçüsünün 5MB-dan az olduğundan əmin olun. İnternet bağlantınızı yoxlayın. Hələ də problem varsa, şəkli kiçildib yenidən sınayın."
+          },
+          "emailNotifications": {
+            "question": "E-poçt bildirişləri almıram, niyə?",
+            "answer": "Spam qovluğunuzu yoxlayın, e-poçt ünvanınızın düzgün olduğundan əmin olun. 'Hesabım' > 'Parametrlər' > 'Bildirişlər' bölməsində bildirişlərin aktiv olduğunu yoxlayın."
+          },
+          "contactSupport": {
+            "question": "Dəstək komandası ilə necə əlaqə saxlaya bilərəm?",
+            "answer": "E-poçt: support@puppy.az, Telefon: +994 12 345 67 89, İş saatları: Bazar ertəsi - Cümə, 09:00-18:00. Həmçinin 'Yardım Mərkəzi' səhifəsindəki əlaqə formasından istifadə edə bilərsiniz."
+          }
+        }
+      },
+      "other": {
+        "title": "Digər suallar",
+        "description": "Ümumi suallar və cavablar",
+        "faqs": {
+          "whoRuns": {
+            "question": "puppy.az-ı kim idarə edir?",
+            "answer": "puppy.az Azərbaycanda qeydiyyatdan keçmiş və heyvan sevərlər üçün yaradılmış platformadır. Komandamız texnologiya, heyvan qayğısı və müştəri xidməti sahələrində təcrübəli mütəxəssislərdən ibarətdir."
+          },
+          "commercialUse": {
+            "question": "Kommersiya məqsədləri üçün istifadə edə bilərəmmi?",
+            "answer": "Bəli, peşəkar yetişdiricilər və ev heyvanları mağazaları platformamızdan istifadə edə bilər. Böyük həcmli elanlar üçün xüsusi paketlərimiz var. Ətraflı məlumat üçün bizimlə əlaqə saxlayın."
+          },
+          "languageSupport": {
+            "question": "Hansı dillərdə mövcuddur?",
+            "answer": "Hal-hazırda platformamız Azərbaycan, İngilis və Rus dillərində mövcuddur. Gələcəkdə daha çox dil dəstəyi əlavə edəcəyik."
+          },
+          "feedback": {
+            "question": "Təklif və ya şikayətimi necə paylaşa bilərəm?",
+            "answer": "Fikirlərinizi support@puppy.az ünvanına göndərə və ya 'Əlaqə' səhifəsindəki formu doldura bilərsiniz. Hər rəy bizim üçün dəyərlidir və platformanı təkmilləşdirməyə kömək edir."
+          }
+        }
+      }
+    }
+  },
+  "helpCenter": {
+    "subtitle": "Tez-tez verilən suallar və dəstək mərkəzi",
+    "searchPlaceholder": "Sual axtarın...",
+    "contactBanner": {
+      "title": "Cavab tapa bilmədiniz?",
+      "description": "Dəstək komandamız sizə kömək etməyə hazırdır"
+    },
+    "noResultsMessage": "Axtarışınıza uyğun nəticə tapılmadı",
+    "lastUpdated": "Son yenilənmə: {date}"
+  },
+  "privacyPolicy": {
+    "title": "Məxfilik Siyasəti",
+    "lastUpdated": "Son yenilənmə: 15 Yanvar 2025",
+    "banner": {
+      "title": "Məxfiliyiniz bizim üçün prioritetdir",
+      "description": "puppy.az olaraq istifadəçi məlumatlarının qorunmasına və məxfiliyə böyük əhəmiyyət veririk"
+    },
+    "rights": {
+      "title": "Hüquqlarınız",
+      "list": {
+        "access": "Məlumatlarınıza giriş",
+        "correct": "Düzəliş etmək",
+        "delete": "Silmək",
+        "transfer": "Köçürmək",
+        "object": "Etiraz etmək"
+      },
+      "descriptions": {
+        "access": "Haqqınızda topladığımız məlumatları görə bilərsiniz",
+        "correct": "Yanlış və ya köhnə məlumatları düzəldə bilərsiniz",
+        "delete": "Məlumatlarınızın silinməsini tələb edə bilərsiniz",
+        "transfer": "Məlumatlarınızı başqa xidmətə köçürə bilərsiniz",
+        "object": "Məlumatların işlənməsinə etiraz edə bilərsiniz"
+      }
+    },
+    "contact": {
+      "title": "Əlaqə",
+      "description": "Məxfilik siyasəti ilə bağlı suallarınız varsa, bizimlə əlaqə saxlayın: privacy@puppy.az"
+    }
+  },
+  "terms": {
+    "title": "İstifadə Şərtləri",
+    "lastUpdated": "Son yenilənmə: 15 Yanvar 2025",
+    "banner": {
+      "title": "İstifadə Şərtləri",
+      "description": "puppy.az platformasından istifadə qaydaları və şərtləri"
+    },
+    "contact": {
+      "title": "Əlaqə",
+      "description": "İstifadə şərtləri ilə bağlı suallarınız varsa, bizimlə əlaqə saxlayın: legal@puppy.az"
+    },
+    "data": {
+      "lastUpdated": "15 Yanvar 2025",
+      "effectiveDate": "1 Yanvar 2025",
+      "companyName": "puppy.az MMC",
+      "website": "https://puppy.az",
+      "contactEmail": "legal@puppy.az",
+      "supportEmail": "support@puppy.az"
+    },
+    "sections": {
+      "acceptance": {
+        "title": "Şərtlərin qəbulu",
+        "content": "puppy.az platformasından istifadə etməklə bu istifadə şərtlərini qəbul etmiş olursunuz. Şərtlərlə razı deyilsinizsə, platformadan istifadə etməməlisiniz."
+      },
+      "services": {
+        "title": "Xidmətlər",
+        "content": "puppy.az ev heyvanlarının alqı-satqısı, cütləşmə və övladlığa götürmə üçün onlayn platforma təqdim edir. Platform vasitəçi rolundadır və alqı-satqı əməliyyatlarına birbaşa qarışmır."
+      }
+    }
+  },
+  "viewTransitionsDemo": {
+    "title": "Görünüş Keçidləri Demo",
+    "subtitle": "Next.js View Transitions ilə hamar naviqasiya",
+    "navigating": "Naviqasiya edilir...",
+    "sections": {
+      "declarative": {
+        "title": "Deklarativ Naviqasiya (Link)",
+        "links": {
+          "viewAllAds": "Bütün elanlara bax",
+          "myFavorites": "Seçilmişlərim",
+          "myAccount": "Hesabım"
+        }
+      },
+      "programmatic": {
+        "title": "Proqramatik Naviqasiya (Router)",
+        "buttons": {
+          "createNewAd": "Yeni elan yarat",
+          "goPremium": "Premium seç"
+        }
+      },
+      "browser": {
+        "title": "Brauzer Naviqasiyası",
+        "buttons": {
+          "back": "Geri",
+          "forward": "İrəli",
+          "refresh": "Yenilə"
+        }
+      },
+      "filters": {
+        "title": "Filtr ilə Naviqasiya",
+        "description": "URL parametrləri ilə",
+        "links": {
+          "dogs": "İtlər",
+          "cats": "Pişiklər",
+          "forSale": "Satılır"
+        }
+      }
+    },
+    "benefits": {
+      "title": "Üstünlüklər",
+      "list": {
+        "smoother": "Daha hamar səhifə keçidləri",
+        "performance": "Yüklənmiş məlumatların saxlanması",
+        "loadingStates": "Yaxşılaşdırılmış yükləmə vəziyyətləri",
+        "concurrent": "Paralel məlumat yükləmə",
+        "progressive": "Tədricən təkmilləşdirmə"
+      }
+    }
+  },
+  "sliderDemo": {
+    "title": "Sürüşdürücü Demo",
+    "subtitle": "Qiymət aralığı və digər rəqəmsal filtrlər üçün",
+    "minimum": "Minimum",
+    "maximum": "Maksimum"
+  },
+  "notFound": {
+    "hero": {
+      "oops": "Ups!",
+      "title": "Səhifə tapılmadı",
+      "description": "Axtardığınız səhifə mövcud deyil və ya köçürülüb. Amma narahat olmayın, sizi doğru yola yönəldə bilərik!",
+      "tipLabel": "Məsləhət",
+      "tipDescription": "Yuxarıdakı axtarış panelindən istifadə edərək ev heyvanlarını axtara və ya menyu vasitəsilə digər səhifələrə keçə bilərsiniz."
+    },
+    "navigationHelp": {
+      "title": "Nə etmək istərdiniz?",
+      "subtitle": "Sizi maraqlı məzmuna yönəltməyə kömək edək",
+      "actions": {
+        "home": {
+          "label": "Ana səhifəyə keç",
+          "description": "Son elanları və populyar kateqoriyaları kəşf edin"
+        },
+        "browseAds": {
+          "label": "Elanlara bax",
+          "description": "Bütün ev heyvanları elanlarını nəzərdən keçirin"
+        },
+        "search": {
+          "label": "Axtarışa başla",
+          "description": "İstədiyiniz ev heyvanını tapmaq üçün axtarış edin"
+        }
+      },
+      "helpText": {
+        "beforeLink": "Hələ də kömək lazımdır?",
+        "helpCenter": "Yardım Mərkəzi",
+        "middleText": "səhifəsini ziyarət edin və ya",
+        "contactUs": "bizimlə əlaqə saxlayın"
+      }
+    },
+    "popularLinks": {
+      "title": "Populyar səhifələr",
+      "subtitle": "Tez-tez ziyarət edilən bölmələr",
+      "promotionalText": "İstədiyinizi tapa bilmədiniz? Aşağıdakı linklər kömək edə bilər",
+      "links": {
+        "favorites": {
+          "title": "Seçilmişlər",
+          "description": "Saxlanmış ev heyvanları elanları"
+        },
+        "myAccount": {
+          "title": "Hesabım",
+          "description": "Profil və parametrlər"
+        },
+        "premium": {
+          "title": "Premium",
+          "description": "Elanınızı önə çıxarın"
+        },
+        "help": {
+          "title": "Yardım",
+          "description": "Tez-tez verilən suallar"
+        },
+        "about": {
+          "title": "Haqqımızda",
+          "description": "Platformamız haqqında"
+        },
+        "privacy": {
+          "title": "Məxfilik",
+          "description": "Məxfilik siyasəti"
+        }
+      }
+    },
+    "searchBar": {
+      "title": "Və ya burada axtarın",
+      "subtitle": "Mükəmməl ev heyvanını tapmaq heç vaxt bu qədər asan olmamışdı",
+      "placeholder": "İt, pişik, quş axtarın...",
+      "ariaLabel": "Ev heyvanı axtarın",
+      "searchButton": "Axtar",
+      "popularSearchesLabel": "Populyar axtarışlar:",
+      "popularSearches": {
+        "goldenRetriever": "Qızıl Retriever",
+        "germanShepherd": "Alman Çoban İti",
+        "labrador": "Labrador",
+        "persianCat": "Fars Pişiyi",
+        "britishCat": "Britaniya Pişiyi"
+      },
+      "encouragement": {
+        "ariaLabel": "Həvəsləndirici mesaj",
+        "text": "Siz bunu bacarırsınız! Mükəmməl dostunuz bir axtarış uzağındadır."
+      }
+    }
+  },
+  "privacy": {
+    "data": {
+      "lastUpdated": "15 Yanvar 2025",
+      "effectiveDate": "1 Yanvar 2025",
+      "companyName": "puppy.az MMC",
+      "website": "https://puppy.az",
+      "contactEmail": "privacy@puppy.az",
+      "supportEmail": "support@puppy.az"
+    },
+    "sections": {
+      "dataCollection": {
+        "title": "Məlumat toplama",
+        "content": "Platformamızdan istifadə etdiyinizdə ad, soyad, e-poçt, telefon nömrəsi və digər məlumatları toplayırıq. Bu məlumatlar xidmətlərimizi təqdim etmək və təkmilləşdirmək üçün istifadə olunur."
+      },
+      "dataUsage": {
+        "title": "Məlumatların istifadəsi",
+        "content": "Topladığımız məlumatlar hesabınızı idarə etmək, elanlarınızı yerləşdirmək, dəstək xidməti göstərmək və platformanı təkmilləşdirmək üçün istifadə olunur."
+      },
+      "dataSharing": {
+        "title": "Məlumat paylaşımı",
+        "content": "Şəxsi məlumatlarınız üçüncü tərəflərlə paylaşılmır. Yalnız qanuni tələblər olduqda və ya sizin razılığınızla məlumat paylaşıla bilər."
+      },
+      "dataSecurity": {
+        "title": "Məlumat təhlükəsizliyi",
+        "content": "Məlumatlarınızın qorunması üçün müasir şifrələmə texnologiyalarından və təhlükəsizlik tədbirlərindən istifadə edirik. SSL sertifikatı ilə qorunan platformamız yüksək təhlükəsizlik standartlarına cavab verir."
+      }
+    }
+  },
+  "adsSearch": {
+    "resultsHeader": {
+      "searching": "Axtarılır...",
+      "adsCount": "{count} elan",
+      "foundInCategory": "{category} kateqoriyasında {count} elan tapıldı",
+      "found": "{count} elan tapıldı",
+      "sortButton": "Sırala",
+      "sortOptions": {
+        "newest": "Ən yenilər",
+        "oldest": "Ən köhnələr",
+        "priceLow": "Qiymət: Aşağıdan yuxarı",
+        "priceHigh": "Qiymət: Yuxarıdan aşağı"
+      }
+    },
+    "activeFilters": {
+      "activeFilters": "Aktiv Filtrlər",
+      "category": "Kateqoriya: {value}",
+      "city": "Şəhər: {value}",
+      "gender": {
+        "male": "Cins: Erkək",
+        "female": "Cins: Dişi"
+      },
+      "size": {
+        "extraSmall": "Ölçü: Çox kiçik",
+        "small": "Ölçü: Kiçik",
+        "medium": "Ölçü: Orta",
+        "large": "Ölçü: Böyük",
+        "extraLarge": "Ölçü: Çox böyük"
+      },
+      "priceMin": "Minimum: {value} ₼",
+      "priceMax": "Maksimum: {value} ₼",
+      "ageMin": "Yaş: {value}+ ay",
+      "ageMax": "Yaş: {value}- ay",
+      "weightMin": "Çəki: {value}+ kq",
+      "weightMax": "Çəki: {value}- kq",
+      "color": "Rəng: {value}",
+      "clearAll": "Hamısını təmizlə"
+    },
+    "resultsGrid": {
+      "error": "Elanlar yüklənərkən xəta baş verdi",
+      "noResults": "Heç bir elan tapılmadı",
+      "noResultsWithFilters": "Bu filtrə uyğun elan tapılmadı. Filtrləri dəyişdirməyi sınayın.",
+      "noResultsNoFilters": "Heç bir elan tapılmadı. Daha sonra yenidən cəhd edin.",
+      "showAllAds": "Bütün elanlara bax",
+      "loadMore": "Daha çox yüklə",
+      "loading": "Yüklənir...",
+      "allShown": "Bütün elanlar göstərildi"
+    },
+    "recentSearches": {
+      "title": "Son axtarışlar",
+      "clearAll": "Hamısını təmizlə"
+    },
+    "recentlyViewed": {
+      "title": "Son baxılanlar",
+      "description": "Yaxınlarda baxdığınız elanlar"
+    }
+  },
+  "petAdDetails": {
+    "hero": {
+      "premium": "Premium",
+      "priceNotApplicable": "Qiymət yoxdur",
+      "views": "{count} baxış",
+      "premiumBanner": {
+        "title": "Premium Elan",
+        "description": "Bu elan premium statusuna malikdir və daha çox görünürlük əldə edir"
+      }
+    },
+    "quickInfo": {
+      "title": "Əsas məlumat",
+      "category": "Kateqoriya",
+      "breed": "Cins",
+      "gender": {
+        "label": "Cins",
+        "male": "Erkək",
+        "female": "Dişi"
+      },
+      "age": {
+        "label": "Yaş",
+        "months": "{count} ay",
+        "years": "{count} il",
+        "yearsMonths": "{years} il {months} ay"
+      },
+      "weight": {
+        "label": "Çəki",
+        "kg": "{weight} kq"
+      },
+      "color": {
+        "label": "Rəng"
+      },
+      "size": {
+        "label": "Ölçü",
+        "extraSmall": "Çox kiçik",
+        "small": "Kiçik",
+        "medium": "Orta",
+        "large": "Böyük",
+        "extraLarge": "Çox böyük",
+        "unknown": "Naməlum"
+      },
+      "city": "Şəhər"
+    },
+    "description": {
+      "title": "Təsvir"
+    },
+    "contactCard": {
+      "price": "Qiymət",
+      "contact": "Əlaqə",
+      "memberSince": "{date} tarixindən bəri",
+      "seller": "Satıcı",
+      "sendMessage": "Mesaj",
+      "call": "Zəng et",
+      "email": "E-poçt",
+      "callAriaLabel": "Satıcıya zəng edin",
+      "sendMessageAriaLabel": "Satıcıya mesaj göndərin"
+    },
+    "questions": {
+      "title": "Suallar və cavablar",
+      "askQuestion": "Sual verin",
+      "noQuestions": "Hələ heç bir sual verilməyib",
+      "beFirst": "İlk sual verən siz olun",
+      "showAll": "Hamısını göstər ({count})",
+      "showLess": "Daha az göstər",
+      "answer": "Cavab",
+      "answerPlaceholder": "Cavabınızı yazın...",
+      "sendAnswer": "Cavabı Göndər",
+      "answerQuestion": "Cavabla",
+      "cancel": "Ləğv et",
+      "submitting": "Göndərilir...",
+      "answerSuccess": "Cavab uğurla göndərildi",
+      "answerError": "Cavab göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "modal": {
+        "title": "Sual verin",
+        "close": "Bağla",
+        "questionLabel": "Sualınız",
+        "placeholder": "Sualınızı yazın...",
+        "helper": "Satıcı sizə cavab verəcək",
+        "characterCount": "{current}/{max} simvol",
+        "cancel": "Ləğv et",
+        "submit": "Göndər",
+        "submitting": "Göndərilir...",
+        "success": {
+          "title": "Sual göndərildi",
+          "message": "Satıcı cavab verdikdən sonra bildiriş alacaqsınız"
+        },
+        "error": {
+          "title": "Xəta",
+          "default": "Sual göndərilmədi. Zəhmət olmasa yenidən cəhd edin."
+        }
+      }
+    },
+    "stats": {
+      "title": "Elan statistikası",
+      "viewCount": "Baxış sayı",
+      "publishedDate": "Dərc tarixi",
+      "updatedDate": "Yenilənmə tarixi",
+      "expiresAt": "Bitmə tarixi",
+      "premiumExpiry": {
+        "title": "Premium müddəti bitir",
+        "ownerNote": "Elanınızın premium statusunu uzatmaq üçün admin ilə əlaqə saxlayın"
+      },
+      "adNumber": "Elan nömrəsi"
+    },
+    "relatedAds": {
+      "title": "Oxşar elanlar",
+      "description": "Bu elana bənzər digər ev heyvanları",
+      "viewAll": "Hamısına bax",
+      "moreAds": "Daha çox elan",
+      "discover": "Kəşf et"
+    },
+    "stickyHeader": {
+      "price": "Qiymət"
+    },
+    "metadata": {
+      "notFound": {
+        "title": "Elan tapılmadı",
+        "description": "Axtardığınız elan mövcud deyil"
+      },
+      "currency": "AZN",
+      "priceNegotiable": "Qiymət razılaşma yolu ilə",
+      "pet": "Ev heyvanı",
+      "listing": "elanı",
+      "detailedInfo": "Ətraflı məlumat"
+    }
+  },
+  "favorites": {
+    "title": "Seçilmişlər",
+    "loading": "Yüklənir...",
+    "loadingAds": "Seçilmiş elanlar yüklənir...",
+    "subtitle": {
+      "withCount": "{count} seçilmiş elan",
+      "empty": "Hələ seçilmiş elan yoxdur"
+    },
+    "error": {
+      "title": "Xəta",
+      "loadFailed": "Seçilmişlər yüklənmədi"
+    },
+    "loginBanner": {
+      "title": "Hesabınıza daxil olun",
+      "description": "Seçilmişlərinizi saxlamaq və bütün cihazlarınızda onlara daxil olmaq üçün daxil olun"
+    },
+    "search": {
+      "placeholder": "Seçilmişlərdə axtar..."
+    },
+    "emptyState": {
+      "authenticated": {
+        "title": "Seçilmiş elan yoxdur",
+        "description": "Seçilmiş elanlarınız burada görünəcək"
+      },
+      "unauthenticated": {
+        "title": "Hələ heç bir şey bəyənməmisiniz",
+        "description": "Daxil olun və seçilmiş elanlarınızı saxlayın"
+      },
+      "loginButton": "Daxil ol",
+      "exploreButton": "Elanlara bax"
+    },
+    "loadMore": {
+      "completed": "Bütün seçilmişlər yükləndi"
+    }
+  },
+  "myAds": {
+    "card": {
+      "premium": "Premium",
+      "noPrice": "Qiymət yoxdur",
+      "viewDetails": "Ətraflı bax",
+      "adNumber": "Elan nömrəsi",
+      "status": {
+        "pending": "Yoxlanılır",
+        "published": "Dərc edilib",
+        "rejected": "Rədd edilib",
+        "expired": "Vaxtı keçib",
+        "closed": "Bağlanıb",
+        "draft": "Qaralama"
+      }
+    },
+    "common": {
+      "newAd": "Yeni elan",
+      "newAdButton": "Yeni elan yerləşdir",
+      "searchPlaceholder": "Elanlarda axtar...",
+      "cancelButton": "Ləğv et",
+      "loading": "Yüklənir...",
+      "allAdsLoaded": "Bütün elanlar yükləndi",
+      "closeError": "Elan bağlanarkən xəta baş verdi",
+      "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+      "noSearchResults": "Heç bir nəticə tapılmadı",
+      "noSearchResultsDescription": "Axtarışınıza uyğun elan tapılmadı. Fərqli açar söz istifadə edin.",
+      "clearSearch": "Axtarışı təmizlə",
+      "searchResultsCount": "{count} / {total} elan göstərilir"
+    },
+    "active": {
+      "pageTitle": "Aktiv Elanlar",
+      "subtitle": {
+        "withCount": "{count} aktiv elan",
+        "empty": "Aktiv elan yoxdur"
+      },
+      "emptyState": {
+        "title": "Hələ aktiv elanınız yoxdur",
+        "description": "İlk elanınızı yerləşdirin və alıcılar tapsın"
+      },
+      "confirmDialog": {
+        "title": "Elanı bağla",
+        "message": "Bu elanı bağlamaq istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+        "confirmButton": "Bağla"
+      }
+    },
+    "pending": {
+      "pageTitle": "Gözləyən Elanlar",
+      "subtitle": {
+        "withCount": "{count} elan yoxlanılır",
+        "empty": "Gözləyən elan yoxdur"
+      },
+      "infoBanner": {
+        "title": "Yoxlama prosesi",
+        "description": "Elanlarınız moderatorlar tərəfindən yoxlanılır. Bu proses adətən 24 saat çəkir. Elanınız təsdiqlənəndə və ya dəyişiklik tələb olunduqda bildiriş alacaqsınız."
+      },
+      "emptyState": {
+        "title": "Gözləyən elan yoxdur",
+        "description": "Hazırda yoxlama gözləyən elanınız yoxdur. Bütün elanlarınız ya aktivdir, ya da hələ elan yerləşdirməmisiniz."
+      },
+      "confirmDialog": {
+        "title": "Elanı bağla",
+        "message": "Bu elanı bağlamaq istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+        "confirmButton": "Bağla"
+      }
+    },
+    "rejected": {
+      "pageTitle": "Rədd Edilmiş Elanlar",
+      "subtitle": {
+        "withCount": "{count} elan rədd edilib",
+        "empty": "Rədd edilmiş elan yoxdur"
+      },
+      "infoBanner": {
+        "title": "Rədd edilmiş elanlar",
+        "description": "Bu elanlar moderatorlar tərəfindən yoxlanılıb və icma qaydalarımıza uyğun gəlməyib. Rədd səbəblərini aşağıda nəzərdən keçirə və yenidən yerləşdirməzdən əvvəl lazımi düzəlişlər edə bilərsiniz."
+      },
+      "emptyState": {
+        "title": "Rədd edilmiş elan yoxdur",
+        "description": "Hazırda rədd edilmiş elanınız yoxdur. Yerləşdirdiyiniz bütün elanlar təsdiqlənib və ya yoxlama gözləyir."
+      },
+      "confirmDialog": {
+        "title": "Elanı sil",
+        "message": "Bu elanı silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz və bütün elan məlumatları həmişəlik silinəcək.",
+        "confirmButton": "Sil"
+      }
+    },
+    "drawer": {
+      "title": "Elan Təfərrüatları",
+      "loadError": "Elan təfərrüatları yüklənə bilmədi",
+      "premium": "Premium",
+      "noPrice": "Qiymət göstərilməyib",
+      "category": "Kateqoriya",
+      "breed": "Cins",
+      "location": "Yer",
+      "age": "Yaş",
+      "months": "ay",
+      "views": "Baxış",
+      "description": "Təsvir",
+      "additionalDetails": "Əlavə Məlumatlar",
+      "timeline": "Tarixçə",
+      "rejectionReason": "Rədd Səbəbi",
+      "gender": "Cins",
+      "male": "Erkək",
+      "female": "Dişi",
+      "color": "Rəng",
+      "weight": "Çəki",
+      "kg": "kq",
+      "size": "Ölçü",
+      "sizes": {
+        "1": "Çox Kiçik",
+        "2": "Kiçik",
+        "3": "Orta",
+        "4": "Böyük",
+        "5": "Çox Böyük"
+      },
+      "created": "Yaradılıb",
+      "published": "Dərc olunub",
+      "expires": "Bitmə tarixi",
+      "edit": "Redaktə et",
+      "closeAd": "Elanı Bağla",
+      "delete": "Sil",
+      "viewPublicPage": "Açıq Səhifəyə Bax",
+      "status": {
+        "pending": "Yoxlanılır",
+        "published": "Dərc edilib",
+        "rejected": "Rədd edilib",
+        "expired": "Vaxtı keçib",
+        "closed": "Bağlanıb",
+        "draft": "Qaralama"
+      }
+    }
+  },
+  "myAccountPages": {
+    "profileInfo": {
+      "pageTitle": "Profil Məlumatları",
+      "pageSubtitle": "Şəxsi məlumatlarınızı yeniləyin",
+      "profilePicture": {
+        "title": "Profil Şəkli",
+        "uploadButton": "Şəkil yüklə",
+        "uploadLabel": "Profil şəkli yüklə",
+        "formatInfo": "PNG, JPG formatı, maksimum 5MB"
+      },
+      "personalInfo": {
+        "title": "Şəxsi Məlumat",
+        "email": {
+          "label": "E-poçt",
+          "helperText": "E-poçt dəyişdirilə bilməz"
+        },
+        "firstName": {
+          "label": "Ad",
+          "placeholder": "Adınızı daxil edin",
+          "required": "Ad tələb olunur",
+          "minLength": "Ad ən azı 2 simvol olmalıdır",
+          "maxLength": "Ad maksimum 50 simvol ola bilər"
+        },
+        "lastName": {
+          "label": "Soyad",
+          "placeholder": "Soyadınızı daxil edin",
+          "required": "Soyad tələb olunur",
+          "minLength": "Soyad ən azı 2 simvol olmalıdır",
+          "maxLength": "Soyad maksimum 50 simvol ola bilər"
+        },
+        "phoneNumber": {
+          "label": "Telefon Nömrəsi",
+          "placeholder": "50 123 45 67",
+          "required": "Telefon nömrəsi tələb olunur",
+          "invalid": "Zəhmət olmasa düzgün telefon nömrəsi daxil edin"
+        }
+      },
+      "accountInfo": {
+        "title": "Hesab Məlumatları",
+        "registrationDate": "Qeydiyyat Tarixi",
+        "lastLogin": "Son Giriş"
+      },
+      "actions": {
+        "save": "Dəyişiklikləri Saxla",
+        "saving": "Saxlanılır...",
+        "cancel": "Ləğv et"
+      },
+      "messages": {
+        "success": {
+          "title": "Uğurla Yeniləndi",
+          "message": "Profil məlumatlarınız saxlanıldı"
+        },
+        "error": {
+          "title": "Xəta Baş Verdi",
+          "updateFailed": "Məlumatlar yenilənmədi",
+          "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+        }
+      },
+      "infoBanner": {
+        "title": "Məlumat Təhlükəsizliyi",
+        "description": "Şəxsi məlumatlarınız təhlükəsiz şəkildə saxlanılır və üçüncü tərəflərlə paylaşılmır."
+      }
+    },
+    "security": {
+      "pageTitle": "Təhlükəsizlik",
+      "pageSubtitle": "Şifrənizi dəyişin və hesabınızı qoruyun",
+      "messages": {
+        "success": {
+          "title": "Şifrə uğurla dəyişdirildi",
+          "message": "Yeni şifrəniz təhlükəsiz şəkildə saxlanıldı"
+        },
+        "error": {
+          "title": "Xəta baş verdi",
+          "updateFailed": "Şifrə dəyişdirilmədi",
+          "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+        }
+      },
+      "changePassword": {
+        "title": "Şifrəni Dəyiş",
+        "subtitle": "Hesabınızın təhlükəsizliyini qoruyun",
+        "currentPassword": {
+          "label": "Cari şifrə",
+          "placeholder": "Cari şifrənizi daxil edin",
+          "required": "Cari şifrə tələb olunur"
+        },
+        "newPassword": {
+          "label": "Yeni şifrə",
+          "placeholder": "Yeni şifrənizi daxil edin",
+          "required": "Yeni şifrə tələb olunur",
+          "minLength": "Şifrə ən azı 8 simvol olmalıdır",
+          "pattern": "Şifrə ən azı bir böyük hərf, bir kiçik hərf və bir rəqəm ehtiva etməlidir"
+        },
+        "confirmPassword": {
+          "label": "Yeni şifrəni təsdiqlə",
+          "placeholder": "Yeni şifrənizi təsdiqləyin",
+          "required": "Şifrə təsdiqi tələb olunur",
+          "mustMatch": "Şifrələr uyğun gəlmir"
+        },
+        "strength": {
+          "weak": "Zəif",
+          "medium": "Orta",
+          "strong": "Güclü",
+          "veryStrong": "Çox Güclü"
+        }
+      },
+      "requirements": {
+        "title": "Şifrə Tələbləri",
+        "minLength": "Ən azı 8 simvol",
+        "upperLower": "Həm böyük, həm kiçik hərflər",
+        "number": "Ən azı bir rəqəm",
+        "special": "Ən azı bir xüsusi simvol (tövsiyə olunur)",
+        "noPersonal": "Şəxsi məlumatlardan (ad, doğum tarixi) istifadə etməyin"
+      },
+      "actions": {
+        "save": "Şifrəni Dəyiş",
+        "saving": "Dəyişdirilir...",
+        "cancel": "Ləğv et"
+      },
+      "infoBanner": {
+        "title": "Təhlükəsizlik Məsləhətləri",
+        "description": "Güclü və unikal şifrə istifadə edin. Şifrənizi heç vaxt başqaları ilə paylaşmayın. Hesabınızı təhlükəsiz saxlamaq üçün şifrənizi mütəmadi olaraq dəyişdirin."
+      }
+    },
+    "settings": {
+      "pageTitle": "Parametrlər",
+      "pageSubtitle": "Seçimlərinizi və hesab parametrlərini idarə edin",
+      "themeSystem": "Sistem",
+      "themeSystemDesc": "Sistem parametrlərinə əsasən avtomatik keçid",
+      "languageTitle": "Dil",
+      "langEnglish": "İngilis dili",
+      "langEnglishDesc": "English",
+      "langRussian": "Rus dili",
+      "langRussianDesc": "Русский язык",
+      "showEmail": "E-poçt ünvanını göstər",
+      "showEmailDesc": "Profildə e-poçt ünvanınızı göstərin",
+      "showOnlineStatus": "Onlayn statusunu göstər",
+      "showOnlineStatusDesc": "Başqalarına onlayn olduğunuzu göstərin",
+      "notifications": {
+        "title": "Bildirişlər",
+        "subtitle": "Hansı bildirişləri almaq istədiyinizi seçin",
+        "email": {
+          "title": "E-poçt Bildirişləri",
+          "newMessages": {
+            "label": "Yeni mesajlar",
+            "description": "Yeni mesaj aldığınızda bildiriş alın"
+          },
+          "adStatus": {
+            "label": "Elan statusu yeniləmələri",
+            "description": "Elanınızın təsdiqlənməsi, rədd edilməsi və ya vaxtının bitməsi haqqında bildirişlər"
+          },
+          "favorites": {
+            "label": "Seçilmiş elanlar",
+            "description": "Seçilmiş elanlarınız yenilənəndə bildirişlər"
+          },
+          "newsletter": {
+            "label": "Xəbər bülleteni",
+            "description": "Xəbərlər, məsləhətlər və xüsusi təkliflər alın"
+          }
+        },
+        "push": {
+          "title": "Push Bildirişləri",
+          "enabled": {
+            "label": "Push bildirişləri aktiv et",
+            "description": "Cihazınızda ani bildirişlər alın"
+          },
+          "notSupported": "Brauzeriniz push bildirişlərini dəstəkləmir"
+        }
+      },
+      "dataManagement": {
+        "title": "Məlumat və Analitika",
+        "manageData": {
+          "title": "Məlumatlarınızı idarə edin",
+          "subtitle": "Məlumatlarınız üzərində tam nəzarət"
+        },
+        "downloadData": {
+          "title": "Məlumatlarınızı yükləyin",
+          "description": "Hesabınızla əlaqəli bütün məlumatları yükləyin və saxlayın",
+          "button": "Məlumatları yüklə"
+        },
+        "dataUsage": {
+          "title": "Məlumat istifadə siyasəti",
+          "description": "Məlumatlarınızın necə istifadə edildiyini öyrənin",
+          "button": "Siyasətə bax"
+        }
+      },
+      "dangerZone": {
+        "title": "Təhlükə Zonası",
+        "deleteAccount": {
+          "title": "Hesabı Sil",
+          "description": "Hesabınızı və bütün məlumatlarınızı həmişəlik silin",
+          "button": "Hesabımı sil",
+          "warning": "Bu əməliyyat geri qaytarıla bilməz!"
+        }
+      },
+      "actions": {
+        "save": "Dəyişiklikləri saxla",
+        "saving": "Saxlanılır...",
+        "saved": "Parametrlər uğurla saxlanıldı"
+      },
+      "infoBanner": {
+        "title": "Məxfilik",
+        "description": "Məlumatlarınız şifrələnir və qorunur. İcazəniz olmadan heç bir məlumat paylaşılmır. Ətraflı məlumat üçün",
+        "privacyPolicy": "Məxfilik Siyasəti"
+      }
+    }
+  },
+  "adPlacementDetails": {
+    "titleView": {
+      "heading": "İndi elanınıza başlıq verək",
+      "subheading": "Qısa başlıqlar daha yaxşı işləyir. Əyləncəli olun - sonradan həmişə dəyişə bilərsiniz.",
+      "titleLabel": "Başlıq",
+      "titlePlaceholder": "məs., Sevimli Qızıl Retriever Bala Həmişəlik Ev Axtarır",
+      "titleTips": "Başlıq məsləhətləri",
+      "tips": {
+        "includeBreed": "Cinsi və əsas xüsusiyyətləri daxil edin",
+        "keepClear": "Aydın və təsviri saxlayın",
+        "avoidSpecial": "Xüsusi simvollar və həddindən artıq durğu işarələrindən çəkinin"
+      },
+      "descriptionHeading": "Təsvirinizi yaradın",
+      "descriptionSubheading": "Ev heyvanınızı xüsusi edən nədir və potensial sahiblər nəyi bilməlidir.",
+      "descriptionLabel": "Təsvir",
+      "descriptionPlaceholder": "Ev heyvanınızın xarakterini, temperamentini, sağlamlığını, təlimini və hər hansı xüsusi ehtiyac və ya xüsusiyyətləri təsvir edin...",
+      "whatToInclude": "Nə daxil etməli",
+      "includeItems": {
+        "personality": "Şəxsiyyət xüsusiyyətləri və temperament",
+        "health": "Sağlamlıq vəziyyəti və peyvənd tarixi",
+        "training": "Təlim səviyyəsi və davranış",
+        "specialNeeds": "Xüsusi ehtiyaclar və ya tələblər",
+        "reason": "Niyə yerləşdirirsiniz (satış/övladlığa götürmə/tapılıb/itirilmişdir)",
+        "unique": "Bu ev heyvanını unikal edən nədir"
+      }
+    },
+    "basicsView": {
+      "heading": "Ev heyvanınız haqqında əsas məlumatları paylaşın",
+      "subheading": "Cins, ölçü və yaş haqqında bizə danışın",
+      "genderLabel": "Cins",
+      "sizeLabel": "Ölçü",
+      "ageLabel": "Yaş",
+      "ageQuestion": "Ev heyvanınız neçə yaşındadır?",
+      "yearsLabel": "İl",
+      "monthsLabel": "Ay",
+      "exampleLabel": "Nümunə:",
+      "exampleAge": "2 il 6 ay"
+    },
+    "reviewView": {
+      "heading": "Elanınızı nəzərdən keçirin",
+      "subheading": "Elanınızı göndərməzdən əvvəl bütün detalları yoxlamaq üçün bir dəqiqə ayırın",
+      "primaryImageBadge": "Əsas",
+      "photosTitle": "Şəkillər",
+      "photosCount": "{count} şəkil",
+      "photoAlt": "Şəkil {number}",
+      "primary": "Əsas",
+      "noPhotos": "Şəkil yüklənməyib",
+      "titleDescriptionTitle": "Başlıq və təsvir",
+      "titleLabel": "Başlıq",
+      "descriptionLabel": "Təsvir",
+      "notSet": "Təyin edilməyib",
+      "petDetailsTitle": "Ev heyvanı detalları",
+      "editDetails": "Detalları redaktə et",
+      "adTypeLabel": "Elan növü",
+      "breedLabel": "Cins",
+      "genderLabel": "Cins",
+      "sizeLabel": "Ölçü",
+      "ageLabel": "Yaş",
+      "colorLabel": "Rəng",
+      "weightLabel": "Çəki",
+      "locationLabel": "Yer",
+      "loading": "Yüklənir...",
+      "notSelected": "Seçilməyib",
+      "notSpecified": "Göstərilməyib",
+      "weightValue": "{weight} kq",
+      "priceTitle": "Qiymət",
+      "whatHappensTitle": "Sonra nə olacaq?",
+      "whatHappensText": "Göndərdikdən sonra elanınız yoxlanılacaq və 24 saat ərzində dərc olunacaq. Aktiv olduqda bildiriş alacaqsınız.",
+      "submittingLabel": "Göndərilir...",
+      "submitLabel": "Elanı göndər",
+      "successDialog": {
+        "title": "Elan uğurla göndərildi!",
+        "message": "Təbriklər! Elanınız göndərildi və moderasiyadan sonra dərc olunacaq.",
+        "buttonText": "Elanlarıma bax"
+      }
+    },
+    "photosView": {
+      "heading": "Ev heyvanınızın şəkillərini əlavə edin",
+      "subheading": "Davam etmək üçün ən azı {minPhotos} şəkil əlavə edin",
+      "primaryBadge": "Əsas",
+      "photoCount": "Şəkillər ({current}/{max})",
+      "uploading": "yüklənir",
+      "minimumMet": "Minimum yerinə yetirildi",
+      "imageAlt": "Şəkil {number}",
+      "primary": "Əsas",
+      "moveLeft": "Sola köçür",
+      "removePhoto": "Şəkli sil",
+      "moveRight": "Sağa köçür",
+      "addPhotos": "Şəkil əlavə et",
+      "addMorePhotos": "Daha çox şəkil əlavə et",
+      "dragDropText": "Sürükləyib buraxın və ya klikləyərək seçin",
+      "uploadRemaining": "Daha {count} şəkil yükləyə bilərsiniz",
+      "uploadingProgress": "{count} şəkil yüklənir...",
+      "tipsHeading": "Şəkil məsləhətləri",
+      "tip1": "Aydın, yaxşı işıqlandırılmış şəkillər istifadə edin",
+      "tip2": "Ev heyvanınızı müxtəlif bucaqlardan göstərin",
+      "tip3": "İlk şəkil əsas şəkil olacaq",
+      "tip4": "Şəkillərin fokusda olduğundan əmin olun",
+      "tip5": "Təbii işıq ən yaxşı işləyir",
+      "errorMaxPhotos": "Maksimum {maxPhotos} şəkil icazə verilir",
+      "errorImageOnly": "Yalnız şəkil faylları icazə verilir",
+      "errorTooLarge": "{fileName} çox böyükdür (maks. 5MB)",
+      "dropzoneText": "Sürükləyib buraxın və ya klikləyərək seçin",
+      "photoTips": "Şəkil məsləhətləri",
+      "tips": {
+        "firstPhoto": "İlk şəkil elanlarda göstərilən əsas şəkil olacaq",
+        "uploadImmediate": "Şəkillər dərhal yüklənir və avtomatik saxlanılır",
+        "reorder": "Ox düymələrindən istifadə edərək şəkilləri yenidən sıralaya bilərsiniz"
+      }
+    },
+    "priceView": {
+      "heading": "Qiymətinizi təyin edin",
+      "subheading": "Ev heyvanınızın satış qiymətini daxil edin",
+      "priceLabel": "Qiymət (₼)",
+      "helperText": "Ev heyvanınızı satmaq istədiyiniz qiyməti daxil edin",
+      "listingPrice": "Elan qiyməti:",
+      "tipsTitle": "Qiymətləndirmə məsləhətləri",
+      "tip1": "Rəqabətli qiymət təyin etmək üçün ərazinizdəki oxşar ev heyvanlarını araşdırın",
+      "tip2": "Yaş, cins, təlim və sağlamlıq vəziyyətini nəzərə alın",
+      "tip3": "Qiymətə daxil edilmiş tibbi xərclər, peyvəndlər və ya ləvazimatları hesablayın",
+      "tip4": "Ciddi alıcıları cəlb etmək üçün şəffaf və dürüst olun",
+      "tip5": "Qiymət üzrə danışıqlara açıq olduğunuzu vurğulayın",
+      "freeTitle": "Pulsuz olaraq sahib olmaq üçün",
+      "freeText": "Ev heyvanınızı pulsuz sahib olmaq üçün təklif edirsinizsə, qiyməti 0 təyin edə bilərsiniz",
+      "redirecting": "Yönləndirilir...",
+      "tips": {
+        "research": "Rəqabətli qiymət təyin etmək üçün ərazinizdəki oxşar ev heyvanlarını araşdırın",
+        "adjust": "Qiyməti həmişə sonradan düzəldə bilərsiniz"
+      }
+    },
+    "locationView": {
+      "heading": "Ev heyvanınız haradadır?",
+      "subtitle": "{count} şəhər mövcuddur",
+      "noCities": "Şəhərlər mövcud deyil",
+      "searchPlaceholder": "Şəhər axtarın...",
+      "noResults": "Nəticə tapılmadı",
+      "resultsCount": "{count} {plural}",
+      "noMatch": "\"{query}\" üzrə heç bir şəhər uyğun gəlmir",
+      "clearSearch": "Axtarışı təmizlə",
+      "loading": "Şəhərlər yüklənir..."
+    },
+    "breedView": {
+      "heading": "Ev heyvanınızın cinsini seçin",
+      "subtitle": "{count} cins mövcuddur",
+      "noBreeds": "Cinslər mövcud deyil",
+      "searchPlaceholder": "Cins axtarın...",
+      "noResults": "Nəticə tapılmadı",
+      "resultsCount": "{count} cins",
+      "loading": "Cinslər yüklənir..."
+    },
+    "categoryView": {
+      "heading": "Hansı növ ev heyvanını siyahıya salırsınız?",
+      "subheading": "Ev heyvanınıza uyğun kateqoriyanı seçin",
+      "activeListings": "{count} aktiv elan"
+    },
+    "adTypeView": {
+      "heading": "Hansı növ elan yaratmaq istərdiniz?",
+      "subheading": "Vəziyyətinizi ən yaxşı təsvir edən variantı seçin"
+    },
+    "physicalView": {
+      "heading": "Fiziki xüsusiyyətlər haqqında bizə danışın",
+      "subheading": "Rəng tələb olunur, çəki ixtiyaridir",
+      "colorLabel": "Rəng",
+      "colorHeading": "Rəng",
+      "colorQuestion": "Ev heyvanınız hansı rəngdədir?",
+      "colorBlack": "Qara",
+      "colorWhite": "Ağ",
+      "colorBrown": "Qəhvəyi",
+      "colorGray": "Boz",
+      "colorGolden": "Qızılı",
+      "colorCream": "Krem",
+      "colorTan": "Tünd sarı",
+      "colorOrange": "Narıncı",
+      "colorSpotted": "Xallı",
+      "colorStriped": "Zolaqlı",
+      "colorMixed": "Qarışıq",
+      "colorOther": "Digər",
+      "customColorPlaceholder": "Rənginizi daxil edin...",
+      "backToCommonColors": "← Ümumi rənglərə qayıt",
+      "weightLabel": "Çəki",
+      "weightHeading": "Çəki",
+      "optional": "(ixtiyari)",
+      "weightPlaceholder": "məs., 5.5",
+      "weightHelper": "Kiloqramla çəki",
+      "weightLessThan1": "1 kq-dan az",
+      "weightSmall": "kiçik heyvan",
+      "weightMedium": "orta ölçülü heyvan",
+      "weightLarge": "böyük heyvan",
+      "weightVeryLarge": "çox böyük heyvan",
+      "skipWeightText": "Əmin deyilsinizsə və ya göstərmək istəmirsinizsə çəkini boş buraxabilərsiniz"
+    },
+    "introView": {
+      "tagline": "Mükəmməl ev heyvanı elanınızı yaradın"
+    }
+  },
+  "imageGallery": {
+    "noImage": "Şəkil mövcud deyil",
+    "primaryImage": "Əsas şəkil",
+    "primaryBadge": "Əsas",
+    "imageCount_one": "{count} şəkil",
+    "imageCount_other": "{count} şəkil",
+    "singleImage": "1 şəkil",
+    "imageCounter": "{current} / {total}",
+    "previousImage": "Əvvəlki şəkil",
+    "nextImage": "Növbəti şəkil",
+    "goToSlide": "{number} slaydına keç",
+    "imageAlt": "{title} - şəkil {number}",
+    "morePhotos": "Daha çox şəkil",
+    "morePhotosAlt": "{title} - daha çox"
+  },
+  "petAdDetailsPage": {
+    "categories": {
+      "title": "Kateqoriyalar",
+      "subtitle": "Övladlığa götürmə üçün uyğun heyvanlar arasından seçin",
+      "showAll": "Bütün kateqoriyaları göstər",
+      "previousCategories": "Əvvəlki kateqoriyalar",
+      "nextCategories": "Növbəti kateqoriyalar"
+    },
+    "premium": {
+      "badge": "Premium"
+    },
+    "price": {
+      "notApplicable": "Qiymət tətbiq olunmur"
+    }
+  },
+  "adEdit": {
+    "pageTitle": "Elanı Redaktə Et",
+    "validation": {
+      "breedRequired": "Cins seçilməlidir",
+      "genderRequired": "Cins seçilməlidir",
+      "ageRequired": "Yaş daxil edilməlidir",
+      "sizeRequired": "Ölçü seçilməlidir",
+      "colorRequired": "Rəng daxil edilməlidir",
+      "cityRequired": "Şəhər seçilməlidir",
+      "imagesRequired": "Ən azı bir şəkil yüklənməlidir",
+      "titleMinLength": "Başlıq ən azı 10 simvol olmalıdır",
+      "titleMaxLength": "Başlıq maksimum 100 simvol ola bilər",
+      "descriptionMinLength": "Təsvir ən azı 30 simvol olmalıdır",
+      "descriptionMaxLength": "Təsvir maksimum 2000 simvol ola bilər",
+      "pricePositive": "Qiymət 0-dan böyük olmalıdır",
+      "fillAllRequired": "Zəhmət olmasa bütün məcburi sahələri düzgün doldurun",
+      "authRequired": "Autentifikasiya tələb olunur. Zəhmət olmasa yenidən daxil olun",
+      "saveError": "Dəyişikliklər saxlanılmadı",
+      "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin",
+      "deleteError": "Elan silinmədi"
+    },
+    "confirmations": {
+      "unsavedChanges": "Saxlanılmamış dəyişikliklər var. Əminsiniz?",
+      "deleteAd": "Bu elanı silmək istədiyinizdən əminsiniz?"
+    },
+    "overview": {
+      "heading": "Elan Haqqında",
+      "subheading": "Elanınız haqqında ümumi məlumat",
+      "status": "Status",
+      "viewCount": "Baxış sayı",
+      "publishedDate": "Dərc tarixi",
+      "statusExpired": "Vaxtı bitib",
+      "statusActive": "Aktiv",
+      "statusPending": "Gözləyir",
+      "adType": "Elan növü",
+      "months": ["Yanvar", "Fevral", "Mart", "Aprel", "May", "İyun", "İyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"],
+      "noteTitle": "Qeyd",
+      "noteDescription": "Elan növü və kateqoriya dəyişdirilə bilməz. Yalnız elanın əsas təfərrüatlarını yeniləyə bilərsiniz."
+    },
+    "basicInfo": {
+      "heading": "Əsas Məlumat",
+      "subheading": "Ev heyvanınız haqqında əsas məlumat",
+      "category": "Kateqoriya",
+      "categoryLocked": "Dəyişdirilə bilməz",
+      "breed": "Cins",
+      "breedPlaceholder": "Cins seçin...",
+      "breedSearch": "Cins axtarın...",
+      "breedNoResults": "Nəticə tapılmadı",
+      "gender": "Cins",
+      "age": "Yaş",
+      "ageQuestion": "Ev heyvanınız neçə yaşındadır?",
+      "years": "il",
+      "months": "ay",
+      "totalAge": "Ümumi yaş:",
+      "year": "il",
+      "month": "ay",
+      "size": "Ölçü"
+    },
+    "physicalCharacteristics": {
+      "heading": "Fiziki Xüsusiyyətlər",
+      "subheading": "Rəng məcburidir, çəki istəyə bağlıdır",
+      "color": "Rəng",
+      "colorQuestion": "Ev heyvanınızın rəngi nədir?",
+      "customColorPlaceholder": "Öz rənginizi daxil edin...",
+      "backToCommonColors": "← Ümumi rənglərə qayıt",
+      "weight": "Çəki",
+      "weightOptional": "(istəyə bağlı)",
+      "weightPlaceholder": "məs., 5.5",
+      "weightUnit": "kq",
+      "weightQuestion": "Ev heyvanınızın çəkisi neçə kiloqramdır?",
+      "weightDisplay": "Çəki:",
+      "weightLessThan1": "1 kq-dan az",
+      "weightSmall": "kiçik heyvan",
+      "weightMedium": "orta heyvan",
+      "weightLarge": "böyük heyvan",
+      "weightExtraLarge": "çox böyük heyvan",
+      "weightSkipNote": "Əmin deyilsinizsə və ya göstərmək istəmirsinizsə, çəkini boş saxlaya bilərsiniz",
+      "colors": {
+        "black": "Qara",
+        "white": "Ağ",
+        "brown": "Qəhvəyi",
+        "gray": "Boz",
+        "golden": "Qızılı",
+        "cream": "Krem",
+        "yellow": "Sarı",
+        "orange": "Narıncı",
+        "spotted": "Ləkəli",
+        "striped": "Zolaqlı",
+        "mixed": "Qarışıq",
+        "other": "Digər"
+      }
+    },
+    "location": {
+      "heading": "Yer",
+      "subheading": "Ev heyvanınız haradadır?",
+      "city": "Şəhər",
+      "cityPlaceholder": "Şəhər seçin...",
+      "citySearch": "Şəhər axtarın...",
+      "cityNoResults": "Nəticə tapılmadı",
+      "unknownCity": "Naməlum Şəhər",
+      "citiesAvailable": "{count} şəhər mövcuddur",
+      "selectedLocation": "Seçilmiş yer"
+    },
+    "photosSection": {
+      "heading": "Şəkillər",
+      "subheading": "Daha çox alıcı cəlb etmək üçün ev heyvanınızın yüksək keyfiyyətli şəkillərini əlavə edin",
+      "errorMaxPhotos": "Maksimum {maxPhotos} şəkil yüklənə bilər",
+      "errorImageOnly": "Yalnız şəkil faylları yüklənə bilər",
+      "errorTooLarge": "{fileName} çox böyükdür (maksimum 5MB)",
+      "uploadError": "{fileName} yüklənə bilmədi",
+      "deleteError": "Şəkil silinə bilmədi",
+      "photoCount": "Şəkillər ({current}/{max})",
+      "uploading": "yüklənir",
+      "minimumMet": "Minimum tələb ödənildi",
+      "imageAlt": "Şəkil {number}",
+      "primary": "Əsas",
+      "moveLeft": "Sola keçir",
+      "removePhoto": "Şəkli sil",
+      "moveRight": "Sağa keçir",
+      "addPhotos": "Şəkil əlavə et",
+      "addMorePhotos": "Daha çox şəkil əlavə et",
+      "dropzoneText": "Sürükləyib buraxın və ya klikləyərək seçin",
+      "remainingPhotos": "Daha {count} şəkil yüklənə bilər",
+      "uploadingPhotos": "{count} şəkil yüklənir...",
+      "photoTips": "Şəkil məsləhətləri",
+      "tip1": "Yüksək keyfiyyətli, yaxşı işıqlandırılmış şəkillər istifadə edin",
+      "tip2": "Ev heyvanınızı müxtəlif bucaqlardan göstərin",
+      "tip3": "İlk şəkil əsas şəkil olacaq",
+      "tip4": "Şəkillərin aydın və fokusda olduğundan əmin olun",
+      "tip5": "Təbii işıqlandırma şəkillər üçün ən yaxşısıdır"
+    },
+    "details": {
+      "heading": "Elan Təfərrüatları",
+      "subheading": "Elanınıza başlıq və təsvir əlavə edin",
+      "title": "Başlıq",
+      "titlePlaceholder": "məs., Sevimli Qızıl Retriever Balaları Ev Axtarır",
+      "titleRequired": "*",
+      "titleMinRemaining": "Ən azı daha {count} simvol tələb olunur",
+      "titleMinMet": "Əla! Minimum uzunluq ödənildi",
+      "titleTips": "Başlıq məsləhətləri",
+      "titleTip1": "Cinsi və əsas xüsusiyyətləri daxil edin",
+      "titleTip2": "Aydın və təsviri saxlayın",
+      "titleTip3": "Xüsusi simvollar və həddindən artıq durğu işarələrindən çəkinin",
+      "description": "Təsvir",
+      "descriptionPlaceholder": "Ev heyvanınızın xarakterini, temperamentini, sağlamlığını, təlimini və hər hansı xüsusi ehtiyac və ya xüsusiyyətləri təsvir edin...",
+      "descriptionRequired": "*",
+      "descriptionSubtitle": "Ev heyvanınızı xüsusi edən nədir və potensial sahiblər nəyi bilməlidir",
+      "descriptionMinRemaining": "Ən azı daha {count} simvol tələb olunur",
+      "descriptionMinMet": "Əla! Minimum uzunluq ödənildi",
+      "descriptionTips": "Təsvir məsləhətləri",
+      "descriptionTip1": "Ev heyvanınız haqqında dürüst və konkret olun",
+      "descriptionTip2": "Sağlamlıq vəziyyətini, peyvəndləri və tibbi tarixçəni qeyd edin",
+      "descriptionTip3": "Digər heyvanlar və insanlarla temperament və davranışı təsvir edin",
+      "descriptionTip4": "Hər hansı təlim və ya xüsusi bacarıqları qeyd edin",
+      "descriptionTip5": "Əlaqə üstünlüklərinizi və mövcudluğunuzu daxil edin"
+    },
+    "pricing": {
+      "heading": "Qiymət",
+      "subheading": "Elanınız üçün qiymət təyin edin",
+      "price": "Qiymət",
+      "priceRequired": "*",
+      "pricePlaceholder": "0.00",
+      "priceNote": "Yerləşdirdikdən sonra istənilən vaxt qiyməti dəyişə bilərsiniz",
+      "adPrice": "Elan qiyməti:",
+      "pricingTips": "Qiymətləndirmə məsləhətləri",
+      "pricingTip1": "Rəqabətli qiymət təyin etmək üçün ərazinizdəki oxşar heyvanları araşdırın",
+      "pricingTip2": "Ev heyvanının yaşını, cinsini, təlimini və sağlamlıq vəziyyətini nəzərə alın",
+      "pricingTip3": "Daxil olan hər hansı tibbi xərcləri, peyvəndləri və ya ləvazimatları hesaba katın",
+      "pricingTip4": "Ciddi alıcıları cəlb etmək üçün şəffaf və ədalətli olun",
+      "pricingTip5": "Qiymət üzrə danışıqlara açıq olduğunuzu vurğulayın",
+      "budgetRange": "Büdcə aralığı",
+      "midRange": "Orta səviyyə",
+      "premium": "Premium",
+      "lowPrice": "Aşağı qiymət",
+      "lowPriceRange": "0 - 200",
+      "lowPriceNote": "Övladlığa götürmə üçün əla",
+      "mediumPrice": "Orta qiymət",
+      "mediumPriceRange": "200 - 1000",
+      "mediumPriceNote": "Əksər satışlar üçün ideal",
+      "highPrice": "Yüksək qiymət",
+      "highPriceRange": "1000+",
+      "highPriceNote": "Premium və ya nadir cinslər"
+    },
+    "actions": {
+      "errorOccurred": "Xəta baş verdi",
+      "saving": "Saxlanılır...",
+      "saveChanges": "Dəyişiklikləri saxla",
+      "cancel": "Ləğv et",
+      "preview": "Elana bax",
+      "unsavedChanges": "Saxlanılmamış dəyişikliklər var.",
+      "unsavedChangesNote": "Dəyişikliklərinizi itirməmək üçün saxlayın.",
+      "allChangesSaved": "Bütün dəyişikliklər saxlanıldı",
+      "dangerZone": "Təhlükə Zonası",
+      "dangerZoneWarning": "Elanın silinməsi qətidir",
+      "deleteAd": "Bu elanı sil",
+      "deleteAdDescription": "Silindikdən sonra elan bərpa edilə bilməz",
+      "deleteConfirm": "Bu elanı silmək istədiyinizdən əminsiniz?",
+      "deleteWarning": "Bu əməliyyat geri qaytarıla bilməz. Bütün məlumatlar həmişəlik silinəcək.",
+      "confirmDelete": "Bəli, elanı sil",
+      "cancelDelete": "Xeyr, saxla"
+    }
+  },
+  "settings": {
+    "language": {
+      "automatic": "Avtomatik",
+      "english": "İngilis",
+      "russian": "Rus dili",
+      "azerbaijani": "Azərbaycan",
+      "interfaceLanguage": "İnterfeys Dili"
+    },
+    "appearance": {
+      "title": "Görünüş",
+      "subtitle": "Tətbiqin görünüşünü seçin",
+      "light": {
+        "title": "İşıqlı",
+        "description": "Gündüz rejimi"
+      },
+      "dark": {
+        "title": "Qaranlıq",
+        "description": "Gecə rejimi"
+      }
+    },
+    "notificationChannels": {
+      "title": "Bildiriş Kanalları",
+      "subtitle": "Bildirişləri necə almaq istədiyiniz",
+      "email": {
+        "label": "E-poçt bildirişləri",
+        "description": "Mühüm yeniləmələr haqqında e-poçt ilə bildiriş alın"
+      },
+      "push": {
+        "label": "Push bildirişləri",
+        "description": "Tətbiqdə real vaxt bildirişləri alın"
+      },
+      "sms": {
+        "label": "SMS bildirişləri",
+        "description": "Təcili hallarda SMS göndərin"
+      },
+      "whatsapp": {
+        "label": "WhatsApp bildirişləri",
+        "description": "WhatsApp vasitəsilə məlumat alın"
+      }
+    },
+    "notificationTypes": {
+      "title": "Bildiriş Növləri",
+      "subtitle": "Hansı bildirişləri almaq istəyirsiniz",
+      "newMessages": {
+        "label": "Yeni mesajlar",
+        "description": "Yeni mesaj aldığınızda bildiriş alın"
+      },
+      "adUpdates": {
+        "label": "Elan yeniləmələri",
+        "description": "Elanınızın statusu dəyişəndə bildirin"
+      },
+      "priceDrops": {
+        "label": "Qiymət düşmələri",
+        "description": "Seçilmişlərdəki elanların qiyməti düşəndə"
+      },
+      "newMatches": {
+        "label": "Yeni uyğunluqlar",
+        "description": "Axtarış filtrlərinizə uyğun yeni elanlar"
+      },
+      "marketingEmails": {
+        "label": "Marketinq e-poçtları",
+        "description": "Xüsusi təkliflər və kampaniyalar haqqında"
+      }
+    },
+    "privacy": {
+      "title": "Profil Məxfiliyi",
+      "subtitle": "Başqalarına nə göstərəcəyiniz",
+      "showPhone": {
+        "label": "Telefon nömrəsini göstər",
+        "description": "Elan sahibləri telefon nömrənizi görə bilər"
+      },
+      "showEmail": {
+        "label": "E-poçt ünvanını göstər",
+        "description": "Profildə e-poçt ünvanınızı göstər"
+      },
+      "showOnlineStatus": {
+        "label": "Onlayn statusunu göstər",
+        "description": "Başqalarına onlayn olduğunuz vaxtı göstər"
+      },
+      "showInSearch": {
+        "label": "Axtarışda göstər",
+        "description": "Profiliniz axtarış nəticələrində görünür"
+      }
+    },
+    "dataAnalytics": {
+      "title": "Məlumat və Analitika",
+      "subtitle": "Xidmətlərimizi təkmilləşdirməyə kömək edin",
+      "analytics": {
+        "label": "Analitika və statistika",
+        "description": "Tətbiqi təkmilləşdirmək üçün anonim məlumat paylaşın"
+      },
+      "personalization": {
+        "label": "Fərdiləşdirmə",
+        "description": "Sizə uyğunlaşdırılmış məzmun və tövsiyələr alın"
+      }
+    }
+  },
+  "adEditPhotos": {
+    "heading": "Şəkil Əlavə Et",
+    "subheading": "Ev heyvanınızın şəkillərini yükləyin",
+    "uploadError": "{fileName} yüklənmədi",
+    "addPhotos": "Şəkil əlavə et",
+    "addMorePhotos": "Daha çox şəkil əlavə et",
+    "dropzoneText": "Sürükləyib buraxın və ya klikləyərək seçin",
+    "remainingPhotos": "Daha {count} şəkil yükləyə bilərsiniz",
+    "uploadingPhotos": "{count} şəkil yüklənir...",
+    "photoTips": "Şəkil məsləhətləri"
+  },
+  "security": {
+    "passwordStrength": "Şifrə gücü:"
+  },
+  "adListing": {
+    "moreAds": {
+      "viewAll": "Hamısına bax",
+      "description": "Daha çox {category} elanları"
+    }
+  }
+}

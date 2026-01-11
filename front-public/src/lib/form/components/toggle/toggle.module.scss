@@ -1,0 +1,22 @@
+.toggle-btn.active {
+  border-color: #000000;
+  color: #ffffff;
+  background: #000000;
+
+  .toggle-btn-icon {
+    @apply rotate-45;
+  }
+
+  &::after {
+    content: '';
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    border: 2px solid;
+    border-radius: inherit;
+    background-color: transparent;
+    border-color: inherit;
+  }
+}
