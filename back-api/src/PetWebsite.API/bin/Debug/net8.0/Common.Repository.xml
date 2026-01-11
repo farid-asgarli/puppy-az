@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Common.Repository</name>
+    </assembly>
+    <members>
+        <member name="T:Common.Repository.Implementation.BaseSpecification`1">
+            <summary>
+            Base specification class which can be used to define specific business rules for any given entity.
+            </summary>
+            <typeparam name="T">The type of the entity.</typeparam>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Common.Repository.Implementation.BaseSpecification`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Common.Repository.Implementation.BaseSpecification`1"/> class with specific criteria.
+            </summary>
+            <param name="criteria">The criteria.</param>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.AddInclude(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Adds a related entity to be included in the query results using a lambda expression.
+            </summary>
+            <param name="includeExpression">The lambda expression representing the property to include.</param>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.AddInclude(System.String)">
+            <summary>
+            Adds a related entity to be included in the query results using a string path.
+            </summary>
+            <param name="includeString">The string path representing the property to include.</param>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.ApplyOrderBy(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Sets the property to order the query results by, in ascending order.
+            </summary>
+            <param name="orderByExpression">The lambda expression representing the property to order by.</param>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.ApplyOrderByDescending(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            Sets the property to order the query results by, in descending order.
+            </summary>
+            <param name="orderByDescendingExpression">The lambda expression representing the property to order by in descending order.</param>
+        </member>
+        <member name="M:Common.Repository.Implementation.BaseSpecification`1.ApplyNoTracking">
+            <summary>
+            Sets the query to be executed without tracking.
+            </summary>
+        </member>
+        <member name="T:Common.Repository.Implementation.SpecificationEvaluator`1">
+            <summary>
+            Evaluates specifications against a queryable.
+            </summary>
+            <typeparam name="T">The type of the entity.</typeparam>
+        </member>
+        <member name="M:Common.Repository.Implementation.SpecificationEvaluator`1.GetQuery(System.Linq.IQueryable{`0},Common.Repository.Implementation.BaseSpecification{`0})">
+            <summary>
+            Evaluates the specified specification against the input query.
+            </summary>
+            <param name="inputQuery">The input query.</param>
+            <param name="spec">The specification.</param>
+            <returns>A queryable with the specification applied.</returns>
+        </member>
+    </members>
+</doc>

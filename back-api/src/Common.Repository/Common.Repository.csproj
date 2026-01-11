@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <!-- Package Metadata -->
+  <PropertyGroup>
+    <PackageId>Common.Repository</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Farid Asgarli</Authors>
+    <Company>PASHA Life</Company>
+    <Product>DataHandling Library</Product>
+    <Description>A comprehensive data management library for Entity Framework Core featuring Unit of
+      Work pattern, generic repository with specification pattern, dynamic filtering, query builder,
+      and advanced LINQ expression building capabilities.</Description>
+    <PackageTags>
+      entityframework;ef-core;repository;unit-of-work;specification-pattern;query-builder;filtering;linq;data-access;ddd;clean-architecture</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>
+      v1.0.0:
+      - Initial release
+      - Unit of Work pattern with transaction support
+      - Generic Repository with Specification pattern
+      - Dynamic query builder with fluent API
+      - Advanced filtering with JSON-based filter specifications
+      - Support for bulk operations (EF Core 7+)
+      - Comprehensive type parsing and conversion
+      - Thread-safe caching and performance optimizations
+    </PackageReleaseNotes>
+    <Copyright>Copyright © 2025 PASHA Life</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <!-- NuGet Package Settings -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+
+  <!-- Documentation -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn> <!-- Suppress missing XML comment warnings -->
+  </PropertyGroup>
+
+  <!-- Entity Framework Core Dependencies -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.11" />
+  </ItemGroup>
+
+  <!-- Package Files -->
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="icon.png" Pack="true" PackagePath="\" Condition="Exists('icon.png')" />
+    <None Include="LICENSE" Pack="true" PackagePath="\" Condition="Exists('LICENSE')" />
+  </ItemGroup>
+
+  <!-- Analyzer Support -->
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+</Project>
