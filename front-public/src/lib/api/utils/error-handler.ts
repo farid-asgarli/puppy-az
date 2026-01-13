@@ -20,27 +20,22 @@ export interface FormattedError {
  * Extract user-friendly error message from API error
  */
 export function formatApiError(error: unknown): FormattedError {
-  // Debug: log the error type and properties
-  console.log('[formatApiError] Error type:', error?.constructor?.name);
-  console.log('[formatApiError] Is ApiError?', error instanceof ApiError);
-  console.log('[formatApiError] Error keys:', error ? Object.keys(error) : 'null');
-  console.log('[formatApiError] Error details prop:', (error as any)?.details);
-  console.log('[formatApiError] Error status prop:', (error as any)?.status);
-  
   // Handle ApiError instances OR objects that look like ApiError (for Server Actions serialization)
   if (error instanceof ApiError || (error && typeof error === 'object' && 'details' in error && 'status' in error)) {
     const apiError = error as ApiError;
     const problemDetails = apiError.details;
 
     if (problemDetails) {
-      // Debug logging (works in both browser and server)
-      console.log('[formatApiError] ProblemDetails:', JSON.stringify(problemDetails, null, 2));
-      console.log('[formatApiError] errors field:', problemDetails.errors);
-      console.log('[formatApiError] ApiError status:', apiError.status);
+      const details = extractErrorDetails(problemDetails.errors);
+      
+      // If we have specific validation errors, don't show the generic message
+      const message = details && details.length > 0 
+        ? '' // Empty message when we have specific details
+        : problemDetails.detail || problemDetails.title || apiError.message;
 
       return {
-        message: problemDetails.detail || problemDetails.title || apiError.message,
-        details: extractErrorDetails(problemDetails.errors),
+        message,
+        details,
         statusCode: problemDetails.status || apiError.status,
         title: problemDetails.title,
         traceId: problemDetails.traceId,
@@ -55,7 +50,6 @@ export function formatApiError(error: unknown): FormattedError {
 
   // Handle generic errors
   if (error instanceof Error) {
-    console.log('[formatApiError] Generic Error:', error.message);
     return {
       message: error.message,
       statusCode: 500,
@@ -63,7 +57,6 @@ export function formatApiError(error: unknown): FormattedError {
   }
 
   // Unknown error
-  console.log('[formatApiError] Unknown error:', error);
   return {
     message: 'Gözlənilməz xəta baş verdi',
     statusCode: 500,
@@ -86,7 +79,8 @@ function extractErrorDetails(errors?: string[] | Record<string, string[]>): stri
   for (const [field, fieldErrors] of Object.entries(errors)) {
     if (Array.isArray(fieldErrors)) {
       fieldErrors.forEach((err) => {
-        errorList.push(`${field}: ${err}`);
+        // Don't include field name - the error message is already descriptive
+        errorList.push(err);
       });
     }
   }
