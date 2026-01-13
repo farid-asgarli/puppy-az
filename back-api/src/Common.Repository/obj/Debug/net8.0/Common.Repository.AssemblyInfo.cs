@@ -18,7 +18,7 @@ using System.Reflection;
     "ltering, query builder,\n      and advanced LINQ expression building capabilities" +
     ".")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+382d7ce13a1f567d54ba771a5dfef956a690ca2b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac47cd544ed0a22af8e516b229652cd2e35f2153")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataHandling Library")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Common.Repository")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,16 +10,10 @@ namespace PetWebsite.Infrastructure.Services.Files;
 /// <summary>
 /// Implementation of checksum calculation service.
 /// </summary>
-public class ChecksumService : IChecksumService
+public class ChecksumService(ILogger<ChecksumService> logger, IStringLocalizer localizer) : IChecksumService
 {
-	private readonly ILogger<ChecksumService> _logger;
-	private readonly IStringLocalizer _localizer;
-
-	public ChecksumService(ILogger<ChecksumService> logger, IStringLocalizer localizer)
-	{
-		_logger = logger;
-		_localizer = localizer;
-	}
+	private readonly ILogger<ChecksumService> _logger = logger;
+	private readonly IStringLocalizer _localizer = localizer;
 
 	public async Task<string> CalculateChecksumAsync(
 		Stream stream,
