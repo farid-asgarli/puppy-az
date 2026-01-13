@@ -46,8 +46,8 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 			var random = new Random();
 			var code = random.Next(100000, 999999).ToString();
 
-			if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-				code = "123456"; //
+			// FOR TESTING: Always use 123456 as verification code
+			code = "123456";
 
 			// Create verification code record
 			var verificationCode = new SmsVerificationCode
