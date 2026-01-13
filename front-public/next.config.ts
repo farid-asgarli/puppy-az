@@ -9,7 +9,12 @@ const nextConfig: NextConfig = {
       {
         protocol: 'http',
         hostname: '72.62.2.60',
-        pathname: '/uploads/**',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '72.62.2.60',
+        pathname: '/**',
       },
     ],
   },

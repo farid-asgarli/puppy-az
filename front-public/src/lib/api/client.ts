@@ -64,7 +64,8 @@ export class ApiClient {
 
     try {
       const contentType = response.headers.get('content-type');
-      if (contentType?.includes('application/json')) {
+      // Check for both application/json and application/problem+json (RFC 7807)
+      if (contentType?.includes('application/json') || contentType?.includes('application/problem+json')) {
         details = await response.json();
       }
     } catch {
