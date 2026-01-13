@@ -19,7 +19,7 @@ public static class ValidationPatterns
 	/// where XXX is a valid operator code.
 	/// Examples: 0501234567, 501234567, 0101234567, 101234567
 	/// </summary>
-	public const string AzerbaijaniPhoneNumber = @"^0?(010|050|051|055|060|065|070|077|099)\d{7}$";
+	public const string AzerbaijaniPhoneNumber = @"^0?(10|50|51|55|60|65|70|77|99)\d{7}$";
 
 	/// <summary>
 	/// Regex pattern for flexible phone numbers (for contact fields).
