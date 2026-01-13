@@ -20,32 +20,36 @@ export interface FormattedError {
  * Extract user-friendly error message from API error
  */
 export function formatApiError(error: unknown): FormattedError {
-  // Debug: log the error type
+  // Debug: log the error type and properties
   console.log('[formatApiError] Error type:', error?.constructor?.name);
   console.log('[formatApiError] Is ApiError?', error instanceof ApiError);
+  console.log('[formatApiError] Error keys:', error ? Object.keys(error) : 'null');
+  console.log('[formatApiError] Error details prop:', (error as any)?.details);
+  console.log('[formatApiError] Error status prop:', (error as any)?.status);
   
-  // Handle ApiError instances
-  if (error instanceof ApiError) {
-    const problemDetails = error.details;
+  // Handle ApiError instances OR objects that look like ApiError (for Server Actions serialization)
+  if (error instanceof ApiError || (error && typeof error === 'object' && 'details' in error && 'status' in error)) {
+    const apiError = error as ApiError;
+    const problemDetails = apiError.details;
 
     if (problemDetails) {
       // Debug logging (works in both browser and server)
       console.log('[formatApiError] ProblemDetails:', JSON.stringify(problemDetails, null, 2));
       console.log('[formatApiError] errors field:', problemDetails.errors);
-      console.log('[formatApiError] ApiError status:', error.status);
+      console.log('[formatApiError] ApiError status:', apiError.status);
 
       return {
-        message: problemDetails.detail || problemDetails.title || error.message,
+        message: problemDetails.detail || problemDetails.title || apiError.message,
         details: extractErrorDetails(problemDetails.errors),
-        statusCode: problemDetails.status || error.status,
+        statusCode: problemDetails.status || apiError.status,
         title: problemDetails.title,
         traceId: problemDetails.traceId,
       };
     }
 
     return {
-      message: error.message,
-      statusCode: error.status,
+      message: apiError.message,
+      statusCode: apiError.status,
     };
   }
 
