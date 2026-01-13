@@ -25,6 +25,12 @@ export function formatApiError(error: unknown): FormattedError {
     const problemDetails = error.details;
 
     if (problemDetails) {
+      // Debug logging
+      if (typeof window !== 'undefined') {
+        console.log('[formatApiError] ProblemDetails:', problemDetails);
+        console.log('[formatApiError] errors field:', problemDetails.errors);
+      }
+
       return {
         message: problemDetails.detail || problemDetails.title || error.message,
         details: extractErrorDetails(problemDetails.errors),
