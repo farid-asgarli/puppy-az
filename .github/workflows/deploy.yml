@@ -59,7 +59,7 @@ jobs:
             # Build Frontend
             echo "[6/7] Building Frontend..."
             cd "$FRONTEND_DIR"
-            npm ci --production=false
+            yarn install --frozen-lockfile
             yarn build
 
             # Restart Frontend
