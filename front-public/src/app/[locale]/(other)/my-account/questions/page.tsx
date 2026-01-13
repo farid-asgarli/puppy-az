@@ -3,6 +3,9 @@ import { getMyAdsQuestionsAction, getMyAdsQuestionsSummaryAction } from '@/lib/a
 import { QuestionsView } from '@/lib/views/my-account/questions';
 import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
 
+// This page requires authentication, so it must be dynamic
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return createSimpleLocalizedMetadata('metadata.myAccount.questions');
 }

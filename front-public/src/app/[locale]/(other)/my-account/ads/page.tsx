@@ -9,6 +9,9 @@ import {
 import { MyAdsView } from '@/lib/views/my-account/my-ads';
 import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
 
+// This page requires authentication, so it must be dynamic
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata() {
   return createSimpleLocalizedMetadata('metadata.myAccount.myAds');
 }
