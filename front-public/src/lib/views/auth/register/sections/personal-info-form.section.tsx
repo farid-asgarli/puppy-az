@@ -61,8 +61,9 @@ export function PersonalInfoFormSection({ isLoading, setIsLoading, onNext }: Per
     setErrorDetails([]);
 
     try {
-      const fullPhoneNumber = `+994${data.phoneNumber}`;
-      const result = await sendVerificationCodeAction({ phoneNumber: fullPhoneNumber, purpose: 'Registration' });
+      // Normalize phone: ensure it starts with 0 (backend expects 0501234567 or 501234567)
+      const normalizedPhone = data.phoneNumber.startsWith('0') ? data.phoneNumber : `0${data.phoneNumber}`;
+      const result = await sendVerificationCodeAction({ phoneNumber: normalizedPhone, purpose: 'Registration' });
 
       if (result.success) {
         onNext();

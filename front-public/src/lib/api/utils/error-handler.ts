@@ -27,11 +27,12 @@ export function formatApiError(error: unknown): FormattedError {
 
     if (problemDetails) {
       const details = extractErrorDetails(problemDetails.errors);
-      
+
       // If we have specific validation errors, don't show the generic message
-      const message = details && details.length > 0 
-        ? '' // Empty message when we have specific details
-        : problemDetails.detail || problemDetails.title || apiError.message;
+      const message =
+        details && details.length > 0
+          ? '' // Empty message when we have specific details
+          : problemDetails.detail || problemDetails.title || apiError.message;
 
       return {
         message,
@@ -76,7 +77,7 @@ function extractErrorDetails(errors?: string[] | Record<string, string[]>): stri
 
   // Dictionary of field errors (validation errors)
   const errorList: string[] = [];
-  for (const [field, fieldErrors] of Object.entries(errors)) {
+  for (const [, fieldErrors] of Object.entries(errors)) {
     if (Array.isArray(fieldErrors)) {
       fieldErrors.forEach((err) => {
         // Don't include field name - the error message is already descriptive

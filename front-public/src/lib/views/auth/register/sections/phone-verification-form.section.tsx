@@ -63,8 +63,9 @@ export function PhoneVerificationFormSection({
     setVerificationCode('');
 
     try {
-      const fullPhoneNumber = `0${formData.phoneNumber}`;
-      const result = await sendVerificationCodeAction({ phoneNumber: fullPhoneNumber, purpose: 'Registration' });
+      // Normalize phone: ensure it starts with 0 (backend expects 0501234567 or 501234567)
+      const normalizedPhone = formData.phoneNumber.startsWith('0') ? formData.phoneNumber : `0${formData.phoneNumber}`;
+      const result = await sendVerificationCodeAction({ phoneNumber: normalizedPhone, purpose: 'Registration' });
 
       if (result.success) {
         setResendTimer(60);
@@ -93,13 +94,14 @@ export function PhoneVerificationFormSection({
     setOtpError('');
 
     try {
-      const fullPhoneNumber = `0${formData.phoneNumber}`;
+      // Normalize phone: ensure it starts with 0 (backend expects 0501234567 or 501234567)
+      const normalizedPhone = formData.phoneNumber.startsWith('0') ? formData.phoneNumber : `0${formData.phoneNumber}`;
       const result = await registerAction({
         email: formData.email,
         password: formData.password,
         firstName: formData.firstName,
         lastName: formData.lastName,
-        phoneNumber: fullPhoneNumber,
+        phoneNumber: normalizedPhone,
         verificationCode: code,
       });
 
