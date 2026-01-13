@@ -1,6 +1,6 @@
 import React, { forwardRef, useState, useId } from 'react';
 import { cn } from '@/lib/external/utils';
-import { Icon, IconPlus, IconCheck, IconProps } from '@tabler/icons-react';
+import { IconPlus, IconCheck, IconProps } from '@tabler/icons-react';
 
 export interface ToggleButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> {
   isActive?: boolean;
@@ -8,7 +8,7 @@ export interface ToggleButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLB
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   variant?: 'default' | 'primary' | 'outline';
   label?: string;
-  icon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<Icon>>;
+  icon?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
   showActiveIcon?: boolean;
   fullWidth?: boolean;
 }
@@ -112,7 +112,7 @@ export function IconToggleButton({
   icon,
   label,
   ...props
-}: ToggleButtonProps & { icon: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<Icon>> }) {
+}: ToggleButtonProps & { icon: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>> }) {
   return <ToggleButton icon={icon} label={label} {...props} />;
 }
 
