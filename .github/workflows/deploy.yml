@@ -1,16 +1,13 @@
 name: Deploy to Production
-
 on:
   push:
     branches:
       - main
   workflow_dispatch: # Allow manual trigger
-
 jobs:
   deploy:
     name: Deploy to Server
     runs-on: ubuntu-latest
-
     steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -22,47 +19,51 @@ jobs:
           script_stop: true
           script: |
             set -e
-
             echo "=========================================="
             echo "Starting Deployment - $(date)"
             echo "=========================================="
 
             APP_DIR="/var/www/petwebsite"
             BACKEND_DIR="$APP_DIR/back-api"
-            FRONTEND_DIR="$APP_DIR/front-public"
+            FRONTEND_DIR="$APP_DIR/public-front"
 
             # Navigate to app directory
             cd $APP_DIR
 
             # Pull latest changes
-            echo "[1/6] Pulling latest changes from GitHub..."
+            echo "[1/7] Pulling latest changes from GitHub..."
             git fetch origin main
             git reset --hard origin/main
 
+            # Stop Backend Service BEFORE building
+            echo "[2/7] Stopping Backend service..."
+            sudo systemctl stop petwebsite-api
+
             # Build Backend
-            echo "[2/6] Building Backend API..."
+            echo "[3/7] Building Backend API..."
             cd "$BACKEND_DIR/src/PetWebsite.API"
             dotnet restore
             dotnet publish -c Release -o "$BACKEND_DIR/publish" --no-restore
 
             # Copy wwwroot content (preserving uploads)
-            echo "[3/6] Updating static files..."
+            echo "[4/7] Updating static files..."
             if [ -d "$BACKEND_DIR/src/PetWebsite.API/wwwroot" ]; then
                 rsync -av --exclude='uploads' "$BACKEND_DIR/src/PetWebsite.API/wwwroot/" "$BACKEND_DIR/publish/wwwroot/"
             fi
 
-            # Restart Backend
-            echo "[4/6] Restarting Backend service..."
-            sudo systemctl restart petwebsite-api
+            # Start Backend
+            echo "[5/7] Starting Backend service..."
+            sudo systemctl start petwebsite-api
+            sudo systemctl status petwebsite-api --no-pager
 
             # Build Frontend
-            echo "[5/6] Building Frontend..."
+            echo "[6/7] Building Frontend..."
             cd "$FRONTEND_DIR"
             npm ci --production=false
             npm run build
 
             # Restart Frontend
-            echo "[6/6] Restarting Frontend..."
+            echo "[7/7] Restarting Frontend..."
             pm2 restart petwebsite-frontend || pm2 start npm --name "petwebsite-frontend" -- start -- -p 3000
             pm2 save
 
