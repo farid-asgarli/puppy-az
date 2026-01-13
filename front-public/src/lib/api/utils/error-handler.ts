@@ -20,16 +20,19 @@ export interface FormattedError {
  * Extract user-friendly error message from API error
  */
 export function formatApiError(error: unknown): FormattedError {
+  // Debug: log the error type
+  console.log('[formatApiError] Error type:', error?.constructor?.name);
+  console.log('[formatApiError] Is ApiError?', error instanceof ApiError);
+  
   // Handle ApiError instances
   if (error instanceof ApiError) {
     const problemDetails = error.details;
 
     if (problemDetails) {
-      // Debug logging
-      if (typeof window !== 'undefined') {
-        console.log('[formatApiError] ProblemDetails:', problemDetails);
-        console.log('[formatApiError] errors field:', problemDetails.errors);
-      }
+      // Debug logging (works in both browser and server)
+      console.log('[formatApiError] ProblemDetails:', JSON.stringify(problemDetails, null, 2));
+      console.log('[formatApiError] errors field:', problemDetails.errors);
+      console.log('[formatApiError] ApiError status:', error.status);
 
       return {
         message: problemDetails.detail || problemDetails.title || error.message,
@@ -48,6 +51,7 @@ export function formatApiError(error: unknown): FormattedError {
 
   // Handle generic errors
   if (error instanceof Error) {
+    console.log('[formatApiError] Generic Error:', error.message);
     return {
       message: error.message,
       statusCode: 500,
@@ -55,6 +59,7 @@ export function formatApiError(error: unknown): FormattedError {
   }
 
   // Unknown error
+  console.log('[formatApiError] Unknown error:', error);
   return {
     message: 'Gözlənilməz xəta baş verdi',
     statusCode: 500,
