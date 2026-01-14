@@ -21,7 +21,8 @@ namespace PetWebsite.API.Controllers.Auth;
 [ApiController]
 [Route("api/auth")]
 [Produces("application/json")]
-public class AuthController(IMediator mediator, IStringLocalizer<AuthController> localizer) : BaseApiController(mediator, localizer)
+public class AuthController(IMediator mediator, IStringLocalizer<AuthController> localizer, IWebHostEnvironment environment)
+	: BaseApiController(mediator, localizer)
 {
 	/// <summary>
 	/// Send SMS verification code to a phone number.
@@ -199,8 +200,8 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
 		var cookieOptions = new CookieOptions
 		{
 			HttpOnly = true,
-			Secure = true, // Set to true in production (requires HTTPS)
-			SameSite = SameSiteMode.Strict, // Adjust based on your Next.js deployment
+			Secure = !environment.IsDevelopment() && Request.IsHttps, // Only set Secure flag when using HTTPS
+			SameSite = SameSiteMode.Lax, // Changed to Lax to allow cross-origin requests
 			Expires = DateTime.UtcNow.AddDays(7), // Match refresh token expiration
 			Path = "/",
 			Domain = null, // Set this if you have specific domain requirements

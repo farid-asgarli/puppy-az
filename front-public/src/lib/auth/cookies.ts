@@ -14,10 +14,13 @@ export const TOKEN_COOKIES = {
 
 /**
  * Cookie configuration for Next.js managed cookies
+ *
+ * NOTE: Secure flag is disabled to support HTTP deployments.
+ * Enable it when using HTTPS in production.
  */
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
+  secure: false, // Set to true when using HTTPS
   sameSite: 'lax' as const,
   path: '/',
 };
