@@ -1314,7 +1314,7 @@
           },
           "howManyPhotos": {
             "question": "How many photos can I upload?",
-            "answer": "You can upload a minimum of 3 and a maximum of 10 photos per ad.\n\n**Photo requirements:**\n• Format: JPG, PNG, WebP\n• Maximum size: 5MB per photo\n• Recommended size: 1200x800 pixels\n• Must be high quality and clear\n\n**Recommendations:**\n• First photo should be the best and clearest\n• Photograph the animal from different angles\n• Use photos taken in natural light\n• Don't add watermarks or logos"
+            "answer": "You can upload a minimum of 3 and a maximum of 10 photos per ad.\n\n**Photo requirements:**\n• Format: JPG, PNG, WebP\n• Maximum size: 10MB per photo\n• Recommended size: 1200x800 pixels\n• Must be high quality and clear\n\n**Recommendations:**\n• First photo should be the best and clearest\n• Photograph the animal from different angles\n• Use photos taken in natural light\n• Don't add watermarks or logos"
           },
           "approvalTime": {
             "question": "How long does it take for my ad to be approved?",
@@ -1416,7 +1416,7 @@
           },
           "photoUpload": {
             "question": "I can't upload my photos, what should I do?",
-            "answer": "If you're having photo upload issues:\n\n**Check:**\n• Photo format: Must be JPG, PNG, WebP\n• Photo size: Maximum 5MB\n• Internet speed: Weak connection can cause problems\n• Browser permissions: Allow file upload\n\n**Solutions:**\n• Reduce photo size (online compression)\n• Upload a different photo\n• Refresh browser\n• Try uploading from mobile device\n\nIf problem persists, contact support."
+            "answer": "If you're having photo upload issues:\n\n**Check:**\n• Photo format: Must be JPG, PNG, WebP\n• Photo size: Maximum 10MB\n• Internet speed: Weak connection can cause problems\n• Browser permissions: Allow file upload\n\n**Solutions:**\n• Reduce photo size (online compression)\n• Upload a different photo\n• Refresh browser\n• Try uploading from mobile device\n\nIf problem persists, contact support."
           },
           "emailNotifications": {
             "question": "I'm not receiving email notifications, what should I do?",
@@ -2044,7 +2044,7 @@
         "title": "Profile Picture",
         "uploadButton": "Upload picture",
         "uploadLabel": "Upload profile picture",
-        "formatInfo": "PNG, JPG format, maximum 5MB"
+        "formatInfo": "PNG, JPG format, maximum 10MB"
       },
       "personalInfo": {
         "title": "Personal Information",
@@ -2343,7 +2343,7 @@
       "tip5": "Natural lighting works best",
       "errorMaxPhotos": "Maximum {maxPhotos} photos allowed",
       "errorImageOnly": "Only image files are allowed",
-      "errorTooLarge": "{fileName} is too large (max 5MB)",
+      "errorTooLarge": "{fileName} is too large (max 10MB)",
       "dropzoneText": "Drag and drop or click to browse",
       "photoTips": "Photo tips",
       "tips": {
@@ -2575,7 +2575,7 @@
       "subheading": "Add high-quality photos of your pet to attract more buyers",
       "errorMaxPhotos": "Maximum {maxPhotos} photos allowed",
       "errorImageOnly": "Only image files are allowed",
-      "errorTooLarge": "{fileName} is too large (max 5MB)",
+      "errorTooLarge": "{fileName} is too large (max 10MB)",
       "uploadError": "{fileName} could not be uploaded",
       "deleteError": "Failed to delete image",
       "photoCount": "Photos ({current}/{max})",

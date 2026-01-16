@@ -1416,7 +1416,7 @@
           },
           "photoUpload": {
             "question": "Şəkil yükləyə bilmirəm, niyə?",
-            "answer": "Şəkil formatının JPG, PNG və ya WEBP olduğundan, ölçüsünün 5MB-dan az olduğundan əmin olun. İnternet bağlantınızı yoxlayın. Hələ də problem varsa, şəkli kiçildib yenidən sınayın."
+            "answer": "Şəkil formatının JPG, PNG və ya WEBP olduğundan, ölçüsünün 10MB-dan az olduğundan əmin olun. İnternet bağlantınızı yoxlayın. Hələ də problem varsa, şəkli kiçildib yenidən sınayın."
           },
           "emailNotifications": {
             "question": "E-poçt bildirişləri almıram, niyə?",
@@ -2044,7 +2044,7 @@
         "title": "Profil Şəkli",
         "uploadButton": "Şəkil yüklə",
         "uploadLabel": "Profil şəkli yüklə",
-        "formatInfo": "PNG, JPG formatı, maksimum 5MB"
+        "formatInfo": "PNG, JPG formatı, maksimum 10MB"
       },
       "personalInfo": {
         "title": "Şəxsi Məlumat",
@@ -2343,7 +2343,7 @@
       "tip5": "Təbii işıq ən yaxşı işləyir",
       "errorMaxPhotos": "Maksimum {maxPhotos} şəkil icazə verilir",
       "errorImageOnly": "Yalnız şəkil faylları icazə verilir",
-      "errorTooLarge": "{fileName} çox böyükdür (maks. 5MB)",
+      "errorTooLarge": "{fileName} çox böyükdür (maks. 10MB)",
       "dropzoneText": "Sürükləyib buraxın və ya klikləyərək seçin",
       "photoTips": "Şəkil məsləhətləri",
       "tips": {
@@ -2575,7 +2575,7 @@
       "subheading": "Daha çox alıcı cəlb etmək üçün ev heyvanınızın yüksək keyfiyyətli şəkillərini əlavə edin",
       "errorMaxPhotos": "Maksimum {maxPhotos} şəkil yüklənə bilər",
       "errorImageOnly": "Yalnız şəkil faylları yüklənə bilər",
-      "errorTooLarge": "{fileName} çox böyükdür (maksimum 5MB)",
+      "errorTooLarge": "{fileName} çox böyükdür (maksimum 10MB)",
       "uploadError": "{fileName} yüklənə bilmədi",
       "deleteError": "Şəkil silinə bilmədi",
       "photoCount": "Şəkillər ({current}/{max})",
