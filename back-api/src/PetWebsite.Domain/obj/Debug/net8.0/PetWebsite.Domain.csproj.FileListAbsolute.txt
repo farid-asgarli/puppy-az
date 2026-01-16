@@ -22,3 +22,4 @@ C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Domain\obj\D
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Domain\obj\Debug\net8.0\refint\PetWebsite.Domain.dll
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Domain\obj\Debug\net8.0\PetWebsite.Domain.pdb
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Domain\obj\Debug\net8.0\ref\PetWebsite.Domain.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Domain\obj\Debug\net8.0\PetWebsite.Domain.sourcelink.json

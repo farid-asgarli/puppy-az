@@ -6,7 +6,7 @@ namespace PetWebsite.Application.Features.PetAds.Commands.UploadPetAdImage;
 public class UploadPetAdImageCommandValidator : AbstractValidator<UploadPetAdImageCommand>
 {
 	private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
-	private const long MaxFileSizeBytes = 3 * 1024 * 1024; // 3 MB
+	private const long MaxFileSizeBytes = 10 * 1024 * 1024; // 10 MB
 
 	public UploadPetAdImageCommandValidator()
 	{

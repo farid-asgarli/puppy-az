@@ -61,8 +61,8 @@ export default function PhotosView() {
           continue;
         }
 
-        // Validate file size (max 3MB as per backend)
-        if (file.size > 3 * 1024 * 1024) {
+        // Validate file size (max 10MB as per backend)
+        if (file.size > 10 * 1024 * 1024) {
           validationError = t('errorTooLarge', { fileName: file.name });
           continue;
         }

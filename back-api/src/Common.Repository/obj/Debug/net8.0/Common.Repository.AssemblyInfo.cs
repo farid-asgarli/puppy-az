@@ -13,12 +13,12 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PASHA Life")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2025 PASHA Life")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute(("A comprehensive data management library for Entity Framework Core featuring Unit " +
-    "of\n      Work pattern, generic repository with specification pattern, dynamic fi" +
-    "ltering, query builder,\n      and advanced LINQ expression building capabilities" +
-    "."))]
+[assembly: System.Reflection.AssemblyDescriptionAttribute("A comprehensive data management library for Entity Framework Core featuring Unit " +
+    "of\r\n      Work pattern, generic repository with specification pattern, dynamic f" +
+    "iltering, query builder,\r\n      and advanced LINQ expression building capabiliti" +
+    "es.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c7260481f99abe403bbe5457e6af6429ee16086f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38f0c57557194db2141f03738959a79d30bc89e7")]
 [assembly: System.Reflection.AssemblyProductAttribute("DataHandling Library")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Common.Repository")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

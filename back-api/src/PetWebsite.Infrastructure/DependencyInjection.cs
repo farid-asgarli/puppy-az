@@ -13,6 +13,7 @@ using PetWebsite.Infrastructure.Services.Authentication;
 using PetWebsite.Infrastructure.Services.Communication;
 using PetWebsite.Infrastructure.Services.Files;
 using PetWebsite.Infrastructure.Services.Identity;
+using PetWebsite.Infrastructure.Services.Images;
 
 namespace PetWebsite.Infrastructure;
 
@@ -114,6 +115,12 @@ public static class DependencyInjection
 		services.AddSingleton<IChecksumService, ChecksumService>();
 		services.AddSingleton<IContentTypeProvider, ContentTypeProvider>();
 		services.AddScoped<IFileService, FileService>();
+
+		// Configure Image Processing options
+		services.Configure<ImageProcessingOptions>(configuration.GetSection(ImageProcessingOptions.SectionName));
+
+		// Register Image Processing Service
+		services.AddSingleton<IImageProcessingService, ImageProcessingService>();
 
 		// Configure SMS settings
 		services.Configure<SmsSettings>(configuration.GetSection(SmsSettings.SectionName));

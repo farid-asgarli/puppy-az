@@ -26,3 +26,4 @@ C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\Common.Repository\obj\D
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\Common.Repository\obj\Debug\net8.0\Common.Repository.xml
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\Common.Repository\obj\Debug\net8.0\Common.Repository.pdb
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\Common.Repository\obj\Debug\net8.0\ref\Common.Repository.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\Common.Repository\obj\Debug\net8.0\Common.Repository.sourcelink.json

@@ -42,3 +42,4 @@ C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Infrastructu
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Infrastructure\obj\Debug\net8.0\PetWebsite.Infrastructure.pdb
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Infrastructure\obj\Debug\net8.0\PetWebsite.Infrastructure.genruntimeconfig.cache
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Infrastructure\obj\Debug\net8.0\ref\PetWebsite.Infrastructure.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Infrastructure\obj\Debug\net8.0\PetWebsite.Infrastructure.sourcelink.json

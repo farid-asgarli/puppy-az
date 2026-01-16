@@ -386,3 +386,10 @@ C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\obj\Debu
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\obj\Debug\net8.0\PetWebsite.API.pdb
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\obj\Debug\net8.0\PetWebsite.API.genruntimeconfig.cache
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\obj\Debug\net8.0\ref\PetWebsite.API.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\appsettings.Production.json
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\SkiaSharp.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\runtimes\osx\native\libSkiaSharp.dylib
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\runtimes\win-arm64\native\libSkiaSharp.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\runtimes\win-x64\native\libSkiaSharp.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\bin\Debug\net8.0\runtimes\win-x86\native\libSkiaSharp.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.API\obj\Debug\net8.0\PetWebsite.API.sourcelink.json

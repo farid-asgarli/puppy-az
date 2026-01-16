@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PlAC7tbSMKM=",
+  "dgSpecHash": "lpKwm4KTxp8=",
   "success": true,
   "projectFilePath": "C:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\PetWebsite.Infrastructure\\PetWebsite.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -55,6 +55,9 @@
     "C:\\Users\\CyberDream\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\CyberDream\\.nuget\\packages\\npgsql\\8.0.6\\npgsql.8.0.6.nupkg.sha512",
     "C:\\Users\\CyberDream\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.11\\npgsql.entityframeworkcore.postgresql.8.0.11.nupkg.sha512",
+    "C:\\Users\\CyberDream\\.nuget\\packages\\skiasharp\\3.119.1\\skiasharp.3.119.1.nupkg.sha512",
+    "C:\\Users\\CyberDream\\.nuget\\packages\\skiasharp.nativeassets.macos\\3.119.1\\skiasharp.nativeassets.macos.3.119.1.nupkg.sha512",
+    "C:\\Users\\CyberDream\\.nuget\\packages\\skiasharp.nativeassets.win32\\3.119.1\\skiasharp.nativeassets.win32.3.119.1.nupkg.sha512",
     "C:\\Users\\CyberDream\\.nuget\\packages\\system.codedom\\4.4.0\\system.codedom.4.4.0.nupkg.sha512",
     "C:\\Users\\CyberDream\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\CyberDream\\.nuget\\packages\\system.composition\\6.0.0\\system.composition.6.0.0.nupkg.sha512",

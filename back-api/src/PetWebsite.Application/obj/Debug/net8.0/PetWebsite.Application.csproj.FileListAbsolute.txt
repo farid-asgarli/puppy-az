@@ -34,3 +34,4 @@ C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Application\
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Application\obj\Debug\net8.0\refint\PetWebsite.Application.dll
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Application\obj\Debug\net8.0\PetWebsite.Application.pdb
 C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Application\obj\Debug\net8.0\ref\PetWebsite.Application.dll
+C:\Users\CyberDream\Desktop\puppy\puppy-new\back-api\src\PetWebsite.Application\obj\Debug\net8.0\PetWebsite.Application.sourcelink.json

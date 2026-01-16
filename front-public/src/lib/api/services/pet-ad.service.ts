@@ -157,7 +157,7 @@ export class PetAdService extends BaseService {
   /**
    * Upload an image for a pet advertisement.
    * Image will be stored with ownership tracking and can be attached to an ad later.
-   * Max file size: 5MB
+   * Max file size: 10MB
    * Supported formats: jpg, jpeg, png, webp
    *
    * @param file - The image file to upload

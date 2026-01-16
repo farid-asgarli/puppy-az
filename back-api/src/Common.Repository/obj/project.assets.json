@@ -648,11 +648,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\Common.Repository.csproj",
+      "projectUniqueName": "c:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\Common.Repository.csproj",
       "projectName": "Common.Repository",
-      "projectPath": "C:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\Common.Repository.csproj",
+      "projectPath": "c:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\Common.Repository.csproj",
       "packagesPath": "C:\\Users\\CyberDream\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\obj\\",
+      "outputPath": "c:\\Users\\CyberDream\\Desktop\\puppy\\puppy-new\\back-api\\src\\Common.Repository\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\CyberDream\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -710,7 +710,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.416/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.417/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

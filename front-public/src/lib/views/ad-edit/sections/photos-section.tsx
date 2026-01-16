@@ -60,7 +60,7 @@ export const PhotosSection = ({ existingImages, onChange, onImageUpdate, errors 
           continue;
         }
 
-        if (file.size > 3 * 1024 * 1024) {
+        if (file.size > 10 * 1024 * 1024) {
           validationError = t('errorTooLarge', { fileName: file.name });
           continue;
         }

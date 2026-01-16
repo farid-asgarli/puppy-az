@@ -24,15 +24,15 @@ public class PetAdImagesController(IMediator mediator, IStringLocalizer<PetAdIma
 	/// Upload an image for a pet advertisement.
 	/// Image will be stored with ownership tracking and can be attached to an ad later.
 	/// </summary>
-	/// <param name="file">The image file to upload (jpg, jpeg, png, webp). Max size: 5MB</param>
+	/// <param name="file">The image file to upload (jpg, jpeg, png, webp). Max size: 10MB</param>
 	/// <param name="cancellationToken">Cancellation token</param>
 	/// <returns>The ID of the uploaded image</returns>
 	/// <response code="201">Image uploaded successfully</response>
 	/// <response code="400">Invalid file format or size</response>
 	/// <response code="401">User is not authenticated</response>
 	[HttpPost("upload")]
-	// [RequestSizeLimit(3 * 1024 * 1024)] // 3 MB limit
-	[Consumes("multipart/form-data")] // Add this
+	[RequestSizeLimit(10 * 1024 * 1024)] // 10 MB limit
+	[Consumes("multipart/form-data")]
 	[ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
