@@ -224,6 +224,7 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 		// WebP stays as WebP
 		if (originalExtension == ".webp")
 		{
+			_logger.LogDebug("Image is WebP, keeping as WebP with quality {Quality}", _options.WebPQuality);
 			return (SKEncodedImageFormat.Webp, ".webp", _options.WebPQuality);
 		}
 
@@ -231,39 +232,64 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 		if (originalExtension == ".png")
 		{
 			bool hasTransparency = HasTransparency(bitmap);
+			_logger.LogDebug(
+				"PNG image transparency check: HasTransparency={HasTransparency}, AlphaType={AlphaType}, ColorType={ColorType}",
+				hasTransparency,
+				bitmap.AlphaType,
+				bitmap.ColorType
+			);
+
 			if (hasTransparency)
 			{
 				// Keep as PNG to preserve transparency
+				_logger.LogDebug("PNG has transparency, keeping as PNG");
 				return (SKEncodedImageFormat.Png, ".png", 100);
 			}
 			else if (_options.ConvertPngToJpeg)
 			{
 				// Convert to JPEG for better compression
+				_logger.LogDebug("PNG is opaque, converting to JPEG with quality {Quality}", _options.JpegQuality);
 				return (SKEncodedImageFormat.Jpeg, ".jpg", _options.JpegQuality);
 			}
 			else
 			{
+				_logger.LogDebug("PNG is opaque but ConvertPngToJpeg is disabled, keeping as PNG");
 				return (SKEncodedImageFormat.Png, ".png", 100);
 			}
 		}
 
 		// JPEG stays as JPEG
+		_logger.LogDebug("Image is JPEG, keeping as JPEG with quality {Quality}", _options.JpegQuality);
 		return (SKEncodedImageFormat.Jpeg, ".jpg", _options.JpegQuality);
 	}
 
 	private static bool HasTransparency(SKBitmap bitmap)
 	{
-		// Check if the bitmap has an alpha channel and if any pixel uses it
+		// Quick check: if the color type doesn't support alpha, it's definitely opaque
+		if (bitmap.ColorType == SKColorType.Rgb565 || bitmap.ColorType == SKColorType.Rgb888x)
+		{
+			return false;
+		}
+
+		// Check if the bitmap's alpha type is explicitly opaque
 		if (bitmap.AlphaType == SKAlphaType.Opaque)
 		{
 			return false;
 		}
 
-		// Sample a subset of pixels for performance
-		var sampleRate = Math.Max(1, Math.Max(bitmap.Width, bitmap.Height) / 100);
-		for (int y = 0; y < bitmap.Height; y += sampleRate)
+		// For images with alpha channel, we need to actually check pixels
+		// Sample pixels across the image to check for actual transparency
+		var width = bitmap.Width;
+		var height = bitmap.Height;
+
+		// Use a reasonable sample size - check at most 10000 pixels spread across the image
+		var totalPixels = width * height;
+		var sampleCount = Math.Min(10000, totalPixels);
+		var step = Math.Max(1, (int)Math.Sqrt((double)totalPixels / sampleCount));
+
+		for (int y = 0; y < height; y += step)
 		{
-			for (int x = 0; x < bitmap.Width; x += sampleRate)
+			for (int x = 0; x < width; x += step)
 			{
 				var pixel = bitmap.GetPixel(x, y);
 				if (pixel.Alpha < 255)
