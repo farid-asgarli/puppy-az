@@ -9,10 +9,11 @@ namespace PetWebsite.Infrastructure.Services.Images;
 /// <summary>
 /// Service for processing and compressing images using SkiaSharp.
 /// </summary>
-public class ImageProcessingService : IImageProcessingService
+public class ImageProcessingService(IOptions<ImageProcessingOptions> options, ILogger<ImageProcessingService> logger)
+	: IImageProcessingService
 {
-	private readonly ImageProcessingOptions _options;
-	private readonly ILogger<ImageProcessingService> _logger;
+	private readonly ImageProcessingOptions _options = options.Value;
+	private readonly ILogger<ImageProcessingService> _logger = logger;
 	private static readonly HashSet<string> SupportedExtensions = new(StringComparer.OrdinalIgnoreCase)
 	{
 		".jpg",
@@ -20,12 +21,6 @@ public class ImageProcessingService : IImageProcessingService
 		".png",
 		".webp",
 	};
-
-	public ImageProcessingService(IOptions<ImageProcessingOptions> options, ILogger<ImageProcessingService> logger)
-	{
-		_options = options.Value;
-		_logger = logger;
-	}
 
 	public bool IsSupportedImageFormat(string fileName)
 	{
