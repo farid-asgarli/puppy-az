@@ -138,51 +138,87 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 				}
 			}
 
-			// Encode the image
+			// Encode the image - try progressively lower quality if needed
 			using var image = SKImage.FromBitmap(bitmapToEncode);
-			var outputStream = new MemoryStream();
 
-			SKData? encodedData;
-			if (outputFormat == SKEncodedImageFormat.Webp)
+			// For large files (> 1MB), be more aggressive with compression
+			var qualityLevels = originalSize > 1024 * 1024 ? new[] { quality, 75, 65, 55 } : new[] { quality, 75 };
+
+			MemoryStream? bestOutputStream = null;
+			long bestSize = long.MaxValue;
+			int usedQuality = quality;
+
+			foreach (var q in qualityLevels)
 			{
-				encodedData = image.Encode(SKEncodedImageFormat.Webp, quality);
-			}
-			else if (outputFormat == SKEncodedImageFormat.Jpeg)
-			{
-				encodedData = image.Encode(SKEncodedImageFormat.Jpeg, quality);
-			}
-			else
-			{
-				// PNG - no quality parameter
-				encodedData = image.Encode(SKEncodedImageFormat.Png, 100);
+				SKData? encodedData;
+				if (outputFormat == SKEncodedImageFormat.Webp)
+				{
+					encodedData = image.Encode(SKEncodedImageFormat.Webp, q);
+				}
+				else if (outputFormat == SKEncodedImageFormat.Jpeg)
+				{
+					encodedData = image.Encode(SKEncodedImageFormat.Jpeg, q);
+				}
+				else
+				{
+					// PNG - no quality parameter, only try once
+					encodedData = image.Encode(SKEncodedImageFormat.Png, 100);
+				}
+
+				if (encodedData == null)
+				{
+					continue;
+				}
+
+				var tempStream = new MemoryStream();
+				await encodedData.AsStream().CopyToAsync(tempStream, cancellationToken);
+				encodedData.Dispose();
+
+				var currentSize = tempStream.Length;
+
+				// If this quality produces a smaller file than original and is the best so far
+				if (currentSize < originalSize && currentSize < bestSize)
+				{
+					bestOutputStream?.Dispose();
+					bestOutputStream = tempStream;
+					bestSize = currentSize;
+					usedQuality = q;
+
+					// If we achieved good compression (< 50% of original), stop trying
+					if (currentSize < originalSize * 0.5)
+					{
+						break;
+					}
+				}
+				else
+				{
+					tempStream.Dispose();
+				}
+
+				// PNG doesn't have quality levels, so break after first attempt
+				if (outputFormat == SKEncodedImageFormat.Png)
+				{
+					break;
+				}
 			}
 
-			if (encodedData == null)
+			if (bestOutputStream == null)
 			{
-				_logger.LogWarning("Failed to encode image {FileName}", fileName);
+				_logger.LogDebug("Could not compress image {FileName} to smaller size at any quality level, keeping original", fileName);
 				imageStream.Position = 0;
 				return CreateUnprocessedResult(imageStream, fileName, originalSize, extension);
 			}
 
-			await encodedData.AsStream().CopyToAsync(outputStream, cancellationToken);
-			encodedData.Dispose();
-
+			var outputStream = bestOutputStream;
 			outputStream.Position = 0;
 			var processedSize = outputStream.Length;
 
-			// If processed is larger than original, return original
-			if (processedSize >= originalSize)
-			{
-				_logger.LogDebug(
-					"Processed image {FileName} is larger ({ProcessedSize}) than original ({OriginalSize}), keeping original",
-					fileName,
-					processedSize,
-					originalSize
-				);
-				outputStream.Dispose();
-				imageStream.Position = 0;
-				return CreateUnprocessedResult(imageStream, fileName, originalSize, extension);
-			}
+			_logger.LogDebug(
+				"Best compression for {FileName}: quality {Quality} achieved {Size} bytes",
+				fileName,
+				usedQuality,
+				processedSize
+			);
 
 			// Generate new filename with new extension
 			var processedFileName = Path.ChangeExtension(fileName, outputExtension);
