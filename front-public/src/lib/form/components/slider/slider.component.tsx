@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/external/utils';
+import React, { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/external/utils";
+import { useTranslations } from "next-intl";
 
 interface RangeSliderProps {
   min: number;
@@ -31,11 +32,12 @@ export default function RangeSlider({
   className,
   showLabels = true,
   disabled = false,
-  trackColor = 'bg-gray-200',
-  rangeColor = 'bg-red-500',
-  thumbColor = 'bg-white',
+  trackColor = "bg-gray-200",
+  rangeColor = "bg-red-500",
+  thumbColor = "bg-white",
 }: RangeSliderProps) {
-  const [isSliding, setIsSliding] = useState<'min' | 'max' | null>(null);
+  const t = useTranslations("accessibility");
+  const [isSliding, setIsSliding] = useState<"min" | "max" | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const minThumbRef = useRef<HTMLDivElement>(null);
   const maxThumbRef = useRef<HTMLDivElement>(null);
@@ -49,59 +51,60 @@ export default function RangeSlider({
   const maxPercentage = ((boundedMaxValue - min) / (max - min)) * 100;
 
   // Handle keyboard interaction for accessibility
-  const handleKeyDown = (thumbType: 'min' | 'max') => (e: React.KeyboardEvent) => {
-    if (disabled) return;
+  const handleKeyDown =
+    (thumbType: "min" | "max") => (e: React.KeyboardEvent) => {
+      if (disabled) return;
 
-    let newValue = thumbType === 'min' ? boundedMinValue : boundedMaxValue;
-    const bigStep = step * 10; // For page up/down
+      let newValue = thumbType === "min" ? boundedMinValue : boundedMaxValue;
+      const bigStep = step * 10; // For page up/down
 
-    switch (e.key) {
-      case 'ArrowRight':
-      case 'ArrowUp':
-        e.preventDefault();
-        newValue += step;
-        break;
-      case 'ArrowLeft':
-      case 'ArrowDown':
-        e.preventDefault();
-        newValue -= step;
-        break;
-      case 'PageUp':
-        e.preventDefault();
-        newValue += bigStep;
-        break;
-      case 'PageDown':
-        e.preventDefault();
-        newValue -= bigStep;
-        break;
-      case 'Home':
-        e.preventDefault();
-        newValue = thumbType === 'min' ? min : boundedMinValue + step;
-        break;
-      case 'End':
-        e.preventDefault();
-        newValue = thumbType === 'min' ? boundedMaxValue - step : max;
-        break;
-      default:
-        return;
-    }
-
-    // Ensure the new value is within bounds
-    newValue = Math.max(min, Math.min(max, newValue));
-
-    if (thumbType === 'min') {
-      if (newValue <= boundedMaxValue - step) {
-        onChange([newValue, boundedMaxValue]);
+      switch (e.key) {
+        case "ArrowRight":
+        case "ArrowUp":
+          e.preventDefault();
+          newValue += step;
+          break;
+        case "ArrowLeft":
+        case "ArrowDown":
+          e.preventDefault();
+          newValue -= step;
+          break;
+        case "PageUp":
+          e.preventDefault();
+          newValue += bigStep;
+          break;
+        case "PageDown":
+          e.preventDefault();
+          newValue -= bigStep;
+          break;
+        case "Home":
+          e.preventDefault();
+          newValue = thumbType === "min" ? min : boundedMinValue + step;
+          break;
+        case "End":
+          e.preventDefault();
+          newValue = thumbType === "min" ? boundedMaxValue - step : max;
+          break;
+        default:
+          return;
       }
-    } else {
-      if (newValue >= boundedMinValue + step) {
-        onChange([boundedMinValue, newValue]);
+
+      // Ensure the new value is within bounds
+      newValue = Math.max(min, Math.min(max, newValue));
+
+      if (thumbType === "min") {
+        if (newValue <= boundedMaxValue - step) {
+          onChange([newValue, boundedMaxValue]);
+        }
+      } else {
+        if (newValue >= boundedMinValue + step) {
+          onChange([boundedMinValue, newValue]);
+        }
       }
-    }
-  };
+    };
 
   // Handle mouse/touch interaction
-  const handleMouseDown = (thumbType: 'min' | 'max') => () => {
+  const handleMouseDown = (thumbType: "min" | "max") => () => {
     if (disabled) return;
     setIsSliding(thumbType);
   };
@@ -116,7 +119,7 @@ export default function RangeSlider({
     // Calculate the new value based on percentage
     const newValue = Math.round((percentage * (max - min) + min) / step) * step;
 
-    if (isSliding === 'min') {
+    if (isSliding === "min") {
       if (newValue <= boundedMaxValue - step) {
         onChange([newValue, boundedMaxValue]);
       }
@@ -144,37 +147,44 @@ export default function RangeSlider({
     };
 
     if (isSliding) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('mouseup', handleInteractionEnd);
-      document.addEventListener('touchend', handleInteractionEnd);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("mouseup", handleInteractionEnd);
+      document.addEventListener("touchend", handleInteractionEnd);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('mouseup', handleInteractionEnd);
-      document.removeEventListener('touchend', handleInteractionEnd);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("mouseup", handleInteractionEnd);
+      document.removeEventListener("touchend", handleInteractionEnd);
     };
   }, [isSliding, boundedMinValue, boundedMaxValue, onChange, min, max, step]);
 
   // Focus management for keyboard users
   useEffect(() => {
-    if (isSliding === 'min' && minThumbRef.current) {
+    if (isSliding === "min" && minThumbRef.current) {
       minThumbRef.current.focus();
-    } else if (isSliding === 'max' && maxThumbRef.current) {
+    } else if (isSliding === "max" && maxThumbRef.current) {
       maxThumbRef.current.focus();
     }
   }, [isSliding]);
 
   return (
-    <div className={cn('flex flex-col w-full', className)}>
+    <div className={cn("flex flex-col w-full", className)}>
       <div className="relative py-2">
         {/* Track */}
-        <div ref={trackRef} className={cn('absolute top-1/2 -translate-y-1/2 w-full h-1.5 rounded-full', trackColor, disabled && 'opacity-50')}>
+        <div
+          ref={trackRef}
+          className={cn(
+            "absolute top-1/2 -translate-y-1/2 w-full h-1.5 rounded-full",
+            trackColor,
+            disabled && "opacity-50",
+          )}
+        >
           {/* Range highlight */}
           <div
-            className={cn('absolute top-0 h-full rounded-full', rangeColor)}
+            className={cn("absolute top-0 h-full rounded-full", rangeColor)}
             style={{
               left: `${minPercentage}%`,
               right: `${100 - maxPercentage}%`,
@@ -191,26 +201,36 @@ export default function RangeSlider({
           aria-valuemax={max}
           aria-valuenow={boundedMinValue}
           aria-valuetext={formatValue(boundedMinValue)}
-          aria-label="Minimum value"
-          onKeyDown={handleKeyDown('min')}
+          aria-label={t("minValue")}
+          onKeyDown={handleKeyDown("min")}
           className={cn(
-            'rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 focus:outline-none',
-            disabled ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'
+            "rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 focus:outline-none",
+            disabled
+              ? "cursor-not-allowed"
+              : "cursor-grab active:cursor-grabbing",
           )}
           style={{ left: `${minPercentage}%` }}
-          onMouseDown={handleMouseDown('min')}
-          onTouchStart={handleMouseDown('min')}
+          onMouseDown={handleMouseDown("min")}
+          onTouchStart={handleMouseDown("min")}
           animate={{
-            scale: isSliding === 'min' ? 1.2 : 1,
-            boxShadow: isSliding === 'min' ? '0 0 0 4px rgba(220, 220, 220, 0.5)' : '0 0 0 2px rgba(220, 220, 220, 0.3)',
+            scale: isSliding === "min" ? 1.2 : 1,
+            boxShadow:
+              isSliding === "min"
+                ? "0 0 0 4px rgba(220, 220, 220, 0.5)"
+                : "0 0 0 2px rgba(220, 220, 220, 0.3)",
           }}
           transition={{
-            type: 'spring',
+            type: "spring",
             stiffness: 700,
             damping: 30,
           }}
         >
-          <div className={cn('w-5 h-5 rounded-full border border-gray-200 shadow', thumbColor)} />
+          <div
+            className={cn(
+              "w-5 h-5 rounded-full border border-gray-200 shadow",
+              thumbColor,
+            )}
+          />
         </motion.div>
 
         {/* Maximum thumb */}
@@ -222,34 +242,48 @@ export default function RangeSlider({
           aria-valuemax={max}
           aria-valuenow={boundedMaxValue}
           aria-valuetext={formatValue(boundedMaxValue)}
-          aria-label="Maximum value"
-          onKeyDown={handleKeyDown('max')}
+          aria-label={t("maxValue")}
+          onKeyDown={handleKeyDown("max")}
           className={cn(
-            'rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 focus:outline-none',
-            disabled ? 'cursor-not-allowed' : 'cursor-grab active:cursor-grabbing'
+            "rounded-full absolute top-1/2 -translate-y-1/2 -translate-x-1/2 focus:outline-none",
+            disabled
+              ? "cursor-not-allowed"
+              : "cursor-grab active:cursor-grabbing",
           )}
           style={{ left: `${maxPercentage}%` }}
-          onMouseDown={handleMouseDown('max')}
-          onTouchStart={handleMouseDown('max')}
+          onMouseDown={handleMouseDown("max")}
+          onTouchStart={handleMouseDown("max")}
           animate={{
-            scale: isSliding === 'max' ? 1.2 : 1,
-            boxShadow: isSliding === 'max' ? '0 0 0 4px rgba(220, 220, 220, 0.5)' : '0 0 0 2px rgba(220, 220, 220, 0.3)',
+            scale: isSliding === "max" ? 1.2 : 1,
+            boxShadow:
+              isSliding === "max"
+                ? "0 0 0 4px rgba(220, 220, 220, 0.5)"
+                : "0 0 0 2px rgba(220, 220, 220, 0.3)",
           }}
           transition={{
-            type: 'spring',
+            type: "spring",
             stiffness: 700,
             damping: 30,
           }}
         >
-          <div className={cn('w-5 h-5 rounded-full border border-gray-200 shadow', thumbColor)} />
+          <div
+            className={cn(
+              "w-5 h-5 rounded-full border border-gray-200 shadow",
+              thumbColor,
+            )}
+          />
         </motion.div>
       </div>
 
       {/* Value labels */}
       {showLabels && (
         <div className="flex justify-between items-center mt-4">
-          <div className="text-gray-500 font-medium text-sm">{formatValue(boundedMinValue)}</div>
-          <div className="text-gray-500 font-medium text-sm">{formatValue(boundedMaxValue)}</div>
+          <div className="text-gray-500 font-medium text-sm">
+            {formatValue(boundedMinValue)}
+          </div>
+          <div className="text-gray-500 font-medium text-sm">
+            {formatValue(boundedMaxValue)}
+          </div>
         </div>
       )}
     </div>

@@ -10,7 +10,7 @@ import { Spinner } from '@/lib/primitives';
 import { usePaginatedAds } from '@/lib/hooks/use-paginated-ads';
 import { petAdService } from '@/lib/api/services/pet-ad.service';
 import { useFilterUrl } from '@/lib/filtering/use-filter-url';
-import { buildSearchFilter } from '@/lib/api/utils/search-filter-builder';
+import { buildSearchFilter, buildSorting } from '@/lib/api/utils/search-filter-builder';
 import { mapAdToCardItem } from '@/lib/components/cards/item-card/ad-card.utils';
 import { PetAdCardType } from '@/lib/types/ad-card';
 import { useTranslations } from 'next-intl';
@@ -29,8 +29,9 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
   const { filters } = useFilterUrl();
   const [hasClickedLoadMore, setHasClickedLoadMore] = useState(false);
 
-  // Build search filter from URL params
+  // Build search filter and sorting from URL params
   const searchFilter = buildSearchFilter(filters);
+  const sorting = buildSorting(filters);
 
   // Fetch ads function with locale from URL
   const fetchAds = useCallback(
@@ -39,6 +40,7 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
         {
           filter: searchFilter,
           pagination: { number: page, size: pageSize },
+          sorting: sorting,
         },
         locale
       );
@@ -54,7 +56,7 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
         hasNextPage: response.hasNextPage,
       };
     },
-    [searchFilter, onTotalCountChange, locale]
+    [searchFilter, sorting, onTotalCountChange, locale]
   );
 
   // Use paginated ads hook

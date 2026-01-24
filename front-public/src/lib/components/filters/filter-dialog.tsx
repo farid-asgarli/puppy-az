@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { FilterDrawer } from '@/lib/components/filters/views/filter-drawer';
-import { FilterDialogModal } from '@/lib/components/filters/views/filter-modal';
-import { FilterContent } from '@/lib/components/filters/components/filter-content';
-import { DisplayCacheProvider } from '@/lib/caching/display-cache-provider';
-import { DisplayCache } from '@/lib/caching/display-cache';
-import { CityDto } from '@/lib/api';
+import React, { useState, useEffect } from "react";
+import { FilterDrawer } from "@/lib/components/filters/views/filter-drawer";
+import { FilterDialogModal } from "@/lib/components/filters/views/filter-modal";
+import { FilterContent } from "@/lib/components/filters/components/filter-content";
+import { DisplayCacheProvider } from "@/lib/caching/display-cache-provider";
+import { DisplayCache } from "@/lib/caching/display-cache";
+import { CityDto } from "@/lib/api";
+import { useFilterUrl } from "@/lib/filtering/use-filter-url";
 
 interface FilterDialogProps {
   onClose: () => void;
@@ -14,11 +15,19 @@ interface FilterDialogProps {
   cities?: CityDto[];
 }
 
-export default function FilterDialog({ isOpen, onClose, cities }: FilterDialogProps) {
+export default function FilterDialog({
+  isOpen,
+  onClose,
+  cities,
+}: FilterDialogProps) {
   const [isMobile, setIsMobile] = useState(false);
+  const { filters } = useFilterUrl();
 
   // Use provided cities or fallback to cache (for UI display)
   const citiesData = cities || DisplayCache.getCities() || undefined;
+
+  // Create a key based on current URL filters to force remount when dialog opens
+  const filterKey = isOpen ? JSON.stringify(filters) : "closed";
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -26,20 +35,33 @@ export default function FilterDialog({ isOpen, onClose, cities }: FilterDialogPr
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
     return () => {
-      window.removeEventListener('resize', checkScreenSize);
+      window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
 
   const filterContent = (
     <DisplayCacheProvider cities={citiesData}>
-      <FilterContent onClose={onClose} cities={citiesData} />
+      <FilterContent key={filterKey} onClose={onClose} cities={citiesData} />
     </DisplayCacheProvider>
   );
 
-  if (isMobile) return <FilterDrawer isOpen={isOpen} onClose={onClose} filterContent={filterContent} />;
+  if (isMobile)
+    return (
+      <FilterDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        filterContent={filterContent}
+      />
+    );
 
-  return <FilterDialogModal isOpen={isOpen} onClose={onClose} filterContent={filterContent} />;
+  return (
+    <FilterDialogModal
+      isOpen={isOpen}
+      onClose={onClose}
+      filterContent={filterContent}
+    />
+  );
 }

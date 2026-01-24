@@ -1,11 +1,11 @@
-import { PetBreedDto, PetCategoryDetailedDto } from '@/lib/api';
+import { PetBreedDto, PetCategoryDetailedDto } from "@/lib/api";
 
 /**
  * Mobile search bar state
  */
 export interface MobileSearchBarState {
   isExpanded: boolean;
-  activeSheet: 'ad-type' | 'category' | 'breed' | null;
+  activeSheet: "ad-type" | "category" | "breed" | null;
   selectedAdType: string | null;
   selectedCategory: PetCategoryDetailedDto | null;
   selectedBreed: PetBreedDto | null;
@@ -15,17 +15,25 @@ export interface MobileSearchBarState {
  * Mobile search bar actions
  */
 export type MobileSearchBarAction =
-  | { type: 'OPEN_MODAL' }
-  | { type: 'CLOSE_MODAL' }
-  | { type: 'OPEN_SHEET'; payload: 'ad-type' | 'category' | 'breed' }
-  | { type: 'CLOSE_SHEET' }
-  | { type: 'SET_AD_TYPE'; payload: string }
-  | { type: 'SET_CATEGORY'; payload: PetCategoryDetailedDto }
-  | { type: 'SET_BREED'; payload: PetBreedDto }
-  | { type: 'CLEAR_AD_TYPE' }
-  | { type: 'CLEAR_CATEGORY' }
-  | { type: 'CLEAR_BREED' }
-  | { type: 'CLEAR_ALL' };
+  | { type: "OPEN_MODAL" }
+  | { type: "CLOSE_MODAL" }
+  | { type: "OPEN_SHEET"; payload: "ad-type" | "category" | "breed" }
+  | { type: "CLOSE_SHEET" }
+  | { type: "SET_AD_TYPE"; payload: string }
+  | { type: "SET_CATEGORY"; payload: PetCategoryDetailedDto }
+  | { type: "SET_BREED"; payload: PetBreedDto }
+  | { type: "CLEAR_AD_TYPE" }
+  | { type: "CLEAR_CATEGORY" }
+  | { type: "CLEAR_BREED" }
+  | { type: "CLEAR_ALL" }
+  | {
+      type: "SYNC_FROM_URL";
+      payload: {
+        selectedAdType: string | null;
+        selectedCategory: PetCategoryDetailedDto | null;
+        selectedBreed: PetBreedDto | null;
+      };
+    };
 
 /**
  * Initial state factory - accepts initial values from URL
@@ -45,66 +53,77 @@ export const createInitialMobileState = (initialValues?: {
 /**
  * Initial state (default)
  */
-export const initialMobileState: MobileSearchBarState = createInitialMobileState();
+export const initialMobileState: MobileSearchBarState =
+  createInitialMobileState();
 
 /**
  * Reducer function for mobile search bar state management
  */
-export function mobileSearchBarReducer(state: MobileSearchBarState, action: MobileSearchBarAction): MobileSearchBarState {
+export function mobileSearchBarReducer(
+  state: MobileSearchBarState,
+  action: MobileSearchBarAction,
+): MobileSearchBarState {
   switch (action.type) {
-    case 'OPEN_MODAL':
+    case "OPEN_MODAL":
       return { ...state, isExpanded: true };
-    case 'CLOSE_MODAL':
+    case "CLOSE_MODAL":
       return {
         ...state,
         isExpanded: false,
         activeSheet: null,
       };
-    case 'OPEN_SHEET':
+    case "OPEN_SHEET":
       return { ...state, activeSheet: action.payload };
-    case 'CLOSE_SHEET':
+    case "CLOSE_SHEET":
       return { ...state, activeSheet: null };
-    case 'SET_AD_TYPE':
+    case "SET_AD_TYPE":
       return {
         ...state,
         selectedAdType: action.payload,
         activeSheet: null,
       };
-    case 'SET_CATEGORY':
+    case "SET_CATEGORY":
       return {
         ...state,
         selectedCategory: action.payload,
         selectedBreed: null, // Clear breed when category changes
         activeSheet: null,
       };
-    case 'SET_BREED':
+    case "SET_BREED":
       return {
         ...state,
         selectedBreed: action.payload,
         activeSheet: null,
       };
-    case 'CLEAR_AD_TYPE':
+    case "CLEAR_AD_TYPE":
       return {
         ...state,
         selectedAdType: null,
       };
-    case 'CLEAR_CATEGORY':
+    case "CLEAR_CATEGORY":
       return {
         ...state,
         selectedCategory: null,
         selectedBreed: null, // Clear breed when category is cleared
       };
-    case 'CLEAR_BREED':
+    case "CLEAR_BREED":
       return {
         ...state,
         selectedBreed: null,
       };
-    case 'CLEAR_ALL':
+    case "CLEAR_ALL":
       return {
         ...state,
         selectedAdType: null,
         selectedCategory: null,
         selectedBreed: null,
+      };
+    case "SYNC_FROM_URL":
+      return {
+        ...state,
+        selectedAdType: action.payload.selectedAdType,
+        selectedCategory: action.payload.selectedCategory,
+        selectedBreed: action.payload.selectedBreed,
       };
     default:
       return state;

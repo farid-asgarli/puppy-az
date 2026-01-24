@@ -1,25 +1,35 @@
-'use client';
+"use client";
 
-import React, { useReducer, useRef, useCallback, useMemo, useLayoutEffect, useEffect } from 'react';
-import { PetAdType, PetBreedDto, PetCategoryDetailedDto } from '@/lib/api';
-import { getAdTypes } from '@/lib/utils/mappers';
-import { LAYOUT, type ActiveField } from './constants';
-import { searchBarReducer, createInitialState } from './state';
-import { Divider } from './components/divider';
-import { SearchButton } from './components/search-button';
-import { SearchField } from './components/search-field';
-import { AdTypeDropdown, CategoryDropdown, BreedDropdown } from './dropdowns';
-import { useDropdownPosition, useClickOutside } from './hooks';
-import { useSearchBarSync } from './searchbar-sync-context';
-import { cn } from '@/lib/external/utils';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { FilterButton } from '@/lib/components/filters/filter-button';
-import { useTranslations } from 'next-intl';
+import React, {
+  useReducer,
+  useRef,
+  useCallback,
+  useMemo,
+  useLayoutEffect,
+  useEffect,
+} from "react";
+import { PetAdType, PetBreedDto, PetCategoryDetailedDto } from "@/lib/api";
+import { getAdTypes } from "@/lib/utils/mappers";
+import { LAYOUT, type ActiveField } from "./constants";
+import { searchBarReducer, createInitialState } from "./state";
+import { Divider } from "./components/divider";
+import { SearchButton } from "./components/search-button";
+import { SearchField } from "./components/search-field";
+import { AdTypeDropdown, CategoryDropdown, BreedDropdown } from "./dropdowns";
+import { useDropdownPosition, useClickOutside } from "./hooks";
+import { useSearchBarSync } from "./searchbar-sync-context";
+import { cn } from "@/lib/external/utils";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { FilterButton } from "@/lib/components/filters/filter-button";
+import { useTranslations } from "next-intl";
 const TRANSITION_DURATION = 500; // Match navbar transition duration (500ms)
-const TRANSITION_TIMING = 'cubic-bezier(0.4, 0.0, 0.2, 1)'; // Material Design emphasized decelerate
+const TRANSITION_TIMING = "cubic-bezier(0.4, 0.0, 0.2, 1)"; // Material Design emphasized decelerate
 
 interface SearchBarDesktopAnimatedProps {
   onExpandedChange?: (expanded: boolean) => void;
+  hideFilterButton?: boolean;
+  dropdownDirection?: "up" | "down";
+  className?: string;
 }
 
 /**
@@ -28,11 +38,16 @@ interface SearchBarDesktopAnimatedProps {
  * Morphs between collapsed and expanded states
  * Auto-collapses when user scrolls down (isAtTop = false)
  */
-export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopAnimatedProps) => {
+export const SearchBarDesktopAnimated = ({
+  onExpandedChange,
+  hideFilterButton = false,
+  dropdownDirection = "down",
+  className,
+}: SearchBarDesktopAnimatedProps) => {
   const { initialValues, updateUrlFilters, isSearchRoute } = useSearchBarSync();
   const { navigateWithTransition } = useViewTransition();
-  const t = useTranslations('search');
-  const tCommon = useTranslations('common');
+  const t = useTranslations("search");
+  const tCommon = useTranslations("common");
   const adTypes = getAdTypes(tCommon);
 
   // Initialize state with values from URL ONLY if on search route (/ads/s)
@@ -40,14 +55,20 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
   const initialStateWithValues = useMemo(
     () =>
       createInitialState({
-        selectedAdType: isSearchRoute && initialValues.adType !== null ? adTypes[initialValues.adType]?.title ?? null : null,
+        selectedAdType:
+          isSearchRoute && initialValues.adType !== null
+            ? (adTypes[initialValues.adType]?.title ?? null)
+            : null,
         selectedCategory: isSearchRoute ? initialValues.category : null,
         selectedBreed: isSearchRoute ? initialValues.breed : null,
       }),
-    [initialValues, isSearchRoute, adTypes]
+    [initialValues, isSearchRoute, adTypes],
   );
 
-  const [state, dispatch] = useReducer(searchBarReducer, initialStateWithValues);
+  const [state, dispatch] = useReducer(
+    searchBarReducer,
+    initialStateWithValues,
+  );
   const {
     isExpanded,
     activeField,
@@ -63,8 +84,10 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
   const searchBarRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const fieldRefs = useRef<Record<NonNullable<ActiveField>, HTMLDivElement | null>>({
-    'ad-type': null,
+  const fieldRefs = useRef<
+    Record<NonNullable<ActiveField>, HTMLDivElement | null>
+  >({
+    "ad-type": null,
     category: null,
     breed: null,
   });
@@ -72,56 +95,62 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
   const handleFieldClick = useCallback(
     (field: ActiveField) => {
-      // Prevent breed dropdown from opening if no category is selected
-      if (field === 'breed' && !selectedCategory) {
-        return;
-      }
       // Mark as manual interaction to prevent auto-collapse
       hasManualInteraction.current = true;
+
       // If collapsed, expand first then set active field
       if (!isExpanded) {
-        dispatch({ type: 'EXPAND' });
+        dispatch({ type: "EXPAND" });
       }
-      dispatch({ type: 'SET_ACTIVE_FIELD', payload: field });
+
+      // If breed is clicked but no category is selected, redirect to category field
+      if (field === "breed" && !selectedCategory) {
+        dispatch({ type: "SET_ACTIVE_FIELD", payload: "category" });
+        return;
+      }
+
+      dispatch({ type: "SET_ACTIVE_FIELD", payload: field });
     },
-    [selectedCategory, isExpanded]
+    [selectedCategory, isExpanded],
   );
 
   const handleAdTypeSelect = useCallback(
     (value: PetAdType) => {
       const adTypeTitle = adTypes[value]?.title || value.toString();
-      console.log('Selected ad type:', adTypeTitle);
-      dispatch({ type: 'SET_AD_TYPE', payload: adTypeTitle });
+      console.log("Selected ad type:", adTypeTitle);
+      dispatch({ type: "SET_AD_TYPE", payload: adTypeTitle });
     },
-    [adTypes]
+    [adTypes],
   );
 
   const handleCategorySelect = useCallback((value: PetCategoryDetailedDto) => {
-    console.log('Selected category:', value);
-    dispatch({ type: 'SET_CATEGORY', payload: value });
+    console.log("Selected category:", value);
+    dispatch({ type: "SET_CATEGORY", payload: value });
   }, []);
 
   // Shared search trigger function - defined before handleBreedSelect
   const triggerSearch = useCallback(() => {
     hasManualInteraction.current = false;
-    dispatch({ type: 'COLLAPSE' });
+    dispatch({ type: "COLLAPSE" });
 
     // Build filter params from current local state
     const filterUpdates: Record<string, string | number | null> = {};
 
     // Convert ad type title back to PetAdType enum
     if (selectedAdType) {
-      const adTypeEntry = Object.entries(adTypes).find(([_, adType]) => adType.title === selectedAdType);
+      const adTypeEntry = Object.entries(adTypes).find(
+        ([_, adType]) => adType.title === selectedAdType,
+      );
       if (adTypeEntry) {
-        filterUpdates['ad-type'] = adTypeEntry[0]; // Use the numeric key
+        filterUpdates["ad-type"] = adTypeEntry[0]; // Use the numeric key
       }
     } else {
-      filterUpdates['ad-type'] = null; // Clear if empty
+      filterUpdates["ad-type"] = null; // Clear if empty
     }
 
     // Category and breed use IDs
-    filterUpdates['category'] = selectedCategory?.id ?? null;
-    filterUpdates['breed'] = selectedBreed?.id ?? null;
+    filterUpdates["category"] = selectedCategory?.id ?? null;
+    filterUpdates["breed"] = selectedBreed?.id ?? null;
 
     // If not on search route, navigate to /ads/s with filters
     if (!isSearchRoute) {
@@ -132,60 +161,86 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
         }
       });
       const queryString = searchParams.toString();
-      navigateWithTransition(`/ads/s${queryString ? `?${queryString}` : ''}`);
+      navigateWithTransition(`/ads/s${queryString ? `?${queryString}` : ""}`);
     } else {
       // Already on search route, just update URL filters
       updateUrlFilters(filterUpdates);
     }
-  }, [selectedAdType, selectedCategory, selectedBreed, updateUrlFilters, isSearchRoute, navigateWithTransition, adTypes]);
+  }, [
+    selectedAdType,
+    selectedCategory,
+    selectedBreed,
+    updateUrlFilters,
+    isSearchRoute,
+    navigateWithTransition,
+    adTypes,
+  ]);
 
   const handleBreedSelect = useCallback((value: PetBreedDto) => {
-    dispatch({ type: 'SET_BREED', payload: value });
+    dispatch({ type: "SET_BREED", payload: value });
   }, []);
 
   const handleInputAdTypeChange = useCallback((value: string) => {
-    dispatch({ type: 'SET_INPUT_AD_TYPE', payload: value });
+    dispatch({ type: "SET_INPUT_AD_TYPE", payload: value });
   }, []);
 
   const handleInputCategoryChange = useCallback((value: string) => {
-    dispatch({ type: 'SET_INPUT_CATEGORY', payload: value });
+    dispatch({ type: "SET_INPUT_CATEGORY", payload: value });
   }, []);
 
   const handleInputBreedChange = useCallback((value: string) => {
-    dispatch({ type: 'SET_INPUT_BREED', payload: value });
+    dispatch({ type: "SET_INPUT_BREED", payload: value });
   }, []);
 
   const handleInputAdTypeBlur = useCallback(() => {
-    dispatch({ type: 'RESET_INPUT_AD_TYPE' });
+    dispatch({ type: "RESET_INPUT_AD_TYPE" });
   }, []);
 
   const handleInputCategoryBlur = useCallback(() => {
-    dispatch({ type: 'RESET_INPUT_CATEGORY' });
+    dispatch({ type: "RESET_INPUT_CATEGORY" });
   }, []);
 
   const handleInputBreedBlur = useCallback(() => {
-    dispatch({ type: 'RESET_INPUT_BREED' });
+    dispatch({ type: "RESET_INPUT_BREED" });
   }, []);
 
   const handleClearAdType = useCallback(() => {
-    dispatch({ type: 'CLEAR_AD_TYPE' });
+    dispatch({ type: "CLEAR_AD_TYPE" });
+    // Refocus the input after clearing
+    setTimeout(() => {
+      const input = fieldRefs.current["ad-type"]?.querySelector("input");
+      input?.focus();
+    }, 0);
   }, []);
 
   const handleClearCategory = useCallback(() => {
-    dispatch({ type: 'CLEAR_CATEGORY' });
+    dispatch({ type: "CLEAR_CATEGORY" });
+    // Refocus the input after clearing
+    setTimeout(() => {
+      const input = fieldRefs.current["category"]?.querySelector("input");
+      input?.focus();
+    }, 0);
   }, []);
 
   const handleClearBreed = useCallback(() => {
-    dispatch({ type: 'CLEAR_BREED' });
+    dispatch({ type: "CLEAR_BREED" });
+    // Refocus the input after clearing
+    setTimeout(() => {
+      const input = fieldRefs.current["breed"]?.querySelector("input");
+      input?.focus();
+    }, 0);
   }, []);
 
-  const handlePositionCalculated = useCallback((position: { left: number; width: number }) => {
-    dispatch({ type: 'SHOW_DROPDOWN', payload: position });
-  }, []);
+  const handlePositionCalculated = useCallback(
+    (position: { left: number; width: number }) => {
+      dispatch({ type: "SHOW_DROPDOWN", payload: position });
+    },
+    [],
+  );
 
   const handleClickOutside = useCallback(() => {
     hasManualInteraction.current = false;
-    dispatch({ type: 'COLLAPSE' });
+    dispatch({ type: "COLLAPSE" });
   }, []);
 
   const handleSearchClick = useCallback(
@@ -193,7 +248,18 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
       e.stopPropagation();
       triggerSearch();
     },
-    [triggerSearch]
+    [triggerSearch],
+  );
+
+  // Handle Enter key press for search
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        triggerSearch();
+      }
+    },
+    [triggerSearch],
   );
 
   // Track if user has manually interacted to prevent auto-collapse
@@ -233,24 +299,53 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedBreed]); // Only depend on selectedBreed to avoid infinite loop
 
+  // Global Enter key listener when search bar is expanded
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && isExpanded) {
+        e.preventDefault();
+        triggerSearch();
+      }
+    };
+
+    if (isExpanded) {
+      document.addEventListener("keydown", handleGlobalKeyDown);
+      return () => document.removeEventListener("keydown", handleGlobalKeyDown);
+    }
+  }, [isExpanded, triggerSearch]);
+
   return (
-    <div className="flex lg:justify-center justify-start items-center gap-4 mx-8 ml-28">
+    <div
+      className={cn(
+        "flex lg:justify-center justify-start items-center gap-4 mx-8 ml-28",
+        className,
+      )}
+    >
       {/* Main Search Bar Container */}
       <div
         ref={searchBarRef}
-        className={cn('flex items-center justify-between relative w-full cursor-pointer')}
+        className={cn(
+          "flex items-center justify-between relative w-full cursor-pointer",
+        )}
         style={{
-          maxWidth: isExpanded ? `${LAYOUT.EXPANDED_WIDTH}px` : `${LAYOUT.COLLAPSED_WIDTH}px`,
-          height: isExpanded ? `${LAYOUT.EXPANDED_HEIGHT}px` : `${LAYOUT.COLLAPSED_HEIGHT}px`,
+          maxWidth: isExpanded
+            ? `${LAYOUT.EXPANDED_WIDTH}px`
+            : `${LAYOUT.COLLAPSED_WIDTH}px`,
+          height: isExpanded
+            ? `${LAYOUT.EXPANDED_HEIGHT}px`
+            : `${LAYOUT.COLLAPSED_HEIGHT}px`,
           transition: `all ${TRANSITION_DURATION}ms ${TRANSITION_TIMING}`,
         }}
         role="search"
+        onKeyDown={handleKeyDown}
       >
         {/* Background */}
         <div
           className={cn(
-            'absolute inset-0 bg-white rounded-xl -z-[3]',
-            isExpanded ? 'shadow-[0_8px_24px_0_rgba(0,0,0,0.1),0_0_0_1px_rgba(0,0,0,0.02)]' : 'border border-gray-300  hover:shadow-md'
+            "absolute inset-0 bg-white rounded-xl -z-[3]",
+            isExpanded
+              ? "shadow-[0_8px_24px_0_rgba(0,0,0,0.1),0_0_0_1px_rgba(0,0,0,0.02)]"
+              : "border border-gray-300  hover:shadow-md",
           )}
           style={{
             transition: `box-shadow ${TRANSITION_DURATION}ms ${TRANSITION_TIMING}, border ${TRANSITION_DURATION}ms ${TRANSITION_TIMING}`,
@@ -259,7 +354,10 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
         {/* Gray overlay when field is active - Airbnb style */}
         <div
-          className={cn('absolute inset-0 bg-gray-200 rounded-xl transition-opacity duration-200 -z-[2]', activeField ? 'opacity-100' : 'opacity-0')}
+          className={cn(
+            "absolute inset-0 bg-gray-200 rounded-xl transition-opacity duration-200 -z-[2]",
+            activeField ? "opacity-100" : "opacity-0",
+          )}
         />
 
         {/* Expanded State */}
@@ -268,18 +366,19 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
             <div className="grid grid-cols-[1fr_1px_1fr_1px_1fr_auto] gap-0.5 items-center w-full h-16 rounded-xl animate-in fade-in duration-200">
               <SearchField
                 fieldId="ad-type"
-                label={t('adType')}
-                placeholder={t('adTypePlaceholder')}
-                displayValue={selectedAdType || t('anyType')}
+                label={t("adType")}
+                placeholder={t("adTypePlaceholder")}
+                displayValue={selectedAdType || t("anyType")}
                 inputValue={inputAdType}
                 isExpanded={true}
-                isActive={activeField === 'ad-type'}
-                onFieldClick={() => handleFieldClick('ad-type')}
+                isActive={activeField === "ad-type"}
+                onFieldClick={() => handleFieldClick("ad-type")}
                 onInputChange={handleInputAdTypeChange}
                 onInputBlur={handleInputAdTypeBlur}
                 onClear={handleClearAdType}
+                onKeyDown={handleKeyDown}
                 fieldRef={(el) => {
-                  fieldRefs.current['ad-type'] = el;
+                  fieldRefs.current["ad-type"] = el;
                 }}
               />
 
@@ -287,16 +386,17 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
               <SearchField
                 fieldId="category"
-                label={t('category')}
-                placeholder={t('categoryPlaceholder')}
-                displayValue={selectedCategory?.title || t('allPets')}
+                label={t("category")}
+                placeholder={t("categoryPlaceholder")}
+                displayValue={selectedCategory?.title || t("allPets")}
                 inputValue={inputCategory}
                 isExpanded={true}
-                isActive={activeField === 'category'}
-                onFieldClick={() => handleFieldClick('category')}
+                isActive={activeField === "category"}
+                onFieldClick={() => handleFieldClick("category")}
                 onInputChange={handleInputCategoryChange}
                 onInputBlur={handleInputCategoryBlur}
                 onClear={handleClearCategory}
+                onKeyDown={handleKeyDown}
                 fieldRef={(el) => {
                   fieldRefs.current.category = el;
                 }}
@@ -306,22 +406,29 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
               <SearchField
                 fieldId="breed"
-                label={t('breed')}
-                placeholder={selectedCategory ? t('selectBreed') : t('selectCategoryFirst')}
-                displayValue={selectedBreed?.title || t('anyBreed')}
+                label={t("breed")}
+                placeholder={
+                  selectedCategory ? t("selectBreed") : t("selectCategoryFirst")
+                }
+                displayValue={selectedBreed?.title || t("anyBreed")}
                 inputValue={inputBreed}
                 isExpanded={true}
-                isActive={activeField === 'breed'}
-                onFieldClick={() => handleFieldClick('breed')}
+                isActive={activeField === "breed"}
+                onFieldClick={() => handleFieldClick("breed")}
                 onInputChange={handleInputBreedChange}
                 onInputBlur={handleInputBreedBlur}
                 onClear={handleClearBreed}
+                onKeyDown={handleKeyDown}
                 fieldRef={(el) => {
                   fieldRefs.current.breed = el;
                 }}
               />
 
-              <SearchButton isExpanded={true} activeField={!!activeField} onClick={handleSearchClick} />
+              <SearchButton
+                isExpanded={true}
+                activeField={!!activeField}
+                onClick={handleSearchClick}
+              />
             </div>
           </>
         ) : (
@@ -330,18 +437,18 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
             <div className="grid grid-cols-[1fr_1px_1fr_1px_1fr] items-center h-[46px] w-full animate-in fade-in duration-200">
               <SearchField
                 fieldId="ad-type"
-                label={t('adType')}
-                placeholder={t('adTypePlaceholder')}
-                displayValue={selectedAdType || t('anyType')}
+                label={t("adType")}
+                placeholder={t("adTypePlaceholder")}
+                displayValue={selectedAdType || t("anyType")}
                 inputValue={inputAdType}
                 isExpanded={false}
-                isActive={activeField === 'ad-type'}
-                onFieldClick={() => handleFieldClick('ad-type')}
+                isActive={activeField === "ad-type"}
+                onFieldClick={() => handleFieldClick("ad-type")}
                 onInputChange={handleInputAdTypeChange}
                 onInputBlur={handleInputAdTypeBlur}
                 onClear={handleClearAdType}
                 fieldRef={(el) => {
-                  fieldRefs.current['ad-type'] = el;
+                  fieldRefs.current["ad-type"] = el;
                 }}
               />
 
@@ -349,13 +456,13 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
               <SearchField
                 fieldId="category"
-                label={t('category')}
-                placeholder={t('categoryPlaceholder')}
-                displayValue={selectedCategory?.title || t('allPets')}
+                label={t("category")}
+                placeholder={t("categoryPlaceholder")}
+                displayValue={selectedCategory?.title || t("allPets")}
                 inputValue={inputCategory}
                 isExpanded={false}
-                isActive={activeField === 'category'}
-                onFieldClick={() => handleFieldClick('category')}
+                isActive={activeField === "category"}
+                onFieldClick={() => handleFieldClick("category")}
                 onInputChange={handleInputCategoryChange}
                 onInputBlur={handleInputCategoryBlur}
                 onClear={handleClearCategory}
@@ -368,13 +475,13 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
 
               <SearchField
                 fieldId="breed"
-                label={t('breed')}
-                placeholder={t('breedPlaceholder')}
-                displayValue={selectedBreed?.title || t('anyBreed')}
+                label={t("breed")}
+                placeholder={t("breedPlaceholder")}
+                displayValue={selectedBreed?.title || t("anyBreed")}
                 inputValue={inputBreed}
                 isExpanded={false}
-                isActive={activeField === 'breed'}
-                onFieldClick={() => handleFieldClick('breed')}
+                isActive={activeField === "breed"}
+                onFieldClick={() => handleFieldClick("breed")}
                 onInputChange={handleInputBreedChange}
                 onInputBlur={handleInputBreedBlur}
                 onClear={handleClearBreed}
@@ -384,7 +491,11 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
               />
             </div>
 
-            <SearchButton isExpanded={false} activeField={!!activeField} onClick={handleSearchClick} />
+            <SearchButton
+              isExpanded={false}
+              activeField={!!activeField}
+              onClick={handleSearchClick}
+            />
           </>
         )}
 
@@ -393,8 +504,15 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
           <div
             ref={dropdownRef}
             className={cn(
-              'absolute top-[calc(100%+16px)] z-50 rounded-xl shadow-[0_8px_24px_0_rgba(0,0,0,0.1),0_0_0_1px_rgba(0,0,0,0.02)]',
-              isDropdownVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+              "absolute z-50 rounded-xl shadow-[0_8px_24px_0_rgba(0,0,0,0.1),0_0_0_1px_rgba(0,0,0,0.02)]",
+              dropdownDirection === "up"
+                ? "bottom-[calc(100%+16px)]"
+                : "top-[calc(100%+16px)]",
+              isDropdownVisible
+                ? "opacity-100 translate-y-0"
+                : dropdownDirection === "up"
+                  ? "opacity-0 translate-y-2 pointer-events-none"
+                  : "opacity-0 -translate-y-2 pointer-events-none",
             )}
             style={
               {
@@ -404,15 +522,29 @@ export const SearchBarDesktopAnimated = ({ onExpandedChange }: SearchBarDesktopA
               } as React.CSSProperties
             }
           >
-            {activeField === 'ad-type' && <AdTypeDropdown onSelect={handleAdTypeSelect} searchQuery={inputAdType} />}
-            {activeField === 'category' && <CategoryDropdown onSelect={handleCategorySelect} searchQuery={inputCategory} />}
-            {activeField === 'breed' && (
-              <BreedDropdown categoryId={selectedCategory?.id ?? null} onSelect={handleBreedSelect} searchQuery={inputBreed} />
+            {activeField === "ad-type" && (
+              <AdTypeDropdown
+                onSelect={handleAdTypeSelect}
+                searchQuery={inputAdType}
+              />
+            )}
+            {activeField === "category" && (
+              <CategoryDropdown
+                onSelect={handleCategorySelect}
+                searchQuery={inputCategory}
+              />
+            )}
+            {activeField === "breed" && (
+              <BreedDropdown
+                categoryId={selectedCategory?.id ?? null}
+                onSelect={handleBreedSelect}
+                searchQuery={inputBreed}
+              />
             )}
           </div>
         )}
       </div>
-      {!isExpanded && <FilterButton />}
+      {!isExpanded && !hideFilterButton && <FilterButton />}
     </div>
   );
 };

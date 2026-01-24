@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { cn } from '@/lib/external/utils';
-import { IconSparkles, IconClock } from '@tabler/icons-react';
-import { useAdPlacement } from '@/lib/contexts/ad-placement-context';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { Heading, Text } from '@/lib/primitives/typography';
-import { ActionCard } from '@/lib/components/views/ad-placement';
+import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import { cn } from "@/lib/external/utils";
+import { IconSparkles, IconClock } from "@tabler/icons-react";
+import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { Heading, Text } from "@/lib/primitives/typography";
+import { ActionCard } from "@/lib/components/views/ad-placement";
 
 /**
  * Intro screen for ad placement wizard
@@ -15,22 +16,46 @@ import { ActionCard } from '@/lib/components/views/ad-placement';
  * Elegantly handles draft continuation with choice cards
  */
 export default function IntroView() {
-  const t = useTranslations('adPlacement');
-  const { hasSavedDraft, resetFormData } = useAdPlacement();
+  const t = useTranslations("adPlacement");
+  const searchParams = useSearchParams();
+  const { hasSavedDraft, getSavedStep, resetFormData } = useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
   const [showDraftOptions, setShowDraftOptions] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    setShowDraftOptions(hasSavedDraft());
-  }, [hasSavedDraft]);
+    // Only run once on mount
+    if (isInitialized) return;
+
+    const isNew = searchParams.get("new") === "true";
+    if (isNew) {
+      // Clear draft but stay on intro page (show fresh start UI)
+      resetFormData();
+      // Remove query param from URL
+      window.history.replaceState({}, "", window.location.pathname);
+      setShowDraftOptions(false);
+      setIsInitialized(true);
+    } else {
+      // Check for draft and show options if exists
+      setShowDraftOptions(hasSavedDraft());
+      setIsInitialized(true);
+    }
+  }, [
+    isInitialized,
+    searchParams,
+    hasSavedDraft,
+    resetFormData,
+    navigateWithTransition,
+  ]);
 
   const handleContinueDraft = () => {
-    navigateWithTransition('/ads/ad-placement/ad-type');
+    const savedStep = getSavedStep();
+    navigateWithTransition(savedStep || "/ads/ad-placement/ad-type");
   };
 
   const handleStartFresh = () => {
     resetFormData();
-    navigateWithTransition('/ads/ad-placement/ad-type');
+    navigateWithTransition("/ads/ad-placement/ad-type");
   };
 
   return (
@@ -40,11 +65,15 @@ export default function IntroView() {
         <div className="space-y-8">
           <div className="space-y-3">
             {/* <p className="text-lg font-medium text-gray-600">Step 1</p> */}
-            <Heading variant="hero">{showDraftOptions ? t('introTitleReturning') : t('introTitle')}</Heading>
+            <Heading variant="hero">
+              {showDraftOptions ? t("introTitleReturning") : t("introTitle")}
+            </Heading>
           </div>
 
           <Text variant="body-xl" leading="relaxed">
-            {showDraftOptions ? t('introDescriptionDraft') : t('introDescription')}
+            {showDraftOptions
+              ? t("introDescriptionDraft")
+              : t("introDescription")}
           </Text>
 
           {/* Choice Cards - Draft Mode */}
@@ -52,21 +81,23 @@ export default function IntroView() {
             <div className="pt-4 space-y-4">
               <ActionCard
                 icon={<IconClock className="w-6 h-6 text-white" />}
-                title={t('continueDraft')}
-                description={t('continueDraftDescription')}
+                title={t("continueDraft")}
+                description={t("continueDraftDescription")}
                 onClick={handleContinueDraft}
                 variant="primary"
               />
 
               <ActionCard
                 icon={<IconSparkles className="w-6 h-6 text-gray-700" />}
-                title={t('startFresh')}
-                description={t('startFreshDescription')}
+                title={t("startFresh")}
+                description={t("startFreshDescription")}
                 onClick={handleStartFresh}
                 variant="secondary"
               />
 
-              <p className="text-sm text-gray-500 text-center pt-2">{t('draftExpiryNote')}</p>
+              <p className="text-sm text-gray-500 text-center pt-2">
+                {t("draftExpiryNote")}
+              </p>
             </div>
           ) : (
             /* Get Started Button - No Draft Mode */
@@ -74,16 +105,26 @@ export default function IntroView() {
               <button
                 onClick={handleStartFresh}
                 className={cn(
-                  'inline-flex items-center justify-center gap-2',
-                  'px-8 py-4 rounded-xl',
-                  'bg-black text-white font-semibold text-lg',
-                  'hover:bg-gray-800 transition-all duration-200',
-                  'shadow-lg hover:shadow-xl'
+                  "inline-flex items-center justify-center gap-2",
+                  "px-8 py-4 rounded-xl",
+                  "bg-black text-white font-semibold text-lg",
+                  "hover:bg-gray-800 transition-all duration-200",
+                  "shadow-lg hover:shadow-xl",
                 )}
               >
-                {t('getStarted')}
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                {t("getStarted")}
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
             </div>
@@ -99,7 +140,12 @@ export default function IntroView() {
               <div className="absolute inset-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-accent-100">
                   {/* Image placeholder - Replace src with your image */}
-                  <img src="/images/intro.png" alt="Get started with your pet ad" className="w-full h-full object-cover" loading="eager" />
+                  <img
+                    src="/images/intro.png"
+                    alt="Get started with your pet ad"
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
                 </div>
               </div>
             </div>

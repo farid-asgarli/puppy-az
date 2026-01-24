@@ -1,15 +1,28 @@
-'use client';
+"use client";
 
-import { createContext, useContext, createElement, useEffect, useState, useCallback, useMemo, type ReactNode } from 'react';
-import { useAuth } from './use-auth';
-import { addFavoriteAdAction, removeFavoriteAdAction, syncFavoritesAction } from '@/lib/auth/actions';
+import {
+  createContext,
+  useContext,
+  createElement,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  type ReactNode,
+} from "react";
+import { useAuth } from "./use-auth";
+import {
+  addFavoriteAdAction,
+  removeFavoriteAdAction,
+  syncFavoritesAction,
+} from "@/lib/auth/actions";
 import {
   getLocalFavorites,
   setLocalFavorites,
   addLocalFavorite,
   removeLocalFavorite,
   clearLocalFavorites,
-} from '@/lib/utils/local-storage-favorites';
+} from "@/lib/utils/local-storage-favorites";
 
 /**
  * Favorites context value
@@ -19,6 +32,7 @@ interface FavoritesContextValue {
   isFavorite: (id: number) => boolean;
   toggleFavorite: (id: number) => Promise<void>;
   createToggleHandler: (id: number) => (e?: React.MouseEvent) => Promise<void>;
+  syncFavoritesFromBackend: (ids: number[]) => void;
   loading: boolean;
   syncing: boolean;
 }
@@ -50,9 +64,14 @@ interface FavoritesProviderProps {
  * </FavoritesProvider>
  * ```
  */
-export function FavoritesProvider({ children, initialFavorites = [] }: FavoritesProviderProps) {
+export function FavoritesProvider({
+  children,
+  initialFavorites = [],
+}: FavoritesProviderProps) {
   const { isAuthenticated, loading: authLoading } = useAuth();
-  const [favorites, setFavorites] = useState<Set<number>>(new Set(initialFavorites));
+  const [favorites, setFavorites] = useState<Set<number>>(
+    new Set(initialFavorites),
+  );
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [hasSyncedLocalFavorites, setHasSyncedLocalFavorites] = useState(false);
@@ -74,7 +93,9 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
 
           if (localFavs.length > 0) {
             // Filter out favorites that are already on the server
-            const favsToSync = localFavs.filter((id) => !initialFavorites.includes(id));
+            const favsToSync = localFavs.filter(
+              (id) => !initialFavorites.includes(id),
+            );
 
             if (favsToSync.length > 0) {
               setSyncing(true);
@@ -83,7 +104,7 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
                 // Add synced favorites to current state
                 setFavorites((prev) => new Set([...prev, ...favsToSync]));
               } catch (error) {
-                console.error('Failed to sync local favorites:', error);
+                console.error("Failed to sync local favorites:", error);
               } finally {
                 setSyncing(false);
               }
@@ -121,7 +142,7 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
     (id: number): boolean => {
       return favorites.has(id);
     },
-    [favorites]
+    [favorites],
   );
 
   /**
@@ -159,7 +180,7 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
           }
         }
       } catch (error) {
-        console.error('Failed to toggle favorite:', error);
+        console.error("Failed to toggle favorite:", error);
 
         // Rollback on error
         setFavorites((prev) => {
@@ -173,7 +194,7 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
         });
       }
     },
-    [favorites, isAuthenticated]
+    [favorites, isAuthenticated],
   );
 
   /**
@@ -189,8 +210,26 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
         await toggleFavorite(id);
       };
     },
-    [toggleFavorite]
+    [toggleFavorite],
   );
+
+  /**
+   * Sync favorites from backend response (adds missing IDs to local state)
+   * Used when fetching favorite ads from backend to ensure UI is in sync
+   */
+  const syncFavoritesFromBackend = useCallback((ids: number[]) => {
+    setFavorites((prev) => {
+      const next = new Set(prev);
+      let hasChanges = false;
+      ids.forEach((id) => {
+        if (!next.has(id)) {
+          next.add(id);
+          hasChanges = true;
+        }
+      });
+      return hasChanges ? next : prev;
+    });
+  }, []);
 
   const value = useMemo<FavoritesContextValue>(
     () => ({
@@ -198,10 +237,19 @@ export function FavoritesProvider({ children, initialFavorites = [] }: Favorites
       isFavorite,
       toggleFavorite,
       createToggleHandler,
+      syncFavoritesFromBackend,
       loading,
       syncing,
     }),
-    [favorites, isFavorite, toggleFavorite, createToggleHandler, loading, syncing]
+    [
+      favorites,
+      isFavorite,
+      toggleFavorite,
+      createToggleHandler,
+      syncFavoritesFromBackend,
+      loading,
+      syncing,
+    ],
   );
 
   return createElement(FavoritesContext.Provider, { value }, children);
@@ -229,7 +277,9 @@ export function useFavorites(): FavoritesContextValue {
   const context = useContext(FavoritesContext);
 
   if (!context) {
-    throw new Error('useFavorites must be used within FavoritesProvider. Wrap your app root with <FavoritesProvider>.');
+    throw new Error(
+      "useFavorites must be used within FavoritesProvider. Wrap your app root with <FavoritesProvider>.",
+    );
   }
 
   return context;

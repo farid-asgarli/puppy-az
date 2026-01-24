@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { PetBreedDto, PetCategoryDetailedDto } from '@/lib/api';
-import { petAdService } from '@/lib/api/services/pet-ad.service';
-import ContentContainer from '@/lib/components/content-container';
-import { SearchBarMobileAnimated } from '../searchbar';
-import { useFilterUrl } from '@/lib/filtering/use-filter-url';
-import { DisplayCache } from '@/lib/caching/display-cache';
-import { SearchBarSyncProvider } from '../searchbar/searchbar-sync-context';
-import { useMemo, useEffect } from 'react';
-import { usePathname } from '@/i18n/routing';
-import { FilterButton } from '@/lib/components/filters/filter-button';
-import { IconButton } from '@/lib/primitives';
-import { IconArrowLeft } from '@tabler/icons-react';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { cn } from '@/lib/external/utils';
-import { useLocale } from '@/lib/hooks/use-client-locale';
+import { PetBreedDto, PetCategoryDetailedDto } from "@/lib/api";
+import { petAdService } from "@/lib/api/services/pet-ad.service";
+import ContentContainer from "@/lib/components/content-container";
+import { SearchBarMobileAnimated } from "../searchbar";
+import { useFilterUrl } from "@/lib/filtering/use-filter-url";
+import { DisplayCache } from "@/lib/caching/display-cache";
+import { SearchBarSyncProvider } from "../searchbar/searchbar-sync-context";
+import { useMemo, useEffect } from "react";
+import { usePathname } from "@/i18n/routing";
+import { FilterButton } from "@/lib/components/filters/filter-button";
+import { IconButton } from "@/lib/primitives";
+import { IconArrowLeft } from "@tabler/icons-react";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { cn } from "@/lib/external/utils";
+import { useLocale } from "@/lib/hooks/use-client-locale";
 
 interface MobileNavbarProps {
   categories: PetCategoryDetailedDto[];
@@ -22,14 +22,18 @@ interface MobileNavbarProps {
   isSticky?: boolean;
 }
 
-export function MobileNavbar({ categories, initialBreeds, isSticky = true }: MobileNavbarProps) {
+export function MobileNavbar({
+  categories,
+  initialBreeds,
+  isSticky = true,
+}: MobileNavbarProps) {
   const locale = useLocale();
   const { filters, updateFilters } = useFilterUrl();
   const pathname = usePathname();
   const { navigateWithTransition } = useViewTransition();
 
   // Check if we're on the search route where filtering happens
-  const isSearchRoute = pathname === '/ads/s';
+  const isSearchRoute = pathname === "/ads/s";
 
   // Prefetch breeds for current category if not in cache (with locale from URL)
   useEffect(() => {
@@ -45,7 +49,9 @@ export function MobileNavbar({ categories, initialBreeds, isSticky = true }: Mob
   // Build initial values from URL filters
   const initialValues = useMemo(() => {
     // Find category from filters.category (ID)
-    const category = filters.category ? categories.find((c) => c.id === Number(filters.category)) ?? null : null;
+    const category = filters.category
+      ? (categories.find((c) => c.id === Number(filters.category)) ?? null)
+      : null;
 
     // Find breed from initial breeds or cache
     let breed = null;
@@ -65,21 +71,31 @@ export function MobileNavbar({ categories, initialBreeds, isSticky = true }: Mob
     }
 
     return {
-      adType: filters['ad-type'] ?? null,
+      adType: filters["ad-type"] ?? null,
       category,
       breed,
     };
   }, [filters, categories, initialBreeds]);
 
   return (
-    <nav className={cn('left-0 right-0 z-50', !isSearchRoute ? 'bg-transparent top-2.5 ' : 'bg-white top-0', isSticky ? 'fixed' : 'relative')}>
+    <nav
+      className={cn(
+        "left-0 right-0 z-50",
+        !isSearchRoute ? "bg-transparent top-2.5 " : "bg-white top-0",
+        isSticky ? "fixed" : "relative",
+      )}
+    >
       <ContentContainer className="h-full relative">
         {/* Main navigation items row */}
         <div className="flex items-center h-16 py-3 gap-2">
           {/* Back Button - Fixed width, no shrink */}
           {isSearchRoute && (
             <div className="flex-shrink-0">
-              <IconButton onClick={() => navigateWithTransition('/')} icon={<IconArrowLeft size={20} />} variant="transparent" />
+              <IconButton
+                onClick={() => navigateWithTransition("/")}
+                icon={<IconArrowLeft size={20} />}
+                variant="transparent"
+              />
             </div>
           )}
 
@@ -91,7 +107,9 @@ export function MobileNavbar({ categories, initialBreeds, isSticky = true }: Mob
               currentUrlFilters={filters}
               isSearchRoute={isSearchRoute}
             >
-              <SearchBarMobileAnimated />
+              <SearchBarMobileAnimated
+                key={`${filters["ad-type"] ?? ""}-${filters.category ?? ""}-${filters.breed ?? ""}`}
+              />
             </SearchBarSyncProvider>
           </div>
 

@@ -1,12 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import { PetAdDetailsDto, PetAdImageDto, UpdatePetAdCommand } from '@/lib/api/types/pet-ad.types';
-import { updatePetAdAction, closeAdAction } from '@/lib/auth/actions';
-import { useAuth } from '@/lib/hooks/use-auth';
-import { PageHeader } from '@/lib/components/views/common';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import {
+  PetAdDetailsDto,
+  PetAdImageDto,
+  UpdatePetAdCommand,
+} from "@/lib/api/types/pet-ad.types";
+import { updatePetAdAction, closeAdAction } from "@/lib/auth/actions";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { PageHeader } from "@/lib/components/views/common";
 import {
   AdOverviewSection,
   BasicInformationSection,
@@ -16,7 +20,7 @@ import {
   DetailsSection,
   PricingSection,
   ActionsSection,
-} from './sections';
+} from "./sections";
 
 interface EditAdViewProps {
   adDetails: PetAdDetailsDto;
@@ -25,7 +29,7 @@ interface EditAdViewProps {
 export const EditAdView = ({ adDetails }: EditAdViewProps) => {
   const router = useRouter();
   const { getToken } = useAuth();
-  const t = useTranslations('adEdit');
+  const t = useTranslations("adEdit");
 
   // Form state
   const [formData, setFormData] = useState({
@@ -61,7 +65,8 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
       formData.title !== adDetails.title ||
       formData.description !== adDetails.description ||
       formData.price !== (adDetails.price || 0) ||
-      JSON.stringify(formData.imageIds) !== JSON.stringify(adDetails.images.map((img) => img.id));
+      JSON.stringify(formData.imageIds) !==
+        JSON.stringify(adDetails.images.map((img) => img.id));
 
     setHasChanges(changed);
   }, [formData, adDetails]);
@@ -85,56 +90,56 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
 
     // Breed
     if (!formData.petBreedId || formData.petBreedId <= 0) {
-      newErrors.petBreedId = t('validation.breedRequired');
+      newErrors.petBreedId = t("validation.breedRequired");
     }
 
     // Gender
     if (!formData.gender) {
-      newErrors.gender = t('validation.genderRequired');
+      newErrors.gender = t("validation.genderRequired");
     }
 
     // Age
     if (!formData.ageInMonths || formData.ageInMonths <= 0) {
-      newErrors.ageInMonths = t('validation.ageRequired');
+      newErrors.ageInMonths = t("validation.ageRequired");
     }
 
     // Size
     if (!formData.size) {
-      newErrors.size = t('validation.sizeRequired');
+      newErrors.size = t("validation.sizeRequired");
     }
 
     // Color
     if (!formData.color || formData.color.trim().length === 0) {
-      newErrors.color = t('validation.colorRequired');
+      newErrors.color = t("validation.colorRequired");
     }
 
     // City
     if (!formData.cityId || formData.cityId <= 0) {
-      newErrors.cityId = t('validation.cityRequired');
+      newErrors.cityId = t("validation.cityRequired");
     }
 
     // Images
     if (!formData.imageIds || formData.imageIds.length === 0) {
-      newErrors.imageIds = t('validation.imagesRequired');
+      newErrors.imageIds = t("validation.imagesRequired");
     }
 
     // Title
     if (!formData.title || formData.title.trim().length < 10) {
-      newErrors.title = t('validation.titleMinLength');
+      newErrors.title = t("validation.titleMinLength");
     } else if (formData.title.trim().length > 100) {
-      newErrors.title = t('validation.titleMaxLength');
+      newErrors.title = t("validation.titleMaxLength");
     }
 
     // Description
     if (!formData.description || formData.description.trim().length < 30) {
-      newErrors.description = t('validation.descriptionMinLength');
+      newErrors.description = t("validation.descriptionMinLength");
     } else if (formData.description.trim().length > 2000) {
-      newErrors.description = t('validation.descriptionMaxLength');
+      newErrors.description = t("validation.descriptionMaxLength");
     }
 
     // Price (only for Sale ads)
     if (adDetails.adType === 1 && formData.price <= 0) {
-      newErrors.price = t('validation.pricePositive');
+      newErrors.price = t("validation.pricePositive");
     }
 
     setErrors(newErrors);
@@ -144,9 +149,9 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
   // Save changes
   const handleSave = async () => {
     if (!validate()) {
-      setSaveError(t('validation.fillAllRequired'));
+      setSaveError(t("validation.fillAllRequired"));
       // Scroll to first error
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
@@ -156,7 +161,7 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
     try {
       const token = await getToken();
       if (!token) {
-        setSaveError(t('validation.authRequired'));
+        setSaveError(t("validation.authRequired"));
         setIsSaving(false);
         return;
       }
@@ -180,14 +185,14 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
       const result = await updatePetAdAction(updateData);
 
       if (result.success) {
-        // Redirect to ad details page
-        router.push(`/ads/item-details/${adDetails.id}`);
+        // Use hard navigation to ensure fresh data (bypass router cache)
+        window.location.href = `/ads/item-details/${adDetails.id}`;
       } else {
-        setSaveError(result.error || t('validation.saveError'));
+        setSaveError(result.error || t("validation.saveError"));
       }
     } catch (error) {
-      console.error('Save error:', error);
-      setSaveError(t('validation.generalError'));
+      console.error("Save error:", error);
+      setSaveError(t("validation.generalError"));
     } finally {
       setIsSaving(false);
     }
@@ -196,7 +201,7 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
   // Cancel changes
   const handleCancel = () => {
     if (hasChanges) {
-      const confirmed = window.confirm(t('confirmations.unsavedChanges'));
+      const confirmed = window.confirm(t("confirmations.unsavedChanges"));
       if (!confirmed) return;
     }
     router.back();
@@ -216,13 +221,14 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
       const result = await closeAdAction(adDetails.id);
 
       if (result.success) {
-        router.push('/my-account/ads/active');
+        // Use hard navigation to ensure fresh data (bypass router cache)
+        window.location.href = "/my-account/ads?tab=active";
       } else {
-        setSaveError(result.error || t('validation.deleteError'));
+        setSaveError(result.error || t("validation.deleteError"));
       }
     } catch (error) {
-      console.error('Delete error:', error);
-      setSaveError(t('validation.generalError'));
+      console.error("Delete error:", error);
+      setSaveError(t("validation.generalError"));
     } finally {
       setIsSaving(false);
     }
@@ -231,7 +237,11 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
   return (
     <div className="min-h-screen bg-white">
       {/* Page Header */}
-      <PageHeader title={t('pageTitle')} subtitle={t('overview.subheading')} maxWidth="xl" />
+      <PageHeader
+        title={t("pageTitle")}
+        subtitle={t("overview.subheading")}
+        maxWidth="xl"
+      />
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-6 py-12">
@@ -276,7 +286,7 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
               cityId: formData.cityId,
             }}
             onChange={(data) => {
-              handleChange('cityId', data.cityId);
+              handleChange("cityId", data.cityId);
             }}
             errors={errors}
           />
@@ -285,17 +295,17 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
           <PhotosSection
             existingImages={images}
             onChange={(data) => {
-              handleChange('imageIds', data.imageIds);
+              handleChange("imageIds", data.imageIds);
             }}
             onImageUpdate={(updatedImages) => {
               setImages(updatedImages);
               handleChange(
-                'imageIds',
-                updatedImages.map((img) => img.id)
+                "imageIds",
+                updatedImages.map((img) => img.id),
               );
             }}
             errors={errors}
-            token={''} // Token will be fetched inside the component
+            token={""} // Token will be fetched inside the component
           />
 
           {/* Section 6: Details */}
@@ -319,7 +329,7 @@ export const EditAdView = ({ adDetails }: EditAdViewProps) => {
               price: formData.price,
             }}
             onChange={(data) => {
-              handleChange('price', data.price);
+              handleChange("price", data.price);
             }}
             errors={errors}
           />

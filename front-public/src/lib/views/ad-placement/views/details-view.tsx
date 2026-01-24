@@ -1,13 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useAdPlacement } from '@/lib/contexts/ad-placement-context';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { PetAdType } from '@/lib/api/types/pet-ad.types';
-import { TextareaField } from '@/lib/components/views/ad-placement';
-import { ViewFooter, ViewLayout, InfoBox } from '../components';
-import { Heading, Text } from '@/lib/primitives/typography';
-import { useTranslations } from 'next-intl';
+import { useState } from "react";
+import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { TextareaField } from "@/lib/components/views/ad-placement";
+import { ViewFooter, ViewLayout, InfoBox } from "../components";
+import { Heading, Text } from "@/lib/primitives/typography";
+import { useTranslations } from "next-intl";
 
 const TITLE_MIN_LENGTH = 10;
 const TITLE_MAX_LENGTH = 100;
@@ -17,10 +16,10 @@ const DESCRIPTION_MAX_LENGTH = 2000;
 export default function DetailsView() {
   const { formData, updateFormData } = useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
-  const t = useTranslations('adPlacementDetails.titleView');
+  const t = useTranslations("adPlacementDetails.titleView");
 
-  const [title, setTitle] = useState(formData.title || '');
-  const [description, setDescription] = useState(formData.description || '');
+  const [title, setTitle] = useState(formData.title || "");
+  const [description, setDescription] = useState(formData.description || "");
 
   const handleTitleChange = (value: string) => {
     if (value.length <= TITLE_MAX_LENGTH) {
@@ -38,56 +37,54 @@ export default function DetailsView() {
 
   const handleNext = () => {
     if (canProceed) {
-      if (formData.adType === PetAdType.Sale) {
-        navigateWithTransition('/ads/ad-placement/price');
-      } else {
-        navigateWithTransition('/ads/ad-placement/review');
-      }
+      navigateWithTransition("/ads/ad-placement/location");
     }
   };
 
   const handleBack = () => {
-    navigateWithTransition('/ads/ad-placement/photos');
+    navigateWithTransition("/ads/ad-placement/physical");
   };
 
-  const canProceed = title.trim().length >= TITLE_MIN_LENGTH && description.trim().length >= DESCRIPTION_MIN_LENGTH;
+  const canProceed =
+    title.trim().length >= TITLE_MIN_LENGTH &&
+    description.trim().length >= DESCRIPTION_MIN_LENGTH;
 
   return (
     <>
       <ViewLayout>
         <div className="space-y-12">
           <div className="space-y-2">
-            <Heading variant="page-title">{t('heading')}</Heading>
+            <Heading variant="subsection">{t("heading")}</Heading>
             <Text variant="body-lg" color="secondary">
-              {t('subheading')}
+              {t("subheading")}
             </Text>
           </div>
 
           <div className="space-y-4">
             <TextareaField
-              label={t('titleLabel')}
+              label={t("titleLabel")}
               value={title}
               onChange={handleTitleChange}
-              placeholder={t('titlePlaceholder')}
+              placeholder={t("titlePlaceholder")}
               rows={2}
               maxLength={TITLE_MAX_LENGTH}
               minLength={TITLE_MIN_LENGTH}
               showCharCount
             />
 
-            <InfoBox title={t('titleTips')}>
+            <InfoBox title={t("titleTips")}>
               <ul className="space-y-1 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('tips.includeBreed')}</span>
+                  <span>{t("tips.includeBreed")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('tips.keepClear')}</span>
+                  <span>{t("tips.keepClear")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('tips.avoidSpecial')}</span>
+                  <span>{t("tips.avoidSpecial")}</span>
                 </li>
               </ul>
             </InfoBox>
@@ -95,46 +92,46 @@ export default function DetailsView() {
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Heading variant="section">{t('descriptionHeading')}</Heading>
-              <Text>{t('descriptionSubheading')}</Text>
+              <Heading variant="subsection">{t("descriptionHeading")}</Heading>
+              <Text>{t("descriptionSubheading")}</Text>
             </div>
 
             <TextareaField
-              label={t('descriptionLabel')}
+              label={t("descriptionLabel")}
               value={description}
               onChange={handleDescriptionChange}
-              placeholder={t('descriptionPlaceholder')}
+              placeholder={t("descriptionPlaceholder")}
               rows={12}
               maxLength={DESCRIPTION_MAX_LENGTH}
               minLength={DESCRIPTION_MIN_LENGTH}
               showCharCount
             />
 
-            <InfoBox title={t('whatToInclude')}>
+            <InfoBox title={t("whatToInclude")}>
               <ul className="space-y-1 text-sm">
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.personality')}</span>
+                  <span>{t("includeItems.personality")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.health')}</span>
+                  <span>{t("includeItems.health")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.training')}</span>
+                  <span>{t("includeItems.training")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.specialNeeds')}</span>
+                  <span>{t("includeItems.specialNeeds")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.reason')}</span>
+                  <span>{t("includeItems.reason")}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-gray-400">•</span>
-                  <span>{t('includeItems.unique')}</span>
+                  <span>{t("includeItems.unique")}</span>
                 </li>
               </ul>
             </InfoBox>
@@ -142,7 +139,11 @@ export default function DetailsView() {
         </div>
       </ViewLayout>
 
-      <ViewFooter onBack={handleBack} onNext={handleNext} canProceed={canProceed} />
+      <ViewFooter
+        onBack={handleBack}
+        onNext={handleNext}
+        canProceed={canProceed}
+      />
     </>
   );
 }

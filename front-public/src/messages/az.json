@@ -3,6 +3,7 @@
     "home": "Ana Səhifə",
     "postAd": "Elan yerləşdir",
     "myAds": "Elanlarım",
+    "draftAds": "Tamamlanmamış elan",
     "favorites": "Seçilmişlər",
     "myAccount": "Hesabım",
     "login": "Daxil ol",
@@ -11,13 +12,18 @@
     "settings": "Parametrlər",
     "help": "Kömək",
     "about": "Haqqımızda",
+    "contact": "Əlaqə",
     "privacy": "Məxfilik Siyasəti",
     "terms": "İstifadə Şərtləri",
+    "safety": "Təhlükəsizlik",
+    "blog": "Bloq",
     "premium": "Premium"
   },
   "common": {
     "submit": "Göndər",
     "cancel": "Ləğv et",
+    "confirm": "Təsdiq et",
+    "pleaseWait": "Gözləyin...",
     "save": "Yadda saxla",
     "delete": "Sil",
     "edit": "Redaktə et",
@@ -29,6 +35,8 @@
     "filter": "Filtr",
     "sort": "Sırala",
     "loading": "Yüklənir...",
+    "allDataLoaded": "Bütün məlumatlar yükləndi",
+    "adsCount": "{count} elan",
     "error": "Xəta",
     "success": "Uğurlu",
     "noResults": "Nəticə tapılmadı",
@@ -39,6 +47,11 @@
     "no": "Xeyr",
     "optional": "İstəyə bağlı",
     "required": "Məcburi",
+    "notSelected": "Seçilməyib",
+    "validation": {
+      "minLengthNeeded": "Daha {count} simvol lazımdır",
+      "minLengthMet": "Əla! Minimum uzunluq təmin edildi"
+    },
     "adTypes": {
       "sale": {
         "title": "Satış",
@@ -253,6 +266,62 @@
       }
     }
   },
+  "forgotPassword": {
+    "title": "Şifrəni bərpa edin",
+    "subtitle": "E-poçt ünvanınızı daxil edin, şifrə bərpa linki göndərəcəyik",
+    "fields": {
+      "email": "E-poçt"
+    },
+    "validation": {
+      "emailRequired": "E-poçt ünvanı tələb olunur",
+      "emailInvalid": "Düzgün e-poçt ünvanı daxil edin"
+    },
+    "submit": "Bərpa linki göndər",
+    "submitting": "Göndərilir...",
+    "backToLogin": "Giriş səhifəsinə qayıt",
+    "success": {
+      "title": "Link göndərildi!",
+      "description": "Şifrə bərpa linki e-poçt ünvanınıza göndərildi. Zəhmət olmasa poçtunuzu yoxlayın.",
+      "emailSentTo": "Göndərilən ünvan:",
+      "checkSpam": "Əgər email gəlməyibsə, spam/gereksiz qovluğunu yoxlayın. Link 30 dəqiqə ərzində etibarlıdır."
+    },
+    "errors": {
+      "requestFailed": "Bərpa linki göndərilə bilmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    }
+  },
+  "resetPassword": {
+    "title": "Yeni şifrə təyin edin",
+    "subtitle": "Hesabınız üçün yeni şifrə yaradın",
+    "verifying": "Token yoxlanılır...",
+    "fields": {
+      "password": "Yeni şifrə",
+      "confirmPassword": "Şifrəni təsdiqlə"
+    },
+    "validation": {
+      "passwordRequired": "Şifrə tələb olunur",
+      "passwordMinLength": "Şifrə ən azı 8 simvol olmalıdır",
+      "passwordMismatch": "Şifrələr uyğun gəlmir"
+    },
+    "passwordRequirements": "Şifrə ən azı 8 simvol olmalı, böyük hərf, kiçik hərf və rəqəm daxil etməlidir.",
+    "submit": "Şifrəni dəyiş",
+    "submitting": "Dəyişdirilir...",
+    "backToLogin": "Giriş səhifəsinə qayıt",
+    "success": {
+      "title": "Şifrə dəyişdirildi!",
+      "description": "Şifrəniz uğurla dəyişdirildi. İndi yeni şifrənizlə daxil ola bilərsiniz.",
+      "redirecting": "Giriş səhifəsinə yönləndirilirsiniz..."
+    },
+    "invalid": {
+      "title": "Etibarsız link",
+      "description": "Bu şifrə bərpa linki etibarsızdır və ya vaxtı keçib. Zəhmət olmasa yeni bərpa linki tələb edin.",
+      "requestNew": "Yeni link tələb et"
+    },
+    "errors": {
+      "resetFailed": "Şifrə dəyişdirilə bilmədi. Link etibarsız və ya vaxtı keçib ola bilər.",
+      "unknown": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+    }
+  },
   "register": {
     "header": {
       "title": "Qeydiyyat",
@@ -389,6 +458,21 @@
     "priceRequired": "Satış elanları üçün qiyməti daxil edin",
     "submitError": "Elanınız göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
     "unknownError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+    "steps": {
+      "step": "Addım",
+      "adType": "Elan növü",
+      "category": "Kateqoriya",
+      "breed": "Cins",
+      "basics": "Əsaslar",
+      "physical": "Fiziki",
+      "details": "Detallar",
+      "location": "Məkan",
+      "photos": "Şəkillər",
+      "price": "Qiymət",
+      "review": "Yoxlama",
+      "clickToGoBack": "Keçmək üçün klik edin",
+      "notYetReached": "Hələ açılmayıb"
+    },
     "adTypeForSale": "Satılır",
     "adTypeFound": "Tapılıb",
     "adTypeLost": "İtirilmişdir",
@@ -462,6 +546,10 @@
     "adType": "Elan növü",
     "category": "Kateqoriya",
     "breed": "Cins",
+    "allAdTypes": "Bütün növlər",
+    "allCategories": "Bütün kateqoriyalar",
+    "allBreeds": "Bütün cinslər",
+    "searchCriteria": "Axtarış meyarları",
     "adTypePlaceholder": "Təklif və ya sorğu",
     "categoryPlaceholder": "Kateqoriya axtar",
     "breedPlaceholder": "Cins",
@@ -518,7 +606,8 @@
     "color": "Rəng",
     "colorPlaceholder": "məs. Qəhvəyi, Ağ və s.",
     "useSlider": "Sürüşdürücü istifadə et",
-    "enterExactNumber": "Dəqiq rəqəm daxil et"
+    "enterExactNumber": "Dəqiq rəqəm daxil et",
+    "removeFilterLabel": "{label}: {value} filtrini sil"
   },
   "home": {
     "hero": {
@@ -537,13 +626,19 @@
         "activeAds": "10,000+ aktiv elan",
         "safeShopping": "Təhlükəsiz alış-veriş",
         "verifiedSellers": "Təsdiqlənmiş satıcılar"
-      }
+      },
+      "scrollDown": "Daha çox"
     },
     "whyChooseUs": {
       "title": "Niyə puppy.az?",
       "subtitle": "Bizi seçmək üçün çoxlu səbəblər var",
       "activeUsers": "10,000+ aktiv istifadəçi artıq bizə etibar edir",
       "platformDescription": "Ev heyvanınızı tapmaq və ya satmaq üçün ən etibarlı və rahat platforma",
+      "stats": {
+        "users": "İstifadəçi",
+        "ads": "Elan",
+        "satisfaction": "Məmnuniyyət"
+      },
       "features": {
         "verifiedSellers": {
           "title": "Təsdiqlənmiş satıcılar",
@@ -729,7 +824,414 @@
       }
     }
   },
+  "careers": {
+    "hero": {
+      "title": "Karyera",
+      "subtitle": "puppy.az komandasına qoşulun və heyvan sevərlərin həyatını dəyişdirin"
+    },
+    "values": {
+      "mission": {
+        "title": "Missiyamız",
+        "description": "Azərbaycanda hər bir heyvanın sevgi dolu bir ev tapmasına kömək edirik. Kiçik bir komanda olaraq böyük dəyişikliklər yaradırıq."
+      },
+      "team": {
+        "title": "Komandamız",
+        "description": "Heyvanları sevən, texnologiyaya həvəsli və yenilikçi düşüncəli insanlardan ibarət kiçik amma güclü bir komandayıq."
+      },
+      "impact": {
+        "title": "Təsirimiz",
+        "description": "Hər gün minlərlə heyvan sevər platformamızdan istifadə edir. Siz də bu təsirin bir parçası ola bilərsiniz."
+      }
+    },
+    "perks": {
+      "title": "Niyə puppy.az?",
+      "subtitle": "Komandamızın bir parçası olmağın üstünlükləri",
+      "smallTeam": {
+        "title": "Kiçik komanda",
+        "description": "Səsiniz eşidilir. Hər bir fikir və təklif dəyərlidir."
+      },
+      "growth": {
+        "title": "İnkişaf imkanları",
+        "description": "Startap mühitində sürətli inkişaf və öyrənmə imkanı."
+      },
+      "impact": {
+        "title": "Yaratdığınızı görün",
+        "description": "Fikirinizdən məhsulun istifadəyə verilməsinədək bütün prosesdə iştirak edin."
+      },
+      "learning": {
+        "title": "Öyrənmə mühiti",
+        "description": "Müxtəlif sahələrdə təcrübə qazanmaq şansı."
+      }
+    },
+    "talentNetwork": {
+      "title": "İstedadlar şəbəkəsinə qoşulun",
+      "description": "Hal-hazırda açıq vakansiyamız yoxdur, lakin istedadlı insanları hər zaman tanımaq istəyirik. CV-nizi göndərin, gələcək imkanlar haqqında sizinlə əlaqə saxlayaq.",
+      "sendResume": "CV göndər",
+      "hint": "careers@puppy.az ünvanına CV və qısa özünü təqdimatınızı göndərin"
+    },
+    "social": {
+      "title": "Bizi izləyin",
+      "subtitle": "Yeniliklərdən xəbərdar olun"
+    },
+    "cta": {
+      "curious": "Şirkətimiz haqqında daha çox öyrənmək istəyirsiniz?",
+      "aboutUs": "Haqqımızda",
+      "contactUs": "Əlaqə"
+    }
+  },
+  "report": {
+    "hero": {
+      "title": "Şikayət bildirin",
+      "subtitle": "Şübhəli elan və ya istifadəçi haqqında məlumat verin"
+    },
+    "types": {
+      "fake": {
+        "label": "Saxta elan",
+        "description": "Şəkillər və ya məlumatlar gerçəkliyi əks etdirmir"
+      },
+      "scam": {
+        "label": "Fırıldaqçılıq",
+        "description": "Ödəniş aldıqdan sonra əlaqəni kəsir və ya aldadır"
+      },
+      "inappropriate": {
+        "label": "Uyğunsuz məzmun",
+        "description": "Heyvanın pis rəftara məruz qalması və ya qeyri-qanuni satış"
+      },
+      "spam": {
+        "label": "Spam",
+        "description": "Eyni elanın təkrar-təkrar yerləşdirilməsi"
+      }
+    },
+    "form": {
+      "typeLabel": "Şikayət növü",
+      "adLink": "Elan linki",
+      "adLinkPlaceholder": "https://puppy.az/ads/...",
+      "adLinkHint": "Şikayət etmək istədiyiniz elanın linkini yapışdırın (əgər varsa)",
+      "description": "Açıqlama",
+      "descriptionPlaceholder": "Problemi ətraflı izah edin...",
+      "email": "E-poçt (istəyə bağlı)",
+      "emailPlaceholder": "sizin@email.com",
+      "emailHint": "Araşdırma nəticəsi haqqında məlumat almaq istəyirsinizsə yazın",
+      "emailError": "Düzgün e-poçt ünvanı daxil edin",
+      "submit": "Şikayət göndər",
+      "submitting": "Göndərilir..."
+    },
+    "success": {
+      "title": "Şikayətiniz qəbul edildi",
+      "description": "Bildirişiniz üçün təşəkkür edirik. Komandamız ən qısa zamanda araşdırma aparacaq.",
+      "backHome": "Ana səhifəyə qayıt"
+    },
+    "sidebar": {
+      "security": {
+        "title": "Təhlükəsizliyiniz vacibdir",
+        "description": "Bütün şikayətlər məxfi şəkildə araşdırılır. Şəxsi məlumatlarınız qorunur."
+      },
+      "process": {
+        "title": "Araşdırma prosesi",
+        "step1": "Şikayətiniz komandamıza çatdırılır",
+        "step2": "Elan və ya istifadəçi yoxlanılır",
+        "step3": "Lazım gəldikdə tədbir görülür"
+      },
+      "directContact": {
+        "title": "Birbaşa əlaqə",
+        "email": "report@puppy.az"
+      }
+    }
+  },
+  "press": {
+    "hero": {
+      "title": "Mətbuat mərkəzi",
+      "subtitle": "puppy.az haqqında xəbərlər, mətbuat materialları və media resursları"
+    },
+    "contact": {
+      "title": "Mətbuat üçün əlaqə",
+      "subtitle": "Media sorğuları üçün bizimlə əlaqə saxlayın"
+    },
+    "releases": {
+      "title": "Mətbuat buraxılışları",
+      "subtitle": "Son xəbərlər və elanlar",
+      "newCategories": {
+        "title": "puppy.az-da yeni kateqoriyalar əlavə edildi",
+        "excerpt": "İstifadəçilərimizin istəkləri nəzərə alınaraq platformamıza yeni kateqoriyalar əlavə edildi. Artıq itlər və pişiklərlə yanaşı, quşlar, balıqlar, gəmiricilər və ekzotik heyvanlar da platformada öz yerini tapdı. Bu yenilik sayəsində heyvan sevərlər daha geniş seçim imkanına malikdirlər."
+      },
+      "launch": {
+        "title": "puppy.az platforması istifadəyə verildi",
+        "excerpt": "Azərbaycanda ilk dəfə ev heyvanları üçün xüsusi platforma yaradıldı. puppy.az, heyvan sevərlərə etibarlı və istifadəçi dostu mühitdə öz dostlarını tapmaq imkanı təqdim edir. Platforma it, pişik, quş, balıq və digər ev heyvanları haqqında elanları özündə cəmləşdirir."
+      }
+    },
+    "media": {
+      "title": "Media işıqlandırması",
+      "subtitle": "puppy.az haqqında yazılanlar",
+      "coverage1": {
+        "title": "puppy.az Azərbaycanda heyvan ticarətini dəyişdirir"
+      },
+      "coverage2": {
+        "title": "Texnologiya startapları: puppy.az uğur hekayəsi"
+      },
+      "coverage3": {
+        "title": "Yeni platforma heyvan sevərləri birləşdirir"
+      }
+    },
+    "assets": {
+      "title": "Brend materialları",
+      "subtitle": "Mətbuat üçün loqolar və brend qaydaları",
+      "logos": {
+        "title": "Loqo paketi",
+        "description": "Müxtəlif formatda və ölçüdə puppy.az loqoları"
+      },
+      "guidelines": {
+        "title": "Brend qaydaları",
+        "description": "Brendimizin düzgün istifadəsi üçün rəhbərlik"
+      }
+    },
+    "downloadPack": "Paketi yüklə",
+    "downloadPdf": "PDF yüklə",
+    "social": {
+      "title": "Sosial mediada izləyin",
+      "subtitle": "Son xəbərlərdən xəbərdar olun"
+    },
+    "cta": {
+      "title": "Daha çox öyrənmək istəyirsiniz?",
+      "subtitle": "Şirkətimiz və missiyamız haqqında daha ətraflı məlumat alın.",
+      "aboutUs": "Haqqımızda",
+      "contactUs": "Bizimlə əlaqə"
+    }
+  },
+  "community": {
+    "hero": {
+      "title": "İcma",
+      "subtitle": "Heyvan sevərlərlə tanış olun, təcrübə paylaşın"
+    },
+    "comingSoon": {
+      "badge": "Tezliklə",
+      "title": "Forum tezliklə açılacaq",
+      "description": "Heyvan sevərlərin bir-biri ilə əlaqə qura biləcəyi, suallar verə biləcəyi və təcrübə paylaşa biləcəyi forum üzərində işləyirik."
+    },
+    "features": {
+      "title": "Forumda nələr olacaq?",
+      "subtitle": "Planladığımız xüsusiyyətlər",
+      "discuss": {
+        "title": "Müzakirələr",
+        "description": "Heyvanlarınız haqqında suallar verin, məsləhətlər alın və təcrübənizi paylaşın."
+      },
+      "share": {
+        "title": "Şəkil paylaşımı",
+        "description": "Sevimli dostlarınızın şəkillərini paylaşın və digər heyvan sevərlərin paylaşımlarına baxın."
+      },
+      "learn": {
+        "title": "Faydalı məlumatlar",
+        "description": "Heyvan qayğısı, qidalanma və sağlamlıq haqqında məqalələr oxuyun."
+      },
+      "connect": {
+        "title": "Əlaqə qurun",
+        "description": "Yaxınlığınızdakı heyvan sevərlərlə tanış olun və birlikdə gəzintilər təşkil edin."
+      }
+    },
+    "social": {
+      "title": "Hələlik sosial mediada qoşulun",
+      "subtitle": "Forumu gözləyərkən bizi izləyin",
+      "instagram": "Şəkillər və hekayələr",
+      "facebook": "Yeniliklər və elanlar",
+      "tiktok": "Qısa videolar"
+    },
+    "cta": {
+      "question": "Sualınız var?",
+      "contact": "Əlaqə",
+      "help": "Yardım Mərkəzi"
+    }
+  },
+  "events": {
+    "hero": {
+      "badge": "Tədbirlər",
+      "title": "Heyvan sevərlər üçün tədbirlər",
+      "subtitle": "Görüşlər, gəzintilər və digər tədbirlər haqqında məlumat əldə edin"
+    },
+    "empty": {
+      "title": "Hələlik planlanmış tədbir yoxdur",
+      "description": "Hazırda heç bir tədbir planlanmayıb. Yeni tədbirlər elan olunduqda bu səhifədə paylaşılacaq."
+    },
+    "ideas": {
+      "title": "Gələcəkdə nələr ola bilər?",
+      "subtitle": "Planlaşdırdığımız tədbir növləri",
+      "meetup": {
+        "title": "Heyvan sevərlər görüşü",
+        "description": "Eyni maraqları paylaşan insanlarla tanışlıq imkanı"
+      },
+      "adoption": {
+        "title": "Övladlığa vermə günləri",
+        "description": "Sığınacaqlardan heyvanlara yeni ev tapmaq"
+      },
+      "walk": {
+        "title": "Birgə gəzintilər",
+        "description": "İt sahibləri üçün parkda görüşlər"
+      }
+    },
+    "notify": {
+      "title": "Tədbirlərdən xəbərdar olun",
+      "description": "Yeni tədbir elan olunduqda sosial media hesablarımızda paylaşacağıq.",
+      "followInstagram": "Instagram-da izlə"
+    },
+    "cta": {
+      "question": "Tədbir təklif etmək istəyirsiniz?",
+      "community": "İcma",
+      "contact": "Əlaqə"
+    }
+  },
+  "guides": {
+    "hero": {
+      "badge": "Bələdçilər",
+      "title": "Heyvan baxımı bələdçiləri",
+      "subtitle": "Ev heyvanlarınıza daha yaxşı qulluq etmək üçün faydalı məlumatlar"
+    },
+    "empty": {
+      "title": "Hələlik bələdçi yoxdur",
+      "description": "Bələdçilər hazırlanır. Yeni məqalələr əlavə olunduqda bu səhifədə paylaşılacaq."
+    },
+    "categories": {
+      "title": "Hazırlanan bələdçi mövzuları",
+      "subtitle": "Bu sahələrdə məqalələr yazılır",
+      "newOwner": {
+        "title": "Yeni sahib olanlara",
+        "description": "İlk dəfə ev heyvanı alanlar üçün əsas məsləhətlər"
+      },
+      "nutrition": {
+        "title": "Qidalanma",
+        "description": "Düzgün qidalanma və pəhriz məsləhətləri"
+      },
+      "health": {
+        "title": "Sağlamlıq",
+        "description": "Peyvənd, müayinə və ümumi sağlamlıq məsələləri"
+      },
+      "training": {
+        "title": "Təlim",
+        "description": "Davranış və itaət təlimi üsulları"
+      }
+    },
+    "notify": {
+      "title": "Yeni bələdçilərdən xəbərdar olun",
+      "description": "Yeni məqalələr əlavə olunduqda sosial media hesablarımızda paylaşacağıq.",
+      "followInstagram": "Instagram-da izlə"
+    },
+    "cta": {
+      "question": "Sualınız var?",
+      "helpCenter": "Yardım Mərkəzi",
+      "contact": "Əlaqə"
+    }
+  },
+  "partnership": {
+    "hero": {
+      "badge": "Partner Proqramı",
+      "title": "Bizimlə böyüyün",
+      "subtitle": "puppy.az ilə əməkdaşlıq edin və Azərbaycanın ən böyük heyvan sevərlər icmasına çatın. Sponsorlar, mağazalar, reklamçılar və məzmun yaradıcıları üçün fürsətlər.",
+      "cta": "Əməkdaşlıq növləri",
+      "contact": "Əlaqə",
+      "becomePartner": "Partner olmaq",
+      "monthlyVisitors": "Aylıq ziyarətçi",
+      "petLoversTitle": "Heyvan sevərlər",
+      "activeCommunity": "Aktiv icma",
+      "premiumPartners": "Premium partnerlər",
+      "specialFeatures": "Xüsusi imkanlar"
+    },
+    "stats": {
+      "visitors": "Aylıq ziyarətçi",
+      "petLovers": "Heyvan sevər",
+      "growth": "İllik artım"
+    },
+    "types": {
+      "title": "Əməkdaşlıq növləri",
+      "subtitle": "Sizin üçün ən uyğun əməkdaşlıq modelini seçin",
+      "benefitsTitle": "Üstünlüklər:",
+      "sponsor": {
+        "title": "Sponsorluq",
+        "description": "Brendinizi Azərbaycanın ən böyük heyvan sevərlər icması ilə tanış edin. Saytımızda premium yerləşmə, sosial media paylaşımları və xüsusi kampaniyalar vasitəsilə hədəf auditoriyanıza birbaşa çatın.",
+        "benefits": {
+          "visibility": "Saytda premium görünürlük",
+          "audience": "Hədəf auditoriyaya çatış",
+          "brand": "Brend tanınırlığının artırılması"
+        }
+      },
+      "store": {
+        "title": "Mağazalar",
+        "description": "Heyvan məhsulları satışı üçün ideal platforma. Minlərlə heyvan sahibinə məhsullarınızı təqdim edin, mağazanızın görünürlüyünü artırın və satışlarınızı böyüdün.",
+        "benefits": {
+          "customers": "Yeni müştərilər cəlb edin",
+          "listing": "Məhsullarınızı siyahıda göstərin",
+          "promotion": "Xüsusi kampaniyalar keçirin"
+        }
+      },
+      "advertiser": {
+        "title": "Reklamçılar",
+        "description": "Heyvan sevərlərə hədəflənmiş reklam kampaniyaları yerləşdirin. Banner reklamlar, sponsorlu məzmun və xüsusi kampaniyalar vasitəsilə brendinizi tanıdın.",
+        "benefits": {
+          "placement": "Strateji reklam yerləri",
+          "targeting": "Dəqiq hədəfləmə seçimləri",
+          "analytics": "Ətraflı analitika hesabatları"
+        }
+      },
+      "creator": {
+        "title": "Məzmun yaradıcıları",
+        "description": "Heyvanlarla bağlı bələdçilər, məqalələr və faydalı məzmunlar yaradın. Təcrübənizi platformamızda geniş auditoriya ilə paylaşın və heyvan sevərlər icmasına töhfə verin.",
+        "benefits": {
+          "platform": "Platformamızda yayımlanma",
+          "audience": "Geniş auditoriyaya çatış",
+          "collaboration": "Uzunmüddətli əməkdaşlıq"
+        }
+      }
+    },
+    "process": {
+      "title": "Necə işləyir?",
+      "subtitle": "Sadə addımlarla əməkdaşlığa başlayın",
+      "step1": {
+        "title": "Əlaqə yaradın",
+        "description": "Bizə email və ya Instagram vasitəsilə müraciət edin"
+      },
+      "step2": {
+        "title": "Müzakirə",
+        "description": "Ehtiyaclarınızı və hədəflərinizi birlikdə müəyyənləşdiririk"
+      },
+      "step3": {
+        "title": "Əməkdaşlığa başlayın",
+        "description": "Razılaşdığımız plana uyğun işə başlayırıq"
+      }
+    },
+    "faq": {
+      "title": "Tez-tez verilən suallar",
+      "q1": "Əməkdaşlığa necə başlaya bilərəm?",
+      "a1": "Sadəcə bizə email göndərin və ya aşağıdakı formadan müraciət edin. Komandamız 24-48 saat ərzində sizinlə əlaqə saxlayacaq.",
+      "q2": "Reklam yerləşdirmə müddəti nə qədərdir?",
+      "a2": "Reklam müddətləri fərqli ola bilər - həftəlik, aylıq və ya illik seçimlər mövcuddur. Kampaniya məqsədlərinizə uyğun müddət seçə bilərsiniz.",
+      "q3": "Məzmun yaradıcısı kimi necə qoşula bilərəm?",
+      "a3": "Portfolio və ya nümunə işlərinizi bizə göndərin. Heyvanlarla bağlı keyfiyyətli məzmun yaradan hər kəslə əməkdaşlığa açığıq.",
+      "q4": "Əməkdaşlıq nəticələrini necə izləyə bilərəm?",
+      "a4": "Bütün əməkdaşlara ətraflı analitika hesabatları təqdim edirik. Görüntülənmə, klik və dönüşüm məlumatlarına çıxışınız olacaq."
+    },
+    "contact": {
+      "title": "Əməkdaşlığa hazırsınız?",
+      "description": "Bizimlə əlaqə saxlayın və biznesinizi necə böyüdə biləcəyinizi öyrənin. Hər bir müraciətə fərdi yanaşırıq.",
+      "response": "Adətən 24-48 saat ərzində cavab veririk",
+      "badge": "Əlaqə",
+      "email": "Email",
+      "responseTime": "Cavab müddəti",
+      "responseTimeValue": "24-48 saat (iş günləri)",
+      "partnerApplication": "Partner müraciəti",
+      "selectedFormat": "Seçdiyiniz format",
+      "sendEmail": "Email göndər",
+      "quickTip": "Qısa yazın, tez cavab alın",
+      "emailContent": {
+        "brand": "Brend və şirkət məlumatlarınız",
+        "purpose": "Əməkdaşlıq məqsədi və gözləntiləriniz",
+        "budget": "Büdcə aralığı və müddət"
+      }
+    },
+    "details": {
+      "selectedFormat": "Seçilmiş format",
+      "apply": "Müraciət et",
+      "benefits": "Üstünlüklər",
+      "responseNote": "Cavab müddəti: 24-48 saat (iş günləri)"
+    }
+  },
   "footer": {
+    "description": "Azərbaycanda ev heyvanları üçün elan platforması. İt, pişik və digər heyvanlar üçün ən asan yol.",
     "company": "Şirkət",
     "about": "Haqqımızda",
     "careers": "Karyera",
@@ -744,16 +1246,10 @@
     "communityForum": "İcma Forumu",
     "events": "Tədbirlər",
     "guides": "Bələdçilər",
-    "stories": "Hekayələr",
-    "premium": "Premium",
-    "premiumAds": "Premium Elanlar",
-    "pricing": "Qiymətlər",
-    "forBreeders": "Yetişdiricilər üçün",
-    "forShelters": "Sığınacaqlar üçün",
-    "copyright": "© 2025 Puppy.az",
+    "partnership": "Əməkdaşlıq",
+    "copyright": "© 2026 Puppy.az",
     "terms": "Şərtlər",
     "privacy": "Məxfilik",
-    "sitemap": "Sayt Xəritəsi",
     "allRightsReserved": "Bütün hüquqlar qorunur",
     "followUs": "Bizi izləyin"
   },
@@ -799,7 +1295,15 @@
     "nextSlide": "Növbəti slayd",
     "selectAdType": "Elan növünü seç",
     "selectCategory": "Kateqoriya seç",
-    "selectBreed": "Cins seç"
+    "selectBreed": "Cins seç",
+    "previousAds": "Əvvəlki elanlar",
+    "nextAds": "Növbəti elanlar",
+    "closeAlert": "Xəbərdarlığı bağla",
+    "minValue": "Minimum dəyər",
+    "maxValue": "Maksimum dəyər",
+    "noImage": "Şəkil yoxdur",
+    "gotIt": "Anladım!",
+    "goToSlide": "{number} slaydına keç"
   },
   "errors": {
     "generic": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
@@ -827,7 +1331,9 @@
       "noResults": "Nəticə tapılmadı",
       "loading": "Yüklənir...",
       "currentlySelected": "Hazırda seçilmiş:",
-      "notSelected": "Seçilməyib"
+      "notSelected": "Seçilməyib",
+      "clearSelection": "Seçimi təmizlə",
+      "closeDrawer": "Paneli bağla"
     }
   },
   "dateTime": {
@@ -964,8 +1470,8 @@
     },
     "cta": {
       "title": "Hazırsınız?",
-      "description": "Admin ilə əlaqə saxlayın və elanınızı premium edin. Ödənişdən dərhal sonra elanınız önə çıxacaq.",
-      "chatButton": "Admin ilə söhbət",
+      "description": "Bizimlə əlaqə saxlayın və elanınızı premium edin. Ödənişdən dərhal sonra elanınız önə çıxacaq.",
+      "chatButton": "Dəstək xidməti",
       "helpCenter": "Yardım mərkəzi",
       "contactEmail": "Sualınız var? <a href=\"mailto:premium@puppy.az\" class=\"text-white hover:underline\">premium@puppy.az</a> ünvanına yaza bilərsiniz."
     }
@@ -981,6 +1487,14 @@
       "title": "Daxil ol",
       "description": "Hesabınıza daxil olun və elanlarınızı idarə edin"
     },
+    "forgotPassword": {
+      "title": "Şifrəni bərpa et",
+      "description": "Şifrənizi unutmusunuzsa, email ilə bərpa edin"
+    },
+    "resetPassword": {
+      "title": "Yeni şifrə",
+      "description": "Yeni şifrənizi təyin edin"
+    },
     "help": {
       "title": "Yardım Mərkəzi",
       "description": "Tez-tez verilən suallar və dəstək mərkəzi"
@@ -988,6 +1502,34 @@
     "about": {
       "title": "Haqqımızda",
       "description": "puppy.az - Azərbaycanda ev heyvanları üçün etibarlı platforma"
+    },
+    "contact": {
+      "title": "Əlaqə",
+      "description": "Bizimlə əlaqə saxlayın - puppy.az komandası sizə kömək etməyə hazırdır"
+    },
+    "careers": {
+      "title": "Karyera",
+      "description": "puppy.az komandasına qoşulun - karyera imkanları"
+    },
+    "report": {
+      "title": "Şikayət",
+      "description": "Şübhəli elan və ya istifadəçi haqqında məlumat verin"
+    },
+    "community": {
+      "title": "İcma",
+      "description": "puppy.az icmasına qoşulun - heyvan sevərlərlə tanış olun"
+    },
+    "events": {
+      "title": "Tədbirlər",
+      "description": "Heyvan sevərlər üçün tədbirlər və görüşlər"
+    },
+    "guides": {
+      "title": "Bələdçilər",
+      "description": "Ev heyvanlarınıza qulluq etmək üçün faydalı bələdçilər"
+    },
+    "partnership": {
+      "title": "Əməkdaşlıq",
+      "description": "puppy.az ilə əməkdaşlıq edin - sponsorlar, mağazalar və reklamcılar üçün"
     },
     "myAccount": {
       "title": "Hesabım",
@@ -1020,6 +1562,18 @@
     "terms": {
       "title": "İstifadə Şərtləri",
       "description": "puppy.az platformasının istifadə şərtləri və qaydaları"
+    },
+    "safety": {
+      "title": "Təhlükəsizlik",
+      "description": "puppy.az-da təhlükəsiz alış-veriş üçün məsləhətlər"
+    },
+    "press": {
+      "title": "Mətbuat",
+      "description": "puppy.az haqqında mətbuat materialları və media resursları"
+    },
+    "blog": {
+      "title": "Bloq",
+      "description": "Ev heyvanları haqqında faydalı məqalələr və məsləhətlər"
     },
     "premium": {
       "title": "Premium",
@@ -1577,6 +2131,10 @@
     "maximum": "Maksimum"
   },
   "notFound": {
+    "metadata": {
+      "title": "404 - Səhifə tapılmadı | puppy.az",
+      "description": "Axtardığınız səhifə tapılmadı. puppy.az-da balalar və digər ev heyvanları üçün elanlar."
+    },
     "hero": {
       "oops": "Ups!",
       "title": "Səhifə tapılmadı",
@@ -1591,6 +2149,9 @@
         "home": {
           "label": "Ana səhifəyə keç",
           "description": "Son elanları və populyar kateqoriyaları kəşf edin"
+        },
+        "back": {
+          "label": "Geri qayıt"
         },
         "browseAds": {
           "label": "Elanlara bax",
@@ -1704,6 +2265,7 @@
     "activeFilters": {
       "activeFilters": "Aktiv Filtrlər",
       "category": "Kateqoriya: {value}",
+      "breed": "Cins",
       "city": "Şəhər: {value}",
       "gender": {
         "male": "Cins: Erkək",
@@ -2081,7 +2643,7 @@
       "actions": {
         "save": "Dəyişiklikləri Saxla",
         "saving": "Saxlanılır...",
-        "cancel": "Ləğv et"
+        "cancel": "İmtina"
       },
       "messages": {
         "success": {
@@ -2277,6 +2839,11 @@
       "ageQuestion": "Ev heyvanınız neçə yaşındadır?",
       "yearsLabel": "İl",
       "monthsLabel": "Ay",
+      "totalAge": "Ümumi yaş:",
+      "year": "il",
+      "years": "il",
+      "month": "ay",
+      "months": "ay",
       "exampleLabel": "Nümunə:",
       "exampleAge": "2 il 6 ay"
     },
@@ -2300,6 +2867,8 @@
       "genderLabel": "Cins",
       "sizeLabel": "Ölçü",
       "ageLabel": "Yaş",
+      "ageYears": "{count, plural, one {# il} other {# il}}",
+      "ageMonths": "{count, plural, one {# ay} other {# ay}}",
       "colorLabel": "Rəng",
       "weightLabel": "Çəki",
       "locationLabel": "Yer",
@@ -2315,6 +2884,7 @@
       "successDialog": {
         "title": "Elan uğurla göndərildi!",
         "message": "Təbriklər! Elanınız göndərildi və moderasiyadan sonra dərc olunacaq.",
+        "infoText": "Elanınız adətən 24 saat ərzində yoxlanılır. Aktivləşdirildikdə bildiriş alacaqsınız.",
         "buttonText": "Elanlarıma bax"
       }
     },
@@ -2378,7 +2948,7 @@
       "noCities": "Şəhərlər mövcud deyil",
       "searchPlaceholder": "Şəhər axtarın...",
       "noResults": "Nəticə tapılmadı",
-      "resultsCount": "{count} {plural}",
+      "resultsCount": "{count} şəhər",
       "noMatch": "\"{query}\" üzrə heç bir şəhər uyğun gəlmir",
       "clearSearch": "Axtarışı təmizlə",
       "loading": "Şəhərlər yüklənir..."
@@ -2413,8 +2983,13 @@
       "colorGray": "Boz",
       "colorGolden": "Qızılı",
       "colorCream": "Krem",
-      "colorTan": "Tünd sarı",
       "colorOrange": "Narıncı",
+      "colorRed": "Qırmızı",
+      "colorYellow": "Sarı",
+      "colorGreen": "Yaşıl",
+      "colorBlue": "Mavi",
+      "colorPink": "Çəhrayı",
+      "colorPurple": "Bənövşəyi",
       "colorSpotted": "Xallı",
       "colorStriped": "Zolaqlı",
       "colorMixed": "Qarışıq",
@@ -2502,7 +3077,20 @@
       "statusActive": "Aktiv",
       "statusPending": "Gözləyir",
       "adType": "Elan növü",
-      "months": ["Yanvar", "Fevral", "Mart", "Aprel", "May", "İyun", "İyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"],
+      "months": [
+        "Yanvar",
+        "Fevral",
+        "Mart",
+        "Aprel",
+        "May",
+        "İyun",
+        "İyul",
+        "Avqust",
+        "Sentyabr",
+        "Oktyabr",
+        "Noyabr",
+        "Dekabr"
+      ],
       "noteTitle": "Qeyd",
       "noteDescription": "Elan növü və kateqoriya dəyişdirilə bilməz. Yalnız elanın əsas təfərrüatlarını yeniləyə bilərsiniz."
     },
@@ -2784,6 +3372,224 @@
     "moreAds": {
       "viewAll": "Hamısına bax",
       "description": "Daha çox {category} elanları"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Bizimlə Əlaqə Saxlayın",
+      "titlePart1": "Bizimlə",
+      "titlePart2": "Əlaqə Saxlayın",
+      "subtitle": "Suallarınız, təklifləriniz və ya hər hansı mövzuda bizimlə əlaqə saxlaya bilərsiniz. Peşəkar komandamız 24 saat ərzində sizə cavab verəcək.",
+      "badge": "🟢 Onlayn Dəstək",
+      "cta": "Mesaj Göndərin",
+      "stats": {
+        "responseTime": "Cavab müddəti",
+        "hour": " saat",
+        "support": "Dəstək",
+        "satisfaction": "Məmnuniyyət"
+      },
+      "features": {
+        "fast": "Sürətli cavab",
+        "secure": "Təhlükəsiz",
+        "friendly": "Mehriban dəstək"
+      }
+    },
+    "contactNow": "Əlaqə saxla",
+    "info": {
+      "email": {
+        "title": "E-poçt"
+      },
+      "phone": {
+        "title": "Telefon"
+      },
+      "address": {
+        "title": "Ünvan",
+        "value": "Bakı, Azərbaycan"
+      },
+      "workingHours": {
+        "title": "İş saatları",
+        "value": "B.e - Cümə: 09:00 - 18:00"
+      }
+    },
+    "sections": {
+      "contactInfo": {
+        "title": "Əlaqə Məlumatları",
+        "subtitle": "Bizə aşağıdakı üsullarla müraciət edə bilərsiniz"
+      },
+      "social": {
+        "title": "Bizi İzləyin",
+        "subtitle": "Sosial şəbəkələrdə bizimlə qoşulun",
+        "followers": "izləyici"
+      }
+    },
+    "form": {
+      "title": "Bizə Yazın",
+      "subtitle": "Mesajınızı göndərin, tezliklə cavab verəcəyik",
+      "heading": {
+        "part1": "Bizə mesaj",
+        "part2": "göndərin"
+      },
+      "description": "Formu doldurun, komandamız ən qısa zamanda sizinlə əlaqə saxlayacaq. Bütün müraciətlərə 24 saat ərzində cavab veririk.",
+      "typeLabel": "Mesaj növünü seçin",
+      "types": {
+        "question": "Sual",
+        "suggestion": "Təklif",
+        "problem": "Problem",
+        "other": "Digər"
+      },
+      "name": "Adınız",
+      "namePlaceholder": "Adınızı daxil edin",
+      "email": "E-poçt ünvanınız",
+      "emailPlaceholder": "example@mail.com",
+      "subject": "Mövzu",
+      "subjectPlaceholder": "Mesajınızın mövzusu",
+      "message": "Mesajınız",
+      "messagePlaceholder": "Mesajınızı buraya yazın...",
+      "submit": "Mesajı Göndər",
+      "sending": "Göndərilir...",
+      "success": {
+        "title": "Mesajınız Göndərildi!",
+        "message": "Tezliklə sizinlə əlaqə saxlayacağıq. Təşəkkür edirik!"
+      }
+    },
+    "quickLinks": {
+      "title": "Faydalı Keçidlər",
+      "subtitle": "Tez-tez soruşulan suallar və digər səhifələr",
+      "help": {
+        "title": "Kömək Mərkəzi",
+        "description": "Suallarınıza cavab tapın"
+      },
+      "postAd": {
+        "title": "Elan Yerləşdir",
+        "description": "Heyvanınız üçün elan verin"
+      },
+      "about": {
+        "title": "Haqqımızda",
+        "description": "Missiyamız və dəyərlərimiz"
+      }
+    },
+    "faq": {
+      "title": "Tez-tez Soruşulan Suallar",
+      "subtitle": "Cavabınızı tapa bilmirsiniz? Kömək Mərkəzimizə baxın",
+      "button": "Kömək Mərkəzinə Keçin"
+    },
+    "cta": {
+      "title": "Sualınız var?",
+      "subtitle": "Hər hansı sualınız, təklifiniz və ya probleminiizlə bağlı bizə yazın.",
+      "button": "E-poçt göndər"
+    }
+  },
+  "safety": {
+    "hero": {
+      "badge": "Təhlükəsizlik Mərkəzi",
+      "title": "Təhlükəsiz Alış-veriş",
+      "subtitle": "puppy.az-da ev heyvanı alarkən və ya satarkən özünüzü və heyvanınızı qorumaq üçün vacib məsləhətlər",
+      "stat1": "Doğrulanmış Satıcılar",
+      "stat2": "Təhlükəsiz Ödəniş",
+      "stat3": "7/24 Dəstək"
+    },
+    "sections": {
+      "tips": {
+        "title": "Təhlükəsizlik Məsləhətləri",
+        "subtitle": "Alıcılar və satıcılar üçün vacib təhlükəsizlik qaydaları"
+      },
+      "warnings": {
+        "title": "Xəbərdarlıq Əlamətləri",
+        "subtitle": "Fırıldaqçılıq əlamətlərini tanıyın və özünüzü qoruyun"
+      },
+      "practices": {
+        "title": "Ən Yaxşı Təcrübələr",
+        "subtitle": "Uğurlu və təhlükəsiz əməliyyat üçün tövsiyələr"
+      }
+    },
+    "tips": {
+      "buyers": {
+        "title": "Alıcılar üçün",
+        "description": "Ev heyvanı alarkən diqqət etməli olduğunuz məqamlar",
+        "tip1": "Həmişə heyvanı şəxsən görün və satıcı ilə üz-üzə görüşün",
+        "tip2": "Heyvanın sağlamlıq vəziyyətini və peyvənd kartını yoxlayın",
+        "tip3": "Satıcının digər elanlarına və rəylərinə baxın",
+        "tip4": "Çox aşağı qiymətlərə şübhə ilə yanaşın",
+        "tip5": "Heç vaxt görməzdən əvvəl tam məbləği ödəməyin",
+        "tip6": "Alış-veriş haqqında yazılı razılaşma edin"
+      },
+      "sellers": {
+        "title": "Satıcılar üçün",
+        "description": "Heyvanınızı satarkən təhlükəsizliyinizi qoruyun",
+        "tip1": "Alıcı haqqında məlumat toplayın və niyyətini araşdırın",
+        "tip2": "İlk görüşdə evinizdə deyil, ictimai yerdə görüşün",
+        "tip3": "Ödənişi nağd və ya təhlükəsiz üsulla qəbul edin",
+        "tip4": "Heyvanın yeni sahibinə keçid prosesini izləyin",
+        "tip5": "Satış haqqında yazılı sənəd hazırlayın"
+      },
+      "meetings": {
+        "title": "Görüşmə Qaydaları",
+        "description": "Təhlükəsiz görüş üçün vacib tövsiyələr",
+        "tip1": "İctimai və işıqlı yerlərdə görüşün",
+        "tip2": "Yanınızda bir nəfər gətirin",
+        "tip3": "Görüş yeri və vaxtı haqqında yaxınlarınıza məlumat verin",
+        "tip4": "Gündüz saatlarında görüşməyə üstünlük verin",
+        "tip5": "Şəxsi məlumatlarınızı paylaşmaqda ehtiyatlı olun"
+      },
+      "payments": {
+        "title": "Ödəniş Təhlükəsizliyi",
+        "description": "Pulunuzu qorumaq üçün vacib məsləhətlər",
+        "tip1": "Heyvanı görmədən heç vaxt ödəniş etməyin",
+        "tip2": "Wire transfer və ya kriptovalyuta ilə ödənişdən çəkinin",
+        "tip3": "Əvvəlcədən depozit tələb edən satıcılardan uzaq durun",
+        "tip4": "Ödəniş qəbzi və ya yazılı təsdiq alın"
+      }
+    },
+    "warnings": {
+      "highTitle": "Yüksək Risk",
+      "highSubtitle": "Bu əlamətləri görsəniz ehtiyatlı olun",
+      "mediumTitle": "Orta Risk",
+      "mediumSubtitle": "Əlavə araşdırma tələb edən vəziyyətlər",
+      "high": {
+        "price": "Bazar qiymətindən çox aşağı qiymət",
+        "deposit": "Görüşmədən əvvəl depozit və ya tam ödəniş tələbi",
+        "noMeet": "Heyvanı göstərməkdən imtina",
+        "pressure": "Tez qərar vermə təzyiqi",
+        "shipping": "Heyvanı poçtla göndərmə təklifi"
+      },
+      "medium": {
+        "photos": "Keyfiyyətsiz və ya internet-dən götürülmüş şəkillər",
+        "vague": "Qeyri-müəyyən və ya ziddiyyətli məlumatlar",
+        "contact": "Yalnız mesajla əlaqə, telefon zəngi qəbul etmir",
+        "location": "Dəqiq ünvan verməkdən qaçınma"
+      }
+    },
+    "practices": {
+      "verify": {
+        "title": "Doğrulayın",
+        "description": "Satıcının profilini, rəyləri və digər elanlarını yoxlayın"
+      },
+      "photos": {
+        "title": "Şəkillər",
+        "description": "Canlı video zəng və ya əlavə şəkillər tələb edin"
+      },
+      "communicate": {
+        "title": "Ünsiyyət",
+        "description": "Platform daxilində yazışın ki, tarixçə qalsın"
+      },
+      "privacy": {
+        "title": "Məxfilik",
+        "description": "Şəxsi məlumatları yalnız zəruri hallarda paylaşın"
+      }
+    },
+    "report": {
+      "title": "Şübhəli fəaliyyət bildirin",
+      "description": "Fırıldaqçılıq və ya şübhəli davranışla qarşılaşsanız, dərhal bizə bildirin. Komandamız hər şikayəti araşdırır.",
+      "contact": "Bildiriş Göndər",
+      "note": "Bütün bildirişlər məxfi saxlanılır"
+    }
+  },
+  "blog": {
+    "comingSoon": {
+      "badge": "Tezliklə",
+      "title": "Bloq Tezliklə",
+      "description": "Ev heyvanlarının qayğısı, sağlamlığı və təlimi haqqında faydalı məqalələr hazırlanır. Tezliklə burada olacaq!",
+      "backHome": "Ana Səhifəyə Qayıt"
     }
   }
 }

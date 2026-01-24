@@ -3,6 +3,7 @@
     "home": "Home",
     "postAd": "Post Ad",
     "myAds": "My Ads",
+    "draftAds": "Unfinished ad",
     "favorites": "Favorites",
     "myAccount": "My Account",
     "login": "Login",
@@ -11,13 +12,18 @@
     "settings": "Settings",
     "help": "Help",
     "about": "About",
+    "contact": "Contact",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "safety": "Safety",
+    "blog": "Blog",
     "premium": "Premium"
   },
   "common": {
     "submit": "Submit",
     "cancel": "Cancel",
+    "confirm": "Confirm",
+    "pleaseWait": "Please wait...",
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit",
@@ -29,6 +35,8 @@
     "filter": "Filter",
     "sort": "Sort",
     "loading": "Loading...",
+    "allDataLoaded": "All data loaded",
+    "adsCount": "{count} ads",
     "error": "Error",
     "success": "Success",
     "noResults": "No results found",
@@ -39,6 +47,11 @@
     "no": "No",
     "optional": "Optional",
     "required": "Required",
+    "notSelected": "Not selected",
+    "validation": {
+      "minLengthNeeded": "Need {count} more characters",
+      "minLengthMet": "Great! Minimum length met"
+    },
     "adTypes": {
       "sale": {
         "title": "For Sale",
@@ -253,6 +266,62 @@
       }
     }
   },
+  "forgotPassword": {
+    "title": "Reset your password",
+    "subtitle": "Enter your email address and we'll send you a password reset link",
+    "fields": {
+      "email": "Email"
+    },
+    "validation": {
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address"
+    },
+    "submit": "Send reset link",
+    "submitting": "Sending...",
+    "backToLogin": "Back to login",
+    "success": {
+      "title": "Link sent!",
+      "description": "A password reset link has been sent to your email address. Please check your inbox.",
+      "emailSentTo": "Sent to:",
+      "checkSpam": "If you don't see the email, check your spam/junk folder. The link is valid for 30 minutes."
+    },
+    "errors": {
+      "requestFailed": "Failed to send reset link. Please try again.",
+      "unknown": "An error occurred. Please try again."
+    }
+  },
+  "resetPassword": {
+    "title": "Set a new password",
+    "subtitle": "Create a new password for your account",
+    "verifying": "Verifying token...",
+    "fields": {
+      "password": "New password",
+      "confirmPassword": "Confirm password"
+    },
+    "validation": {
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, and a number.",
+    "submit": "Change password",
+    "submitting": "Changing...",
+    "backToLogin": "Back to login",
+    "success": {
+      "title": "Password changed!",
+      "description": "Your password has been successfully changed. You can now log in with your new password.",
+      "redirecting": "Redirecting to login..."
+    },
+    "invalid": {
+      "title": "Invalid link",
+      "description": "This password reset link is invalid or has expired. Please request a new reset link.",
+      "requestNew": "Request new link"
+    },
+    "errors": {
+      "resetFailed": "Failed to change password. The link may be invalid or expired.",
+      "unknown": "An error occurred. Please try again."
+    }
+  },
   "register": {
     "header": {
       "title": "Register",
@@ -389,6 +458,21 @@
     "priceRequired": "Enter the price for sale ads",
     "submitError": "Failed to submit your ad. Please try again.",
     "unknownError": "An error occurred. Please try again.",
+    "steps": {
+      "step": "Step",
+      "adType": "Ad Type",
+      "category": "Category",
+      "breed": "Breed",
+      "basics": "Basics",
+      "physical": "Physical",
+      "details": "Details",
+      "location": "Location",
+      "photos": "Photos",
+      "price": "Price",
+      "review": "Review",
+      "clickToGoBack": "Click to go",
+      "notYetReached": "Not yet reached"
+    },
     "adTypeForSale": "For Sale",
     "adTypeFound": "Found",
     "adTypeLost": "Lost",
@@ -518,7 +602,8 @@
     "color": "Color",
     "colorPlaceholder": "e.g. Brown, White, etc.",
     "useSlider": "Use slider",
-    "enterExactNumber": "Enter exact number"
+    "enterExactNumber": "Enter exact number",
+    "removeFilterLabel": "Remove {label}: {value} filter"
   },
   "home": {
     "hero": {
@@ -537,13 +622,19 @@
         "activeAds": "10,000+ active ads",
         "safeShopping": "Safe shopping",
         "verifiedSellers": "Verified sellers"
-      }
+      },
+      "scrollDown": "More"
     },
     "whyChooseUs": {
       "title": "Why puppy.az?",
       "subtitle": "There are many reasons to choose us",
       "activeUsers": "10,000+ active users already trust us",
       "platformDescription": "The most reliable and convenient platform to find or sell your pet",
+      "stats": {
+        "users": "Users",
+        "ads": "Ads",
+        "satisfaction": "Satisfaction"
+      },
       "features": {
         "verifiedSellers": {
           "title": "Verified sellers",
@@ -729,7 +820,414 @@
       }
     }
   },
+  "careers": {
+    "hero": {
+      "title": "Careers",
+      "subtitle": "Join the puppy.az team and change the lives of pet lovers"
+    },
+    "values": {
+      "mission": {
+        "title": "Our Mission",
+        "description": "We help every pet in Azerbaijan find a loving home. As a small team, we create big changes."
+      },
+      "team": {
+        "title": "Our Team",
+        "description": "We are a small but powerful team of pet lovers, tech enthusiasts, and innovative thinkers."
+      },
+      "impact": {
+        "title": "Our Impact",
+        "description": "Thousands of pet lovers use our platform every day. You can be part of this impact."
+      }
+    },
+    "perks": {
+      "title": "Why puppy.az?",
+      "subtitle": "Benefits of being part of our team",
+      "smallTeam": {
+        "title": "Small Team",
+        "description": "Your voice is heard. Every idea and suggestion matters."
+      },
+      "growth": {
+        "title": "Growth Opportunities",
+        "description": "Fast development and learning opportunities in a startup environment."
+      },
+      "impact": {
+        "title": "See What You Build",
+        "description": "Be part of the entire process from idea to product launch."
+      },
+      "learning": {
+        "title": "Learning Environment",
+        "description": "Chance to gain experience in various fields."
+      }
+    },
+    "talentNetwork": {
+      "title": "Join Our Talent Network",
+      "description": "We don't have any open positions right now, but we always want to meet talented people. Send us your CV and we'll contact you about future opportunities.",
+      "sendResume": "Send CV",
+      "hint": "Send your CV and a brief introduction to careers@puppy.az"
+    },
+    "social": {
+      "title": "Follow Us",
+      "subtitle": "Stay updated on news"
+    },
+    "cta": {
+      "curious": "Want to learn more about our company?",
+      "aboutUs": "About Us",
+      "contactUs": "Contact"
+    }
+  },
+  "report": {
+    "hero": {
+      "title": "Report",
+      "subtitle": "Report a suspicious ad or user"
+    },
+    "types": {
+      "fake": {
+        "label": "Fake listing",
+        "description": "Photos or information don't reflect reality"
+      },
+      "scam": {
+        "label": "Scam",
+        "description": "Cuts contact after payment or deceives"
+      },
+      "inappropriate": {
+        "label": "Inappropriate content",
+        "description": "Animal abuse or illegal sale"
+      },
+      "spam": {
+        "label": "Spam",
+        "description": "Same listing posted repeatedly"
+      }
+    },
+    "form": {
+      "typeLabel": "Report type",
+      "adLink": "Listing link",
+      "adLinkPlaceholder": "https://puppy.az/ads/...",
+      "adLinkHint": "Paste the link to the listing you want to report (if available)",
+      "description": "Description",
+      "descriptionPlaceholder": "Explain the problem in detail...",
+      "email": "Email (optional)",
+      "emailPlaceholder": "your@email.com",
+      "emailHint": "Enter if you want to receive updates about the investigation",
+      "emailError": "Please enter a valid email address",
+      "submit": "Submit report",
+      "submitting": "Submitting..."
+    },
+    "success": {
+      "title": "Report received",
+      "description": "Thank you for your report. Our team will investigate as soon as possible.",
+      "backHome": "Back to home"
+    },
+    "sidebar": {
+      "security": {
+        "title": "Your safety matters",
+        "description": "All reports are investigated confidentially. Your personal information is protected."
+      },
+      "process": {
+        "title": "Investigation process",
+        "step1": "Your report is delivered to our team",
+        "step2": "The listing or user is reviewed",
+        "step3": "Action is taken if necessary"
+      },
+      "directContact": {
+        "title": "Direct contact",
+        "email": "report@puppy.az"
+      }
+    }
+  },
+  "press": {
+    "hero": {
+      "title": "Press Center",
+      "subtitle": "News, press materials and media resources about puppy.az"
+    },
+    "contact": {
+      "title": "Press Contact",
+      "subtitle": "Contact us for media inquiries"
+    },
+    "releases": {
+      "title": "Press Releases",
+      "subtitle": "Latest news and announcements",
+      "newCategories": {
+        "title": "New categories added to puppy.az",
+        "excerpt": "Based on user feedback, new categories have been added to our platform. In addition to dogs and cats, birds, fish, rodents, and exotic animals now have their place on the platform. This update gives pet lovers a wider selection to choose from."
+      },
+      "launch": {
+        "title": "puppy.az platform launched",
+        "excerpt": "For the first time in Azerbaijan, a dedicated platform for pets has been created. puppy.az provides pet lovers with a reliable and user-friendly environment to find their new companions. The platform features listings for dogs, cats, birds, fish, and other pets."
+      }
+    },
+    "media": {
+      "title": "Media Coverage",
+      "subtitle": "What they write about puppy.az",
+      "coverage1": {
+        "title": "puppy.az is changing pet trade in Azerbaijan"
+      },
+      "coverage2": {
+        "title": "Tech startups: puppy.az success story"
+      },
+      "coverage3": {
+        "title": "New platform connects pet lovers"
+      }
+    },
+    "assets": {
+      "title": "Brand Assets",
+      "subtitle": "Logos and brand guidelines for press",
+      "logos": {
+        "title": "Logo Pack",
+        "description": "puppy.az logos in various formats and sizes"
+      },
+      "guidelines": {
+        "title": "Brand Guidelines",
+        "description": "Guidelines for proper use of our brand"
+      }
+    },
+    "downloadPack": "Download Pack",
+    "downloadPdf": "Download PDF",
+    "social": {
+      "title": "Follow on Social Media",
+      "subtitle": "Stay updated with the latest news"
+    },
+    "cta": {
+      "title": "Want to learn more?",
+      "subtitle": "Get more detailed information about our company and mission.",
+      "aboutUs": "About Us",
+      "contactUs": "Contact Us"
+    }
+  },
+  "community": {
+    "hero": {
+      "title": "Community",
+      "subtitle": "Meet pet lovers, share experiences"
+    },
+    "comingSoon": {
+      "badge": "Coming Soon",
+      "title": "Forum coming soon",
+      "description": "We're working on a forum where pet lovers can connect, ask questions, and share experiences."
+    },
+    "features": {
+      "title": "What will the forum have?",
+      "subtitle": "Planned features",
+      "discuss": {
+        "title": "Discussions",
+        "description": "Ask questions about your pets, get advice, and share your experiences."
+      },
+      "share": {
+        "title": "Photo Sharing",
+        "description": "Share photos of your furry friends and see posts from other pet lovers."
+      },
+      "learn": {
+        "title": "Useful Information",
+        "description": "Read articles about pet care, nutrition, and health."
+      },
+      "connect": {
+        "title": "Connect",
+        "description": "Meet pet lovers near you and organize walks together."
+      }
+    },
+    "social": {
+      "title": "Join us on social media for now",
+      "subtitle": "Follow us while waiting for the forum",
+      "instagram": "Photos and stories",
+      "facebook": "Updates and announcements",
+      "tiktok": "Short videos"
+    },
+    "cta": {
+      "question": "Have a question?",
+      "contact": "Contact",
+      "help": "Help Center"
+    }
+  },
+  "events": {
+    "hero": {
+      "badge": "Events",
+      "title": "Events for pet lovers",
+      "subtitle": "Get information about meetups, walks, and other events"
+    },
+    "empty": {
+      "title": "No events planned yet",
+      "description": "There are no events planned at the moment. New events will be shared on this page when announced."
+    },
+    "ideas": {
+      "title": "What could be in the future?",
+      "subtitle": "Types of events we're considering",
+      "meetup": {
+        "title": "Pet lovers meetup",
+        "description": "Opportunity to meet people with similar interests"
+      },
+      "adoption": {
+        "title": "Adoption days",
+        "description": "Finding new homes for shelter animals"
+      },
+      "walk": {
+        "title": "Group walks",
+        "description": "Park meetups for dog owners"
+      }
+    },
+    "notify": {
+      "title": "Stay updated on events",
+      "description": "We'll share on our social media when new events are announced.",
+      "followInstagram": "Follow on Instagram"
+    },
+    "cta": {
+      "question": "Want to suggest an event?",
+      "community": "Community",
+      "contact": "Contact"
+    }
+  },
+  "guides": {
+    "hero": {
+      "badge": "Guides",
+      "title": "Pet care guides",
+      "subtitle": "Helpful information to better care for your pets"
+    },
+    "empty": {
+      "title": "No guides yet",
+      "description": "Guides are being prepared. New articles will be shared on this page when available."
+    },
+    "categories": {
+      "title": "Upcoming guide topics",
+      "subtitle": "Articles being written in these areas",
+      "newOwner": {
+        "title": "For new owners",
+        "description": "Essential tips for first-time pet owners"
+      },
+      "nutrition": {
+        "title": "Nutrition",
+        "description": "Proper feeding and diet advice"
+      },
+      "health": {
+        "title": "Health",
+        "description": "Vaccination, checkups and general health matters"
+      },
+      "training": {
+        "title": "Training",
+        "description": "Behavior and obedience training methods"
+      }
+    },
+    "notify": {
+      "title": "Get notified about new guides",
+      "description": "We'll share new articles on our social media accounts.",
+      "followInstagram": "Follow on Instagram"
+    },
+    "cta": {
+      "question": "Have questions?",
+      "helpCenter": "Help Center",
+      "contact": "Contact"
+    }
+  },
+  "partnership": {
+    "hero": {
+      "badge": "Partner Program",
+      "title": "Grow with us",
+      "subtitle": "Partner with puppy.az and reach Azerbaijan's largest community of pet lovers. Opportunities for sponsors, stores, advertisers and content creators.",
+      "cta": "Partnership types",
+      "contact": "Contact us",
+      "becomePartner": "Become a partner",
+      "monthlyVisitors": "Monthly visitors",
+      "petLoversTitle": "Pet lovers",
+      "activeCommunity": "Active community",
+      "premiumPartners": "Premium partners",
+      "specialFeatures": "Special features"
+    },
+    "stats": {
+      "visitors": "Monthly visitors",
+      "petLovers": "Pet lovers",
+      "growth": "Annual growth"
+    },
+    "types": {
+      "title": "Partnership types",
+      "subtitle": "Choose the partnership model that suits you best",
+      "benefitsTitle": "Benefits:",
+      "sponsor": {
+        "title": "Sponsorship",
+        "description": "Introduce your brand to pet lovers",
+        "benefits": {
+          "visibility": "Premium visibility on the site",
+          "audience": "Reach your target audience",
+          "brand": "Increase brand awareness"
+        }
+      },
+      "store": {
+        "title": "Stores",
+        "description": "Platform for pet product sales",
+        "benefits": {
+          "customers": "Attract new customers",
+          "listing": "List your products",
+          "promotion": "Run special campaigns"
+        }
+      },
+      "advertiser": {
+        "title": "Advertisers",
+        "description": "Targeted advertising placement",
+        "benefits": {
+          "placement": "Strategic ad placements",
+          "targeting": "Precise targeting options",
+          "analytics": "Detailed analytics reports"
+        }
+      },
+      "creator": {
+        "title": "Content creators",
+        "description": "Write guides and articles",
+        "benefits": {
+          "platform": "Publish on our platform",
+          "audience": "Reach a wide audience",
+          "collaboration": "Long-term collaboration"
+        }
+      }
+    },
+    "process": {
+      "title": "How it works",
+      "subtitle": "Start your partnership in simple steps",
+      "step1": {
+        "title": "Get in touch",
+        "description": "Contact us via email or Instagram"
+      },
+      "step2": {
+        "title": "Discussion",
+        "description": "We identify your needs and goals together"
+      },
+      "step3": {
+        "title": "Start partnership",
+        "description": "We begin working according to the agreed plan"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "Is there a minimum budget requirement?",
+      "a1": "No, we offer partnership options for every budget. Contact us and we'll find the best option for you together.",
+      "q2": "What is the advertising placement duration?",
+      "a2": "Ad durations can vary - weekly, monthly or annual options are available. You can choose the duration that suits your campaign goals.",
+      "q3": "How can I join as a content creator?",
+      "a3": "Send us your portfolio or sample work. We're open to collaborating with anyone who creates quality pet-related content.",
+      "q4": "How can I track partnership results?",
+      "a4": "We provide detailed analytics reports to all partners. You'll have access to views, clicks and conversion data."
+    },
+    "contact": {
+      "title": "Ready to partner?",
+      "description": "Contact us and learn how we can grow your business. We take an individual approach to every inquiry.",
+      "response": "We usually respond within 24-48 hours",
+      "badge": "Contact",
+      "email": "Email",
+      "responseTime": "Response time",
+      "responseTimeValue": "24-48 hours (business days)",
+      "partnerApplication": "Partner application",
+      "selectedFormat": "Selected format",
+      "sendEmail": "Send email",
+      "quickTip": "Keep it brief, get a quick response",
+      "emailContent": {
+        "brand": "Your brand and company information",
+        "purpose": "Partnership goals and expectations",
+        "budget": "Budget range and timeline"
+      }
+    },
+    "details": {
+      "selectedFormat": "Selected format",
+      "apply": "Apply now",
+      "benefits": "Benefits",
+      "responseNote": "Response time: 24-48 hours (business days)"
+    }
+  },
   "footer": {
+    "description": "Pet marketplace in Azerbaijan. The easiest way to find dogs, cats and other pets.",
     "company": "Company",
     "about": "About",
     "careers": "Careers",
@@ -744,16 +1242,10 @@
     "communityForum": "Community Forum",
     "events": "Events",
     "guides": "Guides",
-    "stories": "Stories",
-    "premium": "Premium",
-    "premiumAds": "Premium Ads",
-    "pricing": "Pricing",
-    "forBreeders": "For Breeders",
-    "forShelters": "For Shelters",
-    "copyright": "© 2025 Puppy.az",
+    "partnership": "Partnership",
+    "copyright": "© 2026 Puppy.az",
     "terms": "Terms",
     "privacy": "Privacy",
-    "sitemap": "Site Map",
     "allRightsReserved": "All rights reserved",
     "followUs": "Follow us"
   },
@@ -799,7 +1291,15 @@
     "nextSlide": "Next slide",
     "selectAdType": "Select ad type",
     "selectCategory": "Select category",
-    "selectBreed": "Select breed"
+    "selectBreed": "Select breed",
+    "previousAds": "Previous ads",
+    "nextAds": "Next ads",
+    "closeAlert": "Close alert",
+    "minValue": "Minimum value",
+    "maxValue": "Maximum value",
+    "noImage": "No image",
+    "gotIt": "Got it!",
+    "goToSlide": "Go to slide {number}"
   },
   "errors": {
     "generic": "An error occurred. Please try again.",
@@ -827,7 +1327,9 @@
       "noResults": "No results found",
       "loading": "Loading...",
       "currentlySelected": "Currently selected:",
-      "notSelected": "Not selected"
+      "notSelected": "Not selected",
+      "clearSelection": "Clear selection",
+      "closeDrawer": "Close drawer"
     }
   },
   "dateTime": {
@@ -964,8 +1466,8 @@
     },
     "cta": {
       "title": "Ready?",
-      "description": "Contact admin and make your ad premium. Your ad will be featured immediately after payment.",
-      "chatButton": "Chat with admin",
+      "description": "Contact us and make your ad premium. Your ad will be featured immediately after payment.",
+      "chatButton": "Contact Support",
       "helpCenter": "Help center",
       "contactEmail": "Have any questions? You can write to us at <a href=\"mailto:premium@puppy.az\" class=\"text-white hover:underline\">premium@puppy.az</a>."
     }
@@ -981,6 +1483,14 @@
       "title": "Login",
       "description": "Login to your account and manage your ads"
     },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "description": "Forgot your password? Reset it via email"
+    },
+    "resetPassword": {
+      "title": "New Password",
+      "description": "Set your new password"
+    },
     "help": {
       "title": "Help Center",
       "description": "Frequently asked questions and support center"
@@ -988,6 +1498,34 @@
     "about": {
       "title": "About Us",
       "description": "puppy.az - A reliable platform for pets in Azerbaijan"
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch with us - puppy.az team is ready to help you"
+    },
+    "careers": {
+      "title": "Careers",
+      "description": "Join the puppy.az team - career opportunities"
+    },
+    "report": {
+      "title": "Report",
+      "description": "Report a suspicious ad or user"
+    },
+    "community": {
+      "title": "Community",
+      "description": "Join the puppy.az community - meet pet lovers"
+    },
+    "events": {
+      "title": "Events",
+      "description": "Events and meetups for pet lovers"
+    },
+    "guides": {
+      "title": "Guides",
+      "description": "Helpful guides for caring for your pets"
+    },
+    "partnership": {
+      "title": "Partnership",
+      "description": "Partner with puppy.az - for sponsors, stores and advertisers"
     },
     "myAccount": {
       "title": "My Account",
@@ -1020,6 +1558,18 @@
     "terms": {
       "title": "Terms of Service",
       "description": "puppy.az platform terms of service and usage rules"
+    },
+    "safety": {
+      "title": "Safety",
+      "description": "Tips for safe shopping on puppy.az"
+    },
+    "press": {
+      "title": "Press",
+      "description": "Press materials and media resources about puppy.az"
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Useful articles and tips about pets"
     },
     "premium": {
       "title": "Premium",
@@ -1577,6 +2127,10 @@
     "maximum": "Maximum"
   },
   "notFound": {
+    "metadata": {
+      "title": "404 - Page not found | puppy.az",
+      "description": "The page you're looking for was not found. Find puppies and other pets for sale on puppy.az."
+    },
     "hero": {
       "oops": "Oops!",
       "title": "Page not found",
@@ -1591,6 +2145,9 @@
         "home": {
           "label": "Home",
           "description": "Return to the main page"
+        },
+        "back": {
+          "label": "Go Back"
         },
         "browseAds": {
           "label": "Browse Ads",
@@ -1704,6 +2261,7 @@
     "activeFilters": {
       "activeFilters": "Active Filters",
       "category": "Category",
+      "breed": "Breed",
       "city": "City",
       "gender": {
         "male": "Male",
@@ -2277,6 +2835,11 @@
       "ageQuestion": "How old is your pet?",
       "yearsLabel": "Years",
       "monthsLabel": "Months",
+      "totalAge": "Total age:",
+      "year": "year",
+      "years": "years",
+      "month": "month",
+      "months": "months",
       "exampleLabel": "Example:",
       "exampleAge": "2 years 6 months"
     },
@@ -2300,6 +2863,8 @@
       "genderLabel": "Gender",
       "sizeLabel": "Size",
       "ageLabel": "Age",
+      "ageYears": "{count, plural, one {# year} other {# years}}",
+      "ageMonths": "{count, plural, one {# month} other {# months}}",
       "colorLabel": "Color",
       "weightLabel": "Weight",
       "locationLabel": "Location",
@@ -2315,6 +2880,7 @@
       "successDialog": {
         "title": "Ad submitted successfully!",
         "message": "Congratulations! Your ad has been submitted and will be published after moderation.",
+        "infoText": "Your ad is usually reviewed within 24 hours. You will receive a notification when it's activated.",
         "buttonText": "View My Ads"
       }
     },
@@ -2378,7 +2944,7 @@
       "noCities": "No cities available",
       "searchPlaceholder": "Search for a city...",
       "noResults": "No results found",
-      "resultsCount": "{count} {plural}",
+      "resultsCount": "{count, plural, one {# city} other {# cities}}",
       "noMatch": "No cities match \"{query}\"",
       "clearSearch": "Clear search",
       "loading": "Loading cities..."
@@ -2413,8 +2979,13 @@
       "colorGray": "Gray",
       "colorGolden": "Golden",
       "colorCream": "Cream",
-      "colorTan": "Tan",
       "colorOrange": "Orange",
+      "colorRed": "Red",
+      "colorYellow": "Yellow",
+      "colorGreen": "Green",
+      "colorBlue": "Blue",
+      "colorPink": "Pink",
+      "colorPurple": "Purple",
       "colorSpotted": "Spotted",
       "colorStriped": "Striped",
       "colorMixed": "Mixed",
@@ -2502,7 +3073,20 @@
       "statusActive": "Active",
       "statusPending": "Pending",
       "adType": "Ad type",
-      "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      "months": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
       "noteTitle": "Note",
       "noteDescription": "Ad type and category cannot be changed. You can only update the main details of the ad."
     },
@@ -2784,6 +3368,224 @@
     "moreAds": {
       "viewAll": "View all",
       "description": "More {category} ads"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Get in Touch",
+      "titlePart1": "Get in",
+      "titlePart2": "Touch With Us",
+      "subtitle": "Have questions, suggestions, or need help? Our professional team will respond to you within 24 hours.",
+      "badge": "🟢 Online Support",
+      "cta": "Send a Message",
+      "stats": {
+        "responseTime": "Response time",
+        "hour": " hour",
+        "support": "Support",
+        "satisfaction": "Satisfaction"
+      },
+      "features": {
+        "fast": "Fast response",
+        "secure": "Secure",
+        "friendly": "Friendly support"
+      }
+    },
+    "contactNow": "Contact now",
+    "info": {
+      "email": {
+        "title": "Email"
+      },
+      "phone": {
+        "title": "Phone"
+      },
+      "address": {
+        "title": "Address",
+        "value": "Baku, Azerbaijan"
+      },
+      "workingHours": {
+        "title": "Working Hours",
+        "value": "Mon - Fri: 09:00 - 18:00"
+      }
+    },
+    "sections": {
+      "contactInfo": {
+        "title": "Contact Information",
+        "subtitle": "You can reach us through the following methods"
+      },
+      "social": {
+        "title": "Follow Us",
+        "subtitle": "Connect with us on social media",
+        "followers": "followers"
+      }
+    },
+    "form": {
+      "title": "Send Us a Message",
+      "subtitle": "We'll get back to you as soon as possible",
+      "heading": {
+        "part1": "Send us a",
+        "part2": "message"
+      },
+      "description": "Fill out the form and our team will get back to you shortly. We respond to all inquiries within 24 hours.",
+      "typeLabel": "Select message type",
+      "types": {
+        "question": "Question",
+        "suggestion": "Suggestion",
+        "problem": "Problem",
+        "other": "Other"
+      },
+      "name": "Your Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email Address",
+      "emailPlaceholder": "example@mail.com",
+      "subject": "Subject",
+      "subjectPlaceholder": "What is this about?",
+      "message": "Your Message",
+      "messagePlaceholder": "Write your message here...",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": {
+        "title": "Message Sent!",
+        "message": "We'll get back to you shortly. Thank you!"
+      }
+    },
+    "quickLinks": {
+      "title": "Useful Links",
+      "subtitle": "Frequently asked questions and other pages",
+      "help": {
+        "title": "Help Center",
+        "description": "Find answers to your questions"
+      },
+      "postAd": {
+        "title": "Post an Ad",
+        "description": "Create an ad for your pet"
+      },
+      "about": {
+        "title": "About Us",
+        "description": "Our mission and values"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Can't find your answer? Check our Help Center",
+      "button": "Visit Help Center"
+    },
+    "cta": {
+      "title": "Have a question?",
+      "subtitle": "Write to us about any question, suggestion, or problem you have.",
+      "button": "Send Email"
+    }
+  },
+  "safety": {
+    "hero": {
+      "badge": "Safety Center",
+      "title": "Safe Shopping",
+      "subtitle": "Important tips to protect yourself and your pet when buying or selling on puppy.az",
+      "stat1": "Verified Sellers",
+      "stat2": "Secure Payment",
+      "stat3": "24/7 Support"
+    },
+    "sections": {
+      "tips": {
+        "title": "Safety Tips",
+        "subtitle": "Important safety rules for buyers and sellers"
+      },
+      "warnings": {
+        "title": "Warning Signs",
+        "subtitle": "Recognize scam signs and protect yourself"
+      },
+      "practices": {
+        "title": "Best Practices",
+        "subtitle": "Recommendations for successful and safe transactions"
+      }
+    },
+    "tips": {
+      "buyers": {
+        "title": "For Buyers",
+        "description": "Things to pay attention to when buying a pet",
+        "tip1": "Always see the pet in person and meet the seller face-to-face",
+        "tip2": "Check the pet's health condition and vaccination card",
+        "tip3": "Look at the seller's other ads and reviews",
+        "tip4": "Be suspicious of prices much lower than market value",
+        "tip5": "Never pay the full amount before seeing the pet",
+        "tip6": "Make a written agreement about the purchase"
+      },
+      "sellers": {
+        "title": "For Sellers",
+        "description": "Protect your safety when selling your pet",
+        "tip1": "Gather information about the buyer and investigate their intentions",
+        "tip2": "Meet in a public place for the first meeting, not at your home",
+        "tip3": "Accept payment in cash or through secure methods",
+        "tip4": "Follow up on the pet's transition to the new owner",
+        "tip5": "Prepare written documentation about the sale"
+      },
+      "meetings": {
+        "title": "Meeting Guidelines",
+        "description": "Important tips for safe meetings",
+        "tip1": "Meet in public, well-lit places",
+        "tip2": "Bring someone with you",
+        "tip3": "Inform your close ones about the meeting place and time",
+        "tip4": "Prefer meeting during daytime hours",
+        "tip5": "Be careful when sharing personal information"
+      },
+      "payments": {
+        "title": "Payment Safety",
+        "description": "Important tips to protect your money",
+        "tip1": "Never make payment without seeing the pet",
+        "tip2": "Avoid wire transfer or cryptocurrency payments",
+        "tip3": "Stay away from sellers who require advance deposit",
+        "tip4": "Get a payment receipt or written confirmation"
+      }
+    },
+    "warnings": {
+      "highTitle": "High Risk",
+      "highSubtitle": "Be cautious if you see these signs",
+      "mediumTitle": "Medium Risk",
+      "mediumSubtitle": "Situations requiring additional investigation",
+      "high": {
+        "price": "Price much lower than market value",
+        "deposit": "Request for deposit or full payment before meeting",
+        "noMeet": "Refusal to show the pet",
+        "pressure": "Pressure to make quick decisions",
+        "shipping": "Offer to ship the pet by mail"
+      },
+      "medium": {
+        "photos": "Low quality or stock photos from the internet",
+        "vague": "Vague or contradictory information",
+        "contact": "Only message contact, doesn't accept phone calls",
+        "location": "Avoiding giving exact address"
+      }
+    },
+    "practices": {
+      "verify": {
+        "title": "Verify",
+        "description": "Check the seller's profile, reviews and other ads"
+      },
+      "photos": {
+        "title": "Photos",
+        "description": "Request live video call or additional photos"
+      },
+      "communicate": {
+        "title": "Communicate",
+        "description": "Chat within the platform so history is preserved"
+      },
+      "privacy": {
+        "title": "Privacy",
+        "description": "Share personal information only when necessary"
+      }
+    },
+    "report": {
+      "title": "Report Suspicious Activity",
+      "description": "If you encounter fraud or suspicious behavior, report it to us immediately. Our team investigates every complaint.",
+      "contact": "Send Report",
+      "note": "All reports are kept confidential"
+    }
+  },
+  "blog": {
+    "comingSoon": {
+      "badge": "Coming Soon",
+      "title": "Blog Coming Soon",
+      "description": "Useful articles about pet care, health, and training are being prepared. They will be here soon!",
+      "backHome": "Back to Home"
     }
   }
 }

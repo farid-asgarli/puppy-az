@@ -1,6 +1,6 @@
-import type { ActiveField } from '../constants';
-import { cn } from '@/lib/external/utils';
-import { useTranslations } from 'next-intl';
+import type { ActiveField } from "../constants";
+import { cn } from "@/lib/external/utils";
+import { useTranslations } from "next-intl";
 
 interface SearchFieldProps {
   fieldId: NonNullable<ActiveField>;
@@ -14,6 +14,7 @@ interface SearchFieldProps {
   onInputChange: (value: string) => void;
   onInputBlur: () => void;
   onClear?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
   fieldRef: (el: HTMLDivElement | null) => void;
 }
 
@@ -29,17 +30,18 @@ const ExpandedField = ({
   onInputChange,
   onInputBlur,
   onClear,
+  onKeyDown,
   fieldRef,
-}: Omit<SearchFieldProps, 'displayValue' | 'isExpanded' | 'fieldId'>) => {
+}: Omit<SearchFieldProps, "displayValue" | "isExpanded" | "fieldId">) => {
   const showClearButton = isActive && inputValue.length > 0;
-  const tAccessibility = useTranslations('accessibility');
+  const tAccessibility = useTranslations("accessibility");
 
   return (
     <div
       ref={fieldRef}
       className={cn(
-        'relative flex items-center justify-between h-16 rounded-xl cursor-pointer transition-colors text-ellipsis line-clamp-1',
-        isActive ? 'bg-white shadow-lg' : 'hover:bg-gray-100/50'
+        "relative flex items-center justify-between h-16 rounded-xl cursor-pointer transition-colors text-ellipsis line-clamp-1",
+        isActive ? "bg-white shadow-lg" : "hover:bg-gray-100/50",
       )}
       onClick={(e) => {
         e.stopPropagation();
@@ -48,7 +50,9 @@ const ExpandedField = ({
     >
       <div className="relative px-8 py-[15px] overflow-hidden z-[2] cursor-pointer w-full flex items-center gap-2">
         <div className="flex-1">
-          <div className="text-xs font-medium leading-4 text-ellipsis whitespace-nowrap overflow-hidden pb-0.5">{label}</div>
+          <div className="text-xs font-medium leading-4 text-ellipsis whitespace-nowrap overflow-hidden pb-0.5">
+            {label}
+          </div>
           <input
             className="w-full border-0 bg-transparent outline-none text-sm font-normal placeholder:text-gray-600 text-gray-900"
             type="text"
@@ -61,6 +65,7 @@ const ExpandedField = ({
             onChange={(e) => onInputChange(e.target.value)}
             onFocus={onFieldClick}
             onBlur={onInputBlur}
+            onKeyDown={onKeyDown}
           />
         </div>
         {showClearButton && onClear && (
@@ -75,7 +80,7 @@ const ExpandedField = ({
               e.preventDefault();
             }}
             className="flex-shrink-0 w-6 h-6 rounded-xl bg-gray-200 hover:bg-gray-300 flex items-center justify-center transition-colors"
-            aria-label={tAccessibility('clear')}
+            aria-label={tAccessibility("clear")}
           >
             <svg
               viewBox="0 0 12 12"
@@ -103,17 +108,20 @@ const CollapsedField = ({
   displayValue,
   onFieldClick,
   fieldId,
-}: Pick<SearchFieldProps, 'label' | 'displayValue' | 'onFieldClick' | 'fieldId'>) => {
+}: Pick<
+  SearchFieldProps,
+  "label" | "displayValue" | "onFieldClick" | "fieldId"
+>) => {
   const getRoundedClass = () => {
-    if (fieldId === 'ad-type') return 'rounded-[16px_4px_4px_16px]';
-    return 'rounded';
+    if (fieldId === "ad-type") return "rounded-[16px_4px_4px_16px]";
+    return "rounded";
   };
 
   return (
     <button
       className={cn(
-        'relative flex items-center h-12 -m-px border border-transparent cursor-pointer z-[1] hover:border-gray-300 transition-all  text-ellipsis line-clamp-1',
-        getRoundedClass()
+        "relative flex items-center h-12 -m-px border border-transparent cursor-pointer z-[1] hover:border-gray-300 transition-all  text-ellipsis line-clamp-1",
+        getRoundedClass(),
         // 'rounded-xl'
       )}
       type="button"
@@ -122,7 +130,9 @@ const CollapsedField = ({
         onFieldClick();
       }}
     >
-      <span className="absolute w-px h-px overflow-hidden whitespace-nowrap">{label}</span>
+      <span className="absolute w-px h-px overflow-hidden whitespace-nowrap">
+        {label}
+      </span>
       <div className="flex-1 px-4 text-sm font-medium leading-[22px] text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap">
         {displayValue}
       </div>
@@ -145,6 +155,7 @@ export const SearchField = ({
   onInputChange,
   onInputBlur,
   onClear,
+  onKeyDown,
   fieldRef,
 }: SearchFieldProps) => {
   if (isExpanded) {
@@ -158,10 +169,18 @@ export const SearchField = ({
         onInputChange={onInputChange}
         onInputBlur={onInputBlur}
         onClear={onClear}
+        onKeyDown={onKeyDown}
         fieldRef={fieldRef}
       />
     );
   }
 
-  return <CollapsedField fieldId={fieldId} label={label} displayValue={displayValue} onFieldClick={onFieldClick} />;
+  return (
+    <CollapsedField
+      fieldId={fieldId}
+      label={label}
+      displayValue={displayValue}
+      onFieldClick={onFieldClick}
+    />
+  );
 };

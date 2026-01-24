@@ -35,9 +35,21 @@ export interface PaginationParams {
   size: number;
 }
 
+// Sorting enums and types
+export enum SortDirection {
+  ASCENDING = 0,
+  DESCENDING = 1,
+}
+
+export interface SortEntry {
+  key: string;
+  direction: SortDirection;
+}
+
 export interface QuerySpecification {
   filter?: SearchFilter;
   pagination?: PaginationParams;
+  sorting?: SortEntry[];
 }
 
 export interface PaginatedResult<T> {

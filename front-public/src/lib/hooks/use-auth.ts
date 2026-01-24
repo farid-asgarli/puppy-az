@@ -1,10 +1,24 @@
-'use client';
+"use client";
 
-import { createContext, useContext, createElement, useEffect, useState, useCallback, useMemo, useRef, type ReactNode } from 'react';
-import { checkAuthAction, getProfileAction, refreshTokenAction } from '@/lib/auth/actions';
-import type { UserProfileDto } from '@/lib/api/types/auth.types';
-import { JwtUtils } from '@/lib/auth/jwt-utils';
-import { TOKEN_EXPIRY_BUFFER_SECONDS } from '@/lib/auth/constants';
+import {
+  createContext,
+  useContext,
+  createElement,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+  type ReactNode,
+} from "react";
+import {
+  checkAuthAction,
+  getProfileAction,
+  refreshTokenAction,
+} from "@/lib/auth/actions";
+import type { UserProfileDto } from "@/lib/api/types/auth.types";
+import { JwtUtils } from "@/lib/auth/jwt-utils";
+import { TOKEN_EXPIRY_BUFFER_SECONDS } from "@/lib/auth/constants";
 
 /**
  * Auth state for client components
@@ -100,7 +114,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
 
   const getToken = useCallback(async () => {
     // Import dynamically to avoid bundling server code in client
-    const { getAccessTokenAction } = await import('@/lib/auth/actions');
+    const { getAccessTokenAction } = await import("@/lib/auth/actions");
     return getAccessTokenAction();
   }, []);
 
@@ -122,16 +136,16 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
 
       if (isExpired) {
         // Token is expired or about to expire - refresh it
-        console.log('[Auth] Token expiring soon, refreshing...');
+        console.log("[Auth] Token expiring soon, refreshing...");
         const result = await refreshTokenAction();
 
         if (result.success) {
-          console.log('[Auth] Token refreshed successfully');
+          console.log("[Auth] Token refreshed successfully");
           // Refetch auth state to get updated user info
           await fetchAuthState();
           return true;
         } else {
-          console.log('[Auth] Token refresh failed, user logged out');
+          console.log("[Auth] Token refresh failed, user logged out");
           // Refresh failed - clear state
           setState({
             isAuthenticated: false,
@@ -144,14 +158,23 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
 
       return true;
     } catch (error) {
-      console.error('[Auth] Token check failed:', error);
+      console.error("[Auth] Token check failed:", error);
       return false;
     }
   }, [getToken, fetchAuthState]);
 
   useEffect(() => {
-    // Skip fetch if we have initial data from SSR
+    // Update state when initialAuth changes (e.g., after login/logout)
     if (initialAuth) {
+      console.log(
+        "[AuthProvider] useEffect - updating state with new initialAuth:",
+        initialAuth,
+      );
+      setState({
+        isAuthenticated: initialAuth.isAuthenticated,
+        user: initialAuth.user,
+        loading: false,
+      });
       return;
     }
 
@@ -167,7 +190,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
     return () => {
       mounted = false;
     };
-  }, [initialAuth, fetchAuthState]);
+  }, [initialAuth?.isAuthenticated, initialAuth?.user?.id, fetchAuthState]);
 
   // // Proactive token refresh - check every minute
   // useEffect(() => {
@@ -206,7 +229,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
       refetch,
       getToken,
     }),
-    [state.isAuthenticated, state.user, state.loading, refetch, getToken]
+    [state.isAuthenticated, state.user, state.loading, refetch, getToken],
   );
 
   return createElement(AuthContext.Provider, { value }, children);
@@ -236,7 +259,9 @@ export function useAuth(): AuthContextValue {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider. Wrap your app root with <AuthProvider>.');
+    throw new Error(
+      "useAuth must be used within AuthProvider. Wrap your app root with <AuthProvider>.",
+    );
   }
 
   return context;
@@ -253,11 +278,16 @@ export function useAuth(): AuthContextValue {
  * const { isAuthenticated, loading } = useAuthCheck();
  * ```
  */
-export function useAuthCheck(): Pick<AuthContextValue, 'isAuthenticated' | 'loading'> {
+export function useAuthCheck(): Pick<
+  AuthContextValue,
+  "isAuthenticated" | "loading"
+> {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useAuthCheck must be used within AuthProvider. Wrap your app root with <AuthProvider>.');
+    throw new Error(
+      "useAuthCheck must be used within AuthProvider. Wrap your app root with <AuthProvider>.",
+    );
   }
 
   return {
@@ -277,11 +307,13 @@ export function useAuthCheck(): Pick<AuthContextValue, 'isAuthenticated' | 'load
  * const { user, loading } = useUserProfile();
  * ```
  */
-export function useUserProfile(): Pick<AuthContextValue, 'user' | 'loading'> {
+export function useUserProfile(): Pick<AuthContextValue, "user" | "loading"> {
   const context = useContext(AuthContext);
 
   if (!context) {
-    throw new Error('useUserProfile must be used within AuthProvider. Wrap your app root with <AuthProvider>.');
+    throw new Error(
+      "useUserProfile must be used within AuthProvider. Wrap your app root with <AuthProvider>.",
+    );
   }
 
   return {

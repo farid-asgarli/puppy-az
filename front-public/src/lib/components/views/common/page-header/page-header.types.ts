@@ -11,7 +11,14 @@ export interface PageHeaderBackButton {
   label?: string;
 }
 
-export type PageHeaderMaxWidth = 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full';
+export type PageHeaderMaxWidth =
+  | "sm"
+  | "md"
+  | "lg"
+  | "xl"
+  | "2xl"
+  | "3xl"
+  | "full";
 
 export interface PageHeaderProps {
   /**
@@ -28,6 +35,12 @@ export interface PageHeaderProps {
    * Optional action buttons/elements in header
    */
   actions?: React.ReactNode;
+
+  /**
+   * Show back button that uses browser history
+   * @default false
+   */
+  showBackButton?: boolean;
 
   /**
    * Maximum width constraint for the header content

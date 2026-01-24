@@ -1,6 +1,7 @@
 'use client';
 
 import { useId } from 'react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/external/utils';
 import { Text, Label } from '@/lib/primitives/typography';
 import type { TextareaFieldProps } from './form-field.types';
@@ -47,6 +48,7 @@ export function TextareaField({
   id: providedId,
 }: TextareaFieldProps) {
   const autoId = useId();
+  const t = useTranslations('common.validation');
   const id = providedId || autoId;
   const shouldShowCharCount = showCharCount ?? !!maxLength;
 
@@ -120,13 +122,13 @@ export function TextareaField({
       )}
       {!errorText && !successText && minLength && value.length > 0 && !isValid && (
         <Text variant="small" as="p">
-          Need at least {remainingChars} more character{remainingChars !== 1 ? 's' : ''}
+          {t('minLengthNeeded', { count: remainingChars })}
         </Text>
       )}
       {!errorText && !successText && isValid && minLength && value.length >= minLength && (
         <Text variant="small" className="text-green-600 flex items-center gap-1" as="p">
           <span>✓</span>
-          <span>Great! Minimum length met</span>
+          <span>{t('minLengthMet')}</span>
         </Text>
       )}
       {!errorText && !successText && helperText && (

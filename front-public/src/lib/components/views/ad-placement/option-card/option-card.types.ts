@@ -1,14 +1,14 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 /**
  * Size variants for OptionCard
  */
-export type OptionCardSize = 'sm' | 'md' | 'lg';
+export type OptionCardSize = "sm" | "md" | "lg";
 
 /**
  * Layout variants for OptionCard
  */
-export type OptionCardLayout = 'horizontal' | 'vertical';
+export type OptionCardLayout = "horizontal" | "vertical";
 
 /**
  * Props for OptionCard component
@@ -74,7 +74,23 @@ export interface OptionCardProps {
   metadata?: string;
 
   /**
+   * Whether to show title and description inline (same line)
+   * @default false
+   */
+  inlineDescription?: boolean;
+
+  /**
    * Custom content to render inside the card (overrides title/description)
    */
   children?: ReactNode;
+
+  /**
+   * Custom checkmark background color class (e.g., "bg-blue-500")
+   */
+  checkmarkBgColor?: string;
+
+  /**
+   * Custom checkmark border color class (e.g., "border-blue-500")
+   */
+  checkmarkBorderColor?: string;
 }

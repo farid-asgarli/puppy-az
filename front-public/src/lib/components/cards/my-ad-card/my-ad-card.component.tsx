@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
-import { IconEye, IconClock, IconTrendingUp, IconAlertCircle, IconCircleCheck, IconDotsVertical } from '@tabler/icons-react';
-import { cn } from '@/lib/external/utils';
-import { PetAdType } from '@/lib/api';
-import { PetAdStatus } from '@/lib/api/types/pet-ad.types';
-import { useTranslations } from 'next-intl';
-import { ImageWithFallback } from '@/lib/primitives';
+import {
+  IconEye,
+  IconClock,
+  IconTrendingUp,
+  IconAlertCircle,
+  IconCircleCheck,
+  IconDotsVertical,
+} from "@tabler/icons-react";
+import { cn } from "@/lib/external/utils";
+import { PetAdType } from "@/lib/api";
+import { PetAdStatus } from "@/lib/api/types/pet-ad.types";
+import { useTranslations } from "next-intl";
+import { ImageWithFallback } from "@/lib/primitives";
 
 interface MyAdCardProps {
   id: number;
@@ -41,9 +48,10 @@ export function MyAdCard({
   createdAt: _createdAt,
   onClick,
 }: MyAdCardProps) {
-  console.log('status', status);
-  const t = useTranslations('myAds.card');
-  const tCommon = useTranslations('common');
+  console.log("status", status);
+  const t = useTranslations("myAds.card");
+  const tCommon = useTranslations("common");
+  const tA11y = useTranslations("accessibility");
 
   const handleClick = () => {
     onClick?.(id);
@@ -62,45 +70,45 @@ export function MyAdCard({
   > = {
     [PetAdStatus.Pending]: {
       icon: IconClock,
-      label: t('status.pending'),
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-200',
+      label: t("status.pending"),
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
+      borderColor: "border-amber-200",
     },
     [PetAdStatus.Published]: {
       icon: IconCircleCheck,
-      label: t('status.published'),
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
+      label: t("status.published"),
+      color: "text-green-600",
+      bgColor: "bg-green-50",
+      borderColor: "border-green-200",
     },
     [PetAdStatus.Rejected]: {
       icon: IconAlertCircle,
-      label: t('status.rejected'),
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
+      label: t("status.rejected"),
+      color: "text-red-600",
+      bgColor: "bg-red-50",
+      borderColor: "border-red-200",
     },
     [PetAdStatus.Expired]: {
       icon: IconClock,
-      label: t('status.expired'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
+      label: t("status.expired"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
     },
     [PetAdStatus.Closed]: {
       icon: IconAlertCircle,
-      label: t('status.closed'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
+      label: t("status.closed"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
     },
     [PetAdStatus.Draft]: {
       icon: IconClock,
-      label: t('status.draft'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
+      label: t("status.draft"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
     },
   };
 
@@ -109,11 +117,11 @@ export function MyAdCard({
 
   // Ad type labels
   const adTypeLabels = {
-    [PetAdType.Sale]: tCommon('adTypes.sale.title'),
-    [PetAdType.Found]: tCommon('adTypes.found.title'),
-    [PetAdType.Lost]: tCommon('adTypes.lost.title'),
-    [PetAdType.Match]: tCommon('adTypes.match.title'),
-    [PetAdType.Owning]: tCommon('adTypes.owning.title'),
+    [PetAdType.Sale]: tCommon("adTypes.sale.title"),
+    [PetAdType.Found]: tCommon("adTypes.found.title"),
+    [PetAdType.Lost]: tCommon("adTypes.lost.title"),
+    [PetAdType.Match]: tCommon("adTypes.match.title"),
+    [PetAdType.Owning]: tCommon("adTypes.owning.title"),
   };
 
   return (
@@ -134,8 +142,14 @@ export function MyAdCard({
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
             <div className="text-center">
-              <IconEye size={56} className="text-gray-300 mx-auto mb-2" strokeWidth={1.5} />
-              <p className="text-xs text-gray-400 font-medium">No Image</p>
+              <IconEye
+                size={56}
+                className="text-gray-300 mx-auto mb-2"
+                strokeWidth={1.5}
+              />
+              <p className="text-xs text-gray-400 font-medium">
+                {tA11y("noImage")}
+              </p>
             </div>
           </div>
         )}
@@ -145,8 +159,14 @@ export function MyAdCard({
           {/* Premium badge - Enhanced */}
           {isPremium && (
             <div className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 rounded-xl shadow-lg animate-pulse-slow">
-              <IconTrendingUp size={16} strokeWidth={2.5} className="text-yellow-900" />
-              <span className="text-xs font-bold text-yellow-900 uppercase tracking-wide">{t('premium')}</span>
+              <IconTrendingUp
+                size={16}
+                strokeWidth={2.5}
+                className="text-yellow-900"
+              />
+              <span className="text-xs font-bold text-yellow-900 uppercase tracking-wide">
+                {t("premium")}
+              </span>
             </div>
           )}
 
@@ -155,13 +175,21 @@ export function MyAdCard({
             {/* Status badge */}
             <div
               className={cn(
-                'flex items-center gap-1.5 px-3 py-2 rounded-xl shadow-lg backdrop-blur-md border',
+                "flex items-center gap-1.5 px-3 py-2 rounded-xl shadow-lg backdrop-blur-md border",
                 currentStatus.bgColor,
-                currentStatus.borderColor
+                currentStatus.borderColor,
               )}
             >
-              <StatusIcon size={15} strokeWidth={2.5} className={currentStatus.color} />
-              <span className={cn('text-xs font-semibold', currentStatus.color)}>{currentStatus.label}</span>
+              <StatusIcon
+                size={15}
+                strokeWidth={2.5}
+                className={currentStatus.color}
+              />
+              <span
+                className={cn("text-xs font-semibold", currentStatus.color)}
+              >
+                {currentStatus.label}
+              </span>
             </div>
 
             {/* Ad Number badge */}
@@ -195,10 +223,11 @@ export function MyAdCard({
           <div>
             {price !== null ? (
               <p className="text-lg font-bold text-gray-900">
-                {price} <span className="text-sm font-normal text-gray-500">AZN</span>
+                {price}{" "}
+                <span className="text-sm font-normal text-gray-500">AZN</span>
               </p>
             ) : (
-              <p className="text-sm text-gray-400">{t('noPrice')}</p>
+              <p className="text-sm text-gray-400">{t("noPrice")}</p>
             )}
           </div>
 
@@ -217,7 +246,7 @@ export function MyAdCard({
                 handleClick();
               }}
               className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-              aria-label={t('viewDetails')}
+              aria-label={t("viewDetails")}
             >
               <IconDotsVertical size={18} className="text-gray-400" />
             </button>
@@ -226,7 +255,9 @@ export function MyAdCard({
 
         {/* Ad Type Label (subtle) */}
         <div className="mt-3 pt-3 border-t border-gray-100">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">{adTypeLabels[adType]}</span>
+          <span className="text-xs text-gray-400 uppercase tracking-wide">
+            {adTypeLabels[adType]}
+          </span>
         </div>
       </div>
 

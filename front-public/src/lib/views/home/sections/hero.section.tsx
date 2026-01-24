@@ -1,22 +1,28 @@
-'use client';
+"use client";
 
-import { IconPaw, IconPlus, IconSearch, IconHeart } from '@tabler/icons-react';
-import { cn } from '@/lib/external/utils';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { useTranslations } from 'next-intl';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  IconPaw,
+  IconPlus,
+  IconSearch,
+  IconHeart,
+  IconChevronDown,
+} from "@tabler/icons-react";
+import { cn } from "@/lib/external/utils";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { useTranslations } from "next-intl";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { useCallback, useEffect, useState } from "react";
 
 const CAROUSEL_IMAGES = [
-  { src: '/images/hero-card-1.png', alt: 'Happy pet 1' },
-  { src: '/images/hero-card-2.png', alt: 'Happy pet 2' },
-  { src: '/images/hero-card-3.png', alt: 'Happy pet 3' },
+  { src: "/images/hero-card-1.png", alt: "Happy pet 1" },
+  { src: "/images/hero-card-2.png", alt: "Happy pet 2" },
+  { src: "/images/hero-card-3.png", alt: "Happy pet 3" },
 ];
 
 export const HeroSection = () => {
   const { navigateWithTransition } = useViewTransition();
-  const t = useTranslations('home.hero');
+  const t = useTranslations("home.hero");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // Initialize Embla with autoplay
@@ -24,14 +30,14 @@ export const HeroSection = () => {
     {
       loop: true,
       duration: 30, // Smooth transition duration
-      align: 'center',
+      align: "center",
     },
     [
       Autoplay({
         delay: 3000, // 3 seconds between slides
         stopOnInteraction: false, // Continue autoplay after user interaction
       }),
-    ]
+    ],
   );
 
   // Update selected index
@@ -43,18 +49,18 @@ export const HeroSection = () => {
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();
-    emblaApi.on('select', onSelect);
+    emblaApi.on("select", onSelect);
     return () => {
-      emblaApi.off('select', onSelect);
+      emblaApi.off("select", onSelect);
     };
   }, [emblaApi, onSelect]);
 
   const handleBrowseAds = () => {
-    navigateWithTransition('/ads/s');
+    navigateWithTransition("/ads/s");
   };
 
   const handlePostAd = () => {
-    navigateWithTransition('/ads/ad-placement');
+    navigateWithTransition("/ads/ad-placement");
   };
 
   return (
@@ -94,17 +100,19 @@ export const HeroSection = () => {
             {/* Main Headline */}
             <div className="space-y-4 sm:space-y-6">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold font-heading text-gray-900 leading-tight">
-                {t('titlePart1')}{' '}
+                {t("titlePart1")}{" "}
                 <span className="bg-gradient-to-r from-accent-500 via-primary-500 to-info-500 bg-clip-text text-transparent">
-                  {t('titleHighlight1')}
-                </span>
-                ,{' '}
+                  {t("titleHighlight1")}
+                  <span className="text-primary-500">,</span>
+                </span>{" "}
                 <span className="bg-gradient-to-r from-info-500 via-primary-500 to-accent-500 bg-clip-text text-transparent">
-                  {t('titleHighlight2')}
+                  {t("titleHighlight2")}
                 </span>
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">{t('subtitle')}</p>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
+                {t("subtitle")}
+              </p>
             </div>
 
             {/* CTA Buttons */}
@@ -113,35 +121,38 @@ export const HeroSection = () => {
               <button
                 onClick={handleBrowseAds}
                 className={cn(
-                  'w-full sm:w-auto group',
-                  'px-8 py-4 rounded-xl',
-                  'bg-gray-900 text-white font-semibold text-base sm:text-lg',
-                  'hover:bg-gray-800 hover:shadow-xl',
-                  'transition-all duration-200',
-                  'flex items-center justify-center gap-3',
-                  'focus:outline-none focus:ring-4 focus:ring-gray-900/20'
+                  "w-full sm:w-auto group",
+                  "px-8 py-4 rounded-xl",
+                  "bg-gray-900 text-white font-semibold text-base sm:text-lg",
+                  "hover:bg-gray-800 hover:shadow-xl",
+                  "transition-all duration-200",
+                  "flex items-center justify-center gap-3",
+                  "focus:outline-none focus:ring-4 focus:ring-gray-900/20",
                 )}
               >
                 <IconSearch size={24} />
-                <span>{t('browseAdsButton')}</span>
+                <span>{t("browseAdsButton")}</span>
               </button>
 
               {/* Secondary CTA - Post Ad */}
               <button
                 onClick={handlePostAd}
                 className={cn(
-                  'w-full sm:w-auto group',
-                  'px-8 py-4 rounded-xl',
-                  'bg-white text-gray-900 font-semibold text-base sm:text-lg',
-                  'border-2 border-gray-200',
-                  'hover:border-gray-400 hover:bg-gray-50 hover:shadow-lg',
-                  'transition-all duration-200',
-                  'flex items-center justify-center gap-3',
-                  'focus:outline-none focus:ring-4 focus:ring-gray-900/10'
+                  "w-full sm:w-auto group",
+                  "px-8 py-4 rounded-xl",
+                  "bg-white text-gray-900 font-semibold text-base sm:text-lg",
+                  "border-2 border-gray-200",
+                  "hover:border-gray-400 hover:bg-gray-50 hover:shadow-lg",
+                  "transition-all duration-200",
+                  "flex items-center justify-center gap-3",
+                  "focus:outline-none focus:ring-4 focus:ring-gray-900/10",
                 )}
               >
-                <IconPlus size={24} className="group-hover:rotate-90 transition-transform duration-300" />
-                <span>{t('postAdButton')}</span>
+                <IconPlus
+                  size={24}
+                  className="group-hover:rotate-90 transition-transform duration-300"
+                />
+                <span>{t("postAdButton")}</span>
               </button>
             </div>
 
@@ -150,17 +161,29 @@ export const HeroSection = () => {
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm sm:text-base text-gray-600">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="font-medium">{t('trustIndicators.activeAds')}</span>
+                  <span className="font-medium">
+                    {t("trustIndicators.activeAds")}
+                  </span>
                 </div>
                 <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" />
                 <div className="flex items-center gap-2">
-                  <IconHeart size={18} className="text-accent-500 fill-accent-500" />
-                  <span className="font-medium">{t('trustIndicators.safeShopping')}</span>
+                  <IconHeart
+                    size={18}
+                    className="text-accent-500 fill-accent-500"
+                  />
+                  <span className="font-medium">
+                    {t("trustIndicators.safeShopping")}
+                  </span>
                 </div>
                 <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" />
                 <div className="flex items-center gap-2">
-                  <IconPaw size={18} className="text-primary-500 fill-primary-500" />
-                  <span className="font-medium">{t('trustIndicators.verifiedSellers')}</span>
+                  <IconPaw
+                    size={18}
+                    className="text-primary-500 fill-primary-500"
+                  />
+                  <span className="font-medium">
+                    {t("trustIndicators.verifiedSellers")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -182,30 +205,46 @@ export const HeroSection = () => {
               <div className="absolute inset-0 flex items-center justify-center">
                 {CAROUSEL_IMAGES.map((image, index) => {
                   // Calculate position in the fan (0 = back, 2 = front)
-                  const position = (index - selectedIndex + CAROUSEL_IMAGES.length) % CAROUSEL_IMAGES.length;
+                  const position =
+                    (index - selectedIndex + CAROUSEL_IMAGES.length) %
+                    CAROUSEL_IMAGES.length;
                   const isActive = position === 0;
 
                   return (
                     <div
                       key={index}
                       className={cn(
-                        'absolute bg-white rounded-2xl shadow-xl border border-gray-100 cursor-pointer',
-                        'will-change-transform' // Performance hint for smooth GPU acceleration
+                        "absolute bg-white rounded-2xl shadow-xl border border-gray-100 cursor-pointer",
+                        "will-change-transform", // Performance hint for smooth GPU acceleration
                       )}
                       style={{
                         // Smooth cubic-bezier for natural motion
-                        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-                        width: position === 2 ? '92%' : position === 1 ? '95%' : '98%',
-                        height: position === 2 ? '88%' : position === 1 ? '92%' : '95%',
+                        transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+                        width:
+                          position === 2
+                            ? "92%"
+                            : position === 1
+                              ? "95%"
+                              : "98%",
+                        height:
+                          position === 2
+                            ? "88%"
+                            : position === 1
+                              ? "92%"
+                              : "95%",
                         zIndex: position === 2 ? 1 : position === 1 ? 2 : 3,
                         transform: `
                           rotate(${position === 2 ? -12 : position === 1 ? -6 : 10}deg)
-                          translateX(${position === 2 ? 0 : position === 1 ? '5rem' : '11.25rem'})
+                          translateX(${position === 2 ? 0 : position === 1 ? "5rem" : "11.25rem"})
                           scale(${isActive ? 1 : 1})
                         `,
-                        transformOrigin: 'bottom left',
-                        opacity: position === 2 ? 0.6 : position === 1 ? 0.8 : 1,
-                        boxShadow: position === 0 ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' : '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
+                        transformOrigin: "bottom left",
+                        opacity:
+                          position === 2 ? 0.6 : position === 1 ? 0.8 : 1,
+                        boxShadow:
+                          position === 0
+                            ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+                            : "0 10px 25px -5px rgba(0, 0, 0, 0.1)",
                       }}
                       onClick={() => emblaApi?.scrollTo(index)}
                     >
@@ -213,8 +252,12 @@ export const HeroSection = () => {
                         <img
                           src={image.src}
                           alt={image.alt}
-                          className={cn('w-full h-full object-cover', 'transition-transform duration-500 ease-out', isActive && 'hover:scale-105')}
-                          loading={index === 0 ? 'eager' : 'lazy'}
+                          className={cn(
+                            "w-full h-full object-cover",
+                            "transition-transform duration-500 ease-out",
+                            isActive && "hover:scale-105",
+                          )}
+                          loading={index === 0 ? "eager" : "lazy"}
                         />
                       </div>
                     </div>
@@ -244,6 +287,25 @@ export const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Scroll Down Indicator - Mobile only */}
+      <button
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight - 80,
+            behavior: "smooth",
+          });
+        }}
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 lg:hidden flex flex-col items-center gap-2 animate-bounce z-10 cursor-pointer"
+        aria-label={t("scrollDown")}
+      >
+        <span className="text-sm text-gray-600 font-semibold">
+          {t("scrollDown")}
+        </span>
+        <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center border border-gray-200">
+          <IconChevronDown size={24} className="text-gray-700" />
+        </div>
+      </button>
     </div>
   );
 };

@@ -5,13 +5,17 @@
  */
 
 // Core Infrastructure
-export { httpClient } from './core/http-client';
-export { BaseService } from './core/base-service';
-export type { RequestContext, RequestInterceptor, ResponseInterceptor } from './core/interceptors';
+export { httpClient } from "./core/http-client";
+export { BaseService } from "./core/base-service";
+export type {
+  RequestContext,
+  RequestInterceptor,
+  ResponseInterceptor,
+} from "./core/interceptors";
 
 // Legacy API Client (deprecated - use services instead)
 /** @deprecated Use service instances instead (authService, petAdService, etc.) */
-export { apiClient, ApiClient, ApiError, API_CONFIG } from './client';
+export { apiClient, ApiClient, ApiError, API_CONFIG } from "./client";
 
 // Error Handling
 export {
@@ -25,23 +29,28 @@ export {
   isConflictError,
   logApiError,
   type FormattedError,
-} from './utils/error-handler';
+} from "./utils/error-handler";
 
 // Services (Singleton Instances)
-export { authService, AuthService } from './services/auth.service';
-export { petAdService, PetAdService } from './services/pet-ad.service';
-export { favoriteAdService, FavoriteAdService } from './services/favorite-ad.service';
-export { citiesService, CitiesService } from './services/cities.service';
+export { authService, AuthService } from "./services/auth.service";
+export { petAdService, PetAdService } from "./services/pet-ad.service";
+export {
+  favoriteAdService,
+  FavoriteAdService,
+} from "./services/favorite-ad.service";
+export { citiesService, CitiesService } from "./services/cities.service";
 
 export {
   LogicalOperator,
   FilterEquation,
+  SortDirection,
   type QuerySpecification,
   type SearchFilter,
   type FilterEntry,
   type PaginationParams,
   type PaginatedResult,
-} from './types/common.types';
+  type SortEntry,
+} from "./types/common.types";
 
 // Types
 export type {
@@ -57,7 +66,7 @@ export type {
   CurrentUserResponse,
   ProblemDetails,
   ApiResponse,
-} from './types/auth.types';
+} from "./types/auth.types";
 
 export type {
   PetAdListItemDto,
@@ -72,8 +81,8 @@ export type {
   UpdatePetAdCommand,
   AskQuestionCommand,
   AnswerQuestionCommand,
-} from './types/pet-ad.types';
+} from "./types/pet-ad.types";
 
-export type { CityDto } from './types/city.types';
+export type { CityDto } from "./types/city.types";
 
-export { PetAdType, PetGender, PetSize } from './types/pet-ad.types';
+export { PetAdType, PetGender, PetSize } from "./types/pet-ad.types";

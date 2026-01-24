@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/external/utils';
-import { IconAlertCircle, IconX } from '@tabler/icons-react';
+import { cn } from "@/lib/external/utils";
+import { IconAlertCircle, IconX } from "@tabler/icons-react";
+import { useTranslations } from "next-intl";
 
 interface ErrorDisplayProps {
   /** Primary error message */
@@ -17,31 +18,59 @@ interface ErrorDisplayProps {
   /** Additional CSS classes */
   className?: string;
   /** Variant style */
-  variant?: 'default' | 'compact';
+  variant?: "default" | "compact";
 }
 
 /**
  * Component for displaying API errors with Problem Details support
  */
-export function ErrorDisplay({ message, details, title, dismissible = false, onDismiss, className, variant = 'default' }: ErrorDisplayProps) {
+export function ErrorDisplay({
+  message,
+  details,
+  title,
+  dismissible = false,
+  onDismiss,
+  className,
+  variant = "default",
+}: ErrorDisplayProps) {
+  const t = useTranslations("accessibility");
   if (!message) return null;
 
-  const isCompact = variant === 'compact';
+  const isCompact = variant === "compact";
 
   return (
-    <div className={cn('rounded-lg border border-red-200 bg-red-50 text-red-900', isCompact ? 'p-3' : 'p-4', className)} role="alert">
+    <div
+      className={cn(
+        "rounded-lg border border-red-200 bg-red-50 text-red-900",
+        isCompact ? "p-3" : "p-4",
+        className,
+      )}
+      role="alert"
+    >
       <div className="flex items-start gap-3">
         {/* Icon */}
-        <IconAlertCircle className={cn('flex-shrink-0 text-red-600', isCompact ? 'h-4 w-4' : 'h-5 w-5')} />
+        <IconAlertCircle
+          className={cn(
+            "flex-shrink-0 text-red-600",
+            isCompact ? "h-4 w-4" : "h-5 w-5",
+          )}
+        />
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          {title && !isCompact && <div className="font-semibold mb-1">{title}</div>}
-          <div className={cn('text-sm', isCompact && 'text-xs')}>{message}</div>
+          {title && !isCompact && (
+            <div className="font-semibold mb-1">{title}</div>
+          )}
+          <div className={cn("text-sm", isCompact && "text-xs")}>{message}</div>
 
           {/* Validation errors list */}
           {details && details.length > 0 && (
-            <ul className={cn('mt-2 space-y-1 list-disc list-inside', isCompact ? 'text-xs' : 'text-sm')}>
+            <ul
+              className={cn(
+                "mt-2 space-y-1 list-disc list-inside",
+                isCompact ? "text-xs" : "text-sm",
+              )}
+            >
               {details.map((detail, index) => (
                 <li key={index} className="text-red-800">
                   {detail}
@@ -57,9 +86,9 @@ export function ErrorDisplay({ message, details, title, dismissible = false, onD
             type="button"
             onClick={onDismiss}
             className="flex-shrink-0 text-red-600 hover:text-red-800 transition-colors"
-            aria-label="Dismiss error"
+            aria-label={t("dismissError")}
           >
-            <IconX className={cn(isCompact ? 'h-4 w-4' : 'h-5 w-5')} />
+            <IconX className={cn(isCompact ? "h-4 w-4" : "h-5 w-5")} />
           </button>
         )}
       </div>

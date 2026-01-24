@@ -1,34 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
-import { PetBreedDto } from '@/lib/api/types/pet-ad.types';
-import { getPetBreedsAction } from '@/lib/auth/actions';
-import { useAdPlacement } from '@/lib/contexts/ad-placement-context';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { ViewFooter, ViewLayout, LoadingState, SearchInput } from '../components';
-import { OptionCard } from '@/lib/components/views/ad-placement';
-import { Heading, Text } from '@/lib/primitives/typography';
+import { useState, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
+import { PetBreedDto } from "@/lib/api/types/pet-ad.types";
+import { getPetBreedsAction } from "@/lib/auth/actions";
+import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import {
+  ViewFooter,
+  ViewLayout,
+  LoadingState,
+  SearchInput,
+} from "../components";
+import { OptionCard } from "@/lib/components/views/ad-placement";
+import { Heading, Text } from "@/lib/primitives/typography";
 
 /**
  * Breed Selection View
  * Step 2: Choose pet breed with search functionality
  */
 export default function BreedView() {
-  const t = useTranslations('adPlacementDetails.breedView');
+  const t = useTranslations("adPlacementDetails.breedView");
   const { formData, updateFormData } = useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
   const [breeds, setBreeds] = useState<PetBreedDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedBreedId, setSelectedBreedId] = useState<number | null>(formData.petBreedId);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedBreedId, setSelectedBreedId] = useState<number | null>(
+    formData.petBreedId,
+  );
 
   // Fetch breeds based on selected category using Server Action
   useEffect(() => {
     const fetchBreeds = async () => {
       if (!formData.categoryId) {
         // If no category selected, redirect back
-        navigateWithTransition('/ads/ad-placement/category');
+        navigateWithTransition("/ads/ad-placement/category");
         return;
       }
 
@@ -38,10 +45,10 @@ export default function BreedView() {
         if (result.success) {
           setBreeds(result.data);
         } else {
-          console.error('Failed to fetch breeds:', result.error);
+          console.error("Failed to fetch breeds:", result.error);
         }
       } catch (error) {
-        console.error('Failed to fetch breeds:', error);
+        console.error("Failed to fetch breeds:", error);
       } finally {
         setLoading(false);
       }
@@ -65,18 +72,18 @@ export default function BreedView() {
 
   const handleNext = () => {
     if (selectedBreedId !== null) {
-      navigateWithTransition('/ads/ad-placement/basics');
+      navigateWithTransition("/ads/ad-placement/basics");
     }
   };
 
   const handleBack = () => {
-    navigateWithTransition('/ads/ad-placement/category');
+    navigateWithTransition("/ads/ad-placement/category");
   };
 
   const canProceed = selectedBreedId !== null;
 
   if (loading) {
-    return <LoadingState message={t('loading')} />;
+    return <LoadingState message={t("loading")} />;
   }
 
   return (
@@ -85,30 +92,46 @@ export default function BreedView() {
         <div className="space-y-8">
           {/* Title */}
           <div className="space-y-2">
-            <Heading variant="page-title">{t('heading')}</Heading>
+            <Heading variant="subsection">{t("heading")}</Heading>
             <Text variant="body-lg" color="secondary">
-              {breeds.length > 0 ? t('subtitle', { count: breeds.length }) : t('noBreeds')}
+              {breeds.length > 0
+                ? t("subtitle", { count: breeds.length })
+                : t("noBreeds")}
             </Text>
           </div>
 
           {/* Search Input */}
-          {breeds.length > 0 && <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder={t('searchPlaceholder')} />}
+          {breeds.length > 0 && (
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder={t("searchPlaceholder")}
+            />
+          )}
 
           {/* Results Count */}
           {searchQuery && (
             <Text variant="small" color="secondary">
               {filteredBreeds.length === 0
-                ? t('noResults')
-                : t('resultsCount', { count: filteredBreeds.length, plural: filteredBreeds.length !== 1 ? 's' : '' })}
+                ? t("noResults")
+                : t("resultsCount", {
+                    count: filteredBreeds.length,
+                    plural: filteredBreeds.length !== 1 ? "s" : "",
+                  })}
             </Text>
           )}
 
           {/* Breed List */}
-          <div className="space-y-3 max-h-[500px] overflow-y-auto">
+          <div className="space-y-2 max-h-[400px] overflow-y-auto">
             {filteredBreeds.length === 0 && searchQuery ? (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No breeds match "{searchQuery}"</p>
-                <button onClick={() => setSearchQuery('')} className="mt-4 text-black underline font-medium">
+                <p className="text-gray-500 text-lg">
+                  No breeds match "{searchQuery}"
+                </p>
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="mt-4 text-black underline font-medium"
+                >
                   Clear search
                 </button>
               </div>
@@ -119,7 +142,7 @@ export default function BreedView() {
                   selected={selectedBreedId === breed.id}
                   onClick={() => handleSelect(breed.id)}
                   title={breed.title}
-                  size="md"
+                  size="sm"
                 />
               ))
             )}
@@ -127,7 +150,11 @@ export default function BreedView() {
         </div>
       </ViewLayout>
 
-      <ViewFooter onBack={handleBack} onNext={handleNext} canProceed={canProceed} />
+      <ViewFooter
+        onBack={handleBack}
+        onNext={handleNext}
+        canProceed={canProceed}
+      />
     </>
   );
 }

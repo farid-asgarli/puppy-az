@@ -1,10 +1,14 @@
-import NotFoundView from '@/lib/views/not-found';
-import type { Metadata } from 'next';
+import NotFoundView from "@/lib/views/not-found";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
-export const metadata: Metadata = {
-  title: '404 - Səhifə tapılmadı | puppy.az',
-  description: 'Axtardığınız səhifə tapılmadı. puppy.az-da balalar və digər ev heyvanları üçün elanlar.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("notFound.metadata");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 /**
  * Global Not Found Page
