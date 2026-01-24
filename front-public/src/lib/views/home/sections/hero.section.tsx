@@ -24,6 +24,20 @@ export const HeroSection = () => {
   const { navigateWithTransition } = useViewTransition();
   const t = useTranslations("home.hero");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [showScrollHint, setShowScrollHint] = useState(true);
+
+  // Hide scroll hint when user scrolls
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowScrollHint(false);
+      } else {
+        setShowScrollHint(true);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Initialize Embla with autoplay
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -156,8 +170,27 @@ export const HeroSection = () => {
               </button>
             </div>
 
+            {/* Scroll hint - Mobile only */}
+            <div
+              onClick={() =>
+                window.scrollTo({
+                  top: window.innerHeight - 80,
+                  behavior: "smooth",
+                })
+              }
+              className="lg:hidden flex items-center justify-center gap-2 pt-0 pb-2 mb-0 cursor-pointer"
+            >
+              <span className="text-gray-800 text-sm font-semibold">
+                {t("scrollDown")}
+              </span>
+              <IconChevronDown
+                size={18}
+                className="text-gray-700 animate-bounce"
+              />
+            </div>
+
             {/* Trust indicators */}
-            <div className="pt-8">
+            <div className="pt-4 lg:pt-8">
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-8 text-sm sm:text-base text-gray-600">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
@@ -287,25 +320,6 @@ export const HeroSection = () => {
           </div>
         </div>
       </div>
-
-      {/* Scroll Down Indicator - Mobile only */}
-      <button
-        onClick={() => {
-          window.scrollTo({
-            top: window.innerHeight - 80,
-            behavior: "smooth",
-          });
-        }}
-        className="absolute bottom-24 left-1/2 -translate-x-1/2 lg:hidden flex flex-col items-center gap-2 animate-bounce z-10 cursor-pointer"
-        aria-label={t("scrollDown")}
-      >
-        <span className="text-sm text-gray-600 font-semibold">
-          {t("scrollDown")}
-        </span>
-        <div className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg flex items-center justify-center border border-gray-200">
-          <IconChevronDown size={24} className="text-gray-700" />
-        </div>
-      </button>
     </div>
   );
 };
