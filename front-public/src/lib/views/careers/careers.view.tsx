@@ -122,7 +122,7 @@ const CareersView = () => {
                     <Heading variant="label" as="h4" className="mb-1">
                       {perk.title}
                     </Heading>
-                    <Text variant="body-sm" color="secondary">
+                    <Text variant="small" color="secondary">
                       {perk.description}
                     </Text>
                   </div>
@@ -156,7 +156,7 @@ const CareersView = () => {
                 <IconArrowRight size={18} />
               </a>
 
-              <Text variant="body-sm" color="secondary" className="pt-2">
+              <Text variant="small" color="secondary" className="pt-2">
                 {t("talentNetwork.hint")}
               </Text>
             </div>

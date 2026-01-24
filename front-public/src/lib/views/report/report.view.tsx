@@ -175,7 +175,7 @@ const ReportView = () => {
                           >
                             {type.label}
                           </Text>
-                          <Text variant="body-sm" color="secondary">
+                          <Text variant="small" color="secondary">
                             {type.description}
                           </Text>
                         </div>
@@ -198,7 +198,7 @@ const ReportView = () => {
                   placeholder={t("form.adLinkPlaceholder")}
                   className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:outline-none transition-colors"
                 />
-                <Text variant="body-sm" color="secondary">
+                <Text variant="small" color="secondary">
                   {t("form.adLinkHint")}
                 </Text>
               </div>
@@ -241,11 +241,11 @@ const ReportView = () => {
                   )}
                 />
                 {emailError ? (
-                  <Text variant="body-sm" className="text-red-500">
+                  <Text variant="small" className="text-red-500">
                     {t("form.emailError")}
                   </Text>
                 ) : (
-                  <Text variant="body-sm" color="secondary">
+                  <Text variant="small" color="secondary">
                     {t("form.emailHint")}
                   </Text>
                 )}
@@ -306,7 +306,7 @@ const ReportView = () => {
                       1
                     </span>
                   </div>
-                  <Text variant="body-sm" color="secondary">
+                  <Text variant="small" color="secondary">
                     {t("sidebar.process.step1")}
                   </Text>
                 </div>
@@ -316,7 +316,7 @@ const ReportView = () => {
                       2
                     </span>
                   </div>
-                  <Text variant="body-sm" color="secondary">
+                  <Text variant="small" color="secondary">
                     {t("sidebar.process.step2")}
                   </Text>
                 </div>
@@ -326,7 +326,7 @@ const ReportView = () => {
                       3
                     </span>
                   </div>
-                  <Text variant="body-sm" color="secondary">
+                  <Text variant="small" color="secondary">
                     {t("sidebar.process.step3")}
                   </Text>
                 </div>

@@ -164,7 +164,7 @@ const CommunityView = () => {
                     <Text variant="body" className="font-medium">
                       {social.name}
                     </Text>
-                    <Text variant="body-sm" color="secondary">
+                    <Text variant="small" color="secondary">
                       {social.description}
                     </Text>
                   </div>
