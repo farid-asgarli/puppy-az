@@ -489,10 +489,10 @@ public static class DatabaseSeeder
 			}
 		}
 
-		var seedPhotoPath = Path.Combine(wwwrootPath, "seed_photo");
+		var seedPhotoPath = Path.Combine(wwwrootPath, "uploads", "seed_photo");
 		if (!Directory.Exists(seedPhotoPath))
 		{
-			Console.WriteLine("Warning: wwwroot/seed_photo directory not found. Skipping pet ads seeding.");
+			Console.WriteLine("Warning: wwwroot/uploads/seed_photo directory not found. Skipping pet ads seeding.");
 			return;
 		}
 
@@ -627,12 +627,14 @@ public static class DatabaseSeeder
 
 				var image = new PetAdImage
 				{
-					FilePath = $"seed_photo/{fileName}",
+					FilePath = $"/uploads/seed_photo/{fileName}",
 					FileName = fileName,
 					FileSize = fileInfo.Length,
 					ContentType = "image/jpeg",
 					IsPrimary = j == 0, // First image is primary
 					UploadedAt = petAd.CreatedAt,
+					UploadedById = user.Id,
+					AttachedAt = petAd.CreatedAt,
 				};
 
 				petAd.Images.Add(image);
