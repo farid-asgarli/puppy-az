@@ -156,9 +156,9 @@ export function buildSorting(filters: FilterParams): SortEntry[] | undefined {
 
   switch (sort) {
     case "newest":
-      return [{ key: "createdAt", direction: SortDirection.DESCENDING }];
+      return [{ key: "publishedAt", direction: SortDirection.DESCENDING }];
     case "oldest":
-      return [{ key: "createdAt", direction: SortDirection.ASCENDING }];
+      return [{ key: "publishedAt", direction: SortDirection.ASCENDING }];
     case "price-low":
       return [{ key: "price", direction: SortDirection.ASCENDING }];
     case "price-high":

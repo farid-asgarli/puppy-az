@@ -111,7 +111,7 @@ export default function NavbarUserMenu() {
           return;
         }
         const parsed = JSON.parse(saved);
-        const expirationTime = 12 * 60 * 60 * 1000; // 12 hours
+        const expirationTime = 5 * 24 * 60 * 60 * 1000; // 5 days
         const isExpired = Date.now() - parsed.timestamp > expirationTime;
         setHasDraft(!isExpired);
       } catch {
@@ -251,12 +251,20 @@ export default function NavbarUserMenu() {
       {isAuthenticated && (
         <TransitionLink
           href="/my-account"
-          className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors"
+          className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors overflow-hidden"
           aria-label={tAccessibility("userMenu")}
         >
-          <span className="text-white text-sm font-medium">
-            {getUserInitials()}
-          </span>
+          {user?.profilePictureUrl ? (
+            <img
+              src={user.profilePictureUrl}
+              alt={user.firstName || "User"}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span className="text-white text-sm font-medium">
+              {getUserInitials()}
+            </span>
+          )}
         </TransitionLink>
       )}
 
@@ -274,8 +282,16 @@ export default function NavbarUserMenu() {
             <>
               <div className="px-4 py-4 bg-gray-50 m-2 rounded-xl border border-gray-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-sm">
-                    {user.firstName?.charAt(0).toUpperCase()}
+                  <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-sm overflow-hidden">
+                    {user.profilePictureUrl ? (
+                      <img
+                        src={user.profilePictureUrl}
+                        alt={user.firstName || "User"}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      user.firstName?.charAt(0).toUpperCase()
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <Text

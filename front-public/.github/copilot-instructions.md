@@ -16,11 +16,11 @@ Never call `authService`, `petAdService`, etc. directly from client components. 
 
 ```tsx
 // ❌ WRONG - client component calling API directly
-import { petAdService } from '@/lib/api/services/pet-ad.service';
+import { petAdService } from "@/lib/api/services/pet-ad.service";
 const data = await petAdService.getPetAds();
 
 // ✅ CORRECT - using Server Action
-import { getPetAdsAction } from '@/lib/auth/actions';
+import { getPetAdsAction } from "@/lib/auth/actions";
 const result = await getPetAdsAction(params);
 ```
 
@@ -28,9 +28,11 @@ const result = await getPetAdsAction(params);
 Server Actions must pass locale to service calls for backend localization:
 
 ```tsx
-import { getCurrentLocale } from '@/lib/auth/locale-utils';
+import { getCurrentLocale } from "@/lib/auth/locale-utils";
 
-export async function getProfileAction(): Promise<ActionResult<UserProfileDto>> {
+export async function getProfileAction(): Promise<
+  ActionResult<UserProfileDto>
+> {
   const locale = await getCurrentLocale(); // Always get locale first
   return withAuth(async (token) => {
     const profile = await authService.getProfile(token, locale); // Pass as last param
@@ -45,8 +47,8 @@ Service methods accept optional `locale` as **last parameter** and pass to `with
 If a client component absolutely must call a service (rare cases like prefetching for cache warming), use URL-based locale:
 
 ```tsx
-'use client';
-import { useParams } from 'next/navigation';
+"use client";
+import { useParams } from "next/navigation";
 
 export function MyClientComponent() {
   const params = useParams();
@@ -190,7 +192,7 @@ Backend integration:
 2. **Font loading**: Uses `localFont` for DM Sans and Poppins in `[locale]/layout.tsx`
 3. **Filtering**: Never store filter state outside URL params—causes sync issues
 4. **Auth refresh**: `useAuth()` auto-refreshes tokens before expiry (see `TOKEN_EXPIRY_BUFFER_SECONDS`)
-5. **Draft persistence**: `AdPlacementContext` auto-saves to localStorage with 12hr expiration
+5. **Draft persistence**: `AdPlacementContext` auto-saves to localStorage with 5-day expiration
 
 PLEASE FOLLOW THE BEST PRACTICES TO ENSURE CODE QUALITY AND CONSISTENCY ACROSS THE PROJECT.
 

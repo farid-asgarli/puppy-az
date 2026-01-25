@@ -9,9 +9,11 @@ import {
   PetGender,
   PetSize,
   type SubmitPetAdCommand,
+  type UpdatePetAdCommand,
 } from "@/lib/api/types/pet-ad.types";
 import {
   submitPetAdAction,
+  updatePetAdAction,
   getPetBreedsAction,
   getCitiesAction,
 } from "@/lib/auth/actions";
@@ -56,7 +58,8 @@ export default function ReviewView() {
   const tPetSizes = useTranslations("common");
   const tGender = useTranslations("common");
   const tA11y = useTranslations("accessibility");
-  const { formData, resetFormData } = useAdPlacement();
+  const { formData, resetFormData, isEditMode, editingAdId, clearEditMode } =
+    useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -116,15 +119,13 @@ export default function ReviewView() {
   };
 
   const handleBack = () => {
-    if (formData.adType === PetAdType.Sale) {
-      navigateWithTransition("/ads/ad-placement/price");
-    } else {
-      navigateWithTransition("/ads/ad-placement/photos");
-    }
+    // Price is required for all ad types
+    navigateWithTransition("/ads/ad-placement/price");
   };
 
   const handleSuccessDialogClose = () => {
     setShowSuccessDialog(false);
+    clearEditMode();
     resetFormData();
     // Use hard navigation to ensure fresh data (bypass router cache)
     window.location.href = "/my-account/ads?tab=pending";
@@ -153,42 +154,69 @@ export default function ReviewView() {
         return;
       }
 
-      // Validate price for Sale type
-      if (
-        formData.adType === PetAdType.Sale &&
-        (formData.price === null || formData.price < 0)
-      ) {
+      // Validate price (required for all ad types, minimum 0)
+      if (formData.price === null || formData.price < 0) {
         setSubmitError(t("priceRequired"));
         setSubmitting(false);
         return;
       }
 
-      // Prepare submission data
-      const submissionData: SubmitPetAdCommand = {
-        title: formData.title,
-        description: formData.description,
-        ageInMonths: formData.ageInMonths,
-        gender: formData.gender,
-        adType: formData.adType,
-        color: formData.color || "",
-        weight: formData.weight,
-        size: formData.size,
-        price: formData.adType === PetAdType.Sale ? formData.price || 0 : 0,
-        cityId: formData.cityId,
-        petBreedId: formData.petBreedId,
-        imageIds: formData.uploadedImages.map((img) => img.id),
-      };
+      // Check if we're in edit mode
+      if (isEditMode && editingAdId) {
+        // Prepare update data
+        const updateData: UpdatePetAdCommand = {
+          id: editingAdId,
+          title: formData.title,
+          description: formData.description,
+          ageInMonths: formData.ageInMonths,
+          gender: formData.gender,
+          adType: formData.adType,
+          color: formData.color || "",
+          weight: formData.weight,
+          size: formData.size,
+          price: formData.price,
+          cityId: formData.cityId,
+          petBreedId: formData.petBreedId,
+          imageIds: formData.uploadedImages.map((img) => img.id),
+        };
 
-      // Submit to backend
-      const result = await submitPetAdAction(submissionData);
+        // Update existing ad
+        const result = await updatePetAdAction(updateData);
 
-      if (result.success) {
-        // Success - show success dialog
-        setSubmitting(false);
-        setShowSuccessDialog(true);
+        if (result.success) {
+          setSubmitting(false);
+          setShowSuccessDialog(true);
+        } else {
+          setSubmitError(result.error || t("submitError"));
+          setSubmitting(false);
+        }
       } else {
-        setSubmitError(result.error || t("submitError"));
-        setSubmitting(false);
+        // Prepare submission data for new ad
+        const submissionData: SubmitPetAdCommand = {
+          title: formData.title,
+          description: formData.description,
+          ageInMonths: formData.ageInMonths,
+          gender: formData.gender,
+          adType: formData.adType,
+          color: formData.color || "",
+          weight: formData.weight,
+          size: formData.size,
+          price: formData.price,
+          cityId: formData.cityId,
+          petBreedId: formData.petBreedId,
+          imageIds: formData.uploadedImages.map((img) => img.id),
+        };
+
+        // Submit new ad to backend
+        const result = await submitPetAdAction(submissionData);
+
+        if (result.success) {
+          setSubmitting(false);
+          setShowSuccessDialog(true);
+        } else {
+          setSubmitError(result.error || t("submitError"));
+          setSubmitting(false);
+        }
       }
     } catch (error) {
       console.error("Submission error:", error);
@@ -410,7 +438,13 @@ export default function ReviewView() {
         onBack={handleBack}
         onNext={handleSubmit}
         canProceed={!submitting}
-        nextLabel={submitting ? t("submittingLabel") : t("submitLabel")}
+        nextLabel={
+          submitting
+            ? t("submittingLabel")
+            : isEditMode
+              ? t("updateLabel", { defaultValue: "Yenilə" })
+              : t("submitLabel")
+        }
         isSubmitting={submitting}
       />
 
@@ -418,8 +452,21 @@ export default function ReviewView() {
       <AdSubmissionSuccessDialog
         isOpen={showSuccessDialog}
         onClose={handleSuccessDialogClose}
-        title={t("successDialog.title")}
-        message={t("successDialog.message")}
+        title={
+          isEditMode
+            ? t("successDialog.updateTitle", {
+                defaultValue: "Elan yeniləndi!",
+              })
+            : t("successDialog.title")
+        }
+        message={
+          isEditMode
+            ? t("successDialog.updateMessage", {
+                defaultValue:
+                  "Elanınız uğurla yeniləndi və yoxlanış üçün göndərildi.",
+              })
+            : t("successDialog.message")
+        }
         infoText={t("successDialog.infoText")}
         buttonText={t("successDialog.buttonText")}
         closeAriaLabel={tA11y("close")}

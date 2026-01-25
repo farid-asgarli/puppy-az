@@ -103,6 +103,37 @@ export class AuthService extends BaseService {
   }
 
   /**
+   * Upload profile picture (requires auth token)
+   */
+  async uploadProfilePicture(
+    file: File,
+    token: string,
+    locale?: string,
+  ): Promise<{ url: string }> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return this.http.post<{ url: string }>(
+      "/api/users/profile/picture",
+      formData,
+      {
+        ...this.withAuth(token, locale),
+        // Don't set Content-Type, let browser set it with boundary
+      },
+    );
+  }
+
+  /**
+   * Delete profile picture (requires auth token)
+   */
+  async deleteProfilePicture(token: string, locale?: string): Promise<void> {
+    return this.http.delete<void>(
+      "/api/users/profile/picture",
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
    * Change password (requires auth token)
    */
   async changePassword(

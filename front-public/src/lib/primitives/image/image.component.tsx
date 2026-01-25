@@ -1,10 +1,13 @@
-'use client';
+"use client";
 
-import NextImage, { ImageProps as NextImageProps } from 'next/image';
-import { useState } from 'react';
-import { cn } from '@/lib/external/utils';
+import NextImage, { ImageProps as NextImageProps } from "next/image";
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/external/utils";
 
-export interface ImageWithFallbackProps extends Omit<NextImageProps, 'src' | 'onError'> {
+export interface ImageWithFallbackProps extends Omit<
+  NextImageProps,
+  "src" | "onError"
+> {
   src: string | null | undefined;
   fallbackSrc?: string;
   fallbackComponent?: React.ReactNode;
@@ -62,7 +65,7 @@ export interface ImageWithFallbackProps extends Omit<NextImageProps, 'src' | 'on
  */
 export function ImageWithFallback({
   src,
-  fallbackSrc = '/images/placeholder.webp',
+  fallbackSrc = "/images/placeholder.webp",
   fallbackComponent,
   loadingComponent,
   showLoadingSkeleton = false,
@@ -73,10 +76,21 @@ export function ImageWithFallback({
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Reset error state when src changes
+  useEffect(() => {
+    setHasError(false);
+    setIsLoading(true);
+  }, [src]);
+
   // If src is null/undefined or error occurred, show fallback
   const shouldShowFallback = !src || hasError;
 
-  const handleError = () => {
+  // Check if image is external (starts with http/https)
+  const isExternalImage =
+    src?.startsWith("http://") || src?.startsWith("https://");
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error("Image load error:", src, e);
     setHasError(true);
     setIsLoading(false);
   };
@@ -92,7 +106,14 @@ export function ImageWithFallback({
 
   // Show fallback image
   if (shouldShowFallback) {
-    return <NextImage {...props} src={fallbackSrc} alt={alt} className={cn('object-cover', className)} />;
+    return (
+      <NextImage
+        {...props}
+        src={fallbackSrc}
+        alt={alt}
+        className={cn("object-cover", className)}
+      />
+    );
   }
 
   return (
@@ -100,7 +121,9 @@ export function ImageWithFallback({
       {/* Loading state - only show if image hasn't loaded yet */}
       {isLoading && (showLoadingSkeleton || loadingComponent) && (
         <div className="absolute inset-0">
-          {loadingComponent || <div className="h-full w-full animate-pulse bg-gradient-to-br from-gray-200 to-gray-100" />}
+          {loadingComponent || (
+            <div className="h-full w-full animate-pulse bg-gradient-to-br from-gray-200 to-gray-100" />
+          )}
         </div>
       )}
 
@@ -109,7 +132,13 @@ export function ImageWithFallback({
         {...props}
         src={src}
         alt={alt}
-        className={cn('object-cover', isLoading && 'opacity-0', !isLoading && 'opacity-100 transition-opacity duration-300', className)}
+        unoptimized={isExternalImage}
+        className={cn(
+          "object-cover",
+          isLoading && "opacity-0",
+          !isLoading && "opacity-100 transition-opacity duration-300",
+          className,
+        )}
         onError={handleError}
         onLoad={handleLoadingComplete}
       />

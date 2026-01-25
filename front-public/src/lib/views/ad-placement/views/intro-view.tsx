@@ -14,11 +14,13 @@ import { ActionCard } from "@/lib/components/views/ad-placement";
  * Intro screen for ad placement wizard
  * Inspired by Airbnb's "Tell us about your place" intro
  * Elegantly handles draft continuation with choice cards
+ * Note: Edit mode is handled directly in ad-type-view (skips intro)
  */
 export default function IntroView() {
   const t = useTranslations("adPlacement");
   const searchParams = useSearchParams();
-  const { hasSavedDraft, getSavedStep, resetFormData } = useAdPlacement();
+  const { hasSavedDraft, getSavedStep, resetFormData, clearEditMode } =
+    useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
   const [showDraftOptions, setShowDraftOptions] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -28,8 +30,10 @@ export default function IntroView() {
     if (isInitialized) return;
 
     const isNew = searchParams.get("new") === "true";
+
     if (isNew) {
-      // Clear draft but stay on intro page (show fresh start UI)
+      // Clear draft and edit mode, stay on intro page
+      clearEditMode();
       resetFormData();
       // Remove query param from URL
       window.history.replaceState({}, "", window.location.pathname);
@@ -46,6 +50,7 @@ export default function IntroView() {
     hasSavedDraft,
     resetFormData,
     navigateWithTransition,
+    clearEditMode,
   ]);
 
   const handleContinueDraft = () => {
@@ -54,6 +59,7 @@ export default function IntroView() {
   };
 
   const handleStartFresh = () => {
+    clearEditMode();
     resetFormData();
     navigateWithTransition("/ads/ad-placement/ad-type");
   };

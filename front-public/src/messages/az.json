@@ -441,13 +441,17 @@
     "introTitleReturning": "Yenidən xoş gəlmisiniz!",
     "introDescription": "Bu addımda sizə hansı növ elan yaratmaq istədiyinizi və ev heyvanınızın hansı kateqoriyaya aid olduğunu soruşacağıq. Sonra maraqlı elan yaratmaq üçün sizi təfərrüatlarla tanış edəcəyik.",
     "introDescriptionDraft": "Əvvəlki qara-layihənizi tapdıq. Qaldığınız yerdən davam etmək və ya təmiz elan yaratmaq istərdiniz?",
+    "loadingAd": "Elan yüklənir...",
+    "editLoadError": "Bu elanı redaktə etmək mümkün deyil",
+    "editLoadErrorDescription": "Bu elan artıq dərc edilmiş və ya silinmişdir.",
+    "backToMyAds": "Elanlarıma qayıt",
     "tagline": "Mükəmməl ev heyvanı elanınızı yaradın",
     "getStarted": "Başla",
     "continueDraft": "Davam et",
     "continueDraftDescription": "Əvvəlki elanınıza davam edin və tamamlayın",
     "startFresh": "Yenidən başla",
     "startFreshDescription": "Yeni elan yaradın və sıfırdan başlayın",
-    "draftExpiryNote": "Saxlanmış elanlar 12 saat saxlanılır",
+    "draftExpiryNote": "Saxlanmış elanlar 5 gün saxlanılır",
     "saveAndExit": "Yadda saxla və çıx",
     "back": "Geri",
     "next": "Növbəti",
@@ -2354,6 +2358,7 @@
     },
     "contactCard": {
       "price": "Qiymət",
+      "free": "Pulsuz",
       "contact": "Əlaqə",
       "memberSince": "{date} tarixindən bəri",
       "seller": "Satıcı",
@@ -2449,7 +2454,11 @@
       "description": "Seçilmişlərinizi saxlamaq və bütün cihazlarınızda onlara daxil olmaq üçün daxil olun"
     },
     "search": {
-      "placeholder": "Seçilmişlərdə axtar..."
+      "placeholder": "Seçilmişlərdə axtar...",
+      "noResults": {
+        "title": "Nəticə tapılmadı",
+        "description": "Axtarışınıza uyğun elan tapılmadı"
+      }
     },
     "emptyState": {
       "authenticated": {
@@ -2606,7 +2615,8 @@
         "title": "Profil Şəkli",
         "uploadButton": "Şəkil yüklə",
         "uploadLabel": "Profil şəkli yüklə",
-        "formatInfo": "PNG, JPG formatı, maksimum 10MB"
+        "formatInfo": "PNG, JPG formatı",
+        "deleteButton": "Şəkli sil"
       },
       "personalInfo": {
         "title": "Şəxsi Məlumat",
@@ -2653,7 +2663,11 @@
         "error": {
           "title": "Xəta Baş Verdi",
           "updateFailed": "Məlumatlar yenilənmədi",
-          "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin."
+          "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
+          "invalidFileType": "Yalnız JPG, PNG və WEBP formatları qəbul edilir",
+          "fileTooLarge": "Fayl həcmi 10MB-dan çox olmamalıdır",
+          "uploadFailed": "Şəkil yüklənmədi",
+          "deleteFailed": "Şəkil silinmədi"
         }
       },
       "infoBanner": {
@@ -3006,6 +3020,8 @@
       "weightMedium": "orta ölçülü heyvan",
       "weightLarge": "böyük heyvan",
       "weightVeryLarge": "çox böyük heyvan",
+      "weightExtreme": "çox ağır heyvan",
+      "ton": "ton",
       "skipWeightText": "Əmin deyilsinizsə və ya göstərmək istəmirsinizsə çəkini boş buraxabilərsiniz"
     },
     "introView": {
@@ -3039,7 +3055,8 @@
       "badge": "Premium"
     },
     "price": {
-      "notApplicable": "Qiymət tətbiq olunmur"
+      "notApplicable": "Qiymət tətbiq olunmur",
+      "free": "Pulsuz"
     }
   },
   "adEdit": {

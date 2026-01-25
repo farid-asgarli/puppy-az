@@ -1,8 +1,12 @@
-import { BaseService } from '../core/base-service';
-import { PaginatedResult, QuerySpecification } from '@/lib/api/types/common.types';
+import { BaseService } from "../core/base-service";
+import {
+  PaginatedResult,
+  QuerySpecification,
+} from "@/lib/api/types/common.types";
 import {
   PetCategoryDetailedDto,
   PetCategoryDto,
+  PetColorDto,
   PetBreedDto,
   PetAdListItemDto,
   PetAdDetailsDto,
@@ -18,7 +22,7 @@ import {
   MyAdQuestionsSummaryDto,
   MyPetAdDto,
   MyAdListItemDto,
-} from '../types/pet-ad.types';
+} from "../types/pet-ad.types";
 
 /**
  * Pet Ad service
@@ -28,17 +32,29 @@ export class PetAdService extends BaseService {
   /**
    * Search pet ads with filters and pagination
    */
-  async searchPetAds(request: QuerySpecification, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
+  async searchPetAds(
+    request: QuerySpecification,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/pet-ads/search', request, context);
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/pet-ads/search",
+      request,
+      context,
+    );
   }
 
   /**
    * Get all pet categories with counts, icons and styling info
    */
-  async getPetCategoriesDetailed(locale?: string): Promise<PetCategoryDetailedDto[]> {
+  async getPetCategoriesDetailed(
+    locale?: string,
+  ): Promise<PetCategoryDetailedDto[]> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.get<PetCategoryDetailedDto[]>('/api/pet-ads/categories/detailed', context);
+    return this.http.get<PetCategoryDetailedDto[]>(
+      "/api/pet-ads/categories/detailed",
+      context,
+    );
   }
 
   /**
@@ -47,8 +63,16 @@ export class PetAdService extends BaseService {
    * @param token Authentication token for the user
    * @returns The ID of the newly created pet ad
    */
-  async submitPetAd(data: SubmitPetAdCommand, token: string, locale?: string): Promise<number> {
-    return this.http.post<number>('/api/pet-ads', data, this.withAuth(token, locale));
+  async submitPetAd(
+    data: SubmitPetAdCommand,
+    token: string,
+    locale?: string,
+  ): Promise<number> {
+    return this.http.post<number>(
+      "/api/pet-ads",
+      data,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -57,8 +81,12 @@ export class PetAdService extends BaseService {
    * @param token Authentication token for the user
    * @returns The ID of the newly created pet ad
    */
-  async updatePetAd(data: UpdatePetAdCommand, token: string, locale?: string): Promise<void> {
-    return this.http.put('/api/pet-ads', data, this.withAuth(token, locale));
+  async updatePetAd(
+    data: UpdatePetAdCommand,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.put("/api/pet-ads", data, this.withAuth(token, locale));
   }
 
   /**
@@ -67,8 +95,16 @@ export class PetAdService extends BaseService {
    * @param token Authentication token for the user
    * @returns
    */
-  async closePetAd(petAdId: number, token: string, locale?: string): Promise<void> {
-    return this.http.post<void>(`/api/pet-ads/${petAdId}/close`, undefined, this.withAuth(token, locale));
+  async closePetAd(
+    petAdId: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.post<void>(
+      `/api/pet-ads/${petAdId}/close`,
+      undefined,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -76,31 +112,57 @@ export class PetAdService extends BaseService {
    */
   async getPetCategories(locale?: string): Promise<PetCategoryDto[]> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.get<PetCategoryDto[]>('/api/pet-ads/categories', context);
+    return this.http.get<PetCategoryDto[]>("/api/pet-ads/categories", context);
+  }
+
+  /**
+   * Get all pet colors for selection
+   */
+  async getPetColors(locale?: string): Promise<PetColorDto[]> {
+    const context = locale ? this.withLocale(locale) : this.noContext();
+    return this.http.get<PetColorDto[]>("/api/pet-ads/colors", context);
   }
 
   /**
    * Get top pet categories with ads (for homepage display)
    */
-  async getPetCategoriesWithAds(locale?: string): Promise<PetCategoryWithAdsDto[]> {
+  async getPetCategoriesWithAds(
+    locale?: string,
+  ): Promise<PetCategoryWithAdsDto[]> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.get<PetCategoryWithAdsDto[]>('/api/pet-ads/categories/top-with-ads', context);
+    return this.http.get<PetCategoryWithAdsDto[]>(
+      "/api/pet-ads/categories/top-with-ads",
+      context,
+    );
   }
 
   /**
    * Get premium ads with pagination
    */
-  async getPremiumAds(request: QuerySpecification, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
+  async getPremiumAds(
+    request: QuerySpecification,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/pet-ads/premium', request, context);
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/pet-ads/premium",
+      request,
+      context,
+    );
   }
 
   /**
    * Get breeds for a specific category
    */
-  async getPetBreeds(categoryId: number, locale?: string): Promise<PetBreedDto[]> {
+  async getPetBreeds(
+    categoryId: number,
+    locale?: string,
+  ): Promise<PetBreedDto[]> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.get<PetBreedDto[]>(`/api/pet-ads/breeds${this.buildQueryString({ categoryId })}`, context);
+    return this.http.get<PetBreedDto[]>(
+      `/api/pet-ads/breeds${this.buildQueryString({ categoryId })}`,
+      context,
+    );
   }
 
   /**
@@ -114,44 +176,87 @@ export class PetAdService extends BaseService {
   /**
    * Get related pet ads
    */
-  async getRelatedPetAds(query: RelatedPetAdsQuery, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
+  async getRelatedPetAds(
+    query: RelatedPetAdsQuery,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
     const context = locale ? this.withLocale(locale) : this.noContext();
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/pet-ads/related', query, context);
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/pet-ads/related",
+      query,
+      context,
+    );
   }
 
   /**
    * Close/deactivate a pet ad (requires auth token)
    */
   async closeAdById(id: number, token: string, locale?: string): Promise<void> {
-    return this.http.post<void>(`/api/pet-ads/${id}/close`, undefined, this.withAuth(token, locale));
+    return this.http.post<void>(
+      `/api/pet-ads/${id}/close`,
+      undefined,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
    * Get user's active ads with pagination
    */
-  async getUserActiveAds(spec: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/users/ads/active', spec, this.withAuth(token, locale));
+  async getUserActiveAds(
+    spec: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/users/ads/active",
+      spec,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
    * Get user's pending ads with pagination
    */
-  async getUserPendingAds(spec: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/users/ads/pending', spec, this.withAuth(token, locale));
+  async getUserPendingAds(
+    spec: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/users/ads/pending",
+      spec,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
    * Get user's rejected ads with pagination
    */
-  async getUserRejectedAds(spec: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/users/ads/rejected', spec, this.withAuth(token, locale));
+  async getUserRejectedAds(
+    spec: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/users/ads/rejected",
+      spec,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
    * Get all user's ads with pagination
    */
-  async getAllUserAds(spec: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<MyAdListItemDto>> {
-    return this.http.post<PaginatedResult<MyAdListItemDto>>('/api/users/ads/all', spec, this.withAuth(token, locale));
+  async getAllUserAds(
+    spec: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<MyAdListItemDto>> {
+    return this.http.post<PaginatedResult<MyAdListItemDto>>(
+      "/api/users/ads/all",
+      spec,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -163,24 +268,32 @@ export class PetAdService extends BaseService {
    * @param file - The image file to upload
    * @returns Promise with the uploaded image ID
    */
-  async uploadPetAdImage(file: File, token: string, locale?: string): Promise<PetAdImageDto> {
+  async uploadPetAdImage(
+    file: File,
+    token: string,
+    locale?: string,
+  ): Promise<PetAdImageDto> {
     // Defensive check: ensure file is valid before uploading
     if (!file || !(file instanceof File)) {
-      throw new Error('Invalid file: file must be a valid File object');
+      throw new Error("Invalid file: file must be a valid File object");
     }
 
     // Additional validation: check file has content
     if (!file.name || file.size === 0) {
-      throw new Error('Invalid file: file must have a name and content');
+      throw new Error("Invalid file: file must have a name and content");
     }
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
-    return this.http.post<PetAdImageDto>('/api/pet-ad-images/upload', formData, {
-      token,
-      locale,
-    });
+    return this.http.post<PetAdImageDto>(
+      "/api/pet-ad-images/upload",
+      formData,
+      {
+        token,
+        locale,
+      },
+    );
   }
 
   /**
@@ -190,8 +303,15 @@ export class PetAdService extends BaseService {
    * @param imageId - The ID of the image to delete
    * @returns Promise with success status
    */
-  async deletePetAdImage(imageId: number, token: string, locale?: string): Promise<DeletePetAdImageResponse> {
-    return this.http.delete<DeletePetAdImageResponse>(`/api/pet-ad-images/${imageId}`, this.withAuth(token, locale));
+  async deletePetAdImage(
+    imageId: number,
+    token: string,
+    locale?: string,
+  ): Promise<DeletePetAdImageResponse> {
+    return this.http.delete<DeletePetAdImageResponse>(
+      `/api/pet-ad-images/${imageId}`,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -202,8 +322,14 @@ export class PetAdService extends BaseService {
    *
    * @returns Promise with list of uploaded images
    */
-  async getMyUploadedImages(token: string, locale?: string): Promise<PetAdImageDto[]> {
-    return this.http.get<PetAdImageDto[]>('/api/pet-ad-images/my-uploads', this.withAuth(token, locale));
+  async getMyUploadedImages(
+    token: string,
+    locale?: string,
+  ): Promise<PetAdImageDto[]> {
+    return this.http.get<PetAdImageDto[]>(
+      "/api/pet-ad-images/my-uploads",
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -215,8 +341,17 @@ export class PetAdService extends BaseService {
    * @param token - Authorization token
    * @returns Promise<void>
    */
-  async askQuestion(adId: number, data: AskQuestionCommand, token: string, locale?: string): Promise<void> {
-    return this.http.post<void>(`/api/pet-ads/${adId}/questions`, data, this.withAuth(token, locale));
+  async askQuestion(
+    adId: number,
+    data: AskQuestionCommand,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.post<void>(
+      `/api/pet-ads/${adId}/questions`,
+      data,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -228,8 +363,17 @@ export class PetAdService extends BaseService {
    * @param token - Authorization token
    * @returns Promise<void>
    */
-  async answerQuestion(questionId: number, data: AnswerQuestionCommand, token: string, locale?: string): Promise<void> {
-    return this.http.post<void>(`/api/pet-ads/questions/${questionId}/answer`, data, this.withAuth(token, locale));
+  async answerQuestion(
+    questionId: number,
+    data: AnswerQuestionCommand,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.post<void>(
+      `/api/pet-ads/questions/${questionId}/answer`,
+      data,
+      this.withAuth(token, locale),
+    );
   }
 
   /**   * Record a view for a specific pet ad.
@@ -238,9 +382,31 @@ export class PetAdService extends BaseService {
    * @returns Promise<void>
    */
 
-  async recordView(adId: number, token: string, locale?: string): Promise<void> {
+  async recordView(
+    adId: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
     const context = this.withAuth(token, locale);
-    return this.http.post<void>(`/api/pet-ads/${adId}/view`, undefined, context);
+    return this.http.post<void>(
+      `/api/pet-ads/${adId}/view`,
+      undefined,
+      context,
+    );
+  }
+
+  /**
+   * Increment view count for a pet ad (anonymous access allowed).
+   * @param adId - The ID of the pet ad
+   * @returns Promise<void>
+   */
+  async incrementViewCount(adId: number, locale?: string): Promise<void> {
+    const context = locale ? this.withLocale(locale) : this.noContext();
+    return this.http.post<void>(
+      `/api/pet-ads/${adId}/increment-view`,
+      undefined,
+      context,
+    );
   }
 
   /**   * Get recently viewed pet ads for the current user.
@@ -249,9 +415,17 @@ export class PetAdService extends BaseService {
    * @param token - Authorization token
    * @returns Promise with paginated result of pet ad list items
    */
-  async getRecentlyViewedAds(query: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<PetAdListItemDto>> {
+  async getRecentlyViewedAds(
+    query: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
     const context = this.withAuth(token, locale);
-    return this.http.post<PaginatedResult<PetAdListItemDto>>('/api/users/recently-viewed', query, context);
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/users/recently-viewed",
+      query,
+      context,
+    );
   }
 
   /**   * Get questions for the current user's ads.
@@ -260,9 +434,17 @@ export class PetAdService extends BaseService {
    * @param token - Authorization token
    * @returns Promise with paginated result of my ad questions
    */
-  async getMyAdsQuestions(query: QuerySpecification, token: string, locale?: string): Promise<PaginatedResult<MyAdQuestionDto>> {
+  async getMyAdsQuestions(
+    query: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<MyAdQuestionDto>> {
     const context = this.withAuth(token, locale);
-    return this.http.post<PaginatedResult<MyAdQuestionDto>>('/api/users/ads/questions', query, context);
+    return this.http.post<PaginatedResult<MyAdQuestionDto>>(
+      "/api/users/ads/questions",
+      query,
+      context,
+    );
   }
 
   /**   * Get summary of questions for the current user's ads.
@@ -270,9 +452,15 @@ export class PetAdService extends BaseService {
    * @param token - Authorization token
    * @returns Promise with my ad questions summary
    */
-  async getMyAdsQuestionsSummary(token: string, locale?: string): Promise<MyAdQuestionsSummaryDto> {
+  async getMyAdsQuestionsSummary(
+    token: string,
+    locale?: string,
+  ): Promise<MyAdQuestionsSummaryDto> {
     const context = this.withAuth(token, locale);
-    return this.http.get<MyAdQuestionsSummaryDto>('/api/users/ads/questions/summary', context);
+    return this.http.get<MyAdQuestionsSummaryDto>(
+      "/api/users/ads/questions/summary",
+      context,
+    );
   }
   /**   * Get a specific pet ad belonging to the current user.
    * **Authorization**: Required
@@ -281,7 +469,11 @@ export class PetAdService extends BaseService {
    * @returns Promise with my pet ad details
    */
 
-  async getMyPetAd(petAdId: number, token: string, locale?: string): Promise<MyPetAdDto> {
+  async getMyPetAd(
+    petAdId: number,
+    token: string,
+    locale?: string,
+  ): Promise<MyPetAdDto> {
     const context = this.withAuth(token, locale);
     return this.http.get<MyPetAdDto>(`/api/users/ads/${petAdId}`, context);
   }

@@ -223,12 +223,8 @@ export default function PhotosView() {
 
   const handleNext = () => {
     if (canProceed) {
-      // Only go to price step for Sale ads, otherwise skip to review
-      if (formData.adType === PetAdType.Sale) {
-        navigateWithTransition("/ads/ad-placement/price");
-      } else {
-        navigateWithTransition("/ads/ad-placement/review");
-      }
+      // Price is required for all ad types
+      navigateWithTransition("/ads/ad-placement/price");
     }
   };
 

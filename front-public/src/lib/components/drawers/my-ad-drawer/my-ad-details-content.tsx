@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   IconX,
@@ -10,14 +10,14 @@ import {
   IconCircleCheck,
   IconAlertCircle,
   IconExternalLink,
-} from '@tabler/icons-react';
-import { MyPetAdDto, PetAdStatus } from '@/lib/api/types/pet-ad.types';
-import { cn } from '@/lib/external/utils';
-import { useTranslations } from 'next-intl';
-import Button from '@/lib/primitives/button/button.component';
-import { ImageCarousel } from '@/lib/components/image-carousel';
-import { Heading, Text, Label } from '@/lib/primitives/typography';
-import TransitionLink from '@/lib/components/transition-link';
+} from "@tabler/icons-react";
+import { MyPetAdDto, PetAdStatus } from "@/lib/api/types/pet-ad.types";
+import { cn } from "@/lib/external/utils";
+import { useTranslations } from "next-intl";
+import Button from "@/lib/primitives/button/button.component";
+import { ImageCarousel } from "@/lib/components/image-carousel";
+import { Heading, Text, Label } from "@/lib/primitives/typography";
+import TransitionLink from "@/lib/components/transition-link";
 
 interface MyAdDetailsContentProps {
   adData: MyPetAdDto | null;
@@ -44,45 +44,45 @@ export function MyAdDetailsContent({
   onDelete,
   showCloseButton = true,
 }: MyAdDetailsContentProps) {
-  const t = useTranslations('myAds.drawer');
+  const t = useTranslations("myAds.drawer");
 
   // Status configuration
   const statusConfig = {
     [PetAdStatus.Pending]: {
       icon: IconClock,
-      label: t('status.pending'),
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
+      label: t("status.pending"),
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
     },
     [PetAdStatus.Published]: {
       icon: IconCircleCheck,
-      label: t('status.published'),
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      label: t("status.published"),
+      color: "text-green-600",
+      bgColor: "bg-green-50",
     },
     [PetAdStatus.Rejected]: {
       icon: IconAlertCircle,
-      label: t('status.rejected'),
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      label: t("status.rejected"),
+      color: "text-red-600",
+      bgColor: "bg-red-50",
     },
     [PetAdStatus.Expired]: {
       icon: IconClock,
-      label: t('status.expired'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.expired"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
     [PetAdStatus.Closed]: {
       icon: IconAlertCircle,
-      label: t('status.closed'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.closed"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
     [PetAdStatus.Draft]: {
       icon: IconClock,
-      label: t('status.draft'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.draft"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
   };
 
@@ -117,10 +117,13 @@ export function MyAdDetailsContent({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
         <Heading variant="card" as="h2">
-          {t('title')}
+          {t("title")}
         </Heading>
         {showCloseButton && (
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
             <IconX size={20} className="text-gray-500" />
           </button>
         )}
@@ -148,18 +151,35 @@ export function MyAdDetailsContent({
             {/* Status & Premium Badge */}
             <div className="flex flex-wrap items-center gap-2 my-4">
               {currentStatus && StatusIcon && (
-                <div className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-sm', currentStatus.bgColor)}>
-                  <StatusIcon size={16} strokeWidth={2.5} className={currentStatus.color} />
-                  <Label variant="badge" as="span" className={currentStatus.color}>
+                <div
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full shadow-sm",
+                    currentStatus.bgColor,
+                  )}
+                >
+                  <StatusIcon
+                    size={16}
+                    strokeWidth={2.5}
+                    className={currentStatus.color}
+                  />
+                  <Label
+                    variant="badge"
+                    as="span"
+                    className={currentStatus.color}
+                  >
                     {currentStatus.label}
                   </Label>
                 </div>
               )}
               {adData.isPremium && (
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full shadow-sm">
-                  <IconTrendingUp size={16} strokeWidth={2.5} className="text-yellow-900" />
+                  <IconTrendingUp
+                    size={16}
+                    strokeWidth={2.5}
+                    className="text-yellow-900"
+                  />
                   <Label variant="badge" as="span" className="text-yellow-900">
-                    {t('premium')}
+                    {t("premium")}
                   </Label>
                 </div>
               )}
@@ -171,15 +191,19 @@ export function MyAdDetailsContent({
                 {adData.title}
               </Heading>
               {adData.price !== null ? (
-                <Text variant="body-xl" weight="bold" className="text-3xl md:text-4xl">
-                  {adData.price.toLocaleString()}{' '}
+                <Text
+                  variant="body-xl"
+                  weight="bold"
+                  className="text-3xl md:text-4xl"
+                >
+                  {adData.price.toLocaleString()}{" "}
                   <Text as="span" variant="body-lg" color="tertiary">
                     AZN
                   </Text>
                 </Text>
               ) : (
                 <Text variant="body-lg" color="muted" weight="medium">
-                  {t('noPrice')}
+                  {t("noPrice")}
                 </Text>
               )}
             </div>
@@ -187,29 +211,45 @@ export function MyAdDetailsContent({
             {/* Meta Information */}
             <div className="grid grid-cols-2 gap-5 py-5 bg-gray-50 rounded-xl p-4">
               <div>
-                <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {t('category')}
+                <Label
+                  variant="badge"
+                  as="p"
+                  className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                >
+                  {t("category")}
                 </Label>
                 <Label variant="value">{adData.categoryTitle}</Label>
               </div>
               <div>
-                <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {t('breed')}
+                <Label
+                  variant="badge"
+                  as="p"
+                  className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                >
+                  {t("breed")}
                 </Label>
                 <Label variant="value">{adData.breed.title}</Label>
               </div>
               <div>
-                <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {t('location')}
+                <Label
+                  variant="badge"
+                  as="p"
+                  className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                >
+                  {t("location")}
                 </Label>
                 <Label variant="value">{adData.cityName}</Label>
               </div>
               <div>
-                <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                  {t('age')}
+                <Label
+                  variant="badge"
+                  as="p"
+                  className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                >
+                  {t("age")}
                 </Label>
                 <Label variant="value">
-                  {adData.ageInMonths} {t('months')}
+                  {adData.ageInMonths} {t("months")}
                 </Label>
               </div>
             </div>
@@ -225,7 +265,7 @@ export function MyAdDetailsContent({
                     {adData.viewCount.toLocaleString()}
                   </Text>
                   <Text variant="small" weight="medium" color="secondary">
-                    {t('views')}
+                    {t("views")}
                   </Text>
                 </div>
               </div>
@@ -234,57 +274,88 @@ export function MyAdDetailsContent({
             {/* Description */}
             <div className="space-y-3">
               <Heading variant="label" as="h3">
-                {t('description')}
+                {t("description")}
               </Heading>
-              <Text variant="body" leading="relaxed" className="whitespace-pre-wrap">
+              <Text
+                variant="body"
+                leading="relaxed"
+                className="whitespace-pre-wrap"
+              >
                 {adData.description}
               </Text>
             </div>
 
             {/* Rejection Reason (if applicable) */}
-            {adData.status === PetAdStatus.Rejected && adData.rejectionReason && (
-              <div className="p-5 bg-red-50 border-l-4 border-red-500 rounded-r-xl shadow-sm">
-                <Label variant="badge" as="p" className="text-red-900 mb-2 uppercase tracking-wide">
-                  {t('rejectionReason')}
-                </Label>
-                <Text variant="small" leading="relaxed" className="text-red-700">
-                  {adData.rejectionReason}
-                </Text>
-              </div>
-            )}
+            {adData.status === PetAdStatus.Rejected &&
+              adData.rejectionReason && (
+                <div className="p-5 bg-red-50 border-l-4 border-red-500 rounded-r-xl shadow-sm">
+                  <Label
+                    variant="badge"
+                    as="p"
+                    className="text-red-900 mb-2 uppercase tracking-wide"
+                  >
+                    {t("rejectionReason")}
+                  </Label>
+                  <Text
+                    variant="small"
+                    leading="relaxed"
+                    className="text-red-700"
+                  >
+                    {adData.rejectionReason}
+                  </Text>
+                </div>
+              )}
 
             {/* Additional Details */}
             <div className="space-y-4">
               <Heading variant="label" as="h4">
-                {t('additionalDetails')}
+                {t("additionalDetails")}
               </Heading>
               <div className="grid grid-cols-2 gap-4 bg-gray-50 rounded-xl p-4">
                 <div>
-                  <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                    {t('gender')}
+                  <Label
+                    variant="badge"
+                    as="p"
+                    className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                  >
+                    {t("gender")}
                   </Label>
-                  <Label variant="value">{adData.gender === 1 ? t('male') : t('female')}</Label>
+                  <Label variant="value">
+                    {adData.gender === 1 ? t("male") : t("female")}
+                  </Label>
                 </div>
                 <div>
-                  <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                    {t('color')}
+                  <Label
+                    variant="badge"
+                    as="p"
+                    className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                  >
+                    {t("color")}
                   </Label>
                   <Label variant="value">{adData.color}</Label>
                 </div>
                 {adData.weight && (
                   <div>
-                    <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                      {t('weight')}
+                    <Label
+                      variant="badge"
+                      as="p"
+                      className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                    >
+                      {t("weight")}
                     </Label>
                     <Label variant="value">
-                      {adData.weight} {t('kg')}
+                      {adData.weight} {t("kg")}
                     </Label>
                   </div>
                 )}
                 {adData.size && (
                   <div>
-                    <Label variant="badge" as="p" className="text-gray-500 mb-1.5 uppercase tracking-wide">
-                      {t('size')}
+                    <Label
+                      variant="badge"
+                      as="p"
+                      className="text-gray-500 mb-1.5 uppercase tracking-wide"
+                    >
+                      {t("size")}
                     </Label>
                     <Label variant="value">{t(`sizes.${adData.size}`)}</Label>
                   </div>
@@ -295,29 +366,47 @@ export function MyAdDetailsContent({
             {/* Dates */}
             <div className="pt-4 border-t border-gray-200">
               <Heading variant="label" as="h4" className="mb-3">
-                {t('timeline')}
+                {t("timeline")}
               </Heading>
               <div className="space-y-2">
-                <Text variant="small" color="secondary" className="flex justify-between">
+                <Text
+                  variant="small"
+                  color="secondary"
+                  className="flex justify-between"
+                >
                   <Text as="span" weight="medium">
-                    {t('created')}:
+                    {t("created")}:
                   </Text>
-                  <Text as="span">{new Date(adData.createdAt).toLocaleDateString()}</Text>
+                  <Text as="span">
+                    {new Date(adData.createdAt).toLocaleDateString()}
+                  </Text>
                 </Text>
                 {adData.publishedAt && (
-                  <Text variant="small" color="secondary" className="flex justify-between">
+                  <Text
+                    variant="small"
+                    color="secondary"
+                    className="flex justify-between"
+                  >
                     <Text as="span" weight="medium">
-                      {t('published')}:
+                      {t("published")}:
                     </Text>
-                    <Text as="span">{new Date(adData.publishedAt).toLocaleDateString()}</Text>
+                    <Text as="span">
+                      {new Date(adData.publishedAt).toLocaleDateString()}
+                    </Text>
                   </Text>
                 )}
                 {adData.expiresAt && (
-                  <Text variant="small" color="secondary" className="flex justify-between">
+                  <Text
+                    variant="small"
+                    color="secondary"
+                    className="flex justify-between"
+                  >
                     <Text as="span" weight="medium">
-                      {t('expires')}:
+                      {t("expires")}:
                     </Text>
-                    <Text as="span">{new Date(adData.expiresAt).toLocaleDateString()}</Text>
+                    <Text as="span">
+                      {new Date(adData.expiresAt).toLocaleDateString()}
+                    </Text>
                   </Text>
                 )}
               </div>
@@ -331,9 +420,17 @@ export function MyAdDetailsContent({
         <div className="flex flex-col gap-3">
           {/* View Public Page - only for published ads */}
           {adData.status === PetAdStatus.Published && (
-            <TransitionLink href={`/ads/item-details/${adData.id}`} className="w-full">
-              <Button variant="solid" size="lg" leftSection={<IconExternalLink size={18} />} className="w-full">
-                {t('viewPublicPage', { defaultValue: 'View Public Page' })}
+            <TransitionLink
+              href={`/ads/item-details/${adData.id}`}
+              className="w-full"
+            >
+              <Button
+                variant="solid"
+                size="lg"
+                leftSection={<IconExternalLink size={18} />}
+                className="w-full"
+              >
+                {t("viewPublicPage", { defaultValue: "View Public Page" })}
               </Button>
             </TransitionLink>
           )}
@@ -351,7 +448,7 @@ export function MyAdDetailsContent({
                 }}
                 className="flex-1"
               >
-                {t('edit')}
+                {t("edit")}
               </Button>
             )}
 
@@ -366,25 +463,28 @@ export function MyAdDetailsContent({
                 }}
                 className="flex-1"
               >
-                {t('closeAd')}
+                {t("closeAd")}
               </Button>
             )}
 
-            {/* Delete button - for rejected or draft ads */}
-            {(adData.status === PetAdStatus.Rejected || adData.status === PetAdStatus.Draft) && onDelete && (
-              <Button
-                variant="danger"
-                size="lg"
-                leftSection={<IconTrash size={18} />}
-                onClick={() => {
-                  onDelete(adData.id);
-                  onClose();
-                }}
-                className="flex-1"
-              >
-                {t('delete')}
-              </Button>
-            )}
+            {/* Delete button - for pending, rejected or draft ads */}
+            {(adData.status === PetAdStatus.Pending ||
+              adData.status === PetAdStatus.Rejected ||
+              adData.status === PetAdStatus.Draft) &&
+              onCloseAd && (
+                <Button
+                  variant="danger"
+                  size="lg"
+                  leftSection={<IconTrash size={18} />}
+                  onClick={() => {
+                    onCloseAd(adData.id);
+                    onClose();
+                  }}
+                  className="flex-1"
+                >
+                  {t("delete")}
+                </Button>
+              )}
           </div>
         </div>
       </div>

@@ -441,13 +441,17 @@
     "introTitleReturning": "Welcome back!",
     "introDescription": "In this step, we'll ask you which type of ad you want to create and what category your pet belongs to. Then we'll guide you through the details to create a compelling listing.",
     "introDescriptionDraft": "We found your previous draft. Would you like to pick up where you left off or start with a fresh listing?",
+    "loadingAd": "Loading ad...",
+    "editLoadError": "Cannot edit this ad",
+    "editLoadErrorDescription": "This ad has already been published or deleted.",
+    "backToMyAds": "Back to my ads",
     "tagline": "Create your perfect pet listing",
     "getStarted": "Get started",
     "continueDraft": "Continue",
     "continueDraftDescription": "Continue your previous ad and complete it",
     "startFresh": "Start over",
     "startFreshDescription": "Create a new ad and start from scratch",
-    "draftExpiryNote": "Saved ads are kept for 12 hours",
+    "draftExpiryNote": "Saved ads are kept for 5 days",
     "saveAndExit": "Save & exit",
     "back": "Back",
     "next": "Next",
@@ -2350,6 +2354,7 @@
     },
     "contactCard": {
       "price": "Price",
+      "free": "Free",
       "contact": "Contact",
       "memberSince": "Member since {date}",
       "seller": "Seller",
@@ -2445,7 +2450,11 @@
       "description": "Log in to save your favorites and access them on all your devices"
     },
     "search": {
-      "placeholder": "Search in favorites..."
+      "placeholder": "Search in favorites...",
+      "noResults": {
+        "title": "No results found",
+        "description": "No ads match your search"
+      }
     },
     "emptyState": {
       "authenticated": {
@@ -2602,7 +2611,8 @@
         "title": "Profile Picture",
         "uploadButton": "Upload picture",
         "uploadLabel": "Upload profile picture",
-        "formatInfo": "PNG, JPG format, maximum 10MB"
+        "formatInfo": "PNG, JPG format",
+        "deleteButton": "Delete picture"
       },
       "personalInfo": {
         "title": "Personal Information",
@@ -2649,7 +2659,11 @@
         "error": {
           "title": "Error Occurred",
           "updateFailed": "Failed to update information",
-          "generalError": "An error occurred. Please try again."
+          "generalError": "An error occurred. Please try again.",
+          "invalidFileType": "Only JPG, PNG and WEBP formats are accepted",
+          "fileTooLarge": "File size must not exceed 10MB",
+          "uploadFailed": "Failed to upload image",
+          "deleteFailed": "Failed to delete picture"
         }
       },
       "infoBanner": {
@@ -3002,6 +3016,8 @@
       "weightMedium": "medium pet",
       "weightLarge": "large pet",
       "weightVeryLarge": "very large pet",
+      "weightExtreme": "extremely heavy animal",
+      "ton": "ton",
       "skipWeightText": "You can leave weight empty if you're unsure or don't want to specify"
     },
     "introView": {
@@ -3035,7 +3051,8 @@
       "badge": "Premium"
     },
     "price": {
-      "notApplicable": "Price does not apply"
+      "notApplicable": "Price does not apply",
+      "free": "Free"
     }
   },
   "adEdit": {

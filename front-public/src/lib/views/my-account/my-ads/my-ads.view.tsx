@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import {
   IconEye,
   IconClock,
@@ -70,6 +71,7 @@ export default function MyAdsView({
 }: MyAdsViewProps) {
   const t = useTranslations("myAccount.myAds");
   const tCommon = useTranslations("common");
+  const router = useRouter();
 
   const [stats, setStats] = useState(initialStats);
   const [activeTab, setActiveTab] = useState<FilterTab>(initialTab);
@@ -263,14 +265,26 @@ export default function MyAdsView({
     try {
       const result = await closeAdAction(adId);
       if (result.success) {
-        // Remove from active ads, update stats
+        // Remove from all tab arrays
         setActiveAds((prev) => prev.filter((ad) => ad.id !== adId));
+        setPendingAds((prev) => prev.filter((ad) => ad.id !== adId));
+        setRejectedAds((prev) => prev.filter((ad) => ad.id !== adId));
         setAllAds((prev) => prev.filter((ad) => ad.id !== adId));
-        setStats((prev) => ({
-          ...prev,
-          activeAds: Math.max(0, prev.activeAds - 1),
-          totalAds: Math.max(0, prev.totalAds - 1),
-        }));
+
+        // Update stats based on which tab we're in
+        setStats((prev) => {
+          const newStats = { ...prev };
+          if (activeTab === "active") {
+            newStats.activeAds = Math.max(0, prev.activeAds - 1);
+          } else if (activeTab === "pending") {
+            newStats.pendingAds = Math.max(0, prev.pendingAds - 1);
+          } else if (activeTab === "rejected") {
+            newStats.rejectedAds = Math.max(0, prev.rejectedAds - 1);
+          }
+          newStats.totalAds = Math.max(0, prev.totalAds - 1);
+          return newStats;
+        });
+
         toast.success(
           t("notifications.closeSuccess", {
             defaultValue: "Ad closed successfully",
@@ -291,6 +305,11 @@ export default function MyAdsView({
         t("notifications.closeError", { defaultValue: "Failed to close ad" }),
       );
     }
+  };
+
+  // Handle edit ad action - navigate to ad placement with edit param
+  const handleEditAd = (adId: number) => {
+    router.push(`/ads/ad-placement?edit=${adId}`);
   };
 
   // Filter tabs configuration
@@ -532,6 +551,7 @@ export default function MyAdsView({
           adId={drawerAdId}
           isOpen={drawerOpen}
           onClose={() => setDrawerOpen(false)}
+          onEdit={handleEditAd}
           onCloseAd={handleCloseAd}
         />
       )}

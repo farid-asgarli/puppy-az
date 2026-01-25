@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import {
   IconUser,
@@ -8,9 +8,15 @@ import {
   IconCamera,
   IconDeviceFloppy,
   IconX,
+  IconLoader2,
+  IconTrash,
 } from "@tabler/icons-react";
 import { Heading } from "@/lib/primitives/typography";
-import { updateProfileAction } from "@/lib/auth/actions";
+import {
+  updateProfileAction,
+  uploadProfilePictureAction,
+  deleteProfilePictureAction,
+} from "@/lib/auth/actions";
 import type {
   UserProfileDto,
   UpdateUserProfileCommand,
@@ -25,6 +31,8 @@ import { StatusMessage } from "@/lib/components/views/my-account/status-message/
 import { PageHeader, InfoBanner } from "@/lib/components/views/common";
 import { useTranslations } from "next-intl";
 import { formatDate } from "@/lib/utils/date-utils";
+import { formatPhoneForInput } from "@/lib/utils/phone-utils";
+import { useAuth } from "@/lib/hooks/use-auth";
 
 interface ProfileInfoViewProps {
   profile: UserProfileDto;
@@ -42,7 +50,13 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
   const tDateTime = useTranslations("dateTime");
 
   const router = useRouter();
+  const { refetch } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingPicture, setIsUploadingPicture] = useState(false);
+  const [profilePictureUrl, setProfilePictureUrl] = useState(
+    profile.profilePictureUrl || "",
+  );
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
@@ -57,7 +71,7 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
     defaultValues: {
       firstName: profile.firstName || "",
       lastName: profile.lastName || "",
-      phoneNumber: profile.phoneNumber?.replace("+994", "").trim() || "",
+      phoneNumber: formatPhoneForInput(profile.phoneNumber),
       profilePictureUrl: profile.profilePictureUrl || "",
     },
   });
@@ -89,9 +103,9 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
         reset({
           firstName: updatedProfile?.firstName || data.firstName,
           lastName: updatedProfile?.lastName || data.lastName,
-          phoneNumber: (updatedProfile?.phoneNumber || formattedPhoneNumber)
-            .replace("+994", "")
-            .trim(),
+          phoneNumber: formatPhoneForInput(
+            updatedProfile?.phoneNumber || formattedPhoneNumber,
+          ),
           profilePictureUrl:
             updatedProfile?.profilePictureUrl || data.profilePictureUrl || "",
         });
@@ -120,6 +134,83 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
     reset();
     setSubmitStatus("idle");
     setErrorMessage("");
+  };
+
+  const handlePictureClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handlePictureUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      setErrorMessage(t("messages.error.invalidFileType"));
+      return;
+    }
+
+    setIsUploadingPicture(true);
+    setErrorMessage("");
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const result = await uploadProfilePictureAction(formData);
+
+      if (result.success && result.data?.url) {
+        setProfilePictureUrl(result.data.url);
+        setSubmitStatus("success");
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+        // Refresh auth context to update header avatar
+        await refetch();
+      } else {
+        setErrorMessage(
+          !result.success && result.error
+            ? result.error
+            : t("messages.error.uploadFailed"),
+        );
+      }
+    } catch (error) {
+      setErrorMessage(t("messages.error.generalError"));
+      console.error("Profile picture upload error:", error);
+    } finally {
+      setIsUploadingPicture(false);
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleDeletePicture = async () => {
+    if (!profilePictureUrl) return;
+
+    setIsUploadingPicture(true);
+    setErrorMessage("");
+
+    try {
+      const result = await deleteProfilePictureAction();
+
+      if (result.success) {
+        setProfilePictureUrl("");
+        setSubmitStatus("success");
+        setTimeout(() => setSubmitStatus("idle"), 3000);
+        // Refresh auth context to update header avatar
+        await refetch();
+      } else {
+        setErrorMessage(result.error || t("messages.error.deleteFailed"));
+      }
+    } catch (error) {
+      setErrorMessage(t("messages.error.generalError"));
+      console.error("Profile picture delete error:", error);
+    } finally {
+      setIsUploadingPicture(false);
+    }
   };
 
   return (
@@ -159,10 +250,20 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
             <div className="p-4 sm:p-6 rounded-xl border-2 border-gray-200">
               <div className="flex items-center gap-4 sm:gap-6">
                 <div className="relative flex-shrink-0">
-                  <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                    {profile.profilePictureUrl ? (
+                  <button
+                    type="button"
+                    onClick={handlePictureClick}
+                    disabled={isUploadingPicture}
+                    className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden cursor-pointer hover:opacity-80 transition-opacity disabled:cursor-not-allowed"
+                  >
+                    {isUploadingPicture ? (
+                      <IconLoader2
+                        size={32}
+                        className="sm:w-9 sm:h-9 text-gray-400 animate-spin"
+                      />
+                    ) : profilePictureUrl ? (
                       <img
-                        src={profile.profilePictureUrl}
+                        src={profilePictureUrl}
                         alt={profile.firstName}
                         className="w-full h-full object-cover"
                       />
@@ -172,18 +273,34 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
                         className="sm:w-9 sm:h-9 text-gray-400"
                       />
                     )}
-                  </div>
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                    onChange={handlePictureUpload}
+                    className="hidden"
+                  />
                   <IconButton
                     icon={
-                      <IconCamera
-                        size={14}
-                        className="sm:w-4 sm:h-4 text-white"
-                      />
+                      isUploadingPicture ? (
+                        <IconLoader2
+                          size={14}
+                          className="sm:w-4 sm:h-4 text-white animate-spin"
+                        />
+                      ) : (
+                        <IconCamera
+                          size={14}
+                          className="sm:w-4 sm:h-4 text-white"
+                        />
+                      )
                     }
                     variant="primary"
                     size="md"
                     position="bottom-right-tight"
                     ariaLabel={t("profilePicture.uploadLabel")}
+                    onClick={handlePictureClick}
+                    disabled={isUploadingPicture}
                   />
                 </div>
                 <div className="flex-1">
@@ -193,6 +310,17 @@ export default function ProfileInfoView({ profile }: ProfileInfoViewProps) {
                   <p className="text-xs sm:text-sm text-gray-600">
                     {t("profilePicture.formatInfo")}
                   </p>
+                  {profilePictureUrl && (
+                    <button
+                      type="button"
+                      onClick={handleDeletePicture}
+                      disabled={isUploadingPicture}
+                      className="mt-2 text-xs sm:text-sm text-red-600 hover:text-red-700 font-medium flex items-center gap-1 disabled:opacity-50"
+                    >
+                      <IconTrash size={14} />
+                      {t("profilePicture.deleteButton")}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

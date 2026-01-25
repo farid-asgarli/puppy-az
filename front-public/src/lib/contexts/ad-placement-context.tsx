@@ -11,9 +11,15 @@ import React, {
 import {
   AdPlacementFormData,
   INITIAL_AD_PLACEMENT_DATA,
+  UploadedImageInfo,
 } from "@/lib/types/ad-placement.types";
 import { useAuth } from "@/lib/hooks/use-auth";
-import { PetAdType } from "@/lib/api/types/pet-ad.types";
+import {
+  PetAdType,
+  MyPetAdDto,
+  PetAdStatus,
+} from "@/lib/api/types/pet-ad.types";
+import { getMyPetAdAction } from "@/lib/auth/actions";
 
 // Helper function to get step order based on ad type
 function getStepOrder(adType: PetAdType | null): string[] {
@@ -47,12 +53,17 @@ interface AdPlacementContextValue {
   setCurrentStep: (step: string) => void;
   isDirty: boolean;
   maxReachedStep: string;
+  // Edit mode
+  editingAdId: number | null;
+  isEditMode: boolean;
+  loadExistingAd: (adId: number) => Promise<boolean>;
+  clearEditMode: () => void;
 }
 
 const AdPlacementContext = createContext<AdPlacementContextValue | null>(null);
 
 const DRAFT_STORAGE_KEY_PREFIX = "ad_placement_draft";
-const DRAFT_EXPIRATION_HOURS = 12;
+const DRAFT_EXPIRATION_DAYS = 5;
 
 interface SavedDraft {
   data: AdPlacementFormData;
@@ -77,6 +88,10 @@ export function AdPlacementProvider({
   const [maxReachedStep, setMaxReachedStep] = useState<string>(
     "/ads/ad-placement/ad-type",
   );
+
+  // Edit mode state
+  const [editingAdId, setEditingAdId] = useState<number | null>(null);
+  const isEditMode = editingAdId !== null;
 
   // Create user-specific storage key
   const draftStorageKey = useMemo(() => {
@@ -114,7 +129,7 @@ export function AdPlacementProvider({
       if (!saved) return;
 
       const parsed: SavedDraft = JSON.parse(saved);
-      const expirationTime = DRAFT_EXPIRATION_HOURS * 60 * 60 * 1000;
+      const expirationTime = DRAFT_EXPIRATION_DAYS * 24 * 60 * 60 * 1000;
       const isExpired = Date.now() - parsed.timestamp > expirationTime;
 
       if (isExpired) {
@@ -205,7 +220,7 @@ export function AdPlacementProvider({
       if (!saved) return false;
 
       const parsed: SavedDraft = JSON.parse(saved);
-      const expirationTime = DRAFT_EXPIRATION_HOURS * 60 * 60 * 1000;
+      const expirationTime = DRAFT_EXPIRATION_DAYS * 24 * 60 * 60 * 1000;
       const isExpired = Date.now() - parsed.timestamp > expirationTime;
 
       return !isExpired;
@@ -221,7 +236,7 @@ export function AdPlacementProvider({
       if (!saved) return null;
 
       const parsed: SavedDraft = JSON.parse(saved);
-      const expirationTime = DRAFT_EXPIRATION_HOURS * 60 * 60 * 1000;
+      const expirationTime = DRAFT_EXPIRATION_DAYS * 24 * 60 * 60 * 1000;
       const isExpired = Date.now() - parsed.timestamp > expirationTime;
 
       if (isExpired) return null;
@@ -230,6 +245,75 @@ export function AdPlacementProvider({
       return null;
     }
   }, [draftStorageKey]);
+
+  // Load existing ad for editing
+  const loadExistingAd = useCallback(async (adId: number): Promise<boolean> => {
+    try {
+      const result = await getMyPetAdAction(adId);
+
+      // Check if request was successful
+      if (!result.success) {
+        console.error("Failed to load ad:", result.error);
+        return false;
+      }
+
+      const adData = result.data;
+
+      // Check if ad can be edited (only pending, rejected, or draft)
+      const editableStatuses = [
+        PetAdStatus.Pending,
+        PetAdStatus.Rejected,
+        PetAdStatus.Draft,
+      ];
+      if (!editableStatuses.includes(adData.status)) {
+        console.error("Ad cannot be edited - status:", adData.status);
+        return false;
+      }
+
+      // Convert ad data to form data
+      const formDataFromAd: AdPlacementFormData = {
+        adType: adData.adType,
+        categoryId: adData.breed?.categoryId ?? null,
+        petBreedId: adData.breed?.id ?? null,
+        gender: adData.gender,
+        size: adData.size,
+        ageInMonths: adData.ageInMonths,
+        color: adData.color ?? "",
+        weight: adData.weight,
+        cityId: adData.cityId,
+        uploadedImages:
+          adData.images?.map(
+            (img): UploadedImageInfo => ({
+              id: img.id,
+              url: img.url,
+            }),
+          ) ?? [],
+        title: adData.title ?? "",
+        description: adData.description ?? "",
+        price: adData.price,
+      };
+
+      setFormData(formDataFromAd);
+      setEditingAdId(adId);
+      // In edit mode, all steps are accessible
+      setMaxReachedStep("/ads/ad-placement/review");
+      setIsDirty(false);
+
+      return true;
+    } catch (error) {
+      console.error("Failed to load ad for editing:", error);
+      return false;
+    }
+  }, []);
+
+  // Clear edit mode and reset form
+  const clearEditMode = useCallback(() => {
+    setEditingAdId(null);
+    setFormData(INITIAL_AD_PLACEMENT_DATA);
+    setCurrentStepState("/ads/ad-placement/ad-type");
+    setMaxReachedStep("/ads/ad-placement/ad-type");
+    setIsDirty(false);
+  }, []);
 
   return (
     <AdPlacementContext.Provider
@@ -244,6 +328,10 @@ export function AdPlacementProvider({
         setCurrentStep,
         isDirty,
         maxReachedStep,
+        editingAdId,
+        isEditMode,
+        loadExistingAd,
+        clearEditMode,
       }}
     >
       {children}

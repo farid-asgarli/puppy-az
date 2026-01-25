@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { IconHeartBroken, IconLogin } from "@tabler/icons-react";
 import { cn } from "@/lib/external/utils";
 import { useFavorites } from "@/lib/hooks/use-favorites";
@@ -124,6 +124,22 @@ const FavoriteAdsView = () => {
     threshold: 300,
   });
 
+  // Filter ads by search query
+  const filteredAds = useMemo(() => {
+    if (!searchQuery.trim()) return ads;
+
+    const query = searchQuery.toLowerCase().trim();
+    return ads.filter((ad) => {
+      // Search in title, category, location
+      const searchableText = [ad.title, ad.animalCategory, ad.location]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(query);
+    });
+  }, [ads, searchQuery]);
+
   // Loading state
   if (authLoading || (isLoading && ads.length === 0)) {
     return (
@@ -138,7 +154,7 @@ const FavoriteAdsView = () => {
 
   const subtitle =
     ads.length > 0
-      ? t("subtitle.withCount", { count: ads.length })
+      ? t("subtitle.withCount", { count: filteredAds.length })
       : t("subtitle.empty");
 
   return (
@@ -235,19 +251,27 @@ const FavoriteAdsView = () => {
           {/* Ads Grid/List */}
           {ads.length > 0 && (
             <>
-              <div
-                className={cn(
-                  viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
-                    : "flex flex-col gap-3 sm:gap-4",
-                )}
-              >
-                {ads.map((ad) => (
-                  <div key={ad.id}>
-                    <ResponsiveAdCard {...ad} viewMode={viewMode} />
-                  </div>
-                ))}
-              </div>
+              {filteredAds.length > 0 ? (
+                <div
+                  className={cn(
+                    viewMode === "grid"
+                      ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
+                      : "flex flex-col gap-3 sm:gap-4",
+                  )}
+                >
+                  {filteredAds.map((ad) => (
+                    <div key={ad.id}>
+                      <ResponsiveAdCard {...ad} viewMode={viewMode} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <EmptyState
+                  icon={<IconHeartBroken />}
+                  title={t("search.noResults.title")}
+                  description={t("search.noResults.description")}
+                />
+              )}
 
               {/* Infinite Scroll Trigger & Loading Indicator */}
               {isAuthenticated && (

@@ -231,6 +231,38 @@ export async function updateProfileAction(
 }
 
 /**
+ * Upload profile picture action
+ */
+export async function uploadProfilePictureAction(
+  formData: FormData,
+): Promise<ActionResult<{ url: string }>> {
+  const locale = await getCurrentLocale();
+  const file = formData.get("file") as File;
+
+  if (!file) {
+    return { success: false, error: "No file provided" };
+  }
+
+  return withAuth(async (token) => {
+    const result = await authService.uploadProfilePicture(file, token, locale);
+    return { success: true, data: result };
+  });
+}
+
+/**
+ * Delete profile picture action
+ */
+export async function deleteProfilePictureAction(): Promise<
+  ActionResult<void>
+> {
+  const locale = await getCurrentLocale();
+  return withAuth(async (token) => {
+    await authService.deleteProfilePicture(token, locale);
+    return { success: true, data: undefined };
+  });
+}
+
+/**
  * Change password action
  */
 export async function changePasswordAction(
@@ -572,6 +604,25 @@ export async function recordViewAction(
     await petAdService.recordView(adId, token, locale);
     return { success: true, data: undefined };
   });
+}
+
+/**
+ * Increment view count for a pet ad (anonymous access allowed)
+ * Used to track ad popularity
+ *
+ * @param adId The ID of the pet ad
+ * @returns Success status
+ */
+export async function incrementViewCountAction(
+  adId: number,
+): Promise<ActionResult<void>> {
+  try {
+    const locale = await getCurrentLocale();
+    await petAdService.incrementViewCount(adId, locale);
+    return { success: true, data: undefined };
+  } catch (error) {
+    return handleActionError(error, "Failed to increment view count");
+  }
 }
 
 /**

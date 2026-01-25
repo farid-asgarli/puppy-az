@@ -1,6 +1,18 @@
 // Generated from Swagger API definition - Pet Ad related types
 
-import { QuerySpecification } from '@/lib/api/types/common.types';
+import { QuerySpecification } from "@/lib/api/types/common.types";
+
+/**
+ * Pet Color from API
+ */
+export interface PetColorDto {
+  id: number;
+  key: string;
+  title: string;
+  backgroundColor: string;
+  textColor: string;
+  borderColor: string;
+}
 
 /**
  * Pet Ad Types (enums as numbers from API)
@@ -97,7 +109,7 @@ export interface PetAdListItemDto {
   gender: PetGender;
   adType: PetAdType;
   size: PetSize;
-  price: number | null;
+  price: number;
   cityName: string;
   categoryTitle: string;
   categoryId: number;
@@ -122,7 +134,7 @@ export interface PetAdDetailsDto {
   color: string;
   weight: number | null;
   size: PetSize;
-  price: number | null;
+  price: number;
   viewCount: number;
   isPremium: boolean;
   premiumExpiresAt: string | null;
@@ -244,7 +256,7 @@ export type MyPetAdDto = {
   color: string;
   weight: number | null;
   size: PetSize | null;
-  price: number | null;
+  price: number;
   viewCount: number;
   isPremium: boolean;
   premiumExpiresAt: Date | null;

@@ -18,7 +18,7 @@ interface MyAdCardProps {
   id: number;
   title: string;
   imageUrl: string | null;
-  price: number | null;
+  price: number;
   adType: PetAdType;
   status: PetAdStatus;
   categoryTitle: string;

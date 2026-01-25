@@ -4,14 +4,13 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
-import { PetAdType } from "@/lib/api/types/pet-ad.types";
 import { NumberField } from "@/lib/components/views/ad-placement";
-import { ViewFooter, ViewLayout, LoadingState, InfoBox } from "../components";
+import { ViewFooter, ViewLayout, InfoBox } from "../components";
 import { Heading, Text } from "@/lib/primitives/typography";
 
 /**
  * Pricing View
- * Step 8: Set price for Sale ads only
+ * Step 8: Set price for all ads (required field, minimum 0)
  */
 export default function PriceView() {
   const t = useTranslations("adPlacementDetails.priceView");
@@ -19,13 +18,6 @@ export default function PriceView() {
   const { navigateWithTransition } = useViewTransition();
 
   const [price, setPrice] = useState<number | null>(formData.price);
-
-  // Redirect if not a Sale ad
-  useEffect(() => {
-    if (formData.adType !== PetAdType.Sale) {
-      navigateWithTransition("/ads/ad-placement/review");
-    }
-  }, [formData.adType, navigateWithTransition]);
 
   // Update form data when price changes
   useEffect(() => {
@@ -39,15 +31,10 @@ export default function PriceView() {
   };
 
   const handleBack = () => {
-    navigateWithTransition("/ads/ad-placement/details");
+    navigateWithTransition("/ads/ad-placement/photos");
   };
 
   const canProceed = price !== null && price >= 0;
-
-  // Show loading if redirecting
-  if (formData.adType !== PetAdType.Sale) {
-    return <LoadingState message={t("redirecting")} />;
-  }
 
   return (
     <>

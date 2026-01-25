@@ -25,8 +25,8 @@ For all heading elements (H1-H6) with consistent styling.
 ```typescript
 interface HeadingProps {
   variant?: HeadingVariant;
-  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
-  color?: 'primary' | 'secondary' | 'tertiary';
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  color?: "primary" | "secondary" | "tertiary";
   children: ReactNode;
   className?: string;
 }
@@ -80,10 +80,10 @@ For body copy, descriptions, and general text content.
 ```typescript
 interface TextProps {
   variant?: TextVariant;
-  as?: 'p' | 'span' | 'div' | 'label';
-  color?: 'primary' | 'secondary' | 'tertiary' | 'muted';
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold';
-  leading?: 'tight' | 'normal' | 'relaxed';
+  as?: "p" | "span" | "div" | "label";
+  color?: "primary" | "secondary" | "tertiary" | "muted";
+  weight?: "normal" | "medium" | "semibold" | "bold";
+  leading?: "tight" | "normal" | "relaxed";
   children: ReactNode;
   className?: string;
 }
@@ -112,7 +112,7 @@ interface TextProps {
 
 // Small secondary text
 <Text variant="small" color="tertiary">
-  Qeyd olunan elanlar 12 saat ərzində saxlanılır
+  Saxlanmış elanlar 5 gün saxlanılır
 </Text>
 // Output: <p class="text-sm text-gray-500">
 
@@ -142,7 +142,7 @@ Specialized component for form labels, metadata, display values, and badges.
 ```typescript
 interface LabelProps {
   variant?: LabelVariant;
-  as?: 'label' | 'span' | 'div' | 'p';
+  as?: "label" | "span" | "div" | "p";
   htmlFor?: string;
   children: ReactNode;
   className?: string;
@@ -204,51 +204,51 @@ Based on `DESIGN-SYSTEM-PROMPT.md` and best practices from:
 #### Page Header Pattern
 
 ```tsx
-<div className='space-y-2'>
-  <Heading variant='page-title'>Haqqımızda</Heading>
-  <Text variant='body-lg'>Heyvan sevənləri üçün yaradılmış platforma</Text>
+<div className="space-y-2">
+  <Heading variant="page-title">Haqqımızda</Heading>
+  <Text variant="body-lg">Heyvan sevənləri üçün yaradılmış platforma</Text>
 </div>
 ```
 
 #### Section Header Pattern
 
 ```tsx
-<div className='space-y-3'>
-  <Heading variant='section'>Tətbiq tənzimləmələri</Heading>
-  <Text variant='body-lg'>Görünüş və dil seçimləri</Text>
+<div className="space-y-3">
+  <Heading variant="section">Tətbiq tənzimləmələri</Heading>
+  <Text variant="body-lg">Görünüş və dil seçimləri</Text>
 </div>
 ```
 
 #### Subsection Pattern
 
 ```tsx
-<div className='space-y-1'>
-  <Heading variant='subsection' as='h3'>
+<div className="space-y-1">
+  <Heading variant="subsection" as="h3">
     Görünüş
   </Heading>
-  <Text variant='body'>Tətbiqin görünüşünü seçin</Text>
+  <Text variant="body">Tətbiqin görünüşünü seçin</Text>
 </div>
 ```
 
 #### Form Field Pattern
 
 ```tsx
-<div className='space-y-1'>
-  <Label variant='field' htmlFor='name'>
+<div className="space-y-1">
+  <Label variant="field" htmlFor="name">
     Ad
   </Label>
-  <input id='name' type='text' />
+  <input id="name" type="text" />
 </div>
 ```
 
 #### Info Display Pattern
 
 ```tsx
-<div className='flex items-center justify-between'>
-  <Label variant='meta' as='span'>
+<div className="flex items-center justify-between">
+  <Label variant="meta" as="span">
     Qeydiyyat tarixi
   </Label>
-  <Label variant='value' as='span'>
+  <Label variant="value" as="span">
     12 Yanvar 2024
   </Label>
 </div>
@@ -292,7 +292,7 @@ Based on `DESIGN-SYSTEM-PROMPT.md` and best practices from:
 ### Custom Classes
 
 ```tsx
-<Heading variant='section' className='mb-8 text-purple-900'>
+<Heading variant="section" className="mb-8 text-purple-900">
   Custom styled heading
 </Heading>
 ```
@@ -303,7 +303,7 @@ Based on `DESIGN-SYSTEM-PROMPT.md` and best practices from:
 {
   /* Visual style of h2, but semantic h3 */
 }
-<Heading variant='subsection' as='h2'>
+<Heading variant="subsection" as="h2">
   Section Title
 </Heading>;
 ```
@@ -311,9 +311,9 @@ Based on `DESIGN-SYSTEM-PROMPT.md` and best practices from:
 ### Inline Text Variations
 
 ```tsx
-<Text variant='body'>
-  This is regular text with{' '}
-  <Text as='span' weight='semibold'>
+<Text variant="body">
+  This is regular text with{" "}
+  <Text as="span" weight="semibold">
     bold emphasis
   </Text>
 </Text>
