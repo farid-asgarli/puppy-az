@@ -49,9 +49,9 @@ public class PetAd : SoftDeletableEntity
 	public PetSize? Size { get; set; }
 
 	/// <summary>
-	/// Gets or sets the price in the local currency.
+	/// Gets or sets the price in the local currency (required, minimum 0).
 	/// </summary>
-	public decimal? Price { get; set; }
+	public decimal Price { get; set; }
 
 	/// <summary>
 	/// Gets or sets the city ID where the pet is located.

@@ -16,6 +16,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 	public DbSet<AppLocale> AppLocales { get; set; } = null!;
 	public DbSet<PetCategory> PetCategories { get; set; } = null!;
 	public DbSet<PetCategoryLocalization> PetCategoryLocalizations { get; set; } = null!;
+	public DbSet<PetColor> PetColors { get; set; } = null!;
+	public DbSet<PetColorLocalization> PetColorLocalizations { get; set; } = null!;
 	public DbSet<PetBreed> PetBreeds { get; set; } = null!;
 	public DbSet<PetBreedLocalization> PetBreedLocalizations { get; set; } = null!;
 	public DbSet<City> Cities { get; set; } = null!;

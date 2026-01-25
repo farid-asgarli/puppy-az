@@ -46,7 +46,7 @@ public class PetAdDetailsDto
 	public string Color { get; init; } = string.Empty;
 	public decimal? Weight { get; init; }
 	public PetSize? Size { get; init; }
-	public decimal? Price { get; init; }
+	public decimal Price { get; init; }
 	public int ViewCount { get; set; }
 	public bool IsPremium { get; init; }
 	public DateTime? PremiumExpiresAt { get; init; }
@@ -73,8 +73,7 @@ public class PetAdListItemDto
 	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 	public PetSize? Size { get; init; }
 
-	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-	public decimal? Price { get; init; }
+	public decimal Price { get; init; }
 	public string CityName { get; init; } = string.Empty;
 	public string CategoryTitle { get; init; } = string.Empty;
 	public int CategoryId { get; init; }

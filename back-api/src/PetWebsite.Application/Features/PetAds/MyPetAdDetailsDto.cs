@@ -17,7 +17,7 @@ public class MyPetAdDetailsDto
 	public string Color { get; init; } = string.Empty;
 	public decimal? Weight { get; init; }
 	public PetSize? Size { get; init; }
-	public decimal? Price { get; init; }
+	public decimal Price { get; init; }
 	public int ViewCount { get; set; }
 	public bool IsPremium { get; init; }
 	public DateTime? PremiumExpiresAt { get; init; }

@@ -42,7 +42,7 @@ public class RecordPetAdViewCommandHandler(
 			return Result.Success();
 		}
 
-		// Create a new view record
+		// Create a new view record (for recently viewed tracking only, not for view count)
 		var petAdView = new PetAdView
 		{
 			UserId = userId.Value,
@@ -51,14 +51,6 @@ public class RecordPetAdViewCommandHandler(
 		};
 
 		dbContext.PetAdViews.Add(petAdView);
-
-		// Also increment the view count on the pet ad itself
-		var petAd = await dbContext.PetAds.FirstOrDefaultAsync(p => p.Id == request.PetAdId, ct);
-		if (petAd is not null)
-		{
-			petAd.ViewCount++;
-		}
-
 		await dbContext.SaveChangesAsync(ct);
 
 		return Result.Success();

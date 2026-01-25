@@ -29,8 +29,8 @@ public class UpdatePetAdCommandHandler(IApplicationDbContext dbContext, IStringL
 		if (petAd.UserId != userId)
 			return Result.Failure(L(LocalizationKeys.Error.Forbidden), 403);
 
-		// Check if ad can be edited (must be Rejected or Draft)
-		if (petAd.Status != PetAdStatus.Rejected && petAd.Status != PetAdStatus.Draft)
+		// Check if ad can be edited (must be Pending, Rejected or Draft)
+		if (petAd.Status != PetAdStatus.Pending && petAd.Status != PetAdStatus.Rejected && petAd.Status != PetAdStatus.Draft)
 			return Result.Failure(L(LocalizationKeys.PetAd.CannotEditPublishedAd), 400);
 
 		// Verify breed exists and is active

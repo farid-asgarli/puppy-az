@@ -13,7 +13,9 @@ using PetWebsite.Application.Features.PetAds.Queries.GetMyPetAdById;
 using PetWebsite.Application.Features.PetAds.Queries.GetRecentlyViewedPetAds;
 using PetWebsite.Application.Features.Users;
 using PetWebsite.Application.Features.Users.Commands.ChangePassword;
+using PetWebsite.Application.Features.Users.Commands.DeleteProfilePicture;
 using PetWebsite.Application.Features.Users.Commands.UpdateProfile;
+using PetWebsite.Application.Features.Users.Commands.UploadProfilePicture;
 using PetWebsite.Application.Features.Users.Queries.GetUserActiveAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserDashboardStats;
@@ -74,6 +76,44 @@ public class UsersController(IMediator mediator, IStringLocalizer<UsersControlle
 		if (result.IsSuccess)
 			return Ok(new { message = Localizer[LocalizationKeys.User.UpdateSuccess] });
 
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Upload a profile picture for the current user.
+	/// </summary>
+	/// <param name="file">The image file to upload (jpg, jpeg, png, webp). Max size: 10MB</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>The URL of the uploaded profile picture</returns>
+	/// <response code="200">Profile picture uploaded successfully</response>
+	/// <response code="400">Invalid file format or size</response>
+	/// <response code="401">User is not authenticated</response>
+	[HttpPost("profile/picture")]
+	[RequestSizeLimit(50 * 1024 * 1024)] // 50 MB limit - server will compress
+	[Consumes("multipart/form-data")]
+	[ProducesResponseType(typeof(ProfilePictureDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> UploadProfilePicture(IFormFile file, CancellationToken cancellationToken)
+	{
+		var command = new UploadProfilePictureCommand(file);
+		var result = await Mediator.Send(command, cancellationToken);
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Delete the current user's profile picture.
+	/// </summary>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>No content on success</returns>
+	/// <response code="204">Profile picture deleted successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	[HttpDelete("profile/picture")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> DeleteProfilePicture(CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new DeleteProfilePictureCommand(), cancellationToken);
 		return result.ToActionResult();
 	}
 

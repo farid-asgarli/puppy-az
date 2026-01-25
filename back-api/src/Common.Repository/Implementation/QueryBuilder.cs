@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using Common.Repository.Abstraction;
 using Common.Repository.Filtering;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,66 @@ public class QueryBuilder<TEntity>(IQueryable<TEntity> query, IGenericFiltering 
 		ArgumentNullException.ThrowIfNull(predicate);
 		_query = _query.Where(predicate);
 		return this;
+	}
+
+	public IQueryBuilder<TEntity> ApplySorting(List<SortEntry>? sortEntries, string? defaultSortKey = null, SortDirection defaultDirection = SortDirection.Descending)
+	{
+		// If no sort entries provided, apply default sort if specified
+		if (sortEntries == null || sortEntries.Count == 0)
+		{
+			if (!string.IsNullOrEmpty(defaultSortKey))
+			{
+				ApplySingleSort(defaultSortKey, defaultDirection, isFirst: true);
+			}
+			return this;
+		}
+
+		// Apply each sort entry in order
+		for (int i = 0; i < sortEntries.Count; i++)
+		{
+			var entry = sortEntries[i];
+			ApplySingleSort(entry.Key, entry.Direction, isFirst: i == 0);
+		}
+
+		return this;
+	}
+
+	private void ApplySingleSort(string key, SortDirection direction, bool isFirst)
+	{
+		// Get property info - try exact match first, then case-insensitive
+		var propertyInfo = typeof(TEntity).GetProperty(key, BindingFlags.Public | BindingFlags.Instance)
+			?? typeof(TEntity).GetProperty(key, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+
+		if (propertyInfo == null)
+		{
+			// Property not found, skip this sort entry
+			return;
+		}
+
+		// Build the lambda expression for the property
+		var parameter = Expression.Parameter(typeof(TEntity), "x");
+		var propertyAccess = Expression.Property(parameter, propertyInfo);
+		var lambda = Expression.Lambda(propertyAccess, parameter);
+
+		// Get the appropriate OrderBy method
+		string methodName;
+		if (isFirst && !_isOrdered)
+		{
+			methodName = direction == SortDirection.Ascending ? "OrderBy" : "OrderByDescending";
+		}
+		else
+		{
+			methodName = direction == SortDirection.Ascending ? "ThenBy" : "ThenByDescending";
+		}
+
+		// Create the method call expression
+		var method = typeof(Queryable).GetMethods()
+			.Where(m => m.Name == methodName && m.GetParameters().Length == 2)
+			.Single()
+			.MakeGenericMethod(typeof(TEntity), propertyInfo.PropertyType);
+
+		_query = (IQueryable<TEntity>)method.Invoke(null, [_query, lambda])!;
+		_isOrdered = true;
 	}
 
 	public IQueryBuilder<TEntity> ApplyPagination(PaginationSpecification? specification)

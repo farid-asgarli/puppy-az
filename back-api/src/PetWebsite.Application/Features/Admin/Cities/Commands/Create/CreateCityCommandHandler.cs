@@ -14,13 +14,24 @@ public class CreateCityCommandHandler(IApplicationDbContext dbContext, IStringLo
 {
 	public async Task<Result<int>> Handle(CreateCityCommand request, CancellationToken ct)
 	{
-		// Check if city with same name already exists
-		var existingCity = await dbContext.Cities.FirstOrDefaultAsync(c => c.Name == request.Name, ct);
+		// Check if city with same name already exists (check all languages)
+		var existingCity = await dbContext.Cities.FirstOrDefaultAsync(
+			c => c.NameAz == request.NameAz || c.NameEn == request.NameEn || c.NameRu == request.NameRu,
+			ct
+		);
 
 		if (existingCity != null)
 			return Result<int>.Failure(L(LocalizationKeys.City.AlreadyExists), 409);
 
-		var city = new City { Name = request.Name, IsActive = request.IsActive };
+		var city = new City
+		{
+			NameAz = request.NameAz,
+			NameEn = request.NameEn,
+			NameRu = request.NameRu,
+			IsMajorCity = request.IsMajorCity,
+			DisplayOrder = request.DisplayOrder,
+			IsActive = request.IsActive,
+		};
 
 		dbContext.Cities.Add(city);
 		await dbContext.SaveChangesAsync(ct);

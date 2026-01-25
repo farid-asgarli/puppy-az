@@ -17,6 +17,8 @@ public class GetPetCategoriesQueryHandler(IApplicationDbContext dbContext, ICurr
 			.PetCategories.WhereNotDeleted<PetCategory, int>()
 			.Where(c => c.IsActive)
 			.AsNoTracking()
+			.OrderBy(c => c.Id == 10 ? 1 : 0) // "Digər" always last
+			.ThenBy(c => c.Id)
 			.Select(c => new PetCategoryDto
 			{
 				Id = c.Id,

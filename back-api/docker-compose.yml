@@ -9,39 +9,19 @@ services:
       POSTGRES_PASSWORD: petwebsite_pass_2024
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - '5432:5432'
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backup_PetWebsiteDb.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U petwebsite_user -d PetWebsiteDb']
+      test: ["CMD-SHELL", "pg_isready -U petwebsite_user -d PetWebsiteDb"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - petwebsite-network
-
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: petwebsite-pgadmin
-    restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@petwebsite.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
-    ports:
-      - '5050:80'
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - postgres
-    networks:
-      - petwebsite-network
-
 volumes:
   postgres_data:
-    driver: local
-  pgadmin_data:
     driver: local
 
 networks:

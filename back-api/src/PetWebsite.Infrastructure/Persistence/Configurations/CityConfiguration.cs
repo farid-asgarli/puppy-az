@@ -13,18 +13,21 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
 	{
 		builder.HasKey(e => e.Id);
 
-		builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
+		builder.Property(e => e.NameAz).IsRequired().HasMaxLength(100);
+		builder.Property(e => e.NameEn).IsRequired().HasMaxLength(100);
+		builder.Property(e => e.NameRu).IsRequired().HasMaxLength(100);
 
+		builder.Property(e => e.DisplayOrder).HasDefaultValue(0);
+		builder.Property(e => e.IsMajorCity).HasDefaultValue(false);
 		builder.Property(e => e.IsActive).HasDefaultValue(true);
-
 		builder.Property(e => e.IsDeleted).HasDefaultValue(false);
-
 		builder.Property(e => e.CreatedAt).IsRequired();
 
 		builder.HasMany(e => e.PetAds).WithOne(e => e.City).HasForeignKey(e => e.CityId).OnDelete(DeleteBehavior.Restrict);
 
-		builder.HasIndex(e => e.Name);
+		builder.HasIndex(e => e.NameAz);
 		builder.HasIndex(e => e.IsActive);
 		builder.HasIndex(e => e.IsDeleted);
+		builder.HasIndex(e => e.DisplayOrder);
 	}
 }

@@ -50,6 +50,8 @@ public class GetTopCategoriesWithAdsQueryHandler(
 
 		// Group and map in memory (minimal processing)
 		var result = categoriesWithCounts
+			.OrderBy(x => x.Category.Id == 10 ? 1 : 0) // "Digər" always last
+			.ThenByDescending(x => x.PetAdsCount)
 			.Select(x =>
 			{
 				var c = x.Category;

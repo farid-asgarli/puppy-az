@@ -353,6 +353,11 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
@@ -363,7 +368,22 @@ namespace PetWebsite.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("Name")
+                    b.Property<bool>("IsMajorCity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("NameAz")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("NameRu")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -376,13 +396,15 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DisplayOrder");
+
                     b.HasIndex("IsActive");
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("NameAz");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.FavoriteAd", b =>
@@ -406,7 +428,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoriteAds", (string)null);
+                    b.ToTable("FavoriteAds");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAd", b =>
@@ -478,7 +500,7 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Property<DateTime?>("PremiumExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
@@ -546,7 +568,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PetAds", (string)null);
+                    b.ToTable("PetAds");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdImage", b =>
@@ -604,7 +626,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("UploadedById", "PetAdId");
 
-                    b.ToTable("PetAdImages", (string)null);
+                    b.ToTable("PetAdImages");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdQuestion", b =>
@@ -736,7 +758,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("PetCategoryId");
 
-                    b.ToTable("PetBreeds", (string)null);
+                    b.ToTable("PetBreeds");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetBreedLocalization", b =>
@@ -822,7 +844,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("PetCategories", (string)null);
+                    b.ToTable("PetCategories");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetCategoryLocalization", b =>
@@ -859,6 +881,108 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.ToTable("PetCategoryLocalizations", (string)null);
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetColor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("BorderColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("SortOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("TextColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("SortOrder");
+
+                    b.ToTable("PetColors");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetColorLocalization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppLocaleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PetColorId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppLocaleId");
+
+                    b.HasIndex("PetColorId", "AppLocaleId")
+                        .IsUnique();
+
+                    b.ToTable("PetColorLocalizations", (string)null);
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.SmsVerificationCode", b =>
                 {
                     b.Property<int>("Id")
@@ -893,7 +1017,7 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SmsVerificationCodes", (string)null);
+                    b.ToTable("SmsVerificationCodes");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.User", b =>
@@ -1190,6 +1314,24 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("PetCategory");
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetColorLocalization", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.AppLocale", "AppLocale")
+                        .WithMany()
+                        .HasForeignKey("AppLocaleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.PetColor", "PetColor")
+                        .WithMany("Localizations")
+                        .HasForeignKey("PetColorId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AppLocale");
+
+                    b.Navigation("PetColor");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.City", b =>
                 {
                     b.Navigation("PetAds");
@@ -1213,6 +1355,11 @@ namespace PetWebsite.Infrastructure.Migrations
                 {
                     b.Navigation("Breeds");
 
+                    b.Navigation("Localizations");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetColor", b =>
+                {
                     b.Navigation("Localizations");
                 });
 

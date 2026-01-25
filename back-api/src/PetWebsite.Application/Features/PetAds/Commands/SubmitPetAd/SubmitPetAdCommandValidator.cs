@@ -41,8 +41,6 @@ public class SubmitPetAdCommandValidator : BaseValidator<SubmitPetAdCommand>
 		RuleFor(x => x.Weight)
 			.GreaterThan(0)
 			.WithMessage(L(LocalizationKeys.PetAd.WeightInvalid))
-			.LessThan(500)
-			.WithMessage(L(LocalizationKeys.PetAd.WeightTooHigh))
 			.When(x => x.Weight.HasValue);
 
 		RuleFor(x => x.Size).IsInEnum().WithMessage(L(LocalizationKeys.PetAd.SizeInvalid)).When(x => x.Size.HasValue);

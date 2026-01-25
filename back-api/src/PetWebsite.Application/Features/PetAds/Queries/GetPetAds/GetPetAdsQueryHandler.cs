@@ -1,4 +1,5 @@
 using Common.Repository.Abstraction;
+using Common.Repository.Filtering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using PetWebsite.Application.Common.Handlers;
@@ -27,17 +28,15 @@ public class GetPetAdsQueryHandler(
 		var query = dbContext
 			.PetAds.WhereNotDeleted<PetAd, int>()
 			.AsNoTracking()
-			.Where(p => p.Status == PetAdStatus.Published && p.IsAvailable);
-
-		// Order by: Premium first, then by published date (newest first)
-		var orderedQuery = query
-			.OrderByDescending(p => p.IsPremium)
-			.ThenByDescending(p => p.PublishedAt)
+			.Where(p => p.Status == PetAdStatus.Published && p.IsAvailable)
 			.Select(PetAdProjections.ToListItemDto(currentCulture));
 
 		var (items, totalCount) = await queryRepo
-			.WithQuery(orderedQuery)
+			.WithQuery(query)
 			.ApplyFilters(request.Filter)
+			// Premium ads always first, then apply user's sorting preference
+			.OrderByDescending(p => p.IsPremium)
+			.ApplySorting(request.Sorting, "PublishedAt", SortDirection.Descending)
 			.ApplyPagination(request.Pagination)
 			.ToListWithCountAsync(ct);
 

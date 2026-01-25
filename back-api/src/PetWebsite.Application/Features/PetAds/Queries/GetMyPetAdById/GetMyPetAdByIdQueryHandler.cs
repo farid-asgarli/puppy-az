@@ -62,7 +62,7 @@ public class GetMyPetAdByIdQueryHandler(
 							.FirstOrDefault() ?? "",
 					CategoryId = p.Breed.Category.Id,
 				},
-				CityName = p.City.Name,
+				CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 				CityId = p.City.Id,
 				CategoryTitle =
 					p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
@@ -74,7 +74,7 @@ public class GetMyPetAdByIdQueryHandler(
 					.Select(i => new PetAdImageDto
 					{
 						Id = i.Id,
-						Url = "/" + i.FilePath,
+						Url = i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath,
 						IsPrimary = i.IsPrimary,
 					})
 					.ToList(),

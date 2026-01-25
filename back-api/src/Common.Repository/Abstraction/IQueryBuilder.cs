@@ -14,6 +14,7 @@ public interface IQueryBuilder<TEntity>
     IQueryBuilder<TEntity> Where(Expression<Func<TEntity, bool>> predicate);
 
     // Ordering
+    IQueryBuilder<TEntity> ApplySorting(List<SortEntry>? sortEntries, string? defaultSortKey = null, SortDirection defaultDirection = SortDirection.Descending);
     IQueryBuilder<TEntity> OrderBy<TKey>(Expression<Func<TEntity, TKey>> keySelector);
     IQueryBuilder<TEntity> OrderByDescending<TKey>(Expression<Func<TEntity, TKey>> keySelector);
     IQueryBuilder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> keySelector);

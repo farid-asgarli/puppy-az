@@ -11,6 +11,7 @@ using PetWebsite.Application.Features.PetAds.Commands.AnswerQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.AskQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.ClosePetAd;
 using PetWebsite.Application.Features.PetAds.Commands.DeleteQuestion;
+using PetWebsite.Application.Features.PetAds.Commands.IncrementViewCount;
 using PetWebsite.Application.Features.PetAds.Commands.RecordPetAdView;
 using PetWebsite.Application.Features.PetAds.Commands.SubmitPetAd;
 using PetWebsite.Application.Features.PetAds.Commands.UpdatePetAd;
@@ -20,6 +21,7 @@ using PetWebsite.Application.Features.PetAds.Queries.GetPetAds;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetBreeds;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetCategories;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetCategoriesDetailed;
+using PetWebsite.Application.Features.PetAds.Queries.GetPetColors;
 using PetWebsite.Application.Features.PetAds.Queries.GetPremiumPetAds;
 using PetWebsite.Application.Features.PetAds.Queries.GetRelatedPetAds;
 using PetWebsite.Application.Features.PetAds.Queries.GetTopCategoriesWithAds;
@@ -142,6 +144,25 @@ public class PetAdsController(IMediator mediator, IStringLocalizer<PetAdsControl
 	}
 
 	/// <summary>
+	/// Get all pet colors.
+	/// </summary>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>List of pet colors with styling information</returns>
+	/// <response code="200">Returns the list of colors</response>
+	[HttpGet("colors")]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(List<PetColorDto>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> GetPetColors(CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new GetPetColorsQuery(), cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
 	/// Get a paginated and filtered list of pet advertisements.
 	/// </summary>
 	/// <param name="categoryId">Optional pet category ID to filter by</param>
@@ -231,6 +252,28 @@ public class PetAdsController(IMediator mediator, IStringLocalizer<PetAdsControl
 
 		if (result.IsSuccess)
 			return Ok(new { message = "View recorded successfully" });
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Increment view count for a pet advertisement (anonymous access allowed).
+	/// </summary>
+	/// <param name="id">Pet ad ID</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success result</returns>
+	/// <response code="200">View count incremented successfully</response>
+	/// <response code="404">Pet ad not found</response>
+	[HttpPost("{id:int}/increment-view")]
+	[AllowAnonymous]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> IncrementViewCount(int id, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new IncrementViewCountCommand(id), cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(new { message = "View count incremented successfully" });
 
 		return result.ToActionResult();
 	}

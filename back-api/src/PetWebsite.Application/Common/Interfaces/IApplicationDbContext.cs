@@ -27,6 +27,16 @@ public interface IApplicationDbContext
 	DbSet<PetCategoryLocalization> PetCategoryLocalizations { get; }
 
 	/// <summary>
+	/// Gets the DbSet for PetColor entities.
+	/// </summary>
+	DbSet<PetColor> PetColors { get; }
+
+	/// <summary>
+	/// Gets the DbSet for PetColorLocalization entities.
+	/// </summary>
+	DbSet<PetColorLocalization> PetColorLocalizations { get; }
+
+	/// <summary>
 	/// Gets the DbSet for PetBreed entities.
 	/// </summary>
 	DbSet<PetBreed> PetBreeds { get; }

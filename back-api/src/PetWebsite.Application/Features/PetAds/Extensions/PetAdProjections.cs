@@ -36,14 +36,11 @@ public static class PetAdProjections
 			BreedId = p.PetBreedId,
 			CategoryId = p.Breed.Category.Id,
 			CityId = p.CityId,
-			CityName = p.City.Name,
+			CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 			PrimaryImageUrl =
-				"/"
-				+ (
-					p.Images.Where(i => i.IsPrimary).Select(i => i.FilePath).FirstOrDefault()
-					?? p.Images.OrderBy(i => i.Id).Select(i => i.FilePath).FirstOrDefault()
-					?? ""
-				),
+				p.Images.Where(i => i.IsPrimary).Select(i => i.FilePath).FirstOrDefault()
+				?? p.Images.OrderBy(i => i.Id).Select(i => i.FilePath).FirstOrDefault()
+				?? "",
 			Size = p.Size,
 		};
 	}
@@ -75,14 +72,11 @@ public static class PetAdProjections
 			BreedId = p.PetBreedId,
 			CategoryId = p.Breed.Category.Id,
 			CityId = p.CityId,
-			CityName = p.City.Name,
+			CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 			PrimaryImageUrl =
-				"/"
-				+ (
-					p.Images.Where(i => i.IsPrimary).Select(i => i.FilePath).FirstOrDefault()
-					?? p.Images.OrderBy(i => i.Id).Select(i => i.FilePath).FirstOrDefault()
-					?? ""
-				),
+				p.Images.Where(i => i.IsPrimary).Select(i => i.FilePath).FirstOrDefault()
+				?? p.Images.OrderBy(i => i.Id).Select(i => i.FilePath).FirstOrDefault()
+				?? "",
 			Size = p.Size,
 			CreatedAt = p.CreatedAt,
 			ViewCount = p.ViewCount,

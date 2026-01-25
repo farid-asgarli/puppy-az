@@ -12,10 +12,26 @@ public class UpdateCityCommandValidator : BaseValidator<UpdateCityCommand>
 	{
 		RuleFor(x => x.Id).GreaterThan(0).WithMessage(L(LocalizationKeys.City.IdInvalid));
 
-		RuleFor(x => x.Name)
+		RuleFor(x => x.NameAz)
 			.NotEmpty()
 			.WithMessage(L(LocalizationKeys.City.NameRequired))
 			.MaximumLength(100)
 			.WithMessage(L(LocalizationKeys.City.NameMaxLength));
+
+		RuleFor(x => x.NameEn)
+			.NotEmpty()
+			.WithMessage(L(LocalizationKeys.City.NameRequired))
+			.MaximumLength(100)
+			.WithMessage(L(LocalizationKeys.City.NameMaxLength));
+
+		RuleFor(x => x.NameRu)
+			.NotEmpty()
+			.WithMessage(L(LocalizationKeys.City.NameRequired))
+			.MaximumLength(100)
+			.WithMessage(L(LocalizationKeys.City.NameMaxLength));
+
+		RuleFor(x => x.DisplayOrder)
+			.GreaterThanOrEqualTo(0)
+			.WithMessage("Display order must be a non-negative number.");
 	}
 }

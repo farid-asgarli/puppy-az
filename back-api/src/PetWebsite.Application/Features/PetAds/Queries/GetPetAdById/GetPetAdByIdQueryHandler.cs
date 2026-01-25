@@ -53,7 +53,7 @@ public class GetPetAdByIdQueryHandler(
 							.FirstOrDefault() ?? "",
 					CategoryId = p.Breed.Category.Id,
 				},
-				CityName = p.City.Name,
+				CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 				CityId = p.City.Id,
 				CategoryTitle =
 					p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
@@ -77,7 +77,7 @@ public class GetPetAdByIdQueryHandler(
 					.Select(i => new PetAdImageDto
 					{
 						Id = i.Id,
-						Url = "/" + i.FilePath,
+						Url = i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath,
 						IsPrimary = i.IsPrimary,
 					})
 					.ToList(),
@@ -111,13 +111,6 @@ public class GetPetAdByIdQueryHandler(
 		{
 			dto.Owner.ProfilePictureUrl = urlService.ToAbsoluteUrl(dto.Owner.ProfilePictureUrl);
 		}
-
-		// Increment view count without triggering UpdatedAt via interceptor
-		await dbContext
-			.PetAds.Where(p => p.Id == request.Id)
-			.ExecuteUpdateAsync(setters => setters.SetProperty(p => p.ViewCount, p => p.ViewCount + 1), ct);
-
-		dto.ViewCount++;
 
 		return Result<PetAdDetailsDto>.Success(dto);
 	}

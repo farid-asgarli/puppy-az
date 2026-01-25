@@ -15,7 +15,11 @@ public class ListCitiesQueryHandler(IApplicationDbContext dbContext, IDynamicQue
 			select new CityListItemDto
 			{
 				Id = city.Id,
-				Name = city.Name,
+				NameAz = city.NameAz,
+				NameEn = city.NameEn,
+				NameRu = city.NameRu,
+				IsMajorCity = city.IsMajorCity,
+				DisplayOrder = city.DisplayOrder,
 				IsActive = city.IsActive,
 				IsDeleted = city.IsDeleted,
 				PetAdsCount = city.PetAds.Count(a => !a.IsDeleted),

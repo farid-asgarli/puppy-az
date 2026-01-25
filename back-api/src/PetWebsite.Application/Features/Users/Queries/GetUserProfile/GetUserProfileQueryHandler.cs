@@ -7,7 +7,12 @@ using PetWebsite.Domain.Constants;
 
 namespace PetWebsite.Application.Features.Users.Queries.GetUserProfile;
 
-public class GetUserProfileQueryHandler(IApplicationDbContext dbContext, ICurrentUserService currentUserService, IStringLocalizer localizer)
+public class GetUserProfileQueryHandler(
+	IApplicationDbContext dbContext,
+	ICurrentUserService currentUserService,
+	IUrlService urlService,
+	IStringLocalizer localizer
+)
 	: BaseHandler(localizer),
 		IQueryHandler<GetUserProfileQuery, Result<UserProfileDto>>
 {
@@ -27,7 +32,9 @@ public class GetUserProfileQueryHandler(IApplicationDbContext dbContext, ICurren
 				FirstName = u.FirstName,
 				LastName = u.LastName,
 				PhoneNumber = u.PhoneNumber,
-				ProfilePictureUrl = u.ProfilePictureUrl,
+				ProfilePictureUrl = string.IsNullOrEmpty(u.ProfilePictureUrl)
+					? null
+					: urlService.ToAbsoluteUrl(u.ProfilePictureUrl),
 				CreatedAt = u.CreatedAt,
 				LastLoginAt = u.LastLoginAt,
 			})
