@@ -1,4 +1,5 @@
-import { redirect } from 'next/navigation';
+import { redirect } from '@/i18n';
+import { getLocale } from 'next-intl/server';
 import { getProfileAction } from '@/lib/auth/actions';
 import ProfileInfoView from '@/lib/views/my-account/profile-info/profile-info.view';
 import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
@@ -11,12 +12,14 @@ export async function generateMetadata() {
 }
 
 export default async function ProfileInfoPage() {
+  const locale = await getLocale();
+
   // Fetch user profile data server-side
   const result = await getProfileAction();
 
   // Redirect to login if not authenticated
   if (!result.success) {
-    redirect('/auth?redirect=/my-account/profile-info');
+    return redirect({ href: '/auth?redirect=/my-account/profile-info', locale });
   }
 
   return <ProfileInfoView profile={result.data} />;

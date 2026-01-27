@@ -6,7 +6,7 @@ import NarrowContainer from "@/lib/components/narrow-container";
 import { Heading, Text } from "@/lib/primitives/typography";
 import type { PageHeaderProps, PageHeaderMaxWidth } from "./page-header.types";
 import { Row } from "@/lib/primitives";
-import { useRouter } from "@/i18n/routing";
+import { useRouter } from "@/i18n";
 import { useTranslations } from "next-intl";
 
 const maxWidthClasses: Record<PageHeaderMaxWidth, string> = {

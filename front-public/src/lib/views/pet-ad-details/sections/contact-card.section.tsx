@@ -17,7 +17,7 @@ import Button from "@/lib/primitives/button/button.component";
 import { useTranslations } from "next-intl";
 import { formatPhoneForDisplay } from "@/lib/utils/phone-utils";
 import { useAuth } from "@/lib/hooks/use-auth";
-import { useRouter } from "@/i18n/routing";
+import { useRouter } from "@/i18n";
 import toast from "react-hot-toast";
 import { sendMessageAction } from "@/lib/auth/actions";
 

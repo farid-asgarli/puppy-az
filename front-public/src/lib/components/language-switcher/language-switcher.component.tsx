@@ -1,7 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { usePathname, useRouter } from '@/i18n/routing';
+import { useParams, usePathname, useRouter } from '@/i18n';
 import { useTransition } from 'react';
 
 export type Locale = 'az' | 'en' | 'ru';
@@ -13,12 +12,7 @@ export const LANGUAGES = [
 ];
 
 interface LanguageSwitcherProps {
-  children: (params: {
-    currentLanguage: Locale;
-    languages: typeof LANGUAGES;
-    changeLanguage: (locale: Locale) => void;
-    isPending: boolean;
-  }) => React.ReactNode;
+  children: (params: { currentLanguage: Locale; languages: typeof LANGUAGES; changeLanguage: (locale: Locale) => void; isPending: boolean }) => React.ReactNode;
 }
 
 /**

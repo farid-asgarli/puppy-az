@@ -1,4 +1,4 @@
-import { useParams } from 'next/navigation';
+import { useParams } from '@/i18n';
 
 export function useLocale() {
   const params = useParams();

@@ -1,43 +1,26 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
-import {
-  IconEye,
-  IconClock,
-  IconAlertCircle,
-  IconLayoutGrid,
-  IconPlus,
-  IconRefresh,
-} from "@tabler/icons-react";
-import toast from "react-hot-toast";
-import { cn } from "@/lib/external/utils";
-import {
-  MyAdListItemDto,
-  PetAdListItemDto,
-  PetAdStatus,
-} from "@/lib/api/types/pet-ad.types";
-import { PaginatedResult } from "@/lib/api/types/common.types";
-import {
-  getUserActiveAdsAction,
-  getUserPendingAdsAction,
-  getUserRejectedAdsAction,
-  getAllUserAdsAction,
-  closeAdAction,
-} from "@/lib/auth/actions";
-import { usePaginatedData } from "@/lib/hooks/use-paginated-data";
-import { useInfiniteScroll } from "@/lib/hooks/use-infinite-scroll";
-import { AdsSummary } from "@/lib/components/views/my-account";
-import { Heading, Text } from "@/lib/primitives/typography";
-import { EmptyState } from "@/lib/primitives/empty-state";
-import { Spinner } from "@/lib/primitives/spinner";
-import Button from "@/lib/primitives/button/button.component";
-import TransitionLink from "@/lib/components/transition-link";
-import { MyAdCard, mapAdToMyAdCard } from "@/lib/components/cards/my-ad-card";
-import { MyAdDetails } from "@/lib/components/drawers/my-ad-drawer";
+import { useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n';
+import { IconEye, IconClock, IconAlertCircle, IconLayoutGrid, IconPlus, IconRefresh } from '@tabler/icons-react';
+import toast from 'react-hot-toast';
+import { cn } from '@/lib/external/utils';
+import { MyAdListItemDto, PetAdListItemDto, PetAdStatus } from '@/lib/api/types/pet-ad.types';
+import { PaginatedResult } from '@/lib/api/types/common.types';
+import { getUserActiveAdsAction, getUserPendingAdsAction, getUserRejectedAdsAction, getAllUserAdsAction, closeAdAction } from '@/lib/auth/actions';
+import { usePaginatedData } from '@/lib/hooks/use-paginated-data';
+import { useInfiniteScroll } from '@/lib/hooks/use-infinite-scroll';
+import { AdsSummary } from '@/lib/components/views/my-account';
+import { Heading, Text } from '@/lib/primitives/typography';
+import { EmptyState } from '@/lib/primitives/empty-state';
+import { Spinner } from '@/lib/primitives/spinner';
+import Button from '@/lib/primitives/button/button.component';
+import TransitionLink from '@/lib/components/transition-link';
+import { MyAdCard, mapAdToMyAdCard } from '@/lib/components/cards/my-ad-card';
+import { MyAdDetails } from '@/lib/components/drawers/my-ad-drawer';
 
-type FilterTab = "active" | "pending" | "rejected" | "all";
+type FilterTab = 'active' | 'pending' | 'rejected' | 'all';
 
 interface MyAdsViewProps {
   initialData: PaginatedResult<PetAdListItemDto>;
@@ -63,14 +46,9 @@ interface MyAdsViewProps {
  * - Refresh all functionality
  * - Lazy loading for non-active tabs
  */
-export default function MyAdsView({
-  initialData,
-  initialStats,
-  initialPage,
-  initialTab = "active",
-}: MyAdsViewProps) {
-  const t = useTranslations("myAccount.myAds");
-  const tCommon = useTranslations("common");
+export default function MyAdsView({ initialData, initialStats, initialPage, initialTab = 'active' }: MyAdsViewProps) {
+  const t = useTranslations('myAccount.myAds');
+  const tCommon = useTranslations('common');
   const router = useRouter();
 
   const [stats, setStats] = useState(initialStats);
@@ -80,34 +58,24 @@ export default function MyAdsView({
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Store data for each tab separately - initialize based on initialTab
-  const [activeAds, setActiveAds] = useState<PetAdListItemDto[]>(
-    initialTab === "active" ? initialData.items : [],
-  );
-  const [pendingAds, setPendingAds] = useState<PetAdListItemDto[]>(
-    initialTab === "pending" ? initialData.items : [],
-  );
-  const [rejectedAds, setRejectedAds] = useState<PetAdListItemDto[]>(
-    initialTab === "rejected" ? initialData.items : [],
-  );
-  const [allAds, setAllAds] = useState<MyAdListItemDto[]>(
-    initialTab === "all" ? (initialData.items as MyAdListItemDto[]) : [],
-  );
+  const [activeAds, setActiveAds] = useState<PetAdListItemDto[]>(initialTab === 'active' ? initialData.items : []);
+  const [pendingAds, setPendingAds] = useState<PetAdListItemDto[]>(initialTab === 'pending' ? initialData.items : []);
+  const [rejectedAds, setRejectedAds] = useState<PetAdListItemDto[]>(initialTab === 'rejected' ? initialData.items : []);
+  const [allAds, setAllAds] = useState<MyAdListItemDto[]>(initialTab === 'all' ? (initialData.items as MyAdListItemDto[]) : []);
 
   // Track which tabs have been loaded - start with initialTab
-  const [loadedTabs, setLoadedTabs] = useState<Set<FilterTab>>(
-    new Set([initialTab]),
-  );
+  const [loadedTabs, setLoadedTabs] = useState<Set<FilterTab>>(new Set([initialTab]));
 
   // Determine which action to use based on active tab
   const getFetchAction = (tab: FilterTab) => {
     switch (tab) {
-      case "active":
+      case 'active':
         return getUserActiveAdsAction;
-      case "pending":
+      case 'pending':
         return getUserPendingAdsAction;
-      case "rejected":
+      case 'rejected':
         return getUserRejectedAdsAction;
-      case "all":
+      case 'all':
         return getAllUserAdsAction;
       default:
         return getUserActiveAdsAction;
@@ -117,13 +85,13 @@ export default function MyAdsView({
   // Get current items based on active tab
   const getCurrentItems = () => {
     switch (activeTab) {
-      case "active":
+      case 'active':
         return activeAds;
-      case "pending":
+      case 'pending':
         return pendingAds;
-      case "rejected":
+      case 'rejected':
         return rejectedAds;
-      case "all":
+      case 'all':
         return allAds;
       default:
         return activeAds;
@@ -131,9 +99,7 @@ export default function MyAdsView({
   };
 
   // Initial data for paginated hook
-  const getInitialDataForTab = (
-    tab: FilterTab,
-  ): PaginatedResult<PetAdListItemDto> => {
+  const getInitialDataForTab = (tab: FilterTab): PaginatedResult<PetAdListItemDto> => {
     if (tab === initialTab) {
       return initialData;
     }
@@ -184,20 +150,20 @@ export default function MyAdsView({
 
         if (result.success) {
           switch (tab) {
-            case "pending":
+            case 'pending':
               setPendingAds(result.data.items);
               break;
-            case "rejected":
+            case 'rejected':
               setRejectedAds(result.data.items);
               break;
-            case "all":
+            case 'all':
               setAllAds(result.data.items as MyAdListItemDto[]);
               break;
           }
         }
       } catch (error) {
-        console.error("Failed to load tab data:", error);
-        toast.error(t("errors.loadFailed"));
+        console.error('Failed to load tab data:', error);
+        toast.error(t('errors.loadFailed'));
       }
     }
   };
@@ -207,13 +173,12 @@ export default function MyAdsView({
     setIsRefreshing(true);
     try {
       // Fetch all ad types
-      const [activeResult, pendingResult, rejectedResult, allResult] =
-        await Promise.all([
-          getUserActiveAdsAction({ pagination: { number: 1, size: 12 } }),
-          getUserPendingAdsAction({ pagination: { number: 1, size: 12 } }),
-          getUserRejectedAdsAction({ pagination: { number: 1, size: 12 } }),
-          getAllUserAdsAction({ pagination: { number: 1, size: 12 } }),
-        ]);
+      const [activeResult, pendingResult, rejectedResult, allResult] = await Promise.all([
+        getUserActiveAdsAction({ pagination: { number: 1, size: 12 } }),
+        getUserPendingAdsAction({ pagination: { number: 1, size: 12 } }),
+        getUserRejectedAdsAction({ pagination: { number: 1, size: 12 } }),
+        getAllUserAdsAction({ pagination: { number: 1, size: 12 } }),
+      ]);
 
       if (activeResult.success) {
         setActiveAds(activeResult.data.items);
@@ -236,19 +201,17 @@ export default function MyAdsView({
           (rejectedResult.success ? rejectedResult.data.totalCount : 0),
         activeAds: activeResult.success ? activeResult.data.totalCount : 0,
         pendingAds: pendingResult.success ? pendingResult.data.totalCount : 0,
-        rejectedAds: rejectedResult.success
-          ? rejectedResult.data.totalCount
-          : 0,
+        rejectedAds: rejectedResult.success ? rejectedResult.data.totalCount : 0,
       };
       setStats(newStats);
 
       // Mark all tabs as loaded
-      setLoadedTabs(new Set(["active", "pending", "rejected", "all"]));
+      setLoadedTabs(new Set(['active', 'pending', 'rejected', 'all']));
 
-      toast.success(t("notifications.refreshSuccess"));
+      toast.success(t('notifications.refreshSuccess'));
     } catch (error) {
-      console.error("Refresh failed:", error);
-      toast.error(t("notifications.refreshError"));
+      console.error('Refresh failed:', error);
+      toast.error(t('notifications.refreshError'));
     } finally {
       setIsRefreshing(false);
     }
@@ -274,11 +237,11 @@ export default function MyAdsView({
         // Update stats based on which tab we're in
         setStats((prev) => {
           const newStats = { ...prev };
-          if (activeTab === "active") {
+          if (activeTab === 'active') {
             newStats.activeAds = Math.max(0, prev.activeAds - 1);
-          } else if (activeTab === "pending") {
+          } else if (activeTab === 'pending') {
             newStats.pendingAds = Math.max(0, prev.pendingAds - 1);
-          } else if (activeTab === "rejected") {
+          } else if (activeTab === 'rejected') {
             newStats.rejectedAds = Math.max(0, prev.rejectedAds - 1);
           }
           newStats.totalAds = Math.max(0, prev.totalAds - 1);
@@ -286,24 +249,22 @@ export default function MyAdsView({
         });
 
         toast.success(
-          t("notifications.closeSuccess", {
-            defaultValue: "Ad closed successfully",
+          t('notifications.closeSuccess', {
+            defaultValue: 'Ad closed successfully',
           }),
         );
         setDrawerOpen(false);
       } else {
         toast.error(
           result.error ||
-            t("notifications.closeError", {
-              defaultValue: "Failed to close ad",
+            t('notifications.closeError', {
+              defaultValue: 'Failed to close ad',
             }),
         );
       }
     } catch (error) {
-      console.error("Close ad error:", error);
-      toast.error(
-        t("notifications.closeError", { defaultValue: "Failed to close ad" }),
-      );
+      console.error('Close ad error:', error);
+      toast.error(t('notifications.closeError', { defaultValue: 'Failed to close ad' }));
     }
   };
 
@@ -320,26 +281,26 @@ export default function MyAdsView({
     count: number;
   }> = [
     {
-      id: "active",
-      label: t("tabs.active"),
+      id: 'active',
+      label: t('tabs.active'),
       icon: IconEye,
       count: stats.activeAds,
     },
     {
-      id: "pending",
-      label: t("tabs.pending"),
+      id: 'pending',
+      label: t('tabs.pending'),
       icon: IconClock,
       count: stats.pendingAds,
     },
     {
-      id: "rejected",
-      label: t("tabs.rejected"),
+      id: 'rejected',
+      label: t('tabs.rejected'),
       icon: IconAlertCircle,
       count: stats.rejectedAds,
     },
     {
-      id: "all",
-      label: t("tabs.all"),
+      id: 'all',
+      label: t('tabs.all'),
       icon: IconLayoutGrid,
       count: stats.totalAds,
     },
@@ -349,23 +310,23 @@ export default function MyAdsView({
   const emptyStateConfig = {
     all: {
       icon: IconPlus,
-      title: t("emptyStates.noAds.title"),
-      description: t("emptyStates.noAds.description"),
+      title: t('emptyStates.noAds.title'),
+      description: t('emptyStates.noAds.description'),
     },
     active: {
       icon: IconEye,
-      title: t("emptyStates.noActive.title"),
-      description: t("emptyStates.noActive.description"),
+      title: t('emptyStates.noActive.title'),
+      description: t('emptyStates.noActive.description'),
     },
     pending: {
       icon: IconClock,
-      title: t("emptyStates.noPending.title"),
-      description: t("emptyStates.noPending.description"),
+      title: t('emptyStates.noPending.title'),
+      description: t('emptyStates.noPending.description'),
     },
     rejected: {
       icon: IconAlertCircle,
-      title: t("emptyStates.noRejected.title"),
-      description: t("emptyStates.noRejected.description"),
+      title: t('emptyStates.noRejected.title'),
+      description: t('emptyStates.noRejected.description'),
     },
   };
 
@@ -373,46 +334,28 @@ export default function MyAdsView({
   const currentItems = getCurrentItems();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className='min-h-screen bg-white'>
       {/* Header */}
-      <div className="border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="space-y-1 sm:space-y-2">
-              <Heading
-                variant="page-title"
-                as="h1"
-                className="text-2xl sm:text-3xl lg:text-4xl"
-              >
-                {t("title")}
+      <div className='border-b border-gray-200'>
+        <div className='max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8'>
+          <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+            <div className='space-y-1 sm:space-y-2'>
+              <Heading variant='page-title' as='h1' className='text-2xl sm:text-3xl lg:text-4xl'>
+                {t('title')}
               </Heading>
-              <Text
-                variant="body-lg"
-                color="secondary"
-                className="text-base sm:text-lg"
-              >
-                {t("subtitle", { count: stats.totalAds })}
+              <Text variant='body-lg' color='secondary' className='text-base sm:text-lg'>
+                {t('subtitle', { count: stats.totalAds })}
               </Text>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3">
-              <Button
-                variant="secondary"
-                size="md"
-                leftSection={<IconRefresh size={18} />}
-                onClick={handleRefreshAll}
-                disabled={isRefreshing}
-              >
-                {isRefreshing ? t("actions.refreshing") : t("actions.refresh")}
+            <div className='flex gap-3'>
+              <Button variant='secondary' size='md' leftSection={<IconRefresh size={18} />} onClick={handleRefreshAll} disabled={isRefreshing}>
+                {isRefreshing ? t('actions.refreshing') : t('actions.refresh')}
               </Button>
-              <TransitionLink href="/ads/ad-placement">
-                <Button
-                  variant="solid"
-                  size="md"
-                  leftSection={<IconPlus size={18} />}
-                >
-                  {t("actions.newAd")}
+              <TransitionLink href='/ads/ad-placement'>
+                <Button variant='solid' size='md' leftSection={<IconPlus size={18} />}>
+                  {t('actions.newAd')}
                 </Button>
               </TransitionLink>
             </div>
@@ -421,14 +364,14 @@ export default function MyAdsView({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12">
-        <div className="space-y-8">
+      <div className='max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 lg:py-12'>
+        <div className='space-y-8'>
           {/* Stats Summary */}
           <AdsSummary stats={stats} loading={false} />
 
           {/* Filter Tabs */}
-          <div className="border-b border-gray-200">
-            <div className="flex gap-2 sm:gap-4 overflow-x-auto -mb-px">
+          <div className='border-b border-gray-200'>
+            <div className='flex gap-2 sm:gap-4 overflow-x-auto -mb-px'>
               {tabs.map((tab) => {
                 const TabIcon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -438,23 +381,14 @@ export default function MyAdsView({
                     key={tab.id}
                     onClick={() => handleTabChange(tab.id)}
                     className={cn(
-                      "flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 border-b-2 transition-all duration-200 whitespace-nowrap",
-                      "font-medium text-sm sm:text-base",
-                      isActive
-                        ? "border-blue-600 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                      'flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 border-b-2 transition-all duration-200 whitespace-nowrap',
+                      'font-medium text-sm sm:text-base',
+                      isActive ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                     )}
                   >
-                    <TabIcon size={18} className="shrink-0" />
+                    <TabIcon size={18} className='shrink-0' />
                     <span>{tab.label}</span>
-                    <span
-                      className={cn(
-                        "px-2 py-0.5 rounded-full text-xs font-bold",
-                        isActive
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-gray-100 text-gray-600",
-                      )}
-                    >
+                    <span className={cn('px-2 py-0.5 rounded-full text-xs font-bold', isActive ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600')}>
                       {tab.count}
                     </span>
                   </button>
@@ -470,34 +404,31 @@ export default function MyAdsView({
               title={currentEmptyState.title}
               description={currentEmptyState.description}
               action={
-                <TransitionLink href="/ads/ad-placement">
-                  <Button variant="solid" leftSection={<IconPlus size={18} />}>
-                    {t("actions.newAd")}
+                <TransitionLink href='/ads/ad-placement'>
+                  <Button variant='solid' leftSection={<IconPlus size={18} />}>
+                    {t('actions.newAd')}
                   </Button>
                 </TransitionLink>
               }
             />
           ) : (
-            <div className="space-y-4">
+            <div className='space-y-4'>
               {/* Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6'>
                 {currentItems.map((ad) => {
                   // Determine status based on tab if not provided in ad data
                   const getStatusForTab = (): PetAdStatus => {
                     // If ad already has status (from MyAdListItemDto), use it
-                    if (
-                      "status" in ad &&
-                      typeof (ad as MyAdListItemDto).status === "number"
-                    ) {
+                    if ('status' in ad && typeof (ad as MyAdListItemDto).status === 'number') {
                       return (ad as MyAdListItemDto).status;
                     }
                     // Otherwise determine from current tab
                     switch (activeTab) {
-                      case "active":
+                      case 'active':
                         return PetAdStatus.Published;
-                      case "pending":
+                      case 'pending':
                         return PetAdStatus.Pending;
-                      case "rejected":
+                      case 'rejected':
                         return PetAdStatus.Rejected;
                       default:
                         return PetAdStatus.Published;
@@ -508,35 +439,25 @@ export default function MyAdsView({
                   const myAdData = {
                     ...ad,
                     status: getStatusForTab(),
-                    viewCount: (ad as MyAdListItemDto)["viewCount"] ?? 0, // Default viewCount
-                    createdAt:
-                      (ad as MyAdListItemDto)["createdAt"] ??
-                      new Date().toISOString(),
+                    viewCount: (ad as MyAdListItemDto)['viewCount'] ?? 0, // Default viewCount
+                    createdAt: (ad as MyAdListItemDto)['createdAt'] ?? new Date().toISOString(),
                   };
-                  return (
-                    <MyAdCard
-                      key={ad.id}
-                      {...mapAdToMyAdCard(myAdData)}
-                      onClick={handleCardClick}
-                    />
-                  );
+                  return <MyAdCard key={ad.id} {...mapAdToMyAdCard(myAdData)} onClick={handleCardClick} />;
                 })}
               </div>
 
               {/* Load More Indicator */}
               {hasMore && (
-                <div ref={loadMoreRef} className="py-8 flex justify-center">
-                  {isLoadingMore && (
-                    <Spinner size="md" text={tCommon("loading")} />
-                  )}
+                <div ref={loadMoreRef} className='py-8 flex justify-center'>
+                  {isLoadingMore && <Spinner size='md' text={tCommon('loading')} />}
                 </div>
               )}
 
               {/* End of List Message */}
               {!hasMore && currentItems.length > 6 && (
-                <div className="py-8 text-center">
-                  <Text variant="body" color="secondary">
-                    {t("endOfList")}
+                <div className='py-8 text-center'>
+                  <Text variant='body' color='secondary'>
+                    {t('endOfList')}
                   </Text>
                 </div>
               )}
@@ -546,15 +467,7 @@ export default function MyAdsView({
       </div>
 
       {/* Ad Details Drawer */}
-      {drawerAdId && (
-        <MyAdDetails
-          adId={drawerAdId}
-          isOpen={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          onEdit={handleEditAd}
-          onCloseAd={handleCloseAd}
-        />
-      )}
+      {drawerAdId && <MyAdDetails adId={drawerAdId} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} onEdit={handleEditAd} onCloseAd={handleCloseAd} />}
     </div>
   );
 }

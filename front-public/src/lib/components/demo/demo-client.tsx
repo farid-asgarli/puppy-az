@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations, useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useRouter, usePathname } from '@/i18n';
 
 export function DemoClient() {
   const t = useTranslations('Demo');

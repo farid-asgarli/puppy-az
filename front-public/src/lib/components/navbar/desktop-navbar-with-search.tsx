@@ -8,7 +8,7 @@ import { useFilterUrl } from "@/lib/filtering/use-filter-url";
 import { DisplayCache } from "@/lib/caching/display-cache";
 import { SearchBarSyncProvider } from "../searchbar/searchbar-sync-context";
 import { useMemo, useEffect } from "react";
-import { usePathname } from "@/i18n/routing";
+import { usePathname } from "@/i18n";
 import { NavbarConstants } from "@/lib/components/navbar/constants";
 import DesktopNavbar from "@/lib/components/navbar/desktop-navbar";
 import { useLocale } from "@/lib/hooks/use-client-locale";

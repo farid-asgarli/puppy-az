@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useFormContext } from "react-hook-form";
-import { cn } from "@/lib/external/utils";
-import OtpInput from "@/lib/components/otp-input/otp-input.component";
-import { AuthAlert } from "@/lib/components/views/auth";
-import { RegisterFormData } from "../register.view";
-import { useState, useEffect } from "react";
-import { registerAction, sendVerificationCodeAction } from "@/lib/auth/actions";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { useFormContext } from 'react-hook-form';
+import { cn } from '@/lib/external/utils';
+import OtpInput from '@/lib/components/otp-input/otp-input.component';
+import { AuthAlert } from '@/lib/components/views/auth';
+import { RegisterFormData } from '../register.view';
+import { useState, useEffect } from 'react';
+import { registerAction, sendVerificationCodeAction } from '@/lib/auth/actions';
+import { useRouter } from '@/i18n';
+import { useTranslations } from 'next-intl';
 
 interface PhoneVerificationFormSectionProps {
   isLoading: boolean;
@@ -27,12 +27,12 @@ export function PhoneVerificationFormSection({
   onBack,
   redirectUrl,
 }: PhoneVerificationFormSectionProps) {
-  const t = useTranslations("auth.register.verification");
+  const t = useTranslations('auth.register.verification');
   const router = useRouter();
   const { getValues } = useFormContext<RegisterFormData>();
-  const [generalError, setGeneralError] = useState("");
+  const [generalError, setGeneralError] = useState('');
   const [errorDetails, setErrorDetails] = useState<string[]>([]);
-  const [otpError, setOtpError] = useState("");
+  const [otpError, setOtpError] = useState('');
   const [canResend, setCanResend] = useState(false);
   const [resendTimer, setResendTimer] = useState(60);
 
@@ -58,26 +58,26 @@ export function PhoneVerificationFormSection({
     if (!canResend) return;
 
     setIsLoading(true);
-    setGeneralError("");
+    setGeneralError('');
     setErrorDetails([]);
-    setVerificationCode("");
+    setVerificationCode('');
 
     try {
       // Send phone number as-is (backend accepts both 501234567 and 0501234567)
       const result = await sendVerificationCodeAction({
         phoneNumber: formData.phoneNumber,
-        purpose: "Registration",
+        purpose: 'Registration',
       });
 
       if (result.success) {
         setResendTimer(60);
         setCanResend(false);
       } else {
-        setGeneralError(result.error || t("codeNotSent"));
+        setGeneralError(result.error || t('codeNotSent'));
         setErrorDetails(result.details || []);
       }
     } catch {
-      setGeneralError(t("generalError"));
+      setGeneralError(t('generalError'));
       setErrorDetails([]);
     } finally {
       setIsLoading(false);
@@ -86,14 +86,14 @@ export function PhoneVerificationFormSection({
 
   const handleVerifyAndRegister = async (code: string) => {
     if (code.length !== 6) {
-      setOtpError("Tam kodu daxil edin");
+      setOtpError('Tam kodu daxil edin');
       return;
     }
 
     setIsLoading(true);
-    setGeneralError("");
+    setGeneralError('');
     setErrorDetails([]);
-    setOtpError("");
+    setOtpError('');
 
     try {
       // Send phone number as-is (backend accepts both 501234567 and 0501234567)
@@ -109,11 +109,11 @@ export function PhoneVerificationFormSection({
       if (result.success) {
         router.push(redirectUrl);
       } else {
-        setGeneralError(result.error || t("registrationFailed"));
+        setGeneralError(result.error || t('registrationFailed'));
         setErrorDetails(result.details || []);
       }
     } catch {
-      setGeneralError(t("generalError"));
+      setGeneralError(t('generalError'));
       setErrorDetails([]);
     } finally {
       setIsLoading(false);
@@ -121,30 +121,22 @@ export function PhoneVerificationFormSection({
   };
 
   return (
-    <div className="space-y-5">
+    <div className='space-y-5'>
       {/* General Error */}
-      {generalError && (
-        <AuthAlert
-          variant="error"
-          message={generalError}
-          details={errorDetails}
-        />
-      )}
+      {generalError && <AuthAlert variant='error' message={generalError} details={errorDetails} />}
 
       {/* Success Message */}
       <AuthAlert
-        variant="success"
-        message={t("codeSent")}
-        description={t("codeSentDescription", {
+        variant='success'
+        message={t('codeSent')}
+        description={t('codeSentDescription', {
           phoneNumber: formData.phoneNumber,
         })}
       />
 
       {/* OTP Input */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-900">
-          {t("verificationCode")}
-        </label>
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-gray-900'>{t('verificationCode')}</label>
         <OtpInput
           length={6}
           error={otpError}
@@ -156,7 +148,7 @@ export function PhoneVerificationFormSection({
             handleVerifyAndRegister(code);
           }}
           onResend={canResend ? handleResendCode : undefined}
-          onErrorClear={() => setOtpError("")}
+          onErrorClear={() => setOtpError('')}
           autoSubmit={false}
           showVerifyButton={true}
         />
@@ -164,15 +156,12 @@ export function PhoneVerificationFormSection({
 
       {/* Back Button */}
       <button
-        type="button"
+        type='button'
         onClick={onBack}
         disabled={isLoading}
-        className={cn(
-          "w-full text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors",
-          isLoading && "opacity-50 cursor-not-allowed",
-        )}
+        className={cn('w-full text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors', isLoading && 'opacity-50 cursor-not-allowed')}
       >
-        {t("editInfo")}
+        {t('editInfo')}
       </button>
     </div>
   );

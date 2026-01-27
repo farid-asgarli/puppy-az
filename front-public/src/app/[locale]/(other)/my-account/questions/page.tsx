@@ -1,4 +1,5 @@
-import { redirect } from 'next/navigation';
+import { redirect } from '@/i18n';
+import { getLocale } from 'next-intl/server';
 import { getMyAdsQuestionsAction, getMyAdsQuestionsSummaryAction } from '@/lib/auth/actions';
 import { QuestionsView } from '@/lib/views/my-account/questions';
 import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
@@ -15,6 +16,7 @@ interface QuestionsPageProps {
 }
 
 export default async function QuestionsPage({ searchParams }: QuestionsPageProps) {
+  const locale = await getLocale();
   const params = await searchParams;
   const page = parseInt(params.page || '1', 10);
   const pageSize = 10;
@@ -32,7 +34,7 @@ export default async function QuestionsPage({ searchParams }: QuestionsPageProps
 
   // Redirect to login if not authenticated
   if (!questionsResult.success || !summaryResult.success) {
-    redirect('/auth?redirect=/my-account/questions');
+    return redirect({ href: '/auth?redirect=/my-account/questions', locale });
   }
 
   return <QuestionsView initialData={questionsResult.data} initialSummary={summaryResult.data} initialPage={page} />;

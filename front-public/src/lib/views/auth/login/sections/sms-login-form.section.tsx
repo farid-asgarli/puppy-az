@@ -8,7 +8,7 @@ import Button from '@/lib/primitives/button/button.component';
 import OtpInput from '@/lib/components/otp-input/otp-input.component';
 import { AuthAlert } from '@/lib/components/views/auth';
 import { loginWithMobileAction, sendVerificationCodeAction } from '@/lib/auth/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n';
 import { useAuth } from '@/lib/hooks/use-auth';
 
 interface SmsLoginFormSectionProps {
@@ -152,26 +152,26 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
   };
 
   return (
-    <div className="space-y-4 sm:space-y-5">
+    <div className='space-y-4 sm:space-y-5'>
       {/* General Error Message */}
-      {errors.general && <AuthAlert variant="error" message={errors.general} details={errorDetails} />}
+      {errors.general && <AuthAlert variant='error' message={errors.general} details={errorDetails} />}
 
       {step === 'phone' ? (
         /* Phone Number Step */
-        <form onSubmit={handleSendCode} className="space-y-4 sm:space-y-5">
+        <form onSubmit={handleSendCode} className='space-y-4 sm:space-y-5'>
           {/* Phone Number Field */}
-          <div className="space-y-2">
-            <label htmlFor="phone" className="block text-xs sm:text-sm font-medium text-gray-900">
+          <div className='space-y-2'>
+            <label htmlFor='phone' className='block text-xs sm:text-sm font-medium text-gray-900'>
               {t('phoneStep.label')}
             </label>
-            <div className="relative">
-              <div className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 text-gray-600 border-r border-gray-200 pr-2 sm:pr-3">
-                <IconPhone size={18} className="sm:w-5 sm:h-5" />
-                <span className="text-xs sm:text-sm font-medium">{t('phoneStep.prefix')}</span>
+            <div className='relative'>
+              <div className='absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 sm:gap-2 text-gray-600 border-r border-gray-200 pr-2 sm:pr-3'>
+                <IconPhone size={18} className='sm:w-5 sm:h-5' />
+                <span className='text-xs sm:text-sm font-medium'>{t('phoneStep.prefix')}</span>
               </div>
               <input
-                id="phone"
-                type="tel"
+                id='phone'
+                type='tel'
                 value={phoneNumber}
                 onChange={handlePhoneChange}
                 disabled={isLoading}
@@ -181,33 +181,33 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
                   'text-gray-900 placeholder:text-gray-400',
                   'focus:outline-none focus:ring-0',
                   errors.phone ? 'border-red-300 bg-red-50 focus:border-red-500' : 'border-gray-200 bg-white focus:border-gray-900',
-                  isLoading && 'opacity-50 cursor-not-allowed'
+                  isLoading && 'opacity-50 cursor-not-allowed',
                 )}
               />
             </div>
             {errors.phone && (
-              <p className="text-xs sm:text-sm text-red-600 flex items-center gap-1">
-                <IconAlertCircle size={14} className="sm:w-4 sm:h-4" />
+              <p className='text-xs sm:text-sm text-red-600 flex items-center gap-1'>
+                <IconAlertCircle size={14} className='sm:w-4 sm:h-4' />
                 {errors.phone}
               </p>
             )}
-            <p className="text-xs text-gray-500">{t('phoneStep.hint')}</p>
+            <p className='text-xs text-gray-500'>{t('phoneStep.hint')}</p>
           </div>
 
           {/* Submit Button */}
-          <Button type="submit" variant="accent" size="lg" className="w-full rounded-xl font-semibold text-sm sm:text-base" disabled={isLoading}>
+          <Button type='submit' variant='accent' size='lg' className='w-full rounded-xl font-semibold text-sm sm:text-base' disabled={isLoading}>
             {isLoading ? t('phoneStep.submitting', { defaultValue: 'Sending...' }) : t('phoneStep.submit')}
           </Button>
         </form>
       ) : (
         /* OTP Verification Step */
-        <div className="space-y-4 sm:space-y-5">
+        <div className='space-y-4 sm:space-y-5'>
           {/* Success Message */}
-          <AuthAlert variant="success" message={t('success.codeSent')} description={`${t('otpStep.subtitle')} +994 ${phoneNumber}`} />
+          <AuthAlert variant='success' message={t('success.codeSent')} description={`${t('otpStep.subtitle')} +994 ${phoneNumber}`} />
 
           {/* OTP Input */}
-          <div className="space-y-2">
-            <label className="block text-xs sm:text-sm font-medium text-gray-900">{t('otpStep.title')}</label>
+          <div className='space-y-2'>
+            <label className='block text-xs sm:text-sm font-medium text-gray-900'>{t('otpStep.title')}</label>
             <OtpInput
               length={6}
               error={errors.otp}
@@ -227,10 +227,10 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
 
           {/* Back to Phone */}
           <button
-            type="button"
+            type='button'
             onClick={handleBackToPhone}
             disabled={isLoading}
-            className="w-full text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
+            className='w-full text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50'
           >
             ← {t('otpStep.changeNumber')}
           </button>

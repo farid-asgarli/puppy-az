@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, ReactNode } from 'react';
-import { useServerInsertedHTML } from 'next/navigation';
+import { useServerInsertedHTML } from '@/i18n';
 import { useMediaQuery } from '@/lib/hooks/use-media-query';
 import { responsiveStyles } from './responsive-renderer.constants';
 
@@ -104,7 +104,7 @@ export const ResponsiveRenderer: React.FC<ResponsiveRendererProps> = ({
     // If not mounted yet, show loading fallback
     if (!initialized || isMobile === undefined) {
       return loadingFallback ? (
-        <div className={responsiveStyles.loadingContainer} data-testid={`${testId}-loading`} role="status" aria-live="polite">
+        <div className={responsiveStyles.loadingContainer} data-testid={`${testId}-loading`} role='status' aria-live='polite'>
           {loadingFallback}
         </div>
       ) : null;
@@ -128,8 +128,8 @@ export const ResponsiveRenderer: React.FC<ResponsiveRendererProps> = ({
             !initialized || isMobile === undefined
               ? responsiveStyles.hiddenItem // Hide during SSR and hydration
               : isMobile === false
-              ? responsiveStyles.visibleItem // Show if desktop confirmed
-              : responsiveStyles.hiddenItem // Hide if mobile confirmed
+                ? responsiveStyles.visibleItem // Show if desktop confirmed
+                : responsiveStyles.hiddenItem // Hide if mobile confirmed
           }
           aria-hidden={initialized && isMobile === true}
           data-testid={`${testId}-desktop`}
@@ -145,8 +145,8 @@ export const ResponsiveRenderer: React.FC<ResponsiveRendererProps> = ({
             !initialized || isMobile === undefined
               ? responsiveStyles.hiddenItem // Hide during SSR and hydration
               : isMobile === true
-              ? responsiveStyles.visibleItem // Show if mobile confirmed
-              : responsiveStyles.hiddenItem // Hide if desktop confirmed
+                ? responsiveStyles.visibleItem // Show if mobile confirmed
+                : responsiveStyles.hiddenItem // Hide if desktop confirmed
           }
           aria-hidden={initialized && isMobile === false}
           data-testid={`${testId}-mobile`}
@@ -157,7 +157,7 @@ export const ResponsiveRenderer: React.FC<ResponsiveRendererProps> = ({
 
       {/* Loading fallback shown during SSR and hydration */}
       {(!initialized || isMobile === undefined) && loadingFallback && (
-        <div className={responsiveStyles.loadingContainer} data-testid={`${testId}-loading`} role="status" aria-live="polite">
+        <div className={responsiveStyles.loadingContainer} data-testid={`${testId}-loading`} role='status' aria-live='polite'>
           {loadingFallback}
         </div>
       )}
@@ -177,7 +177,7 @@ export function withResponsive<P extends object>(
     deferMobileRender?: boolean;
     deferDesktopRender?: boolean;
     testId?: string;
-  }
+  },
 ): React.FC<P> {
   return (props) => (
     <ResponsiveRenderer

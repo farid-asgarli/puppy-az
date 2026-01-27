@@ -9,7 +9,7 @@ import { useAuth } from '@/lib/hooks/use-auth';
 import { ExpandableSection } from '@/lib/components/views/pet-ad-details/expandable-section';
 import { SectionHeader } from '@/lib/components/views/common';
 import { askQuestionAction, answerQuestionAction, replyToQuestionAction } from '@/lib/auth/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n';
 import { useTranslations } from 'next-intl';
 import toast from 'react-hot-toast';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n';
 import { useTransition, useCallback } from 'react';
 
 /**
@@ -28,7 +28,7 @@ export function useViewTransition() {
         router.push(href, options);
       });
     },
-    [router]
+    [router],
   );
 
   const replaceWithTransition = useCallback(
@@ -37,7 +37,7 @@ export function useViewTransition() {
         router.replace(href, options);
       });
     },
-    [router]
+    [router],
   );
 
   const backWithTransition = useCallback(() => {

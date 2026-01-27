@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter, usePathname } from '@/i18n/routing';
+import { useRouter, usePathname } from '@/i18n';
 import TransitionLink from '@/lib/components/transition-link';
 import {
   IconDeviceMobile,

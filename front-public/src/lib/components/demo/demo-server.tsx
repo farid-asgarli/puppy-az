@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { Link } from '@/i18n/routing';
+import { Link } from '@/i18n';
 
 export async function DemoServer() {
   const t = await getTranslations('Demo');

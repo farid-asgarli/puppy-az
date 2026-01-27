@@ -1,22 +1,15 @@
-import { usePathname } from "@/i18n/routing";
-import { useCallback, useMemo, useRef } from "react";
-import { FilterValidator } from "@/lib/filtering/filter-validator";
-import {
-  FilterParams,
-  FilterParamsPrimary,
-  FilterParamsSecondary,
-} from "@/lib/filtering/types";
-import { useViewTransition } from "@/lib/hooks/use-view-transition";
-import { DEFAULT_FILTER_VALUES } from "@/lib/filtering/filter-default-values";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from '@/i18n';
+import { useCallback, useMemo, useRef } from 'react';
+import { FilterValidator } from '@/lib/filtering/filter-validator';
+import { FilterParams, FilterParamsPrimary, FilterParamsSecondary } from '@/lib/filtering/types';
+import { useViewTransition } from '@/lib/hooks/use-view-transition';
+import { DEFAULT_FILTER_VALUES } from '@/lib/filtering/filter-default-values';
 
 /**
  * Parse search params into a plain object
  * Extracted to avoid creating new object on every render
  */
-function parseSearchParams(
-  searchParams: URLSearchParams,
-): Record<string, string> {
+function parseSearchParams(searchParams: URLSearchParams): Record<string, string> {
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
     params[key] = value;
@@ -34,7 +27,7 @@ export function useFilterUrl() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const prevFiltersRef = useRef<FilterParams>({});
-  const prevParamsJsonRef = useRef<string>("");
+  const prevParamsJsonRef = useRef<string>('');
 
   // Parse filters directly from URL params (synchronously, no store)
   // Optimized to avoid re-computation when params haven't actually changed
@@ -78,31 +71,25 @@ export function useFilterUrl() {
         const value = mergedFilters[key as keyof FilterParams];
 
         // Remove undefined/null/empty values
-        if (value === undefined || value === null || value === "") {
+        if (value === undefined || value === null || value === '') {
           delete mergedFilters[key as keyof FilterParams];
           return;
         }
 
         // Remove price-min if it equals default (0)
-        if (
-          key === "price-min" &&
-          value === DEFAULT_FILTER_VALUES.MIN_AD_PRICE
-        ) {
+        if (key === 'price-min' && value === DEFAULT_FILTER_VALUES.MIN_AD_PRICE) {
           delete mergedFilters[key as keyof FilterParams];
           return;
         }
 
         // Remove price-max if it equals default (50000)
-        if (
-          key === "price-max" &&
-          value === DEFAULT_FILTER_VALUES.MAX_AD_PRICE
-        ) {
+        if (key === 'price-max' && value === DEFAULT_FILTER_VALUES.MAX_AD_PRICE) {
           delete mergedFilters[key as keyof FilterParams];
           return;
         }
       });
 
-      const url = FilterValidator.buildFilterUrl(mergedFilters, "/ads/s");
+      const url = FilterValidator.buildFilterUrl(mergedFilters, '/ads/s');
       if (replace) {
         replaceWithTransition(url, { scroll: false });
       } else {
@@ -133,54 +120,37 @@ export function useFilterUrl() {
   );
 
   // hasFilters excludes 'sort' since it's not a search filter, just ordering
-  const hasFilters =
-    Object.keys(filters).filter((key) => key !== "sort").length > 0;
+  const hasFilters = Object.keys(filters).filter((key) => key !== 'sort').length > 0;
 
   // hasAnyUrlParams includes sort - useful for UI collapse states
   const hasAnyUrlParams = Object.keys(filters).length > 0;
 
   function getFilterUrl(filterOverrides: Partial<FilterParams>) {
-    return FilterValidator.buildFilterUrl(
-      { ...filters, ...filterOverrides },
-      pathname,
-    );
+    return FilterValidator.buildFilterUrl({ ...filters, ...filterOverrides }, pathname);
   }
 
   function isFilterActive(key: keyof FilterParams) {
     return filters[key] !== undefined;
   }
 
-  function getFilterCount(
-    predicate?: (
-      key: keyof FilterParams,
-      val: FilterParams[keyof FilterParams],
-    ) => boolean,
-  ) {
+  function getFilterCount(predicate?: (key: keyof FilterParams, val: FilterParams[keyof FilterParams]) => boolean) {
     let entries = Object.entries(filters);
 
     if (predicate) {
-      entries = entries.filter(([key, val]) =>
-        predicate(key as keyof FilterParams, val),
-      );
+      entries = entries.filter(([key, val]) => predicate(key as keyof FilterParams, val));
     }
 
     return entries.length;
   }
 
   const getPrimaryFilters = useCallback((): FilterParamsPrimary => {
-    const { "ad-type": adType, category, breed } = filters;
-    return { "ad-type": adType, category, breed };
+    const { 'ad-type': adType, category, breed } = filters;
+    return { 'ad-type': adType, category, breed };
   }, [filters]);
 
   const getSecondaryFilters = useCallback((): FilterParamsSecondary => {
-    const {
-      city,
-      gender,
-      size,
-      "price-min": priceMin,
-      "price-max": priceMax,
-    } = filters;
-    return { city, gender, size, "price-min": priceMin, "price-max": priceMax };
+    const { city, gender, size, 'price-min': priceMin, 'price-max': priceMax } = filters;
+    return { city, gender, size, 'price-min': priceMin, 'price-max': priceMax };
   }, [filters]);
 
   return {

@@ -14,7 +14,7 @@ import { Badge } from "@/lib/components/views/pet-ad-details/badge";
 import { useTranslations } from "next-intl";
 import { copyToClipboard } from "@/lib/utils/clipboard";
 import { showToast } from "@/lib/utils/toast";
-import { useRouter } from "@/i18n/routing";
+import { useRouter } from "@/i18n";
 
 /**
  * ActionButtonGroup Component

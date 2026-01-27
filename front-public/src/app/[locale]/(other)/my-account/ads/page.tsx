@@ -1,11 +1,6 @@
-import { redirect } from 'next/navigation';
-import {
-  getUserActiveAdsAction,
-  getUserPendingAdsAction,
-  getUserRejectedAdsAction,
-  getAllUserAdsAction,
-  getDashboardStatsAction,
-} from '@/lib/auth/actions';
+import { redirect } from '@/i18n';
+import { getLocale } from 'next-intl/server';
+import { getUserActiveAdsAction, getUserPendingAdsAction, getUserRejectedAdsAction, getAllUserAdsAction, getDashboardStatsAction } from '@/lib/auth/actions';
 import { MyAdsView } from '@/lib/views/my-account/my-ads';
 import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
 
@@ -21,6 +16,7 @@ interface MyAdsPageProps {
 }
 
 export default async function MyAdsPage({ searchParams }: MyAdsPageProps) {
+  const locale = await getLocale();
   const params = await searchParams;
   const page = parseInt(params.page || '1', 10);
   const tab = (params.tab as 'active' | 'pending' | 'rejected' | 'all') || 'active';
@@ -55,7 +51,7 @@ export default async function MyAdsPage({ searchParams }: MyAdsPageProps) {
 
   // Redirect to login if not authenticated
   if (!statsResult.success || !adsResult.success) {
-    redirect('/auth?redirect=/my-account/ads');
+    return redirect({ href: '/auth?redirect=/my-account/ads', locale });
   }
 
   // Prepare stats for the view

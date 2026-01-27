@@ -16,11 +16,11 @@ Never call `authService`, `petAdService`, etc. directly from client components. 
 
 ```tsx
 // ❌ WRONG - client component calling API directly
-import { petAdService } from "@/lib/api/services/pet-ad.service";
+import { petAdService } from '@/lib/api/services/pet-ad.service';
 const data = await petAdService.getPetAds();
 
 // ✅ CORRECT - using Server Action
-import { getPetAdsAction } from "@/lib/auth/actions";
+import { getPetAdsAction } from '@/lib/auth/actions';
 const result = await getPetAdsAction(params);
 ```
 
@@ -28,11 +28,9 @@ const result = await getPetAdsAction(params);
 Server Actions must pass locale to service calls for backend localization:
 
 ```tsx
-import { getCurrentLocale } from "@/lib/auth/locale-utils";
+import { getCurrentLocale } from '@/lib/auth/locale-utils';
 
-export async function getProfileAction(): Promise<
-  ActionResult<UserProfileDto>
-> {
+export async function getProfileAction(): Promise<ActionResult<UserProfileDto>> {
   const locale = await getCurrentLocale(); // Always get locale first
   return withAuth(async (token) => {
     const profile = await authService.getProfile(token, locale); // Pass as last param
@@ -47,8 +45,8 @@ Service methods accept optional `locale` as **last parameter** and pass to `with
 If a client component absolutely must call a service (rare cases like prefetching for cache warming), use URL-based locale:
 
 ```tsx
-"use client";
-import { useParams } from "next/navigation";
+'use client';
+import { useParams } from '@/i18n/routing';
 
 export function MyClientComponent() {
   const params = useParams();
@@ -129,7 +127,7 @@ Form components in `src/lib/form/components/` use shared utilities for consisten
 - Client: `const t = useTranslations('namespace');` then `t('key')`
 - Server: `const t = await getTranslations('namespace');`
 - Messages in `src/messages/{az,en,ru}.json`
-- Navigation: Import `Link`, `redirect`, `useRouter` from `@/i18n/routing`, NOT `next/navigation`
+- Navigation: Import `Link`, `redirect`, `useRouter` from `@/i18n/routing`, NOT `@/i18n/routing`
 
 **Backend Localization:**
 Backend API accepts `Accept-Language` header on all endpoints. Locale is automatically injected via `LocaleInterceptor`:

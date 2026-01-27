@@ -7,7 +7,7 @@ import Button from '@/lib/primitives/button/button.component';
 import TransitionLink from '@/lib/components/transition-link';
 import { AuthFormField, AuthAlert } from '@/lib/components/views/auth';
 import { loginWithEmailAction } from '@/lib/auth/actions';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/i18n';
 import { useAuth } from '@/lib/hooks/use-auth';
 
 interface EmailLoginFormSectionProps {
@@ -93,16 +93,16 @@ export function EmailLoginFormSection({ isLoading, setIsLoading, redirectUrl }: 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+    <form onSubmit={handleSubmit} className='space-y-4 sm:space-y-5'>
       {/* General Error Message */}
-      {errors.general && <AuthAlert variant="error" message={errors.general} details={errorDetails} />}
+      {errors.general && <AuthAlert variant='error' message={errors.general} details={errorDetails} />}
 
       {/* Email Field */}
       <AuthFormField
-        type="email"
+        type='email'
         label={t('fields.email')}
         icon={IconMail}
-        placeholder="email@example.com"
+        placeholder='email@example.com'
         value={formData.email}
         onChange={handleInputChange('email')}
         error={errors.email}
@@ -111,10 +111,10 @@ export function EmailLoginFormSection({ isLoading, setIsLoading, redirectUrl }: 
 
       {/* Password Field */}
       <AuthFormField
-        type="password"
+        type='password'
         label={t('fields.password')}
         icon={IconLock}
-        placeholder="••••••••"
+        placeholder='••••••••'
         value={formData.password}
         onChange={handleInputChange('password')}
         error={errors.password}
@@ -123,14 +123,14 @@ export function EmailLoginFormSection({ isLoading, setIsLoading, redirectUrl }: 
       />
 
       {/* Forgot Password Link */}
-      <div className="flex justify-end">
-        <TransitionLink href="/auth/forgot-password" className="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+      <div className='flex justify-end'>
+        <TransitionLink href='/auth/forgot-password' className='text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors'>
           {t('forgotPassword')}
         </TransitionLink>
       </div>
 
       {/* Submit Button */}
-      <Button type="submit" variant="accent" size="lg" className="w-full rounded-xl font-semibold text-sm sm:text-base" disabled={isLoading}>
+      <Button type='submit' variant='accent' size='lg' className='w-full rounded-xl font-semibold text-sm sm:text-base' disabled={isLoading}>
         {isLoading ? t('submitting') : t('submit')}
       </Button>
     </form>

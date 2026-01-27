@@ -14,7 +14,7 @@ import {
 import { SearchBarDesktopAnimated } from "@/lib/components/searchbar";
 import { SearchBarSyncProvider } from "@/lib/components/searchbar/searchbar-sync-context";
 import { FilterParams } from "@/lib/filtering/types";
-import { useRouter } from "@/i18n/routing";
+import { useRouter } from "@/i18n";
 import { cn } from "@/lib/external/utils";
 import { NavbarConstants } from "@/lib/components/navbar/constants";
 

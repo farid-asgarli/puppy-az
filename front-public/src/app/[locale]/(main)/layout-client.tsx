@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { usePathname } from '@/i18n/routing';
+import { usePathname } from '@/i18n';
 import { PetCategoryDetailedDto } from '@/lib/api';
 import Navbar from '@/lib/components/navbar/navbar';
 import FilterDialog from '@/lib/components/filters/filter-dialog';
