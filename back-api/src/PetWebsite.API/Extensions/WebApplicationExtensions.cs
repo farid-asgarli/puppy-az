@@ -18,6 +18,8 @@ public static class WebApplicationExtensions
 			var userManager = services.GetRequiredService<UserManager<AdminUser>>();
 			var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
+			await context.Database.EnsureCreatedAsync();
+
 			await DatabaseSeeder.SeedAsync(context, userManager, roleManager);
 		}
 		catch (Exception ex)
