@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 :root {
   --radius: 0.625rem;
@@ -34,10 +34,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
-
-.font-cereal {
-  font-family: var(--font-cereal);
 }
 
 @theme inline {
@@ -75,7 +71,9 @@
 }
 
 @theme {
-  /* Fonts */
+  /* Fonts - Cereal as primary UI font with proper fallback stack */
+  --font-sans: var(--font-cereal), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   --font-cereal: var(--font-cereal);
 
   /* ===========================
@@ -224,20 +222,39 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-body {
-  box-sizing: border-box;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  font-family: var(--font-cereal);
-}
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 700;
-  font-family: var(--font-cereal);
+  body {
+    @apply bg-background text-foreground antialiased;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 700;
+  }
+
+  /* Selection highlight for brand consistency */
+  ::selection {
+    background-color: rgb(168 85 247 / 0.2); /* primary color with opacity */
+    color: inherit;
+  }
+
+  /* Improved focus visible styling */
+  :focus-visible {
+    outline: 2px solid rgb(168 85 247 / 0.5);
+    outline-offset: 2px;
+  }
 }
 button {
   @apply cursor-pointer;
