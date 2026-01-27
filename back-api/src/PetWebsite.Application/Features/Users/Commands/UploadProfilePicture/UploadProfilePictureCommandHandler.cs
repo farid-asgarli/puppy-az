@@ -82,7 +82,7 @@ public class UploadProfilePictureCommandHandler(
 			{
 				// Extract relative path from URL (remove /uploads/ prefix)
 				var oldPath = user.ProfilePictureUrl.Replace("/uploads/", "");
-				fileService.DeleteFileAsync(oldPath, ct);
+				await fileService.DeleteFileAsync(oldPath, ct);
 			}
 			catch (Exception ex)
 			{

@@ -3,7 +3,7 @@ using PetWebsite.Domain.Common;
 namespace PetWebsite.Domain.Entities;
 
 /// <summary>
-/// Represents a pet category (e.g., Dog, Cat, Rabbit).
+/// Represents a pet category (e.g., Dog, Cat, Bird, Fish, Reptile, Insect, Farm Animal, Rodent, Wild Animal, Other).
 /// </summary>
 public class PetCategory : SoftDeletableEntity, ILocalizedEntity<PetCategoryLocalization>
 {

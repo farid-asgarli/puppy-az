@@ -157,40 +157,22 @@ public static class DatabaseSeeder
 		if (seedData == null)
 			return;
 
+		// Category key mapping for the 10 official pet categories
 		var categoryKeyMapping = new Dictionary<string, string>
 		{
-			{ "dog", "dog" },
-			{ "cat", "cat" },
-			{ "rabbit", "rabbit" },
-			{ "bird", "bird" },
-			{ "fish", "fish" },
-			{ "rodent", "rodent" },
-			{ "reptile", "reptile" },
-			{ "horse", "horse" },
-			{ "farmAnimal", "farm-animal" },
-			{ "exotic", "exotic" },
-			{ "insect", "insect" },
-			{ "smallMammal", "small-mammal" },
-			{ "aquatic", "aquatic" },
-			{ "amphibian", "amphibian" },
-			{ "monkey", "monkey" },
-			{ "marsupial", "marsupial" },
-			{ "arachnid", "arachnid" },
-			{ "pig", "pig" },
-			{ "deer", "deer" },
-			{ "bear", "bear" },
-			{ "fox", "fox" },
-			{ "hedgehog", "hedgehog" },
-			{ "marineMammal", "marine-mammal" },
-			{ "mixedBreed", "mixed-breed" },
-			{ "other", "other" },
+			{ "dog", "dog" }, // 1. İtlər / Dogs / Собаки
+			{ "cat", "cat" }, // 2. Pişiklər / Cats / Кошки
+			{ "bird", "bird" }, // 3. Quşlar / Birds / Птицы
+			{ "fish", "fish" }, // 4. Balıqlar / Fish / Рыбы
+			{ "reptile", "reptile" }, // 5. Sürünənlər / Reptiles / Рептилии
+			{ "insect", "insect" }, // 6. Həşəratlar / Insects / Насекомые
+			{ "farmAnimal", "farm-animal" }, // 7. Ferma heyvanları / Farm Animals / Сельскохозяйственные животные
+			{ "rodent", "rodent" }, // 8. Gəmiricilər / Rodents / Грызуны
+			{ "wildAnimal", "wild-animal" }, // 9. Vəhşi heyvanlar / Wild Animals / Дикие животные
+			{ "other", "other" }, // 10. Digər / Other / Другие
 		};
 
-		var orderedCategories = seedData
-			.Values
-			.Where(d => d.Order > 0)
-			.OrderBy(d => d.Order)
-			.ToList();
+		var orderedCategories = seedData.Values.Where(d => d.Order > 0).OrderBy(d => d.Order).ToList();
 
 		foreach (var data in orderedCategories)
 		{
@@ -310,26 +292,14 @@ public static class DatabaseSeeder
 				BorderColor = borderColor,
 				SortOrder = colors.FindIndex(c => c.Key == key) + 1,
 				IsActive = true,
-				CreatedAt = now
+				CreatedAt = now,
 			};
 
-			petColor.Localizations.Add(new PetColorLocalization
-			{
-				AppLocaleId = azLocale.Id,
-				Title = az
-			});
+			petColor.Localizations.Add(new PetColorLocalization { AppLocaleId = azLocale.Id, Title = az });
 
-			petColor.Localizations.Add(new PetColorLocalization
-			{
-				AppLocaleId = enLocale.Id,
-				Title = en
-			});
+			petColor.Localizations.Add(new PetColorLocalization { AppLocaleId = enLocale.Id, Title = en });
 
-			petColor.Localizations.Add(new PetColorLocalization
-			{
-				AppLocaleId = ruLocale.Id,
-				Title = ru
-			});
+			petColor.Localizations.Add(new PetColorLocalization { AppLocaleId = ruLocale.Id, Title = ru });
 
 			context.PetColors.Add(petColor);
 		}
@@ -347,81 +317,737 @@ public static class DatabaseSeeder
 		var cities = new List<City>
 		{
 			// Major Cities (İri Şəhərlər)
-			new() { NameAz = "Bakı", NameEn = "Baku", NameRu = "Баку", IsMajorCity = true, DisplayOrder = 1, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Gəncə", NameEn = "Ganja", NameRu = "Гянджа", IsMajorCity = true, DisplayOrder = 2, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Sumqayıt", NameEn = "Sumgait", NameRu = "Сумгаит", IsMajorCity = true, DisplayOrder = 3, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Mingəçevir", NameEn = "Mingachevir", NameRu = "Мингечевир", IsMajorCity = true, DisplayOrder = 4, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Lənkəran", NameEn = "Lankaran", NameRu = "Ленкорань", IsMajorCity = true, DisplayOrder = 5, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şirvan", NameEn = "Shirvan", NameRu = "Ширван", IsMajorCity = true, DisplayOrder = 6, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Naxçıvan", NameEn = "Nakhchivan", NameRu = "Нахичевань", IsMajorCity = true, DisplayOrder = 7, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şəki", NameEn = "Shaki", NameRu = "Шеки", IsMajorCity = true, DisplayOrder = 8, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Yevlax", NameEn = "Yevlakh", NameRu = "Евлах", IsMajorCity = true, DisplayOrder = 9, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xankəndi", NameEn = "Khankendi", NameRu = "Ханкенди", IsMajorCity = true, DisplayOrder = 10, IsActive = true, CreatedAt = now },
-
+			new()
+			{
+				NameAz = "Bakı",
+				NameEn = "Baku",
+				NameRu = "Баку",
+				IsMajorCity = true,
+				DisplayOrder = 1,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Gəncə",
+				NameEn = "Ganja",
+				NameRu = "Гянджа",
+				IsMajorCity = true,
+				DisplayOrder = 2,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Sumqayıt",
+				NameEn = "Sumgait",
+				NameRu = "Сумгаит",
+				IsMajorCity = true,
+				DisplayOrder = 3,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Mingəçevir",
+				NameEn = "Mingachevir",
+				NameRu = "Мингечевир",
+				IsMajorCity = true,
+				DisplayOrder = 4,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Lənkəran",
+				NameEn = "Lankaran",
+				NameRu = "Ленкорань",
+				IsMajorCity = true,
+				DisplayOrder = 5,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şirvan",
+				NameEn = "Shirvan",
+				NameRu = "Ширван",
+				IsMajorCity = true,
+				DisplayOrder = 6,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Naxçıvan",
+				NameEn = "Nakhchivan",
+				NameRu = "Нахичевань",
+				IsMajorCity = true,
+				DisplayOrder = 7,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şəki",
+				NameEn = "Shaki",
+				NameRu = "Шеки",
+				IsMajorCity = true,
+				DisplayOrder = 8,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Yevlax",
+				NameEn = "Yevlakh",
+				NameRu = "Евлах",
+				IsMajorCity = true,
+				DisplayOrder = 9,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xankəndi",
+				NameEn = "Khankendi",
+				NameRu = "Ханкенди",
+				IsMajorCity = true,
+				DisplayOrder = 10,
+				IsActive = true,
+				CreatedAt = now,
+			},
 			// Districts (Rayonlar) - Alphabetically ordered
-			new() { NameAz = "Abşeron", NameEn = "Absheron", NameRu = "Апшерон", IsMajorCity = false, DisplayOrder = 100, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ağcabədi", NameEn = "Aghjabadi", NameRu = "Агджабеди", IsMajorCity = false, DisplayOrder = 101, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ağdam", NameEn = "Aghdam", NameRu = "Агдам", IsMajorCity = false, DisplayOrder = 102, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ağdaş", NameEn = "Aghdash", NameRu = "Агдаш", IsMajorCity = false, DisplayOrder = 103, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ağstafa", NameEn = "Aghstafa", NameRu = "Агстафа", IsMajorCity = false, DisplayOrder = 104, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ağsu", NameEn = "Aghsu", NameRu = "Агсу", IsMajorCity = false, DisplayOrder = 105, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Astara", NameEn = "Astara", NameRu = "Астара", IsMajorCity = false, DisplayOrder = 106, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Babək", NameEn = "Babek", NameRu = "Бабек", IsMajorCity = false, DisplayOrder = 107, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Balakən", NameEn = "Balakan", NameRu = "Балакен", IsMajorCity = false, DisplayOrder = 108, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Beyləqan", NameEn = "Beylagan", NameRu = "Бейлаган", IsMajorCity = false, DisplayOrder = 109, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Bərdə", NameEn = "Barda", NameRu = "Барда", IsMajorCity = false, DisplayOrder = 110, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Biləsuvar", NameEn = "Bilasuvar", NameRu = "Билясувар", IsMajorCity = false, DisplayOrder = 111, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Cəbrayıl", NameEn = "Jabrayil", NameRu = "Джебраил", IsMajorCity = false, DisplayOrder = 112, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Cəlilabad", NameEn = "Jalilabad", NameRu = "Джалилабад", IsMajorCity = false, DisplayOrder = 113, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Culfa", NameEn = "Julfa", NameRu = "Джульфа", IsMajorCity = false, DisplayOrder = 114, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Daşkəsən", NameEn = "Dashkasan", NameRu = "Дашкесан", IsMajorCity = false, DisplayOrder = 115, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Füzuli", NameEn = "Fuzuli", NameRu = "Физули", IsMajorCity = false, DisplayOrder = 116, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Gədəbəy", NameEn = "Gadabay", NameRu = "Гедабей", IsMajorCity = false, DisplayOrder = 117, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Goranboy", NameEn = "Goranboy", NameRu = "Горанбой", IsMajorCity = false, DisplayOrder = 118, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Göyçay", NameEn = "Goychay", NameRu = "Гёйчай", IsMajorCity = false, DisplayOrder = 119, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Göygöl", NameEn = "Goygol", NameRu = "Гёйгёль", IsMajorCity = false, DisplayOrder = 120, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Hacıqabul", NameEn = "Hajigabul", NameRu = "Гаджигабул", IsMajorCity = false, DisplayOrder = 121, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xaçmaz", NameEn = "Khachmaz", NameRu = "Хачмаз", IsMajorCity = false, DisplayOrder = 122, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xırdalan", NameEn = "Khirdalan", NameRu = "Хырдалан", IsMajorCity = false, DisplayOrder = 123, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xızı", NameEn = "Khizi", NameRu = "Хызы", IsMajorCity = false, DisplayOrder = 124, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xocalı", NameEn = "Khojaly", NameRu = "Ходжалы", IsMajorCity = false, DisplayOrder = 125, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Xocavənd", NameEn = "Khojavend", NameRu = "Ходжавенд", IsMajorCity = false, DisplayOrder = 126, IsActive = true, CreatedAt = now },
-			new() { NameAz = "İmişli", NameEn = "Imishli", NameRu = "Имишли", IsMajorCity = false, DisplayOrder = 127, IsActive = true, CreatedAt = now },
-			new() { NameAz = "İsmayıllı", NameEn = "Ismayilli", NameRu = "Исмаиллы", IsMajorCity = false, DisplayOrder = 128, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Kəlbəcər", NameEn = "Kalbajar", NameRu = "Кельбаджар", IsMajorCity = false, DisplayOrder = 129, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Kəngərli", NameEn = "Kangarli", NameRu = "Кенгерли", IsMajorCity = false, DisplayOrder = 130, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Kürdəmir", NameEn = "Kurdamir", NameRu = "Кюрдамир", IsMajorCity = false, DisplayOrder = 131, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Laçın", NameEn = "Lachin", NameRu = "Лачин", IsMajorCity = false, DisplayOrder = 132, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Lerik", NameEn = "Lerik", NameRu = "Лерик", IsMajorCity = false, DisplayOrder = 133, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Masallı", NameEn = "Masalli", NameRu = "Масаллы", IsMajorCity = false, DisplayOrder = 134, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Neftçala", NameEn = "Neftchala", NameRu = "Нефтечала", IsMajorCity = false, DisplayOrder = 135, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Oğuz", NameEn = "Oguz", NameRu = "Огуз", IsMajorCity = false, DisplayOrder = 136, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ordubad", NameEn = "Ordubad", NameRu = "Ордубад", IsMajorCity = false, DisplayOrder = 137, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qax", NameEn = "Gakh", NameRu = "Гах", IsMajorCity = false, DisplayOrder = 138, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qazax", NameEn = "Gazakh", NameRu = "Газах", IsMajorCity = false, DisplayOrder = 139, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qəbələ", NameEn = "Gabala", NameRu = "Габала", IsMajorCity = false, DisplayOrder = 140, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qobustan", NameEn = "Gobustan", NameRu = "Гобустан", IsMajorCity = false, DisplayOrder = 141, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Quba", NameEn = "Guba", NameRu = "Губа", IsMajorCity = false, DisplayOrder = 142, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qubadlı", NameEn = "Gubadli", NameRu = "Губадлы", IsMajorCity = false, DisplayOrder = 143, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Qusar", NameEn = "Gusar", NameRu = "Гусар", IsMajorCity = false, DisplayOrder = 144, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Saatlı", NameEn = "Saatli", NameRu = "Саатлы", IsMajorCity = false, DisplayOrder = 145, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Sabirabad", NameEn = "Sabirabad", NameRu = "Сабирабад", IsMajorCity = false, DisplayOrder = 146, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şabran", NameEn = "Shabran", NameRu = "Шабран", IsMajorCity = false, DisplayOrder = 147, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Sədərək", NameEn = "Sadarak", NameRu = "Садарак", IsMajorCity = false, DisplayOrder = 148, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şahbuz", NameEn = "Shahbuz", NameRu = "Шахбуз", IsMajorCity = false, DisplayOrder = 149, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Salyan", NameEn = "Salyan", NameRu = "Сальян", IsMajorCity = false, DisplayOrder = 150, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şamaxı", NameEn = "Shamakhi", NameRu = "Шамахы", IsMajorCity = false, DisplayOrder = 151, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Samux", NameEn = "Samukh", NameRu = "Самух", IsMajorCity = false, DisplayOrder = 152, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şərur", NameEn = "Sharur", NameRu = "Шарур", IsMajorCity = false, DisplayOrder = 153, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Siyəzən", NameEn = "Siazan", NameRu = "Сиазань", IsMajorCity = false, DisplayOrder = 154, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Şuşa", NameEn = "Shusha", NameRu = "Шуша", IsMajorCity = false, DisplayOrder = 155, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Tərtər", NameEn = "Tartar", NameRu = "Тертер", IsMajorCity = false, DisplayOrder = 156, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Tovuz", NameEn = "Tovuz", NameRu = "Товуз", IsMajorCity = false, DisplayOrder = 157, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Ucar", NameEn = "Ujar", NameRu = "Уджар", IsMajorCity = false, DisplayOrder = 158, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Yardımlı", NameEn = "Yardimli", NameRu = "Ярдымлы", IsMajorCity = false, DisplayOrder = 159, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Zaqatala", NameEn = "Zagatala", NameRu = "Загатала", IsMajorCity = false, DisplayOrder = 160, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Zəngilan", NameEn = "Zangilan", NameRu = "Зангилан", IsMajorCity = false, DisplayOrder = 161, IsActive = true, CreatedAt = now },
-			new() { NameAz = "Zərdab", NameEn = "Zardab", NameRu = "Зардаб", IsMajorCity = false, DisplayOrder = 162, IsActive = true, CreatedAt = now },
+			new()
+			{
+				NameAz = "Abşeron",
+				NameEn = "Absheron",
+				NameRu = "Апшерон",
+				IsMajorCity = false,
+				DisplayOrder = 100,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ağcabədi",
+				NameEn = "Aghjabadi",
+				NameRu = "Агджабеди",
+				IsMajorCity = false,
+				DisplayOrder = 101,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ağdam",
+				NameEn = "Aghdam",
+				NameRu = "Агдам",
+				IsMajorCity = false,
+				DisplayOrder = 102,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ağdaş",
+				NameEn = "Aghdash",
+				NameRu = "Агдаш",
+				IsMajorCity = false,
+				DisplayOrder = 103,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ağstafa",
+				NameEn = "Aghstafa",
+				NameRu = "Агстафа",
+				IsMajorCity = false,
+				DisplayOrder = 104,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ağsu",
+				NameEn = "Aghsu",
+				NameRu = "Агсу",
+				IsMajorCity = false,
+				DisplayOrder = 105,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Astara",
+				NameEn = "Astara",
+				NameRu = "Астара",
+				IsMajorCity = false,
+				DisplayOrder = 106,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Babək",
+				NameEn = "Babek",
+				NameRu = "Бабек",
+				IsMajorCity = false,
+				DisplayOrder = 107,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Balakən",
+				NameEn = "Balakan",
+				NameRu = "Балакен",
+				IsMajorCity = false,
+				DisplayOrder = 108,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Beyləqan",
+				NameEn = "Beylagan",
+				NameRu = "Бейлаган",
+				IsMajorCity = false,
+				DisplayOrder = 109,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Bərdə",
+				NameEn = "Barda",
+				NameRu = "Барда",
+				IsMajorCity = false,
+				DisplayOrder = 110,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Biləsuvar",
+				NameEn = "Bilasuvar",
+				NameRu = "Билясувар",
+				IsMajorCity = false,
+				DisplayOrder = 111,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Cəbrayıl",
+				NameEn = "Jabrayil",
+				NameRu = "Джебраил",
+				IsMajorCity = false,
+				DisplayOrder = 112,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Cəlilabad",
+				NameEn = "Jalilabad",
+				NameRu = "Джалилабад",
+				IsMajorCity = false,
+				DisplayOrder = 113,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Culfa",
+				NameEn = "Julfa",
+				NameRu = "Джульфа",
+				IsMajorCity = false,
+				DisplayOrder = 114,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Daşkəsən",
+				NameEn = "Dashkasan",
+				NameRu = "Дашкесан",
+				IsMajorCity = false,
+				DisplayOrder = 115,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Füzuli",
+				NameEn = "Fuzuli",
+				NameRu = "Физули",
+				IsMajorCity = false,
+				DisplayOrder = 116,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Gədəbəy",
+				NameEn = "Gadabay",
+				NameRu = "Гедабей",
+				IsMajorCity = false,
+				DisplayOrder = 117,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Goranboy",
+				NameEn = "Goranboy",
+				NameRu = "Горанбой",
+				IsMajorCity = false,
+				DisplayOrder = 118,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Göyçay",
+				NameEn = "Goychay",
+				NameRu = "Гёйчай",
+				IsMajorCity = false,
+				DisplayOrder = 119,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Göygöl",
+				NameEn = "Goygol",
+				NameRu = "Гёйгёль",
+				IsMajorCity = false,
+				DisplayOrder = 120,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Hacıqabul",
+				NameEn = "Hajigabul",
+				NameRu = "Гаджигабул",
+				IsMajorCity = false,
+				DisplayOrder = 121,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xaçmaz",
+				NameEn = "Khachmaz",
+				NameRu = "Хачмаз",
+				IsMajorCity = false,
+				DisplayOrder = 122,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xırdalan",
+				NameEn = "Khirdalan",
+				NameRu = "Хырдалан",
+				IsMajorCity = false,
+				DisplayOrder = 123,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xızı",
+				NameEn = "Khizi",
+				NameRu = "Хызы",
+				IsMajorCity = false,
+				DisplayOrder = 124,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xocalı",
+				NameEn = "Khojaly",
+				NameRu = "Ходжалы",
+				IsMajorCity = false,
+				DisplayOrder = 125,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Xocavənd",
+				NameEn = "Khojavend",
+				NameRu = "Ходжавенд",
+				IsMajorCity = false,
+				DisplayOrder = 126,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "İmişli",
+				NameEn = "Imishli",
+				NameRu = "Имишли",
+				IsMajorCity = false,
+				DisplayOrder = 127,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "İsmayıllı",
+				NameEn = "Ismayilli",
+				NameRu = "Исмаиллы",
+				IsMajorCity = false,
+				DisplayOrder = 128,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Kəlbəcər",
+				NameEn = "Kalbajar",
+				NameRu = "Кельбаджар",
+				IsMajorCity = false,
+				DisplayOrder = 129,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Kəngərli",
+				NameEn = "Kangarli",
+				NameRu = "Кенгерли",
+				IsMajorCity = false,
+				DisplayOrder = 130,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Kürdəmir",
+				NameEn = "Kurdamir",
+				NameRu = "Кюрдамир",
+				IsMajorCity = false,
+				DisplayOrder = 131,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Laçın",
+				NameEn = "Lachin",
+				NameRu = "Лачин",
+				IsMajorCity = false,
+				DisplayOrder = 132,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Lerik",
+				NameEn = "Lerik",
+				NameRu = "Лерик",
+				IsMajorCity = false,
+				DisplayOrder = 133,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Masallı",
+				NameEn = "Masalli",
+				NameRu = "Масаллы",
+				IsMajorCity = false,
+				DisplayOrder = 134,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Neftçala",
+				NameEn = "Neftchala",
+				NameRu = "Нефтечала",
+				IsMajorCity = false,
+				DisplayOrder = 135,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Oğuz",
+				NameEn = "Oguz",
+				NameRu = "Огуз",
+				IsMajorCity = false,
+				DisplayOrder = 136,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ordubad",
+				NameEn = "Ordubad",
+				NameRu = "Ордубад",
+				IsMajorCity = false,
+				DisplayOrder = 137,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qax",
+				NameEn = "Gakh",
+				NameRu = "Гах",
+				IsMajorCity = false,
+				DisplayOrder = 138,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qazax",
+				NameEn = "Gazakh",
+				NameRu = "Газах",
+				IsMajorCity = false,
+				DisplayOrder = 139,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qəbələ",
+				NameEn = "Gabala",
+				NameRu = "Габала",
+				IsMajorCity = false,
+				DisplayOrder = 140,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qobustan",
+				NameEn = "Gobustan",
+				NameRu = "Гобустан",
+				IsMajorCity = false,
+				DisplayOrder = 141,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Quba",
+				NameEn = "Guba",
+				NameRu = "Губа",
+				IsMajorCity = false,
+				DisplayOrder = 142,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qubadlı",
+				NameEn = "Gubadli",
+				NameRu = "Губадлы",
+				IsMajorCity = false,
+				DisplayOrder = 143,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Qusar",
+				NameEn = "Gusar",
+				NameRu = "Гусар",
+				IsMajorCity = false,
+				DisplayOrder = 144,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Saatlı",
+				NameEn = "Saatli",
+				NameRu = "Саатлы",
+				IsMajorCity = false,
+				DisplayOrder = 145,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Sabirabad",
+				NameEn = "Sabirabad",
+				NameRu = "Сабирабад",
+				IsMajorCity = false,
+				DisplayOrder = 146,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şabran",
+				NameEn = "Shabran",
+				NameRu = "Шабран",
+				IsMajorCity = false,
+				DisplayOrder = 147,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Sədərək",
+				NameEn = "Sadarak",
+				NameRu = "Садарак",
+				IsMajorCity = false,
+				DisplayOrder = 148,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şahbuz",
+				NameEn = "Shahbuz",
+				NameRu = "Шахбуз",
+				IsMajorCity = false,
+				DisplayOrder = 149,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Salyan",
+				NameEn = "Salyan",
+				NameRu = "Сальян",
+				IsMajorCity = false,
+				DisplayOrder = 150,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şamaxı",
+				NameEn = "Shamakhi",
+				NameRu = "Шамахы",
+				IsMajorCity = false,
+				DisplayOrder = 151,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Samux",
+				NameEn = "Samukh",
+				NameRu = "Самух",
+				IsMajorCity = false,
+				DisplayOrder = 152,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şərur",
+				NameEn = "Sharur",
+				NameRu = "Шарур",
+				IsMajorCity = false,
+				DisplayOrder = 153,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Siyəzən",
+				NameEn = "Siazan",
+				NameRu = "Сиазань",
+				IsMajorCity = false,
+				DisplayOrder = 154,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Şuşa",
+				NameEn = "Shusha",
+				NameRu = "Шуша",
+				IsMajorCity = false,
+				DisplayOrder = 155,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Tərtər",
+				NameEn = "Tartar",
+				NameRu = "Тертер",
+				IsMajorCity = false,
+				DisplayOrder = 156,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Tovuz",
+				NameEn = "Tovuz",
+				NameRu = "Товуз",
+				IsMajorCity = false,
+				DisplayOrder = 157,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Ucar",
+				NameEn = "Ujar",
+				NameRu = "Уджар",
+				IsMajorCity = false,
+				DisplayOrder = 158,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Yardımlı",
+				NameEn = "Yardimli",
+				NameRu = "Ярдымлы",
+				IsMajorCity = false,
+				DisplayOrder = 159,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Zaqatala",
+				NameEn = "Zagatala",
+				NameRu = "Загатала",
+				IsMajorCity = false,
+				DisplayOrder = 160,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Zəngilan",
+				NameEn = "Zangilan",
+				NameRu = "Зангилан",
+				IsMajorCity = false,
+				DisplayOrder = 161,
+				IsActive = true,
+				CreatedAt = now,
+			},
+			new()
+			{
+				NameAz = "Zərdab",
+				NameEn = "Zardab",
+				NameRu = "Зардаб",
+				IsMajorCity = false,
+				DisplayOrder = 162,
+				IsActive = true,
+				CreatedAt = now,
+			},
 		};
 
 		await context.Cities.AddRangeAsync(cities);
