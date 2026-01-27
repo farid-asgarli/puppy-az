@@ -12,8 +12,8 @@ using PetWebsite.Infrastructure.Persistence;
 namespace PetWebsite.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260126113746_AddPetAdQuestionReplies")]
-    partial class AddPetAdQuestionReplies
+    [Migration("20260127131247_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

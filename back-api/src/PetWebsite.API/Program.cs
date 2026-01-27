@@ -1,11 +1,11 @@
-using PetWebsite.API.Conventions;
-using PetWebsite.API.Extensions;
-using PetWebsite.Application;
-using PetWebsite.Infrastructure;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using PetWebsite.API.Conventions;
+using PetWebsite.API.Extensions;
+using PetWebsite.Application;
+using PetWebsite.Infrastructure;
 
 // Ensure UTF-8 encoding for console and HTTP responses
 Console.OutputEncoding = Encoding.UTF8;
@@ -67,34 +67,20 @@ builder.Services.AddCachingConfiguration();
 // builder.Services.AddApiVersioningConfiguration();
 
 // Add Application and Infrastructure layers
-Console.WriteLine("[DEBUG] Adding Application layer...");
 builder.Services.AddApplication();
-Console.WriteLine("[DEBUG] Adding Infrastructure layer...");
+builder.Services.AddInfrastructure(builder.Configuration);
+
+var app = builder.Build();
+
+// Seed database - DISABLED FOR NOW
 try
 {
-	builder.Services.AddInfrastructure(builder.Configuration);
-	Console.WriteLine("[DEBUG] Infrastructure layer added successfully");
+	await app.SeedDatabaseAsync();
 }
 catch (Exception ex)
 {
-	Console.WriteLine($"[ERROR] Failed to add Infrastructure: {ex.Message}");
-	Console.WriteLine($"[ERROR] Stack trace: {ex.StackTrace}");
-	throw;
+	Console.WriteLine($"Error seeding database: {ex.Message}");
 }
-
-Console.WriteLine("[DEBUG] Building application...");
-var app = builder.Build();
-Console.WriteLine("[DEBUG] Application built successfully");
-
-// Seed database - DISABLED FOR NOW
-//try
-//{
-//	await app.SeedDatabaseAsync();
-//}
-//catch (Exception ex)
-//{
-//	Console.WriteLine($"Error seeding database: {ex.Message}");
-//}
 
 // Configure middleware pipeline (order matters!)
 app.UseResponseCompression();
@@ -116,7 +102,9 @@ Console.WriteLine("[DEBUG] Health check endpoints mapped");
 // Log application lifetime events
 var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
 lifetime.ApplicationStarted.Register(() => Console.WriteLine($"[DEBUG] Application STARTED at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC"));
-lifetime.ApplicationStopping.Register(() => Console.WriteLine($"[DEBUG] Application STOPPING at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC"));
+lifetime.ApplicationStopping.Register(
+	() => Console.WriteLine($"[DEBUG] Application STOPPING at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC")
+);
 lifetime.ApplicationStopped.Register(() => Console.WriteLine($"[DEBUG] Application STOPPED at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC"));
 
 Console.WriteLine("[DEBUG] Starting application run loop...");
