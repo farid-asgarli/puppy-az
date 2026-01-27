@@ -20,8 +20,6 @@ public class ChangePasswordCommandValidator : BaseValidator<ChangePasswordComman
 			.Matches(@"[0-9]")
 			.WithMessage(L(LocalizationKeys.Auth.PasswordRequiresDigit))
 			.Matches(@"[a-z]")
-			.WithMessage(L(LocalizationKeys.Auth.PasswordRequiresLowercase))
-			.NotEqual(x => x.CurrentPassword)
-			.WithMessage(L(LocalizationKeys.User.NewPasswordMustBeDifferent));
+			.WithMessage(L(LocalizationKeys.Auth.PasswordRequiresLowercase));
 	}
 }

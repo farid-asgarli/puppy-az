@@ -124,9 +124,11 @@ public static class DatabaseSeeder
 		if (await context.PetCategories.AnyAsync())
 			return;
 
-		// Get the Azerbaijani locale ID (default)
+		// Get locales
 		var azLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "az");
-		if (azLocale == null)
+		var enLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "en");
+		var ruLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "ru");
+		if (azLocale == null || enLocale == null || ruLocale == null)
 			return;
 
 		// Read seed.json file
@@ -184,7 +186,13 @@ public static class DatabaseSeeder
 			{ "other", "other" },
 		};
 
-		foreach (var (key, data) in seedData)
+		var orderedCategories = seedData
+			.Values
+			.Where(d => d.Order > 0)
+			.OrderBy(d => d.Order)
+			.ToList();
+
+		foreach (var data in orderedCategories)
 		{
 			var category = new PetCategory
 			{
@@ -195,13 +203,29 @@ public static class DatabaseSeeder
 				CreatedAt = DateTime.UtcNow,
 			};
 
-			// Add localization for Azerbaijani
+			// Add localizations for AZ / EN / RU
 			category.Localizations.Add(
 				new PetCategoryLocalization
 				{
 					AppLocaleId = azLocale.Id,
-					Title = data.Title,
-					Subtitle = data.Subtitle,
+					Title = data.TitleAz,
+					Subtitle = data.SubtitleAz,
+				}
+			);
+			category.Localizations.Add(
+				new PetCategoryLocalization
+				{
+					AppLocaleId = enLocale.Id,
+					Title = data.TitleEn,
+					Subtitle = data.SubtitleEn,
+				}
+			);
+			category.Localizations.Add(
+				new PetCategoryLocalization
+				{
+					AppLocaleId = ruLocale.Id,
+					Title = data.TitleRu,
+					Subtitle = data.SubtitleRu,
 				}
 			);
 
@@ -227,11 +251,16 @@ public static class DatabaseSeeder
 	// Helper class for JSON deserialization
 	private class PetCategorySeedData
 	{
+		public int Order { get; set; }
 		public string Icon { get; set; } = string.Empty;
 		public string IconColor { get; set; } = string.Empty;
 		public string BgColor { get; set; } = string.Empty;
-		public string Title { get; set; } = string.Empty;
-		public string Subtitle { get; set; } = string.Empty;
+		public string TitleAz { get; set; } = string.Empty;
+		public string TitleEn { get; set; } = string.Empty;
+		public string TitleRu { get; set; } = string.Empty;
+		public string SubtitleAz { get; set; } = string.Empty;
+		public string SubtitleEn { get; set; } = string.Empty;
+		public string SubtitleRu { get; set; } = string.Empty;
 		public int Count { get; set; }
 		public List<string> Breeds { get; set; } = [];
 	}

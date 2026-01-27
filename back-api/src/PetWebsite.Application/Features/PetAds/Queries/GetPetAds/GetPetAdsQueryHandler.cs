@@ -2,6 +2,7 @@ using Common.Repository.Abstraction;
 using Common.Repository.Filtering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using PetWebsite.Application.Common.Handlers;
 using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
@@ -17,12 +18,19 @@ public class GetPetAdsQueryHandler(
 	ICurrentUserService currentUserService,
 	IDynamicQueryRepository queryRepo,
 	IUrlService urlService,
-	IStringLocalizer localizer
+	IStringLocalizer localizer,
+	ILogger<GetPetAdsQueryHandler> logger
 ) : BaseHandler(localizer), IQueryHandler<GetPetAdsQuery, Result<PaginatedResult<PetAdListItemDto>>>
 {
 	public async Task<Result<PaginatedResult<PetAdListItemDto>>> Handle(GetPetAdsQuery request, CancellationToken ct)
 	{
+		logger.LogDebug("[GetPetAds] Starting query. Filter: {Filter}, Pagination: Page {Page} Size {Size}", 
+			request.Filter?.ToString() ?? "none", 
+			request.Pagination?.Number ?? 1, 
+			request.Pagination?.Size ?? 10);
+		
 		var currentCulture = currentUserService.CurrentCulture;
+		logger.LogDebug("[GetPetAds] Using culture: {Culture}", currentCulture);
 
 		// Base query - only published, not deleted, and available ads
 		var query = dbContext
@@ -53,6 +61,8 @@ public class GetPetAdsQueryHandler(
 			PageNumber = request.Pagination?.Number ?? 1,
 			PageSize = request.Pagination?.Size ?? 10,
 		};
+
+		logger.LogDebug("[GetPetAds] Query completed. TotalCount: {TotalCount}, ItemsReturned: {ItemsCount}", totalCount, items.Count);
 
 		return Result<PaginatedResult<PetAdListItemDto>>.Success(result);
 	}

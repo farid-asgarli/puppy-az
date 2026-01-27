@@ -87,12 +87,9 @@ export function PersonalInfoFormSection({
     setErrorDetails([]);
 
     try {
-      // Normalize phone: ensure it starts with 0 (backend expects 0501234567 or 501234567)
-      const normalizedPhone = data.phoneNumber.startsWith("0")
-        ? data.phoneNumber
-        : `0${data.phoneNumber}`;
+      // Send phone number as-is (backend accepts both 501234567 and 0501234567)
       const result = await sendVerificationCodeAction({
-        phoneNumber: normalizedPhone,
+        phoneNumber: data.phoneNumber,
         purpose: "Registration",
       });
 

@@ -77,6 +77,11 @@ public interface IApplicationDbContext
 	DbSet<PetAdQuestion> PetAdQuestions { get; }
 
 	/// <summary>
+	/// Gets the DbSet for PetAdQuestionReply entities.
+	/// </summary>
+	DbSet<PetAdQuestionReply> PetAdQuestionReplies { get; }
+
+	/// <summary>
 	/// Gets the DbSet for BlacklistedToken entities.
 	/// </summary>
 	DbSet<BlacklistedToken> BlacklistedTokens { get; }
@@ -90,6 +95,16 @@ public interface IApplicationDbContext
 	/// Gets the DbSet for RegularUser entities.
 	/// </summary>
 	DbSet<User> RegularUsers { get; }
+
+	/// <summary>
+	/// Gets the DbSet for Conversation entities.
+	/// </summary>
+	DbSet<Conversation> Conversations { get; }
+
+	/// <summary>
+	/// Gets the DbSet for Message entities.
+	/// </summary>
+	DbSet<Message> Messages { get; }
 
 	/// <summary>
 	/// Provides access to database-related information and operations.

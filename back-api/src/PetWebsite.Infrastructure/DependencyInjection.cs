@@ -21,13 +21,24 @@ public static class DependencyInjection
 {
 	public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
 	{
+		Console.WriteLine("[DEBUG-INFRA] Starting Infrastructure registration...");
+		
 		// Register interceptors
 		services.AddScoped<AuditableEntityInterceptor>();
+		Console.WriteLine("[DEBUG-INFRA] AuditableEntityInterceptor registered");
+
+		// Log connection string (masked)
+		var connString = configuration.GetConnectionString("DefaultConnection");
+		var maskedConn = connString != null 
+			? $"Host={connString.Split(';').FirstOrDefault(s => s.StartsWith("Host="))}..." 
+			: "NULL";
+		Console.WriteLine($"[DEBUG-INFRA] Connection string: {maskedConn}");
 
 		// Add DbContext with PostgreSQL and register interface
 		services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(
 			(serviceProvider, options) =>
 			{
+				Console.WriteLine("[DEBUG-INFRA] Configuring DbContext...");
 				var auditableInterceptor = serviceProvider.GetRequiredService<AuditableEntityInterceptor>();
 
 				options
@@ -35,9 +46,13 @@ public static class DependencyInjection
 						configuration.GetConnectionString("DefaultConnection"),
 						b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)
 					)
-					.AddInterceptors(auditableInterceptor);
+					.AddInterceptors(auditableInterceptor)
+					.EnableDetailedErrors()
+					.EnableSensitiveDataLogging();
+				Console.WriteLine("[DEBUG-INFRA] DbContext configured with PostgreSQL");
 			}
 		);
+		Console.WriteLine("[DEBUG-INFRA] DbContext registration complete");
 
 		// Register Common.Repository services for dynamic querying
 		services.AddScoped<Common.Repository.Abstraction.IGenericFiltering, Common.Repository.Implementation.GenericFiltering>();

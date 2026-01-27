@@ -26,7 +26,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 	public DbSet<PetAdView> PetAdViews { get; set; } = null!;
 	public DbSet<FavoriteAd> FavoriteAds { get; set; } = null!;
 	public DbSet<PetAdQuestion> PetAdQuestions { get; set; } = null!;
+	public DbSet<PetAdQuestionReply> PetAdQuestionReplies { get; set; } = null!;
 	public DbSet<BlacklistedToken> BlacklistedTokens { get; set; } = null!;
+	public DbSet<Conversation> Conversations { get; set; } = null!;
+	public DbSet<Message> Messages { get; set; } = null!;
 
 	// Regular users (consumers) - not exposed via interface
 	public DbSet<User> RegularUsers { get; set; } = null!;

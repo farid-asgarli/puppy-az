@@ -163,15 +163,15 @@ export default function PetAdDetailsView({
                 description={adDetails.description}
               />
 
-              {/* Questions & Answers */}
+              {/* Statistics */}
+              <AdDetailsStatsSection adDetails={adDetails} />
+
+              {/* Questions & Answers - Facebook-like comment system */}
               <AdDetailsQuestionsSection
                 questions={adDetails.questions}
                 adId={adDetails.id}
                 ownerId={adDetails.owner.id}
               />
-
-              {/* Statistics */}
-              <AdDetailsStatsSection adDetails={adDetails} />
 
               {/* Related Ads Section */}
               <AdDetailsSimilarAdsSection
@@ -194,6 +194,8 @@ export default function PetAdDetailsView({
           contactEmail={adDetails.owner.contactEmail}
           price={adDetails.price}
           isMobile={true}
+          petAdId={adDetails.id}
+          petAdTitle={adDetails.title}
         />
       </div>
 
@@ -226,15 +228,15 @@ export default function PetAdDetailsView({
                   description={adDetails.description}
                 />
 
+                {/* Statistics */}
+                <AdDetailsStatsSection adDetails={adDetails} />
+
                 {/* Questions & Answers */}
                 <AdDetailsQuestionsSection
                   questions={adDetails.questions}
                   adId={adDetails.id}
                   ownerId={adDetails.owner.id}
                 />
-
-                {/* Statistics */}
-                <AdDetailsStatsSection adDetails={adDetails} />
               </div>
 
               {/* Sidebar Column (Desktop only) */}
@@ -246,6 +248,8 @@ export default function PetAdDetailsView({
                     contactEmail={adDetails.owner.contactEmail}
                     price={adDetails.price}
                     isMobile={false}
+                    petAdId={adDetails.id}
+                    petAdTitle={adDetails.title}
                   />
                 </div>
               </div>

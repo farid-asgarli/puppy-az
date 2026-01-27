@@ -56,6 +56,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         {label && (
           <label
             htmlFor={inputId}
+            suppressHydrationWarning
             className={cn(
               "block mb-2 font-semibold",
               size === "xs" && "text-xs",

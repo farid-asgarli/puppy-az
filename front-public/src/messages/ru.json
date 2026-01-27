@@ -2304,7 +2304,10 @@
     "recentlyViewed": {
       "title": "Недавно просмотренные",
       "description": "Объявления, которые вы недавно просматривали"
-    }
+    },
+    "hoursAgo": "часов назад",
+    "minutesAgo": "минут назад",
+    "justNow": "Только что"
   },
   "petAdDetails": {
     "hero": {
@@ -2362,7 +2365,17 @@
       "call": "Позвонить",
       "email": "Email",
       "callAriaLabel": "Позвонить",
-      "sendMessageAriaLabel": "Отправить сообщение"
+      "sendMessageAriaLabel": "Отправить сообщение",
+      "sendMessageTo": "Сообщение для {name}",
+      "regardingAd": "По объявлению:",
+      "messagePlaceholder": "Напишите ваше сообщение...",
+      "cancel": "Отмена",
+      "send": "Отправить",
+      "sending": "Отправка...",
+      "messageRequired": "Текст сообщения обязателен",
+      "messageSent": "Сообщение успешно отправлено",
+      "messageFailed": "Не удалось отправить сообщение",
+      "cannotMessageSelf": "Нельзя отправить сообщение самому себе"
     },
     "questions": {
       "title": "Вопросы и ответы",
@@ -2372,6 +2385,13 @@
       "showAll": "Показать все вопросы ({count})",
       "showLess": "Показать меньше",
       "answer": "Ответ",
+      "owner": "Продавец",
+      "send": "Отправить",
+      "reply": "Ответить",
+      "repliesCount": "ответов",
+      "replyPlaceholder": "Напишите ваш ответ...",
+      "replySuccess": "Ответ успешно добавлен",
+      "replyError": "Не удалось отправить ответ. Пожалуйста, попробуйте снова.",
       "answerPlaceholder": "Напишите ваш ответ...",
       "sendAnswer": "Отправить ответ",
       "answerQuestion": "Ответить",
@@ -2711,7 +2731,8 @@
           "medium": "Средний",
           "strong": "Сильный",
           "veryStrong": "Очень сильный"
-        }
+        },
+        "passwordStrength": "Надёжность пароля"
       },
       "requirements": {
         "title": "Требования к паролю",

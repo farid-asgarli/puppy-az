@@ -27,6 +27,8 @@ public class GetPetAdQuestionsQueryHandler(IApplicationDbContext dbContext, IDyn
 			.PetAdQuestions.Where(q => q.PetAdId == request.PetAdId && !q.IsDeleted)
 			.AsNoTracking()
 			.Include(q => q.User)
+			.Include(q => q.Replies.Where(r => !r.IsDeleted))
+				.ThenInclude(r => r.User)
 			.OrderByDescending(q => q.CreatedAt)
 			.Select(q => new PetAdQuestionDto
 			{
@@ -36,6 +38,18 @@ public class GetPetAdQuestionsQueryHandler(IApplicationDbContext dbContext, IDyn
 				QuestionerName = q.User.FirstName + " " + q.User.LastName,
 				AskedAt = q.CreatedAt,
 				AnsweredAt = q.AnsweredAt,
+				Replies = q.Replies
+					.Where(r => !r.IsDeleted)
+					.OrderBy(r => r.CreatedAt)
+					.Select(r => new PetAdQuestionReplyDto
+					{
+						Id = r.Id,
+						Text = r.Text,
+						UserName = r.User.FirstName + " " + r.User.LastName,
+						IsOwnerReply = r.IsOwnerReply,
+						CreatedAt = r.CreatedAt,
+					})
+					.ToList(),
 			});
 
 		var (items, totalCount) = await queryRepo.WithQuery(query).ApplyPagination(request.Pagination).ToListWithCountAsync(ct);

@@ -22,10 +22,14 @@ public class ChangePasswordCommandHandler(UserManager<User> userManager, ICurren
 		if (user == null)
 			return Result.Failure(L(LocalizationKeys.User.NotFound), 404);
 
-		// Verify current password
+		// First verify current password is correct
 		var isCurrentPasswordValid = await userManager.CheckPasswordAsync(user, request.CurrentPassword);
 		if (!isCurrentPasswordValid)
-			return Result.Failure(L(LocalizationKeys.Auth.InvalidCredentials), 400);
+			return Result.Failure(L(LocalizationKeys.User.CurrentPasswordIncorrect), 400);
+
+		// Then check if new password is same as current (only after verifying current password)
+		if (request.CurrentPassword == request.NewPassword)
+			return Result.Failure(L(LocalizationKeys.User.NewPasswordMustBeDifferent), 400);
 
 		// Change to new password
 		var changePasswordResult = await userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);

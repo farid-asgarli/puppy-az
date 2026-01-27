@@ -1,19 +1,26 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { PetAdQuestionDto } from '@/lib/api/types/pet-ad.types';
-import { cn } from '@/lib/external/utils';
-import { IconMessageCircle, IconX, IconUser } from '@tabler/icons-react';
-import { formatDate } from '@/lib/utils/date-utils';
-import { useAuth } from '@/lib/hooks/use-auth';
-import Button from '@/lib/primitives/button/button.component';
-import { ExpandableSection } from '@/lib/components/views/pet-ad-details/expandable-section';
-import { EmptyState, SectionHeader } from '@/lib/components/views/common';
-import { askQuestionAction, answerQuestionAction } from '@/lib/auth/actions';
-import { StatusMessage } from '@/lib/components/views/my-account/status-message/status-message.component';
-import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
-import toast from 'react-hot-toast';
+import React, { useState, useRef, useEffect } from "react";
+import { PetAdQuestionDto } from "@/lib/api/types/pet-ad.types";
+import { cn } from "@/lib/external/utils";
+import {
+  IconMessageCircle,
+  IconUser,
+  IconSend,
+  IconCheck,
+} from "@tabler/icons-react";
+import { formatDate } from "@/lib/utils/date-utils";
+import { useAuth } from "@/lib/hooks/use-auth";
+import { ExpandableSection } from "@/lib/components/views/pet-ad-details/expandable-section";
+import { SectionHeader } from "@/lib/components/views/common";
+import {
+  askQuestionAction,
+  answerQuestionAction,
+  replyToQuestionAction,
+} from "@/lib/auth/actions";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 export interface AdDetailsQuestionsSectionProps {
   questions: PetAdQuestionDto[];
@@ -21,145 +28,177 @@ export interface AdDetailsQuestionsSectionProps {
   ownerId: string;
 }
 
-export function AdDetailsQuestionsSection({ questions, adId, ownerId }: AdDetailsQuestionsSectionProps) {
-  const t = useTranslations('petAdDetails.questions');
-  const tDate = useTranslations('dateTime');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [questionText, setQuestionText] = useState('');
+export function AdDetailsQuestionsSection({
+  questions,
+  adId,
+  ownerId,
+}: AdDetailsQuestionsSectionProps) {
+  const t = useTranslations("petAdDetails.questions");
+  const tDate = useTranslations("dateTime");
+  const [questionText, setQuestionText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
+  const questionInputRef = useRef<HTMLInputElement>(null);
 
-  // Track which question is being answered
-  const [answeringQuestionId, setAnsweringQuestionId] = useState<number | null>(null);
-  const [answerText, setAnswerText] = useState('');
-  const [isSubmittingAnswer, setIsSubmittingAnswer] = useState(false);
+  // Track which question is being replied to
+  const [replyingToQuestionId, setReplyingToQuestionId] = useState<
+    number | null
+  >(null);
+  const [replyText, setReplyText] = useState("");
+  const [isSubmittingReply, setIsSubmittingReply] = useState(false);
+  const replyInputRef = useRef<HTMLInputElement>(null);
 
   // Check if current user is the ad owner
   const isOwner = user?.id === ownerId;
 
-  // Filter questions based on whether user is owner
-  const displayQuestions = isOwner ? questions : questions.filter((q) => q.isAnswered);
+  // Show all questions to everyone (questions are public)
+  const displayQuestions = questions;
 
-  // Handle answer submission
-  const handleAnswerSubmit = async (questionId: number) => {
-    if (!answerText.trim() || isSubmittingAnswer) return;
+  // Focus reply input when replying
+  useEffect(() => {
+    if (replyingToQuestionId !== null && replyInputRef.current) {
+      replyInputRef.current.focus();
+    }
+  }, [replyingToQuestionId]);
 
-    setIsSubmittingAnswer(true);
+  // Handle reply submission
+  const handleReplySubmit = async (questionId: number) => {
+    if (!replyText.trim() || isSubmittingReply) return;
+
+    setIsSubmittingReply(true);
 
     try {
-      const result = await answerQuestionAction(questionId, answerText.trim());
+      const result = await replyToQuestionAction(questionId, replyText.trim());
 
       if (!result.success) {
-        toast.error(result.error || t('answerError'));
+        toast.error(result.error || t("replyError"));
         return;
       }
 
-      toast.success(t('answerSuccess'));
-      setAnsweringQuestionId(null);
-      setAnswerText('');
+      toast.success(t("replySuccess"));
+      setReplyingToQuestionId(null);
+      setReplyText("");
 
-      // Refresh the page to show the new answer
+      // Refresh the page to show the new reply
       router.refresh();
     } catch (error) {
-      console.error('Failed to submit answer:', error);
-      toast.error(t('answerError'));
+      console.error("Failed to submit reply:", error);
+      toast.error(t("replyError"));
     } finally {
-      setIsSubmittingAnswer(false);
+      setIsSubmittingReply(false);
     }
   };
 
-  const openModal = () => {
+  // Handle question input focus
+  const handleQuestionFocus = () => {
     if (!user) {
       // Redirect to login if not authenticated
       window.location.href = `/auth?redirect=/ads/item-details/${adId}`;
       return;
     }
-    setIsModalOpen(true);
-    setSubmitStatus('idle');
-    setErrorMessage('');
-    document.body.style.overflow = 'hidden';
+    setIsInputFocused(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setQuestionText('');
-    setSubmitStatus('idle');
-    setErrorMessage('');
-    document.body.style.overflow = 'unset';
+  // Handle reply button click
+  const handleReplyClick = (questionId: number) => {
+    if (!user) {
+      window.location.href = `/auth?redirect=/ads/item-details/${adId}`;
+      return;
+    }
+    setReplyingToQuestionId(questionId);
+    setReplyText("");
   };
 
+  // Handle question submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!questionText.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
-    setSubmitStatus('idle');
-    setErrorMessage('');
 
     try {
       const result = await askQuestionAction(adId, questionText.trim());
 
       if (!result.success) {
-        setSubmitStatus('error');
-        setErrorMessage(result.error);
+        toast.error(result.error || t("modal.error.default"));
         setIsSubmitting(false);
         return;
       }
 
-      setSubmitStatus('success');
-      setQuestionText('');
+      toast.success(t("modal.success.message"));
+      setQuestionText("");
+      setIsInputFocused(false);
 
-      // Close modal after a short delay to show success message
-      setTimeout(() => {
-        closeModal();
-        // Refresh the page to show the new question
-        router.refresh();
-      }, 1500);
+      // Refresh the page to show the new question
+      router.refresh();
     } catch (error) {
-      console.error('Failed to submit question:', error);
-      setSubmitStatus('error');
-      setErrorMessage(t('modal.error.default'));
+      console.error("Failed to submit question:", error);
+      toast.error(t("modal.error.default"));
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <>
-      <div className="space-y-4 sm:space-y-6">
-        <SectionHeader
-          title={t('title')}
-          layout="horizontal"
-          action={{
-            label: t('askQuestion'),
-            icon: IconMessageCircle,
-            onClick: openModal,
-          }}
-        />
+    <div>
+      {/* Header */}
+      <SectionHeader
+        title={t("title")}
+        layout="horizontal"
+        count={
+          displayQuestions.length > 0 ? displayQuestions.length : undefined
+        }
+      />
 
-        {displayQuestions.length === 0 ? (
-          <EmptyState
-            variant="bordered"
-            icon={IconMessageCircle}
-            message={t('noQuestions')}
-            action={{
-              label: t('beFirst'),
-              icon: IconMessageCircle,
-              onClick: openModal,
-            }}
-          />
-        ) : (
+      {/* Ask Question - Simple input like the image */}
+      <form onSubmit={handleSubmit} className="mt-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+            <IconUser size={20} className="text-gray-400" />
+          </div>
+          <div className="flex-1 relative">
+            <input
+              ref={questionInputRef}
+              type="text"
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              onFocus={handleQuestionFocus}
+              onBlur={() => !questionText && setIsInputFocused(false)}
+              placeholder={t("modal.placeholder")}
+              className="w-full h-10 pl-4 pr-10 bg-gray-100 rounded-full border-0 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none text-sm text-gray-900 placeholder:text-gray-500 transition-all"
+              maxLength={500}
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting || !questionText.trim()}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-600 disabled:text-gray-300 transition-colors"
+            >
+              <IconSend
+                size={18}
+                className={isSubmitting ? "animate-pulse" : ""}
+              />
+            </button>
+          </div>
+        </div>
+      </form>
+
+      {/* Questions */}
+      {displayQuestions.length === 0 ? (
+        <div className="text-center py-8">
+          <p className="text-gray-400 text-sm">{t("noQuestions")}</p>
+        </div>
+      ) : (
+        <div className="mt-4 divide-y divide-gray-100">
           <ExpandableSection
             type="items"
             threshold={3}
-            expandLabel={t('showAll', { count: displayQuestions.length })}
-            collapseLabel={t('showLess')}
-            className="space-y-3 sm:space-y-4"
-            buttonClassName="w-full"
+            expandLabel={t("showAll", { count: displayQuestions.length })}
+            collapseLabel={t("showLess")}
+            className="divide-y divide-gray-100"
+            buttonClassName="text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors py-3"
             renderCollapsed={(children) => {
               if (Array.isArray(children)) {
                 return children.slice(0, 3);
@@ -168,180 +207,161 @@ export function AdDetailsQuestionsSection({ questions, adId, ownerId }: AdDetail
             }}
           >
             {displayQuestions.map((question) => (
-              <div key={question.id} className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 space-y-3 sm:space-y-4">
-                {/* Question */}
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
-                      <IconUser size={14} className="sm:w-4 sm:h-4 text-gray-600" />
+              <div key={question.id} className="py-4">
+                {/* Question with avatar */}
+                <div className="flex gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                    <IconUser size={20} className="text-blue-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-sm text-gray-900">
+                        {question.questionerName}
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {formatDate(question.askedAt, tDate)}
+                      </span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-sm sm:text-base font-semibold text-gray-900">{question.questionerName}</span>
-                        <span className="text-xs sm:text-sm text-gray-500">·</span>
-                        <span className="text-xs sm:text-sm text-gray-500">{formatDate(question.askedAt, tDate)}</span>
+                    <p className="text-[15px] text-gray-800 mt-0.5 leading-relaxed">
+                      {question.question}
+                    </p>
+
+                    {/* Replies - nested with smaller avatars */}
+                    {question.replies && question.replies.length > 0 && (
+                      <div className="mt-3 space-y-3">
+                        {question.replies.map((reply) => (
+                          <div key={reply.id} className="flex gap-2.5">
+                            <div
+                              className={cn(
+                                "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                                reply.isOwnerReply
+                                  ? "bg-emerald-100"
+                                  : "bg-gray-100",
+                              )}
+                            >
+                              {reply.isOwnerReply ? (
+                                <IconCheck
+                                  size={16}
+                                  className="text-emerald-600"
+                                />
+                              ) : (
+                                <IconUser size={16} className="text-gray-500" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div
+                                className={cn(
+                                  "inline-block rounded-2xl px-3 py-2",
+                                  reply.isOwnerReply
+                                    ? "bg-emerald-50"
+                                    : "bg-gray-100",
+                                )}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    className={cn(
+                                      "font-semibold text-[13px]",
+                                      reply.isOwnerReply
+                                        ? "text-emerald-700"
+                                        : "text-gray-900",
+                                    )}
+                                  >
+                                    {reply.userName}
+                                  </span>
+                                  {reply.isOwnerReply && (
+                                    <span className="text-[10px] font-medium text-emerald-600 bg-emerald-100 px-1.5 py-0.5 rounded-full">
+                                      {t("owner")}
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-800 mt-0.5">
+                                  {reply.text}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-4 mt-1 ml-3">
+                                <span className="text-[11px] text-gray-400">
+                                  {formatDate(reply.createdAt, tDate)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <p className="text-sm sm:text-base text-gray-700">{question.question}</p>
+                    )}
+
+                    {/* Reply Input - always visible like the image */}
+                    <div className="mt-3 flex gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        <IconUser size={16} className="text-gray-400" />
+                      </div>
+                      <div className="flex-1 relative">
+                        <input
+                          type="text"
+                          value={
+                            replyingToQuestionId === question.id
+                              ? replyText
+                              : ""
+                          }
+                          onChange={(e) => {
+                            if (replyingToQuestionId !== question.id) {
+                              if (!user) {
+                                window.location.href = `/auth?redirect=/ads/item-details/${adId}`;
+                                return;
+                              }
+                              setReplyingToQuestionId(question.id);
+                            }
+                            setReplyText(e.target.value);
+                          }}
+                          onFocus={() => {
+                            if (!user) {
+                              window.location.href = `/auth?redirect=/ads/item-details/${adId}`;
+                              return;
+                            }
+                            setReplyingToQuestionId(question.id);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" && replyText.trim()) {
+                              e.preventDefault();
+                              handleReplySubmit(question.id);
+                            }
+                          }}
+                          placeholder={t("replyPlaceholder")}
+                          className="w-full h-9 pl-4 pr-10 bg-gray-100 rounded-full border-0 focus:bg-white focus:ring-2 focus:ring-blue-100 focus:outline-none text-sm text-gray-900 placeholder:text-gray-500 transition-all"
+                          maxLength={1000}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (
+                              replyingToQuestionId === question.id &&
+                              replyText.trim()
+                            ) {
+                              handleReplySubmit(question.id);
+                            }
+                          }}
+                          disabled={
+                            isSubmittingReply ||
+                            !(
+                              replyingToQuestionId === question.id &&
+                              replyText.trim()
+                            )
+                          }
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-600 disabled:text-gray-300 transition-colors"
+                        >
+                          <IconSend
+                            size={16}
+                            className={isSubmittingReply ? "animate-pulse" : ""}
+                          />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-
-                {/* Answer or Answer Form */}
-                {question.answer ? (
-                  <div className="pl-9 sm:pl-11 space-y-2">
-                    <div className="p-3 sm:p-4 bg-gray-50 rounded-xl">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs sm:text-sm font-semibold text-gray-900">{t('answer')}</span>
-                        {question.answeredAt && (
-                          <>
-                            <span className="text-xs sm:text-sm text-gray-400">·</span>
-                            <span className="text-xs sm:text-sm text-gray-500">{formatDate(question.answeredAt, tDate)}</span>
-                          </>
-                        )}
-                      </div>
-                      <p className="text-sm sm:text-base text-gray-700">{question.answer}</p>
-                    </div>
-                  </div>
-                ) : isOwner && answeringQuestionId === question.id ? (
-                  <div className="pl-9 sm:pl-11 space-y-2">
-                    <textarea
-                      value={answerText}
-                      onChange={(e) => setAnswerText(e.target.value)}
-                      placeholder={t('answerPlaceholder')}
-                      className={cn(
-                        'w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl border-2 border-gray-200',
-                        'focus:border-blue-500 focus:outline-none text-sm sm:text-base',
-                        'resize-none text-gray-900 placeholder:text-gray-400',
-                        'min-h-[80px]'
-                      )}
-                      maxLength={1000}
-                    />
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-gray-500">{answerText.length}/1000</span>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => {
-                            setAnsweringQuestionId(null);
-                            setAnswerText('');
-                          }}
-                          disabled={isSubmittingAnswer}
-                        >
-                          {t('cancel')}
-                        </Button>
-                        <Button
-                          variant="accent"
-                          size="sm"
-                          onClick={() => handleAnswerSubmit(question.id)}
-                          disabled={isSubmittingAnswer || !answerText.trim()}
-                        >
-                          {isSubmittingAnswer ? t('submitting') : t('sendAnswer')}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ) : isOwner ? (
-                  <div className="pl-9 sm:pl-11">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => {
-                        setAnsweringQuestionId(question.id);
-                        setAnswerText('');
-                      }}
-                    >
-                      {t('answerQuestion')}
-                    </Button>
-                  </div>
-                ) : null}
               </div>
             ))}
           </ExpandableSection>
-        )}
-      </div>
-
-      {/* Question Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 sm:p-6" onClick={closeModal}>
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 sm:p-6 border-b-2 border-gray-200">
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-900">{t('modal.title')}</h3>
-              <button
-                onClick={closeModal}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl hover:bg-gray-100 flex items-center justify-center transition-colors"
-                aria-label={t('modal.close')}
-              >
-                <IconX size={18} className="sm:w-5 sm:h-5" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
-              {/* Success Message */}
-              {submitStatus === 'success' && (
-                <StatusMessage variant="success" title={t('modal.success.title')} message={t('modal.success.message')} />
-              )}
-
-              {/* Error Message */}
-              {submitStatus === 'error' && <StatusMessage variant="error" title={t('modal.error.title')} message={errorMessage} />}
-
-              <div className="space-y-2">
-                <label htmlFor="question" className="block text-xs sm:text-sm font-medium text-gray-900">
-                  {t('modal.questionLabel')}
-                </label>
-                <textarea
-                  id="question"
-                  value={questionText}
-                  onChange={(e) => setQuestionText(e.target.value)}
-                  placeholder={t('modal.placeholder')}
-                  className={cn(
-                    'w-full px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl border-2 border-gray-200',
-                    'focus:border-gray-400 focus:outline-none text-sm sm:text-base',
-                    'resize-none text-gray-900 placeholder:text-gray-400',
-                    'min-h-[100px] sm:min-h-[120px]'
-                  )}
-                  maxLength={500}
-                  required
-                  disabled={submitStatus === 'success'}
-                />
-                <div className="flex justify-between text-xs sm:text-sm text-gray-500">
-                  <span>{t('modal.helper')}</span>
-                  <span>{t('modal.characterCount', { current: questionText.length, max: 500 })}</span>
-                </div>
-              </div>
-
-              {/* Modal Footer */}
-              {submitStatus !== 'success' && (
-                <div className="flex gap-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={closeModal}
-                    className={cn(
-                      'flex-1 px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl border-2 border-gray-200',
-                      'hover:border-gray-400 text-sm sm:text-base font-semibold text-gray-700',
-                      'transition-all duration-200'
-                    )}
-                    disabled={isSubmitting}
-                  >
-                    {t('modal.cancel')}
-                  </button>
-                  <Button
-                    type="submit"
-                    variant="accent"
-                    size="lg"
-                    className="flex-1 rounded-xl font-semibold text-sm sm:text-base"
-                    disabled={isSubmitting || !questionText.trim()}
-                  >
-                    {isSubmitting ? t('modal.submitting') : t('modal.submit')}
-                  </Button>
-                </div>
-              )}
-            </form>
-          </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

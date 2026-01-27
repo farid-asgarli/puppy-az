@@ -40,4 +40,5 @@ public class PetAdQuestion : AuditableEntity<int>
 	// Navigation properties
 	public virtual PetAd PetAd { get; set; } = null!;
 	public virtual User User { get; set; } = null!;
+	public virtual ICollection<PetAdQuestionReply> Replies { get; set; } = new List<PetAdQuestionReply>();
 }

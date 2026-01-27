@@ -2308,7 +2308,10 @@
     "recentlyViewed": {
       "title": "Son baxılanlar",
       "description": "Yaxınlarda baxdığınız elanlar"
-    }
+    },
+    "hoursAgo": "saat əvvəl",
+    "minutesAgo": "dəqiqə əvvəl",
+    "justNow": "İndicə"
   },
   "petAdDetails": {
     "hero": {
@@ -2366,7 +2369,17 @@
       "call": "Zəng et",
       "email": "E-poçt",
       "callAriaLabel": "Satıcıya zəng edin",
-      "sendMessageAriaLabel": "Satıcıya mesaj göndərin"
+      "sendMessageAriaLabel": "Satıcıya mesaj göndərin",
+      "sendMessageTo": "{name} istifadəçisinə mesaj",
+      "regardingAd": "Elan haqqında:",
+      "messagePlaceholder": "Mesajınızı yazın...",
+      "cancel": "Ləğv et",
+      "send": "Göndər",
+      "sending": "Göndərilir...",
+      "messageRequired": "Mesaj mətni tələb olunur",
+      "messageSent": "Mesaj uğurla göndərildi",
+      "messageFailed": "Mesaj göndərilə bilmədi",
+      "cannotMessageSelf": "Özünüzə mesaj göndərə bilməzsiniz"
     },
     "questions": {
       "title": "Suallar və cavablar",
@@ -2376,6 +2389,14 @@
       "showAll": "Hamısını göstər ({count})",
       "showLess": "Daha az göstər",
       "answer": "Cavab",
+      "owner": "Satıcı",
+      "send": "Göndər",
+      "reply": "Cavab",
+      "repliesCount": "cavab",
+      "replyPlaceholder": "Cavabınızı yazın...",
+      "replySuccess": "Cavab uğurla əlavə edildi",
+      "replyError": "Cavab göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "cancel": "Ləğv et",
       "answerPlaceholder": "Cavabınızı yazın...",
       "sendAnswer": "Cavabı Göndər",
       "answerQuestion": "Cavabla",
@@ -2715,7 +2736,8 @@
           "medium": "Orta",
           "strong": "Güclü",
           "veryStrong": "Çox Güclü"
-        }
+        },
+        "passwordStrength": "Şifrə gücü"
       },
       "requirements": {
         "title": "Şifrə Tələbləri",

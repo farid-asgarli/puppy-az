@@ -407,6 +407,79 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.ToTable("Cities");
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("InitiatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("InitiatorUnreadCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsArchivedByInitiator")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsArchivedByOwner")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("LastMessageAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LastMessageContent")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("OwnerUnreadCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("PetAdId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InitiatorId");
+
+                    b.HasIndex("LastMessageAt");
+
+                    b.HasIndex("OwnerId");
+
+                    b.HasIndex("PetAdId");
+
+                    b.HasIndex("PetAdId", "InitiatorId", "OwnerId")
+                        .IsUnique();
+
+                    b.ToTable("Conversations", (string)null);
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.FavoriteAd", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -429,6 +502,66 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("FavoriteAds");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeletedByRecipient")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsDeletedBySender")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsRead")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAd", b =>
@@ -681,6 +814,58 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PetAdQuestions", (string)null);
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdQuestionReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsOwnerReply")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("QuestionId", "CreatedAt");
+
+                    b.ToTable("PetAdQuestionReplies", (string)null);
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdView", b =>
@@ -1166,6 +1351,33 @@ namespace PetWebsite.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.User", "Initiator")
+                        .WithMany("InitiatedConversations")
+                        .HasForeignKey("InitiatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.User", "Owner")
+                        .WithMany("ReceivedConversations")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.PetAd", "PetAd")
+                        .WithMany()
+                        .HasForeignKey("PetAdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Initiator");
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("PetAd");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.FavoriteAd", b =>
                 {
                     b.HasOne("PetWebsite.Domain.Entities.PetAd", "PetAd")
@@ -1183,6 +1395,25 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("PetAd");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.Message", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.User", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAd", b =>
@@ -1244,6 +1475,25 @@ namespace PetWebsite.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("PetAd");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdQuestionReply", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.PetAdQuestion", "Question")
+                        .WithMany("Replies")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Question");
 
                     b.Navigation("User");
                 });
@@ -1337,11 +1587,21 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("PetAds");
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAd", b =>
                 {
                     b.Navigation("Images");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdQuestion", b =>
+                {
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetBreed", b =>
@@ -1367,7 +1627,13 @@ namespace PetWebsite.Infrastructure.Migrations
                 {
                     b.Navigation("FavoriteAds");
 
+                    b.Navigation("InitiatedConversations");
+
                     b.Navigation("PetAds");
+
+                    b.Navigation("ReceivedConversations");
+
+                    b.Navigation("SentMessages");
 
                     b.Navigation("UploadedImages");
                 });

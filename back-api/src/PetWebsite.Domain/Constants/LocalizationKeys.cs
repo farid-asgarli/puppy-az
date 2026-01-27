@@ -51,6 +51,7 @@ public static class LocalizationKeys
 		public const string PhoneNumberMaxLength = "User.PhoneNumberMaxLength";
 		public const string ProfilePictureUrlMaxLength = "User.ProfilePictureUrlMaxLength";
 		public const string PasswordChangedSuccess = "User.PasswordChangedSuccess";
+		public const string CurrentPasswordIncorrect = "User.CurrentPasswordIncorrect";
 		public const string NewPasswordMustBeDifferent = "User.NewPasswordMustBeDifferent";
 		public const string IdInvalid = "User.IdInvalid";
 		public const string CreateFailed = "User.CreateFailed";
@@ -237,6 +238,7 @@ public static class LocalizationKeys
 		public const string OnlyAdOwnerCanAnswer = "PetAd.OnlyAdOwnerCanAnswer";
 		public const string QuestionAlreadyAnswered = "PetAd.QuestionAlreadyAnswered";
 		public const string QuestionAnsweredSuccess = "PetAd.QuestionAnsweredSuccess";
+		public const string ReplyAddedSuccess = "PetAd.ReplyAddedSuccess";
 		public const string OnlyAdOwnerCanDeleteQuestion = "PetAd.OnlyAdOwnerCanDeleteQuestion";
 	}
 
@@ -317,6 +319,23 @@ public static class LocalizationKeys
 		public const string PurposeRequired = "SMS.PurposeRequired";
 		public const string InvalidPurpose = "SMS.InvalidPurpose";
 		public const string VerificationFailed = "SMS.VerificationFailed";
+	}
+
+	/// <summary>
+	/// Message-related localization keys.
+	/// </summary>
+	public static class Message
+	{
+		public const string ReceiverRequired = "Message.ReceiverRequired";
+		public const string ContentRequired = "Message.ContentRequired";
+		public const string ContentTooLong = "Message.ContentTooLong";
+		public const string SendSuccess = "Message.SendSuccess";
+		public const string SendFailed = "Message.SendFailed";
+		public const string CannotMessageSelf = "Message.CannotMessageSelf";
+		public const string ConversationNotFound = "Message.ConversationNotFound";
+		public const string NotAuthorized = "Message.NotAuthorized";
+		public const string PetAdNotFound = "Message.PetAdNotFound";
+		public const string ReceiverNotFound = "Message.ReceiverNotFound";
 	}
 
 	/// <summary>

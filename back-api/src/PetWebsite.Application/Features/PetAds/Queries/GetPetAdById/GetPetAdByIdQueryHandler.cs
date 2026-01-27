@@ -92,6 +92,18 @@ public class GetPetAdByIdQueryHandler(
 						QuestionerName = q.User.FirstName + " " + q.User.LastName,
 						AskedAt = q.CreatedAt,
 						AnsweredAt = q.AnsweredAt,
+						Replies = q.Replies
+							.Where(r => !r.IsDeleted)
+							.OrderBy(r => r.CreatedAt)
+							.Select(r => new PetAdQuestionReplyDto
+							{
+								Id = r.Id,
+								Text = r.Text,
+								UserName = r.User.FirstName + " " + r.User.LastName,
+								IsOwnerReply = r.IsOwnerReply,
+								CreatedAt = r.CreatedAt,
+							})
+							.ToList(),
 					})
 					.ToList(),
 			})

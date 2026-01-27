@@ -376,6 +376,28 @@ export class PetAdService extends BaseService {
     );
   }
 
+  /**
+   * Reply to a question (Facebook-style comment system).
+   * Any authenticated user can reply to questions.
+   *
+   * @param questionId - The ID of the question
+   * @param text - The reply text
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async replyToQuestion(
+    questionId: number,
+    text: string,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.post<void>(
+      `/api/pet-ads/questions/${questionId}/replies`,
+      { text },
+      this.withAuth(token, locale),
+    );
+  }
+
   /**   * Record a view for a specific pet ad.
    * @param adId - The ID of the pet ad
    * @param token - Authorization token

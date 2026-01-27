@@ -552,6 +552,25 @@ export async function answerQuestionAction(
 }
 
 /**
+ * Reply to a question (Facebook-style comment system).
+ * Any authenticated user can reply to questions.
+ *
+ * @param questionId The ID of the question to reply to
+ * @param text The reply text
+ * @returns Success result with no data payload
+ */
+export async function replyToQuestionAction(
+  questionId: number,
+  text: string,
+): Promise<ActionResult<void>> {
+  const locale = await getCurrentLocale();
+  return withAuth(async (token) => {
+    await petAdService.replyToQuestion(questionId, text, token, locale);
+    return { success: true, data: undefined };
+  });
+}
+
+/**
  * Get all cities with localized names
  * Used by client components that need city data
  *
@@ -691,6 +710,27 @@ export async function getMyAdsQuestionsSummaryAction(): Promise<
   const locale = await getCurrentLocale();
   return withAuth(async (token) => {
     const result = await petAdService.getMyAdsQuestionsSummary(token, locale);
+    return { success: true, data: result };
+  });
+}
+
+/**
+ * Send a message to a pet ad owner
+ * **Authorization**: Required
+ */
+export interface SendMessageCommand {
+  receiverId: string;
+  petAdId: number;
+  content: string;
+}
+
+export async function sendMessageAction(
+  data: SendMessageCommand,
+): Promise<ActionResult<{ conversationId: number }>> {
+  const locale = await getCurrentLocale();
+  return withAuth(async (token) => {
+    const { messageService } = await import("../api/services/message.service");
+    const result = await messageService.sendMessage(data, token, locale);
     return { success: true, data: result };
   });
 }

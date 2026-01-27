@@ -62,6 +62,11 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 			await _dbContext.SmsVerificationCodes.AddAsync(verificationCode, cancellationToken);
 			await _dbContext.SaveChangesAsync(cancellationToken);
 
+			// FOR DEVELOPMENT: Skip actual SMS sending when using test code
+			// In production, this should send the real SMS
+			#if DEBUG
+			// Skip SMS sending in development - verification code is always 123456
+			#else
 			// Send SMS with verification code
 			try
 			{
@@ -78,6 +83,7 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 
 				return Result.Failure($"{L(LocalizationKeys.Sms.SendFailed)}: {smsEx.Message}", 400);
 			}
+			#endif
 
 			return Result.Success();
 		}

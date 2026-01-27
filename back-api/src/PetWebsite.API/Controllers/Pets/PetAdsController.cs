@@ -13,6 +13,7 @@ using PetWebsite.Application.Features.PetAds.Commands.ClosePetAd;
 using PetWebsite.Application.Features.PetAds.Commands.DeleteQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.IncrementViewCount;
 using PetWebsite.Application.Features.PetAds.Commands.RecordPetAdView;
+using PetWebsite.Application.Features.PetAds.Commands.ReplyToQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.SubmitPetAd;
 using PetWebsite.Application.Features.PetAds.Commands.UpdatePetAd;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetAdById;
@@ -33,7 +34,10 @@ namespace PetWebsite.API.Controllers.Pets;
 /// Controller for pet advertisement operations.
 /// </summary>
 [Authorize]
-public class PetAdsController(IMediator mediator, IStringLocalizer<PetAdsController> localizer) : BaseApiController(mediator, localizer)
+public class PetAdsController(
+	IMediator mediator, 
+	IStringLocalizer<PetAdsController> localizer,
+	ILogger<PetAdsController> logger) : BaseApiController(mediator, localizer)
 {
 	/// <summary>
 	/// Submit a new pet advertisement for review.
@@ -88,20 +92,37 @@ public class PetAdsController(IMediator mediator, IStringLocalizer<PetAdsControl
 	/// <summary>
 	/// Get all pet categories with ad counts.
 	/// </summary>
+	/// <param name="localeCode">Optional locale code (az, en, ru). If not provided, uses Accept-Language header</param>
 	/// <param name="cancellationToken">Cancellation token</param>
 	/// <returns>List of detailed pet categories</returns>
 	/// <response code="200">Returns the list of categories</response>
 	[HttpGet("categories/detailed")]
 	[AllowAnonymous]
 	[ProducesResponseType(typeof(List<PetCategoryDetailedDto>), StatusCodes.Status200OK)]
-	public async Task<IActionResult> GetPetCategoriesDetailed(CancellationToken cancellationToken)
+	public async Task<IActionResult> GetPetCategoriesDetailed(string? localeCode = null, CancellationToken cancellationToken = default)
 	{
-		var result = await Mediator.Send(new GetPetCategoriesDetailedQuery(), cancellationToken);
+		logger.LogDebug("[API] GetPetCategoriesDetailed called. LocaleCode: {LocaleCode}, AcceptLanguage: {AcceptLanguage}", 
+			localeCode ?? "null", 
+			Request.Headers["Accept-Language"].ToString());
+		
+		try
+		{
+			var result = await Mediator.Send(new GetPetCategoriesDetailedQuery(localeCode), cancellationToken);
 
-		if (result.IsSuccess)
-			return Ok(result.Data);
+			logger.LogDebug("[API] GetPetCategoriesDetailed result - IsSuccess: {IsSuccess}, Count: {Count}", 
+				result.IsSuccess, 
+				result.Data?.Count ?? 0);
 
-		return result.ToActionResult();
+			if (result.IsSuccess)
+				return Ok(result.Data);
+
+			return result.ToActionResult();
+		}
+		catch (Exception ex)
+		{
+			logger.LogError(ex, "[API] GetPetCategoriesDetailed FAILED with exception");
+			throw;
+		}
 	}
 
 	/// <summary>
@@ -451,6 +472,32 @@ public class PetAdsController(IMediator mediator, IStringLocalizer<PetAdsControl
 
 		if (result.IsSuccess)
 			return Ok(new { message = Localizer[LocalizationKeys.PetAd.QuestionAnsweredSuccess] });
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Reply to a question on a pet advertisement (Facebook-style comment system).
+	/// Any authenticated user can reply to questions.
+	/// </summary>
+	/// <param name="questionId">Question ID</param>
+	/// <param name="command">Reply command with text</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="200">Reply added successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="404">Question not found</response>
+	[HttpPost("questions/{questionId:int}/replies")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> ReplyToQuestion(int questionId, ReplyToQuestionCommand command, CancellationToken cancellationToken)
+	{
+		var replyCommand = command with { QuestionId = questionId };
+		var result = await Mediator.Send(replyCommand, cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(new { message = Localizer[LocalizationKeys.PetAd.ReplyAddedSuccess] });
 
 		return result.ToActionResult();
 	}

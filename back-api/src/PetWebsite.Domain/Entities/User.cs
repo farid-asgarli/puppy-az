@@ -20,6 +20,9 @@ public class User : IdentityUser<Guid>
 	public ICollection<PetAd> PetAds { get; set; } = [];
 	public ICollection<FavoriteAd> FavoriteAds { get; set; } = [];
 	public ICollection<PetAdImage> UploadedImages { get; set; } = [];
+	public ICollection<Conversation> InitiatedConversations { get; set; } = [];
+	public ICollection<Conversation> ReceivedConversations { get; set; } = [];
+	public ICollection<Message> SentMessages { get; set; } = [];
 
 	public string FullName => $"{FirstName} {LastName}";
 }

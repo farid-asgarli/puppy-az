@@ -202,6 +202,26 @@ export interface PetAdQuestionDto {
   askedAt: string; // ISO date-time
   answeredAt: string | null;
   isAnswered: boolean;
+  replies: PetAdQuestionReplyDto[];
+}
+
+/**
+ * Pet ad question reply (Facebook-style comment)
+ */
+export interface PetAdQuestionReplyDto {
+  id: number;
+  text: string;
+  userName: string;
+  isOwnerReply: boolean;
+  createdAt: string; // ISO date-time
+}
+
+/**
+ * Reply to a question command
+ */
+export interface ReplyToQuestionCommand {
+  questionId: number;
+  text: string;
 }
 
 /**

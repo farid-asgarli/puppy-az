@@ -2304,7 +2304,10 @@
     "recentlyViewed": {
       "title": "Recently Viewed",
       "description": "Ads you've viewed recently"
-    }
+    },
+    "hoursAgo": "hours ago",
+    "minutesAgo": "minutes ago",
+    "justNow": "Just now"
   },
   "petAdDetails": {
     "hero": {
@@ -2362,7 +2365,17 @@
       "call": "Call",
       "email": "Email",
       "callAriaLabel": "Call",
-      "sendMessageAriaLabel": "Send message"
+      "sendMessageAriaLabel": "Send message",
+      "sendMessageTo": "Message to {name}",
+      "regardingAd": "Regarding ad:",
+      "messagePlaceholder": "Write your message...",
+      "cancel": "Cancel",
+      "send": "Send",
+      "sending": "Sending...",
+      "messageRequired": "Message text is required",
+      "messageSent": "Message sent successfully",
+      "messageFailed": "Failed to send message",
+      "cannotMessageSelf": "You cannot message yourself"
     },
     "questions": {
       "title": "Questions & Answers",
@@ -2372,6 +2385,13 @@
       "showAll": "Show all questions ({count})",
       "showLess": "Show less",
       "answer": "Answer",
+      "owner": "Seller",
+      "send": "Send",
+      "reply": "Reply",
+      "repliesCount": "replies",
+      "replyPlaceholder": "Write your reply...",
+      "replySuccess": "Reply added successfully",
+      "replyError": "Failed to send reply. Please try again.",
       "answerPlaceholder": "Write your answer...",
       "sendAnswer": "Send Answer",
       "answerQuestion": "Answer",
@@ -2711,7 +2731,8 @@
           "medium": "Medium",
           "strong": "Strong",
           "veryStrong": "Very Strong"
-        }
+        },
+        "passwordStrength": "Password strength"
       },
       "requirements": {
         "title": "Password Requirements",
