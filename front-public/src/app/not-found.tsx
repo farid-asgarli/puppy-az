@@ -7,7 +7,7 @@ import { IconPaw, IconDog, IconCat, IconFeather, IconFish } from '@tabler/icons-
 import { SearchBarDesktopAnimated } from '@/lib/components/searchbar';
 import { SearchBarSyncProvider } from '@/lib/components/searchbar/searchbar-sync-context';
 import { FilterParams } from '@/lib/filtering/types';
-import { useRouter } from '@/i18n';
+import { useRouter } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { FilterDialogContext } from '@/lib/contexts/filter-dialog-context';
 

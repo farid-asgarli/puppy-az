@@ -34,6 +34,11 @@ if [ -d "$BACKEND_DIR/src/PetWebsite.API/wwwroot" ]; then
     rsync -av --exclude='uploads' "$BACKEND_DIR/src/PetWebsite.API/wwwroot/" "$BACKEND_DIR/publish/wwwroot/"
 fi
 
+# Fix ownership for www-data (important for file uploads)
+echo "[3.5/6] Fixing wwwroot permissions..."
+chown -R www-data:www-data "$BACKEND_DIR/publish/wwwroot"
+chmod -R 755 "$BACKEND_DIR/publish/wwwroot"
+
 # Restart Backend
 echo "[4/6] Restarting Backend service..."
 sudo systemctl restart petwebsite-api
