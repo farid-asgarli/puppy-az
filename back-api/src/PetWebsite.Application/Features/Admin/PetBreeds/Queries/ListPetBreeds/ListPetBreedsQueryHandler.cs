@@ -2,6 +2,7 @@ using Common.Repository.Abstraction;
 using Microsoft.EntityFrameworkCore;
 using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
+using PetWebsite.Domain.Entities;
 
 namespace PetWebsite.Application.Features.Admin.PetBreeds.Queries.ListPetBreeds;
 
@@ -15,8 +16,20 @@ public class ListPetBreedsQueryHandler(
 	{
 		var currentCulture = currentUserService.CurrentCulture;
 
+		IQueryable<PetBreed> breedsQuery = dbContext.PetBreeds.AsNoTracking()
+			.Include(b => b.Localizations)
+				.ThenInclude(l => l.AppLocale);
+
+		// Filter by category if provided
+		if (request.PetCategoryId.HasValue)
+			breedsQuery = breedsQuery.Where(b => b.PetCategoryId == request.PetCategoryId.Value);
+
+		// Filter deleted items
+		if (request.IncludeDeleted != true)
+			breedsQuery = breedsQuery.Where(b => !b.IsDeleted);
+
 		var query =
-			from breed in dbContext.PetBreeds.AsNoTracking()
+			from breed in breedsQuery
 			let breedLocalization = breed.Localizations.FirstOrDefault(l => l.AppLocale.Code == currentCulture)
 				?? breed.Localizations.FirstOrDefault(l => l.AppLocale.IsDefault)
 			let categoryLocalization = breed.Category.Localizations.FirstOrDefault(l => l.AppLocale.Code == currentCulture)
@@ -30,6 +43,13 @@ public class ListPetBreedsQueryHandler(
 				PetCategoryId = breed.PetCategoryId,
 				CategoryTitle = categoryLocalization != null ? categoryLocalization.Title : "",
 				PetAdsCount = breed.PetAds.Count(a => !a.IsDeleted),
+				Localizations = breed.Localizations.Select(l => new PetBreedLocalizationDto
+				{
+					Id = l.Id,
+					PetBreedId = l.PetBreedId,
+					LocaleCode = l.AppLocale.Code,
+					Title = l.Title
+				}).ToList(),
 				CreatedAt = breed.CreatedAt,
 			};
 

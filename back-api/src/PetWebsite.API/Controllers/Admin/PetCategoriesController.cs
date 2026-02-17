@@ -18,7 +18,7 @@ namespace PetWebsite.API.Controllers.Admin;
 /// <summary>
 /// Controller for managing pet categories (admin only).
 /// </summary>
-[Authorize(Roles = AuthorizationConstants.Roles.Admin)]
+[Authorize(Roles = $"{AuthorizationConstants.Roles.SuperAdmin},{AuthorizationConstants.Roles.Admin}")]
 public class PetCategoriesController(IMediator mediator, IStringLocalizer<PetCategoriesController> localizer)
 	: AdminBaseController(mediator, localizer)
 {

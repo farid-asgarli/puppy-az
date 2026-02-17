@@ -14,15 +14,11 @@ import {
   UploadedImageInfo,
 } from "@/lib/types/ad-placement.types";
 import { useAuth } from "@/lib/hooks/use-auth";
-import {
-  PetAdType,
-  MyPetAdDto,
-  PetAdStatus,
-} from "@/lib/api/types/pet-ad.types";
+import { PetAdType, PetAdStatus } from "@/lib/api/types/pet-ad.types";
 import { getMyPetAdAction } from "@/lib/auth/actions";
 
 // Helper function to get step order based on ad type
-function getStepOrder(adType: PetAdType | null): string[] {
+function getStepOrder(_adType: PetAdType | null): string[] {
   const baseSteps = [
     "ad-type",
     "category",
@@ -32,14 +28,11 @@ function getStepOrder(adType: PetAdType | null): string[] {
     "details",
     "location",
     "photos",
+    "price",
+    "review",
   ];
 
-  // Only add price step for Sale ads
-  if (adType === PetAdType.Sale) {
-    return [...baseSteps, "price", "review"];
-  }
-
-  return [...baseSteps, "review"];
+  return baseSteps;
 }
 
 interface AdPlacementContextValue {
@@ -70,6 +63,7 @@ interface SavedDraft {
   timestamp: number;
   currentStep?: string;
   maxReachedStep?: string;
+  editingAdId?: number | null;
 }
 
 export function AdPlacementProvider({
@@ -110,18 +104,26 @@ export function AdPlacementProvider({
     }
   }, [draftStorageKey]);
 
-  // Auto-save to localStorage whenever formData changes
+  // Auto-save to localStorage whenever formData changes or editingAdId changes
   useEffect(() => {
-    if (isDirty && draftStorageKey) {
+    if (draftStorageKey && (isDirty || editingAdId !== null)) {
       const draft: SavedDraft = {
         data: formData,
         timestamp: Date.now(),
         currentStep,
         maxReachedStep,
+        editingAdId,
       };
       localStorage.setItem(draftStorageKey, JSON.stringify(draft));
     }
-  }, [formData, isDirty, draftStorageKey, currentStep, maxReachedStep]);
+  }, [
+    formData,
+    isDirty,
+    draftStorageKey,
+    currentStep,
+    maxReachedStep,
+    editingAdId,
+  ]);
 
   const loadDraftInternal = (storageKey: string) => {
     try {
@@ -144,6 +146,10 @@ export function AdPlacementProvider({
       }
       if (parsed.maxReachedStep) {
         setMaxReachedStep(parsed.maxReachedStep);
+      }
+      // Restore edit mode if it was saved
+      if (parsed.editingAdId !== undefined) {
+        setEditingAdId(parsed.editingAdId);
       }
       setIsDirty(false);
     } catch (error) {
@@ -223,8 +229,14 @@ export function AdPlacementProvider({
       const expirationTime = DRAFT_EXPIRATION_DAYS * 24 * 60 * 60 * 1000;
       const isExpired = Date.now() - parsed.timestamp > expirationTime;
 
-      return !isExpired;
-    } catch (error) {
+      if (isExpired) return false;
+
+      // Draft must have meaningful data — at least adType must be selected
+      // (prevents showing "Continue" for empty/initial drafts created by step navigation)
+      if (!parsed.data?.adType) return false;
+
+      return true;
+    } catch {
       return false;
     }
   }, [draftStorageKey]);
@@ -241,7 +253,7 @@ export function AdPlacementProvider({
 
       if (isExpired) return null;
       return parsed.currentStep || "/ads/ad-placement/ad-type";
-    } catch (error) {
+    } catch {
       return null;
     }
   }, [draftStorageKey]);
@@ -259,13 +271,8 @@ export function AdPlacementProvider({
 
       const adData = result.data;
 
-      // Check if ad can be edited (only pending, rejected, or draft)
-      const editableStatuses = [
-        PetAdStatus.Pending,
-        PetAdStatus.Rejected,
-        PetAdStatus.Draft,
-      ];
-      if (!editableStatuses.includes(adData.status)) {
+      // Check if ad can be edited (cannot edit Closed ads)
+      if (adData.status === PetAdStatus.Closed) {
         console.error("Ad cannot be edited - status:", adData.status);
         return false;
       }
@@ -275,12 +282,15 @@ export function AdPlacementProvider({
         adType: adData.adType,
         categoryId: adData.breed?.categoryId ?? null,
         petBreedId: adData.breed?.id ?? null,
+        suggestedBreedName: "",
         gender: adData.gender,
         size: adData.size,
         ageInMonths: adData.ageInMonths,
         color: adData.color ?? "",
         weight: adData.weight,
         cityId: adData.cityId,
+        districtId: adData.districtId ?? null,
+        customDistrictName: adData.customDistrictName ?? "",
         uploadedImages:
           adData.images?.map(
             (img): UploadedImageInfo => ({
@@ -313,7 +323,11 @@ export function AdPlacementProvider({
     setCurrentStepState("/ads/ad-placement/ad-type");
     setMaxReachedStep("/ads/ad-placement/ad-type");
     setIsDirty(false);
-  }, []);
+    // Clear localStorage to avoid restoring edit mode
+    if (draftStorageKey) {
+      localStorage.removeItem(draftStorageKey);
+    }
+  }, [draftStorageKey]);
 
   return (
     <AdPlacementContext.Provider

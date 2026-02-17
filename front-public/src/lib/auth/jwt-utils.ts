@@ -9,20 +9,20 @@ export class JwtUtils {
    * Parse JWT payload without verification
    * Works in both Node.js and browser environments
    */
-  static parsePayload(token: string): Record<string, any> | null {
+  static parsePayload(token: string): Record<string, unknown> | null {
     try {
-      const parts = token.split('.');
+      const parts = token.split(".");
       if (parts.length !== 3) return null;
 
       // Decode payload (Base64 URL encoded)
       // Support both Node.js and browser environments
       const base64Url = parts[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
 
       let jsonPayload: string;
-      if (typeof window === 'undefined') {
+      if (typeof window === "undefined") {
         // Node.js environment
-        jsonPayload = Buffer.from(base64, 'base64').toString();
+        jsonPayload = Buffer.from(base64, "base64").toString();
       } else {
         // Browser environment
         jsonPayload = atob(base64);
@@ -45,7 +45,7 @@ export class JwtUtils {
 
     const now = Math.floor(Date.now() / 1000);
     // Add buffer time to prevent edge cases where token expires during request
-    return payload.exp < now + bufferSeconds;
+    return (payload.exp as number) < now + bufferSeconds;
   }
 
   /**
@@ -55,6 +55,6 @@ export class JwtUtils {
     const payload = this.parsePayload(token);
     if (!payload || !payload.exp) return null;
 
-    return new Date(payload.exp * 1000);
+    return new Date((payload.exp as number) * 1000);
   }
 }

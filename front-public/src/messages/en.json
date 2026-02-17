@@ -5,6 +5,7 @@
     "myAds": "My Ads",
     "draftAds": "Unfinished ad",
     "favorites": "Favorites",
+    "messages": "Messages",
     "myAccount": "My Account",
     "login": "Login",
     "register": "Register",
@@ -97,12 +98,23 @@
       }
     },
     "petGender": {
+      "other": "I don't know",
       "male": "Male",
       "female": "Female"
+    },
+    "petBreed": {
+      "other": "Other"
     },
     "clipboard": {
       "linkCopied": "Link copied!",
       "copyFailed": "Copy failed"
+    },
+    "allPets": "All ads",
+    "recentSearch": {
+      "upTo": "up to",
+      "size": "size",
+      "monthShort": "mo",
+      "yearShort": "yr"
     }
   },
   "auth": {
@@ -495,6 +507,7 @@
     "maxPhotos": "Maximum {count} photos",
     "age": "Age",
     "gender": "Gender",
+    "other": "Other",
     "male": "Male",
     "female": "Female",
     "vaccinated": "Vaccinated",
@@ -566,6 +579,7 @@
     "searchTips": "Search tips",
     "searchTipsActive": "Tap any field to change filters. Clear all to start over.",
     "searchTipsInactive": "Select filters to find your perfect pet. You can combine multiple criteria.",
+    "categories": "Popular categories",
     "clearAll": "Clear all",
     "searchButton": "Search",
     "yearsOld": "years old",
@@ -596,6 +610,10 @@
     "reset": "Reset",
     "city": "City",
     "allCities": "All cities",
+    "district": "District",
+    "allDistricts": "All districts",
+    "selectCityFirst": "Select city first",
+    "other": "Other",
     "male": "Male",
     "female": "Female",
     "size": "Size",
@@ -624,6 +642,7 @@
       "badge": "Pet marketplace in Azerbaijan",
       "trustIndicators": {
         "activeAds": "10,000+ active ads",
+        "activeAdsLabel": "active ads",
         "safeShopping": "Safe shopping",
         "verifiedSellers": "Verified sellers"
       },
@@ -633,6 +652,7 @@
       "title": "Why puppy.az?",
       "subtitle": "There are many reasons to choose us",
       "activeUsers": "10,000+ active users already trust us",
+      "activeUsersLabel": "active users already trust us",
       "platformDescription": "The most reliable and convenient platform to find or sell your pet",
       "stats": {
         "users": "Users",
@@ -701,6 +721,7 @@
       "trustIndicators": {
         "freeRegistration": "Free registration",
         "activeAds": "10,000+ active ads",
+        "activeAdsLabel": "active ads",
         "safePlatform": "Safe platform"
       }
     },
@@ -708,11 +729,22 @@
       "title": "Popular categories",
       "viewAll": "View all"
     },
+    "latestAds": {
+      "title": "Latest additions",
+      "subtitle": "The most recently added listings on our platform",
+      "badge": "New listings"
+    },
     "premiumAds": {
       "title": "Featured pets",
       "subtitle": "Premium ads from verified and trusted sellers",
       "badge": "Premium Ads",
       "carouselTitle": "Premium ads",
+      "viewAll": "View all"
+    },
+    "recentlyViewed": {
+      "title": "Recently viewed",
+      "subtitle": "Ads you recently viewed",
+      "empty": "You haven't viewed any ads yet",
       "viewAll": "View all"
     }
   },
@@ -722,10 +754,15 @@
       "subtitle": "Platform created for animal lovers"
     },
     "hero": {
-      "title": "The platform that makes animal buying and selling safe and easy in Azerbaijan",
-      "description1": "puppy.az was founded in 2023 with the mission of creating a reliable and user-friendly platform for animal lovers in Azerbaijan.",
-      "description2": "We want to help animals find worthy homes and meet responsible owners who will care for them.",
+      "title": "A reliable and safe platform for pets in Azerbaijan",
+      "description1": "Conceived in 2017 and actively developed since 2024, puppy.az platform organizes the buying, selling, and adoption of pets in a transparent and reliable manner.",
+      "description2": "We combine technology and humanistic values to ensure every pet in Azerbaijan finds a safe and responsible owner.",
       "imageCaption": "A world full of animals"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "subtitle": "Ensuring a safe future for pets",
+      "description": "By uniting the buying, selling, and adoption process of pets in Azerbaijan on a transparent, reliable, and secure platform, ensuring every animal receives proper care and every owner makes a responsible choice."
     },
     "sections": {
       "stats": {
@@ -775,38 +812,46 @@
     },
     "team": {
       "founder": {
-        "name": "Ali Mammadov",
+        "name": "Rufat Aliyev",
         "role": "Founder and CEO",
-        "description": "Created puppy.az with the desire to build a bridge between animal love and technology."
+        "description": "Sets the company's strategic direction and brings its vision to life."
       },
       "productManager": {
-        "name": "Leyla Hasanova",
-        "role": "Chief Product Manager",
-        "description": "Product designer and animal rights activist with 10 years of experience."
+        "name": "Shafiga Alakbarova",
+        "role": "Board Member and COO",
+        "description": "Oversees daily operations and team management across the company."
       },
       "technicalDirector": {
-        "name": "Rashad Ismayilov",
-        "role": "Technical Director",
-        "description": "Manages platform architecture and technical solutions."
+        "name": "Farid Asgarli",
+        "role": "CTO",
+        "description": "Leads technology infrastructure and product development."
       }
     },
     "milestones": {
+      "idea": {
+        "year": "2017",
+        "title": "Project concept",
+        "description": "The initial concept and core mission of puppy.az platform were defined."
+      },
+      "research": {
+        "year": "2018-2023",
+        "title": "Strategy and preparation",
+        "description": "Market research, technical infrastructure, and business model planning."
+      },
+      "development": {
+        "year": "2024",
+        "title": "Active engagement",
+        "description": "Team formation and full-time dedication to the project."
+      },
       "launch": {
-        "title": "Platform launched",
-        "description": "puppy.az started operating as the first online platform for animal trading in Azerbaijan."
-      },
-      "tenKAds": {
-        "title": "10,000+ ads",
-        "description": "In the first year, more than 10,000 successful ads were posted and thousands of animals found new homes."
-      },
-      "premium": {
-        "title": "Premium services",
-        "description": "Premium services and additional features were introduced for users."
+        "year": "2025",
+        "title": "Platform development",
+        "description": "Technical development, functionality implementation, and testing."
       },
       "future": {
-        "year": "Future",
-        "title": "Expansion plans",
-        "description": "We are working on regional expansion and mobile application."
+        "year": "2026",
+        "title": "Public release",
+        "description": "puppy.az platform was officially launched to users."
       }
     },
     "contact": {
@@ -1231,7 +1276,7 @@
     }
   },
   "footer": {
-    "description": "Pet marketplace in Azerbaijan. The easiest way to find dogs, cats and other pets.",
+    "description": "Trusted pet marketplace in Azerbaijan. Helping every pet find a loving home.",
     "company": "Company",
     "about": "About",
     "careers": "Careers",
@@ -1247,7 +1292,7 @@
     "events": "Events",
     "guides": "Guides",
     "partnership": "Partnership",
-    "copyright": "© 2026 Puppy.az",
+    "copyright": "© {year} Puppy.az",
     "terms": "Terms",
     "privacy": "Privacy",
     "allRightsReserved": "All rights reserved",
@@ -1284,7 +1329,8 @@
     "closeMessage": "Close message",
     "facebook": "Facebook",
     "instagram": "Instagram",
-    "twitter": "Twitter",
+    "tiktok": "TikTok",
+    "linkedin": "LinkedIn",
     "priceRange": "Price range",
     "minPrice": "Minimum price",
     "maxPrice": "Maximum price",
@@ -1633,7 +1679,8 @@
     "stats": {
       "totalAds": "Total ads",
       "viewsThisMonth": "Views this month",
-      "favorites": "Favorites"
+      "favorites": "Favorites",
+      "unansweredQuestions": "Unanswered questions"
     },
     "quickActions": {
       "newAd": {
@@ -1705,6 +1752,18 @@
         "subtitle": "App and privacy"
       }
     },
+    "notifications": {
+      "newMessages": {
+        "title": "You have new messages!",
+        "description": "{count, plural, one {You have # unread message} other {You have # unread messages}}",
+        "action": "Read Messages"
+      },
+      "newQuestions": {
+        "title": "You have new questions on your ads!",
+        "description": "{count, plural, one {You have # unanswered question} other {You have # unanswered questions}}",
+        "action": "Answer"
+      }
+    },
     "questions": {
       "title": "Questions & Answers",
       "subtitle": "Manage questions about your ads",
@@ -1718,8 +1777,10 @@
         "unansweredQuestions": "Unanswered",
         "answeredQuestions": "Answered",
         "adsWithQuestions": "Ads with Questions",
-        "latestQuestion": "Latest Question"
+        "latestQuestion": "Latest Question",
+        "allAnswered": "All questions answered! Great job! 🎉"
       },
+      "endOfList": "You've reached the end",
       "card": {
         "askedBy": "Asked by {name}",
         "askedAt": "Asked {time}",
@@ -1729,7 +1790,10 @@
         "viewAd": "View Ad",
         "yourAnswer": "Your answer:",
         "question": "Question:",
-        "noAnswer": "Not answered yet"
+        "noAnswer": "Not answered yet",
+        "replies": "Replies",
+        "owner": "Owner",
+        "answered": "Answered"
       },
       "emptyStates": {
         "noQuestions": {
@@ -1768,13 +1832,15 @@
         "active": "Active",
         "pending": "Pending",
         "rejected": "Rejected",
+        "expired": "Expired",
         "all": "All"
       },
       "summary": {
         "totalAds": "Total Ads",
         "activeAds": "Active",
         "pendingAds": "Pending Review",
-        "rejectedAds": "Rejected"
+        "rejectedAds": "Rejected",
+        "expiredAds": "Expired"
       },
       "emptyStates": {
         "noAds": {
@@ -1792,6 +1858,10 @@
         "noRejected": {
           "title": "No Rejected Ads",
           "description": "Great! None of your ads have been rejected. All your posted ads are either active or pending."
+        },
+        "noExpired": {
+          "title": "No Expired Ads",
+          "description": "You don't have any expired ads at the moment."
         }
       },
       "actions": {
@@ -1832,7 +1902,7 @@
     "data": {
       "lastUpdated": "November 4, 2025",
       "supportEmail": "support@puppy.az",
-      "phoneNumber": "+994 12 345 67 89",
+      "phoneNumber": "+994 55 338 81 06",
       "workingHours": "Monday - Friday, 09:00 - 18:00"
     },
     "categories": {
@@ -2250,6 +2320,8 @@
   },
   "adsSearch": {
     "resultsHeader": {
+      "postAd": "Post Ad",
+      "postAdShort": "Post",
       "searching": "Searching...",
       "adsCount": "{count} ads",
       "foundInCategory": "{count} ads found in {category}",
@@ -2267,16 +2339,18 @@
       "category": "Category",
       "breed": "Breed",
       "city": "City",
+      "district": "District",
       "gender": {
-        "male": "Male",
-        "female": "Female"
+        "other": "Gender: Other",
+        "male": "Gender: Male",
+        "female": "Gender: Female"
       },
       "size": {
-        "extraSmall": "Extra Small",
-        "small": "Small",
-        "medium": "Medium",
-        "large": "Large",
-        "extraLarge": "Extra Large"
+        "extraSmall": "Size: Extra Small",
+        "small": "Size: Small",
+        "medium": "Size: Medium",
+        "large": "Size: Large",
+        "extraLarge": "Size: Extra Large"
       },
       "priceMin": "Min: {value} AZN",
       "priceMax": "Max: {value} AZN",
@@ -2299,7 +2373,8 @@
     },
     "recentSearches": {
       "title": "Recent searches",
-      "clearAll": "Clear all"
+      "clearAll": "Clear all",
+      "clearHistory": "Clear"
     },
     "recentlyViewed": {
       "title": "Recently Viewed",
@@ -2310,6 +2385,33 @@
     "justNow": "Just now"
   },
   "petAdDetails": {
+    "statusBanner": {
+      "editButton": "Edit ad",
+      "pending": {
+        "title": "Your ad is under review",
+        "description": "It will be visible to everyone once approved.",
+        "badge": "Pending"
+      },
+      "rejected": {
+        "title": "Your ad was rejected",
+        "description": "You can edit and resubmit it.",
+        "reasonLabel": "Reason",
+        "badge": "Rejected"
+      },
+      "expired": {
+        "title": "Your ad has expired",
+        "description": "Renew it to make it active again.",
+        "renewButton": "Renew",
+        "renewError": "Failed to renew the ad. Please try again.",
+        "renewedTitle": "Ad renewed!",
+        "renewedDescription": "Your ad has been sent for review and will be active once approved."
+      },
+      "deactivateButton": "Deactivate",
+      "deactivateConfirm": "Once deactivated, this ad will no longer be visible to anyone. You can reactivate it later.",
+      "deactivateError": "Failed to deactivate the ad. Please try again.",
+      "deactivateModalTitle": "Deactivate ad?",
+      "cancelButton": "Cancel"
+    },
     "hero": {
       "premium": "Premium",
       "priceNotApplicable": "Price not applicable",
@@ -2326,17 +2428,20 @@
       "gender": {
         "label": "Gender",
         "male": "Male",
-        "female": "Female"
+        "female": "Female",
+        "notSpecified": "Not specified"
       },
       "age": {
         "label": "Age",
         "months": "{count} months",
         "years": "{count} years",
-        "yearsMonths": "{years} years {months} months"
+        "yearsMonths": "{years} years {months} months",
+        "notSpecified": "Not specified"
       },
       "weight": {
         "label": "Weight",
-        "kg": "{value} kg"
+        "kg": "{value} kg",
+        "notSpecified": "Not specified"
       },
       "color": {
         "label": "Color"
@@ -2358,6 +2463,7 @@
     "contactCard": {
       "price": "Price",
       "free": "Free",
+      "negotiable": "Negotiable",
       "contact": "Contact",
       "memberSince": "Member since {date}",
       "seller": "Seller",
@@ -2376,6 +2482,11 @@
       "messageSent": "Message sent successfully",
       "messageFailed": "Failed to send message",
       "cannotMessageSelf": "You cannot message yourself"
+    },
+    "recentlyViewed": {
+      "title": "Recently viewed",
+      "description": "You have viewed these pets before",
+      "empty": "You haven't viewed any ads yet"
     },
     "questions": {
       "title": "Questions & Answers",
@@ -2399,6 +2510,22 @@
       "submitting": "Sending...",
       "answerSuccess": "Answer sent successfully",
       "answerError": "Failed to send answer. Please try again.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteReply": "Delete reply",
+      "deleteAnswer": "Delete answer",
+      "deleteQuestionTitle": "Delete question",
+      "deleteReplyTitle": "Delete reply",
+      "deleteAnswerTitle": "Delete answer",
+      "deleteConfirm": "Are you sure you want to delete this question? All replies will also be deleted.",
+      "deleteReplyConfirm": "Are you sure you want to delete this reply?",
+      "deleteAnswerConfirm": "Are you sure you want to delete this answer?",
+      "deleteSuccess": "Question deleted successfully",
+      "deleteError": "Failed to delete question. Please try again.",
+      "deleteReplySuccess": "Reply deleted successfully",
+      "deleteReplyError": "Failed to delete reply. Please try again.",
+      "deleteAnswerSuccess": "Answer deleted successfully",
+      "deleteAnswerError": "Failed to delete answer. Please try again.",
       "modal": {
         "title": "Ask a question",
         "close": "Close",
@@ -2876,7 +3003,8 @@
       "month": "month",
       "months": "months",
       "exampleLabel": "Example:",
-      "exampleAge": "2 years 6 months"
+      "exampleAge": "2 years 6 months",
+      "optional": "(optional)"
     },
     "reviewView": {
       "heading": "Review your listing",
@@ -2895,6 +3023,7 @@
       "editDetails": "Edit details",
       "adTypeLabel": "Ad Type",
       "breedLabel": "Breed",
+      "suggestedBreed": "suggested",
       "genderLabel": "Gender",
       "sizeLabel": "Size",
       "ageLabel": "Age",
@@ -2912,9 +3041,13 @@
       "whatHappensText": "After you submit, your ad will be reviewed and published within 24 hours. You'll receive a notification once it's live.",
       "submittingLabel": "Submitting...",
       "submitLabel": "Submit Ad",
+      "updateLabel": "Update",
+      "fillAllFields": "Please fill in all required fields",
       "successDialog": {
         "title": "Ad submitted successfully!",
         "message": "Congratulations! Your ad has been submitted and will be published after moderation.",
+        "updateTitle": "Ad updated!",
+        "updateMessage": "Your ad has been successfully updated and sent for review.",
         "infoText": "Your ad is usually reviewed within 24 hours. You will receive a notification when it's activated.",
         "buttonText": "View My Ads"
       }
@@ -2982,7 +3115,23 @@
       "resultsCount": "{count, plural, one {# city} other {# cities}}",
       "noMatch": "No cities match \"{query}\"",
       "clearSearch": "Clear search",
-      "loading": "Loading cities..."
+      "loading": "Loading cities...",
+      "districtHeading": "Select a district",
+      "districtSubtitle": "Specify the area within {city}",
+      "districtPlaceholderHint": "Select a city first",
+      "districtPlaceholderTitle": "District selection",
+      "districtPlaceholderDescription": "Districts will appear here after you select a city",
+      "districtSearchPlaceholder": "Search for a district...",
+      "districtLoading": "Loading districts...",
+      "noDistricts": "No districts available for this city",
+      "cantFindDistrict": "Not in the list? Type it manually",
+      "customDistrictTitle": "Enter district manually",
+      "customDistrictDescription": "Type the name of the area not in the list",
+      "customDistrictPlaceholder": "E.g.: Badamdar, Shuvalan...",
+      "customDistrictAdded": "District name noted",
+      "submitCustomDistrict": "Confirm",
+      "customDistrictSuccess": "District submitted successfully! It will be added to the list after review.",
+      "cancelCustomDistrict": "Cancel"
     },
     "breedView": {
       "heading": "Select your pet's breed",
@@ -2991,7 +3140,22 @@
       "searchPlaceholder": "Search for a breed...",
       "noResults": "No results found",
       "resultsCount": "{count} breed{plural}",
-      "loading": "Loading breeds..."
+      "loading": "Loading breeds...",
+      "optional": "This field is optional",
+      "otherBreed": "Other",
+      "noMatchMessage": "No breeds match \"{query}\"",
+      "suggestBreed": "Suggest \"{name}\" as a breed",
+      "clearSearch": "Clear search",
+      "cantFindBreed": "Can't find your breed?",
+      "suggestTitle": "Suggest a new breed",
+      "suggestDescription": "If your pet's breed is not in the list, type the name. It will be reviewed and added to the list.",
+      "suggestPlaceholder": "Type the breed name...",
+      "submitSuggestion": "Submit suggestion",
+      "submitting": "Submitting...",
+      "cancel": "Cancel",
+      "suggestionSent": "Your suggestion has been sent! It will be reviewed and added to the list.",
+      "suggestionError": "Failed to submit suggestion. Please try again.",
+      "suggestionNote": "Please type the breed name correctly. It will be added after review."
     },
     "categoryView": {
       "heading": "What type of pet are you listing?",
@@ -3073,7 +3237,8 @@
     },
     "price": {
       "notApplicable": "Price does not apply",
-      "free": "Free"
+      "free": "Free",
+      "negotiable": "Negotiable"
     }
   },
   "adEdit": {
@@ -3484,7 +3649,8 @@
       "success": {
         "title": "Message Sent!",
         "message": "We'll get back to you shortly. Thank you!"
-      }
+      },
+      "error": "An error occurred while sending your message. Please try again later."
     },
     "quickLinks": {
       "title": "Useful Links",

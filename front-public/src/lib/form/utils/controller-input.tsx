@@ -1,8 +1,24 @@
-import { Control, Controller, ControllerProps, ControllerRenderProps, FieldPath, FieldValues, PathValue, UseControllerProps } from 'react-hook-form';
-import { InputNamesToProps, inputDefaultValues, renderGenericInput } from './generic-input';
-import { merge } from '@/lib/utils/merge';
+import {
+  Control,
+  Controller,
+  ControllerProps,
+  ControllerRenderProps,
+  FieldPath,
+  FieldValues,
+  PathValue,
+  UseControllerProps,
+} from "react-hook-form";
+import {
+  InputNamesToProps,
+  inputDefaultValues,
+  renderGenericInput,
+} from "./generic-input";
+import { merge } from "@/lib/utils/merge";
 
-type ControlledInputNameToProps<K extends keyof InputNamesToProps> = Omit<InputNamesToProps[K], 'name' | 'disabled'>;
+type ControlledInputNameToProps<K extends keyof InputNamesToProps> = Omit<
+  InputNamesToProps[K],
+  "name" | "disabled"
+>;
 
 type ControlledInputAdapterProps<TValue> = {
   onChange?: (value: TValue) => TValue;
@@ -13,7 +29,7 @@ export type InputObjectProps = {
   [Type in keyof InputNamesToProps]: {
     type: Type;
     props?: ControlledInputNameToProps<Type>;
-    controlProps?: Omit<UseControllerProps, 'name' | 'control'>;
+    controlProps?: Omit<UseControllerProps, "name" | "control">;
     adapter?: ControlledInputAdapterProps<PathValue<FieldValues, string>>;
   };
 }[keyof InputNamesToProps];
@@ -23,16 +39,23 @@ export type InputObjectMapping = {
 };
 
 export type RHKInputEntries<M extends InputObjectMapping> = {
-  [P in keyof M]: any;
+  [P in keyof M]: unknown;
 };
 
-function resolveAdapter<TFieldValues extends FieldValues = FieldValues, TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>>(
+function resolveAdapter<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>(
   field: ControllerRenderProps<TFieldValues, TName>,
-  adapterProps: ControlledInputAdapterProps<PathValue<TFieldValues, TName>> | undefined
+  adapterProps:
+    | ControlledInputAdapterProps<PathValue<TFieldValues, TName>>
+    | undefined,
 ) {
   if (adapterProps)
     return {
-      value: adapterProps?.value ? adapterProps.value(field.value) : field.value,
+      value: adapterProps?.value
+        ? adapterProps.value(field.value)
+        : field.value,
       onChange: adapterProps?.onChange
         ? function (val: PathValue<TFieldValues, TName>) {
             return field.onChange(adapterProps.onChange?.(val));
@@ -44,18 +67,21 @@ function resolveAdapter<TFieldValues extends FieldValues = FieldValues, TName ex
 export function renderControlledInput<
   K extends keyof InputNamesToProps,
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >(
   type: K,
   props: ControlledInputNameToProps<K>,
-  controllerProps: Omit<ControllerProps<TFieldValues, TName>, 'render'>,
-  adapterProps?: ControlledInputAdapterProps<PathValue<TFieldValues, TName>>
+  controllerProps: Omit<ControllerProps<TFieldValues, TName>, "render">,
+  adapterProps?: ControlledInputAdapterProps<PathValue<TFieldValues, TName>>,
 ) {
   return (
     <Controller
       {...controllerProps}
       key={controllerProps.name}
-      defaultValue={controllerProps.defaultValue ?? (inputDefaultValues[type] as PathValue<TFieldValues, TName>)}
+      defaultValue={
+        controllerProps.defaultValue ??
+        (inputDefaultValues[type] as PathValue<TFieldValues, TName>)
+      }
       render={({ field, fieldState }) =>
         renderGenericInput(type, {
           disabled: controllerProps.disabled,
@@ -69,11 +95,22 @@ export function renderControlledInput<
   );
 }
 
-export function formFactory<M extends InputObjectMapping, TFieldValues extends FieldValues = FieldValues>(
+export function formFactory<
+  M extends InputObjectMapping,
+  TFieldValues extends FieldValues = FieldValues,
+>(
   inputMap: M,
-  config: { control: Control<TFieldValues>; rules?: UseControllerProps<TFieldValues>['rules']; disableAll?: boolean; shouldUnregister?: boolean }
+  config: {
+    control: Control<TFieldValues>;
+    rules?: UseControllerProps<TFieldValues>["rules"];
+    disableAll?: boolean;
+    shouldUnregister?: boolean;
+  },
 ) {
-  function input<TName extends keyof M & FieldPath<TFieldValues>>(name: TName, props?: ControlledInputNameToProps<M[TName]['type']>) {
+  function input<TName extends keyof M & FieldPath<TFieldValues>>(
+    name: TName,
+    props?: ControlledInputNameToProps<M[TName]["type"]>,
+  ) {
     const inputConfig = inputMap[name];
     return renderControlledInput(
       inputConfig.type,
@@ -86,12 +123,18 @@ export function formFactory<M extends InputObjectMapping, TFieldValues extends F
         shouldUnregister: config.shouldUnregister,
         rules: merge(config.rules, inputConfig.controlProps?.rules),
       },
-      inputConfig.adapter
+      inputConfig.adapter,
     );
   }
 
-  function inputs<TName extends keyof M & FieldPath<TFieldValues>>(names?: TName[], props?: any) {
-    const inputNamesToRender = names && names.length > 0 ? names : (Object.keys(inputMap) as Array<TName>);
+  function inputs<TName extends keyof M & FieldPath<TFieldValues>>(
+    names?: TName[],
+    props?: ControlledInputNameToProps<M[TName]["type"]>,
+  ) {
+    const inputNamesToRender =
+      names && names.length > 0
+        ? names
+        : (Object.keys(inputMap) as Array<TName>);
     return inputNamesToRender.map((it) => input(it, props));
   }
 

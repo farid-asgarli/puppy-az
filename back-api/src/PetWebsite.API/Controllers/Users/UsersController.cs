@@ -19,6 +19,7 @@ using PetWebsite.Application.Features.Users.Commands.UploadProfilePicture;
 using PetWebsite.Application.Features.Users.Queries.GetUserActiveAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserDashboardStats;
+using PetWebsite.Application.Features.Users.Queries.GetUserExpiredAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserPendingAds;
 using PetWebsite.Application.Features.Users.Queries.GetUserProfile;
 using PetWebsite.Application.Features.Users.Queries.GetUserRejectedAds;
@@ -307,6 +308,28 @@ public class UsersController(IMediator mediator, IStringLocalizer<UsersControlle
 	[ProducesResponseType(typeof(PaginatedResult<PetAdListItemDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 	public async Task<IActionResult> GetRejectedAds([FromBody] GetUserRejectedAdsQuery querySpec, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(querySpec, cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Get the current user's expired pet advertisements.
+	/// Expired ads can be reactivated by the user.
+	/// </summary>
+	/// <param name="querySpec">Query specification with filter and pagination options</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Paginated list of expired pet ads</returns>
+	/// <response code="200">Returns the paginated list of expired pet ads</response>
+	/// <response code="401">User is not authenticated</response>
+	[HttpPost("ads/expired")]
+	[ProducesResponseType(typeof(PaginatedResult<PetAdListItemDto>), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	public async Task<IActionResult> GetExpiredAds([FromBody] GetUserExpiredAdsQuery querySpec, CancellationToken cancellationToken)
 	{
 		var result = await Mediator.Send(querySpec, cancellationToken);
 

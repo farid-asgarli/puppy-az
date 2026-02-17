@@ -1,135 +1,57 @@
 import { BaseService } from "../core/base-service";
-import {
-  PaginatedResult,
-  QuerySpecification,
-} from "@/lib/api/types/common.types";
+import type {
+  ConversationDto,
+  ConversationDetailsDto,
+  SendMessageCommand,
+  SendMessageResponse,
+} from "../types/message.types";
 
 /**
- * Send message command
- */
-export interface SendMessageCommand {
-  receiverId: string;
-  petAdId: number;
-  content: string;
-}
-
-/**
- * Message DTO
- */
-export interface MessageDto {
-  id: number;
-  conversationId: number;
-  senderId: string;
-  senderName: string;
-  content: string;
-  isRead: boolean;
-  createdAt: string;
-}
-
-/**
- * Conversation DTO
- */
-export interface ConversationDto {
-  id: number;
-  petAdId: number;
-  petAdTitle: string;
-  petAdImageUrl: string | null;
-  otherUserId: string;
-  otherUserName: string;
-  otherUserProfilePictureUrl: string | null;
-  lastMessage: string;
-  lastMessageAt: string;
-  unreadCount: number;
-}
-
-/**
- * Conversation detail DTO
- */
-export interface ConversationDetailDto extends ConversationDto {
-  messages: MessageDto[];
-}
-
-/**
- * Message service
- * Handles all messaging-related API calls
+ * Message Service
+ * Handles message and conversation operations
  */
 export class MessageService extends BaseService {
   /**
-   * Send a message to a user about a pet ad
-   */
-  async sendMessage(
-    command: SendMessageCommand,
-    token: string,
-    locale?: string,
-  ): Promise<{ conversationId: number }> {
-    const context = this.withAuth(token, locale);
-    return this.http.post<{ conversationId: number }>(
-      "/api/messages",
-      command,
-      context,
-    );
-  }
-
-  /**
-   * Get user's conversations
+   * Get all conversations for the current user
    */
   async getConversations(
-    query: QuerySpecification,
     token: string,
     locale?: string,
-  ): Promise<PaginatedResult<ConversationDto>> {
+  ): Promise<ConversationDto[]> {
     const context = this.withAuth(token, locale);
-    return this.http.post<PaginatedResult<ConversationDto>>(
+    return this.http.get<ConversationDto[]>(
       "/api/messages/conversations",
-      query,
       context,
     );
   }
 
   /**
-   * Get a specific conversation with messages
+   * Get conversation details with messages
    */
-  async getConversation(
+  async getConversationDetails(
     conversationId: number,
     token: string,
     locale?: string,
-  ): Promise<ConversationDetailDto> {
+  ): Promise<ConversationDetailsDto> {
     const context = this.withAuth(token, locale);
-    return this.http.get<ConversationDetailDto>(
+    return this.http.get<ConversationDetailsDto>(
       `/api/messages/conversations/${conversationId}`,
       context,
     );
   }
 
   /**
-   * Send a reply in an existing conversation
+   * Send a message
    */
-  async sendReply(
-    conversationId: number,
-    content: string,
+  async sendMessage(
+    command: SendMessageCommand,
     token: string,
     locale?: string,
-  ): Promise<MessageDto> {
+  ): Promise<SendMessageResponse> {
     const context = this.withAuth(token, locale);
-    return this.http.post<MessageDto>(
-      `/api/messages/conversations/${conversationId}/reply`,
-      { content },
-      context,
-    );
-  }
-
-  /**
-   * Mark messages in a conversation as read
-   */
-  async markAsRead(
-    conversationId: number,
-    token: string,
-    locale?: string,
-  ): Promise<void> {
-    const context = this.withAuth(token, locale);
-    return this.http.post<void>(
-      `/api/messages/conversations/${conversationId}/read`,
-      {},
+    return this.http.post<SendMessageResponse>(
+      "/api/messages/send",
+      command,
       context,
     );
   }
@@ -139,8 +61,49 @@ export class MessageService extends BaseService {
    */
   async getUnreadCount(token: string, locale?: string): Promise<number> {
     const context = this.withAuth(token, locale);
-    return this.http.get<number>("/api/messages/unread-count", context);
+    const response = await this.http.get<{ unreadCount: number }>(
+      "/api/messages/unread-count",
+      context,
+    );
+    return response.unreadCount;
+  }
+
+  /**
+   * Update a message
+   */
+  async updateMessage(
+    messageId: number,
+    content: string,
+    token: string,
+    locale?: string,
+  ): Promise<{ isSuccess: boolean; error?: string }> {
+    const context = this.withAuth(token, locale);
+    return this.http.put<{ isSuccess: boolean; error?: string }>(
+      `/api/messages/${messageId}`,
+      { content },
+      context,
+    );
+  }
+
+  /**
+   * Delete a message
+   */
+  async deleteMessage(
+    messageId: number,
+    token: string,
+    locale?: string,
+  ): Promise<{ isSuccess: boolean; error?: string }> {
+    const context = this.withAuth(token, locale);
+    return this.http.delete<{ isSuccess: boolean; error?: string }>(
+      `/api/messages/${messageId}`,
+      context,
+    );
   }
 }
+
+/**
+ * Message service
+ * Handles all messaging-related API calls
+ */
 
 export const messageService = new MessageService();

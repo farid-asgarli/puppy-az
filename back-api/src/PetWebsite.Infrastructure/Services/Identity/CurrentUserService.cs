@@ -72,4 +72,23 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICur
 
 		return null;
 	}
+
+	public Guid? AdminUserId
+	{
+		get
+		{
+			// For admin users, we use the standard sub (NameIdentifier) claim which contains the Guid ID
+			// Admin users authenticate via the same JWT system as regular users
+			var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+			
+			// Check if this is an admin user by checking for admin roles
+			var isAdmin = IsInAnyRole("SuperAdmin", "Admin", "Moderator");
+			if (isAdmin && Guid.TryParse(userIdClaim, out var adminId))
+			{
+				return adminId;
+			}
+			
+			return null;
+		}
+	}
 }

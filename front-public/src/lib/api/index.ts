@@ -39,6 +39,11 @@ export {
   FavoriteAdService,
 } from "./services/favorite-ad.service";
 export { citiesService, CitiesService } from "./services/cities.service";
+export {
+  petAdTypesService,
+  PetAdTypesService,
+} from "./services/pet-ad-types.service";
+export { messageService, MessageService } from "./services/message.service";
 
 export {
   LogicalOperator,
@@ -83,6 +88,16 @@ export type {
   AnswerQuestionCommand,
 } from "./types/pet-ad.types";
 
-export type { CityDto } from "./types/city.types";
+export type { CityDto, DistrictDto } from "./types/city.types";
+
+export type { PetAdTypeDto, MappedPetAdType } from "./types/pet-ad-type.types";
+
+export type {
+  ConversationDto,
+  ConversationDetailsDto,
+  MessageDto,
+  SendMessageCommand,
+} from "./types/message.types";
 
 export { PetAdType, PetGender, PetSize } from "./types/pet-ad.types";
+export type { PetColorDto } from "./types/pet-ad.types";

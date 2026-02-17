@@ -32,6 +32,11 @@ public class GetPetCategoriesQueryHandler(IApplicationDbContext dbContext, ICurr
 						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
 						.Select(l => l.Subtitle)
 						.FirstOrDefault() ?? "",
+				Slug =
+					c.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
+						.Select(l => l.Slug)
+						.FirstOrDefault() ?? "",
 			})
 			.ToListAsync(ct);
 

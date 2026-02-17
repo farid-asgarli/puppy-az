@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState, useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
-export interface PaginatedAdsResult<T = any> {
+export interface PaginatedAdsResult<T = unknown> {
   items: T[];
   totalCount: number;
   hasNextPage: boolean;
 }
 
-export interface UsePaginatedAdsOptions<T = any> {
+export interface UsePaginatedAdsOptions<T = unknown> {
   /**
    * Function to fetch ads for a given page
    * Should return items, totalCount, and hasNextPage
@@ -32,7 +32,7 @@ export interface UsePaginatedAdsOptions<T = any> {
   fetchOnMount?: boolean;
 }
 
-export interface UsePaginatedAdsReturn<T = any> {
+export interface UsePaginatedAdsReturn<T = unknown> {
   /**
    * Current list of ads
    */
@@ -112,7 +112,7 @@ export interface UsePaginatedAdsReturn<T = any> {
  * });
  * ```
  */
-export function usePaginatedAds<T = any>({
+export function usePaginatedAds<T = unknown>({
   fetchAds,
   pageSize = 24,
   refetchKey,
@@ -125,7 +125,7 @@ export function usePaginatedAds<T = any>({
   const [totalCount, setTotalCount] = useState(0);
   const [hasMore, setHasMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const t = useTranslations('errors');
+  const t = useTranslations("errors");
 
   // Fetch function that can be called for initial load or refetch
   const fetch = useCallback(
@@ -153,8 +153,8 @@ export function usePaginatedAds<T = any>({
         setHasMore(result.hasNextPage);
         setCurrentPage(page);
       } catch (err) {
-        console.error('Failed to fetch ads:', err);
-        setError(err instanceof Error ? err.message : t('fetchAdsFailed'));
+        console.error("Failed to fetch ads:", err);
+        setError(err instanceof Error ? err.message : t("fetchAdsFailed"));
 
         if (!append) {
           setAds([]);
@@ -166,7 +166,7 @@ export function usePaginatedAds<T = any>({
         setIsLoadingMore(false);
       }
     },
-    [fetchAds, pageSize, t]
+    [fetchAds, pageSize, t],
   );
 
   // Load more for infinite scroll

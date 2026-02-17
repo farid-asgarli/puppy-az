@@ -159,6 +159,7 @@ export default function RangeSlider({
       document.removeEventListener("mouseup", handleInteractionEnd);
       document.removeEventListener("touchend", handleInteractionEnd);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSliding, boundedMinValue, boundedMaxValue, onChange, min, max, step]);
 
   // Focus management for keyboard users

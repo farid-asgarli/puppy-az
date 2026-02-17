@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 interface FilterDialogContextValue {
   isOpen: boolean;
@@ -8,7 +8,8 @@ interface FilterDialogContextValue {
   closeDialog: () => void;
 }
 
-export const FilterDialogContext = createContext<FilterDialogContextValue | null>(null);
+export const FilterDialogContext =
+  createContext<FilterDialogContextValue | null>(null);
 
 /**
  * Hook to access FilterDialog state from any component in the main layout
@@ -17,7 +18,12 @@ export const FilterDialogContext = createContext<FilterDialogContextValue | null
 export function useFilterDialog() {
   const context = useContext(FilterDialogContext);
   if (!context) {
-    throw new Error('useFilterDialog must be used within FilterDialogContext.Provider');
+    // Return no-op defaults when used outside FilterDialogContext.Provider (e.g. not-found page)
+    return {
+      isOpen: false,
+      openDialog: () => {},
+      closeDialog: () => {},
+    };
   }
   return context;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import PriceRangeSlider from "@/lib/components/filters/price-range";
 import { DEFAULT_FILTER_VALUES } from "@/lib/filtering/filter-default-values";
 import { FilterParams } from "@/lib/filtering/types";
@@ -8,19 +8,29 @@ import { SearchableSelect } from "@/lib/form/components/select/select";
 import { IconToggleButton } from "@/lib/form/components/toggle/toggle.component";
 import TextInput from "@/lib/form/components/text/text-input.component";
 import Row from "@/lib/primitives/row/row.component";
-import { IconVenus, IconMars } from "@tabler/icons-react";
+import {
+  IconVenus,
+  IconMars,
+  IconGenderBigender,
+  IconX,
+  IconChevronDown,
+} from "@tabler/icons-react";
 import {
   PetGender,
   PetSize,
   CityDto,
+  DistrictDto,
   PetAdType,
   PetCategoryDetailedDto,
   PetBreedDto,
+  PetColorDto,
 } from "@/lib/api";
 import { citiesService } from "@/lib/api/services/cities.service";
 import { petAdService } from "@/lib/api/services/pet-ad.service";
+import { DisplayCache } from "@/lib/caching/display-cache";
 import { cn } from "@/lib/external/utils";
-import { getPetSizes, getAdTypes } from "@/lib/utils/mappers";
+import { getPetSizes } from "@/lib/utils/mappers";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
 import { Heading } from "@/lib/primitives/typography";
 import { useTranslations } from "next-intl";
 import { useLocale } from "@/lib/hooks/use-client-locale";
@@ -46,12 +56,16 @@ export const FilterBody = ({
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [breeds, setBreeds] = useState<PetBreedDto[]>([]);
   const [isLoadingBreeds, setIsLoadingBreeds] = useState(false);
+  const [colors, setColors] = useState<PetColorDto[]>([]);
+  const [isLoadingColors, setIsLoadingColors] = useState(true);
+  const [districts, setDistricts] = useState<DistrictDto[]>([]);
+  const [isLoadingDistricts, setIsLoadingDistricts] = useState(false);
   const t = useTranslations("filters");
   const tCommon = useTranslations("common");
   const tSearch = useTranslations("search");
 
   const petSizes = useMemo(() => getPetSizes(tCommon), [tCommon]);
-  const adTypes = useMemo(() => getAdTypes(tCommon), [tCommon]);
+  const { adTypesWithIcons } = useAdTypes();
 
   useEffect(() => {
     // If cities were provided as prop (from SSR cache), use them
@@ -108,6 +122,8 @@ export const FilterBody = ({
           locale,
         );
         setBreeds(breedsData);
+        // Cache breeds so buildSlugFilterUrl can resolve breed slugs for SEO URLs
+        DisplayCache.setBreeds(currentFilters.category!, breedsData);
       } catch (error) {
         console.error("Failed to load breeds:", error);
       } finally {
@@ -118,14 +134,65 @@ export const FilterBody = ({
     loadBreeds();
   }, [currentFilters.category, locale]);
 
+  // Load colors
+  useEffect(() => {
+    const loadColors = async () => {
+      try {
+        const colorsData = await petAdService.getPetColors(locale);
+        setColors(colorsData);
+      } catch (error) {
+        console.error("Failed to load colors:", error);
+      } finally {
+        setIsLoadingColors(false);
+      }
+    };
+
+    loadColors();
+  }, [locale]);
+
+  // Load districts when city changes
+  useEffect(() => {
+    if (!currentFilters.city) {
+      setDistricts([]);
+      return;
+    }
+
+    const loadDistricts = async () => {
+      setIsLoadingDistricts(true);
+      try {
+        const districtsData = await citiesService.getDistrictsByCity(
+          currentFilters.city!,
+          locale,
+        );
+        setDistricts(districtsData);
+      } catch (error) {
+        console.error("Failed to load districts:", error);
+      } finally {
+        setIsLoadingDistricts(false);
+      }
+    };
+
+    loadDistricts();
+  }, [currentFilters.city, locale]);
+
   const cityOptions = cities.map((city) => ({
     value: city.id.toString(),
     label: city.name || "",
   }));
 
-  const adTypeOptions = Object.entries(adTypes).map(([key, value]) => ({
-    value: key,
-    label: value.title,
+  const districtOptions = districts.map((district) => ({
+    value: district.id.toString(),
+    label: district.name || "",
+  }));
+
+  const adTypeOptions = adTypesWithIcons.map((type) => ({
+    value: type.id.toString(),
+    label: type.title,
+  }));
+
+  const colorOptions = colors.map((color) => ({
+    value: color.key,
+    label: color.title,
   }));
 
   const categoryOptions = categories.map((cat) => ({
@@ -148,7 +215,6 @@ export const FilterBody = ({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
           {/* Ad Type */}
           <SearchableSelect
-            usePortal={false}
             value={currentFilters["ad-type"]?.toString() || ""}
             onChange={(val) =>
               updateFilter(
@@ -166,7 +232,6 @@ export const FilterBody = ({
 
           {/* Category */}
           <SearchableSelect
-            usePortal={false}
             value={currentFilters.category?.toString() || ""}
             onChange={(val) => {
               const newCategory = val && val !== "" ? Number(val) : undefined;
@@ -186,7 +251,6 @@ export const FilterBody = ({
           {/* Breed */}
           <div className="relative group">
             <SearchableSelect
-              usePortal={false}
               value={currentFilters.breed?.toString() || ""}
               onChange={(val) =>
                 updateFilter(
@@ -201,6 +265,7 @@ export const FilterBody = ({
                   : tSearch("selectCategoryFirst")
               }
               disabled={!currentFilters.category || isLoadingBreeds}
+              loading={isLoadingBreeds}
               size="sm"
               clearable
             />
@@ -208,25 +273,56 @@ export const FilterBody = ({
         </div>
       </div>
 
-      {/* City Filter */}
+      {/* City & District Filter */}
       <div className="mb-6 sm:mb-8">
-        <Heading
-          variant="label"
-          as="h3"
-          className="mb-3 sm:mb-4 text-sm sm:text-base"
-        >
-          {t("city")}
-        </Heading>
-        <SearchableSelect
-          usePortal={false}
-          value={currentFilters["city"]?.toString()}
-          onChange={(val) =>
-            updateFilter("city", val ? Number(val) : undefined)
-          }
-          options={cityOptions}
-          placeholder={t("allCities")}
-          disabled={isLoadingCities}
-        />
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <Heading
+              variant="label"
+              as="h3"
+              className="mb-3 sm:mb-4 text-sm sm:text-base"
+            >
+              {t("city")}
+            </Heading>
+            <SearchableSelect
+              value={currentFilters["city"]?.toString() || ""}
+              onChange={(val) => {
+                const newCity = val ? Number(val) : undefined;
+                updateFilter("city", newCity);
+                // Clear district when city changes
+                if (!newCity || newCity !== currentFilters.city) {
+                  updateFilter("district", undefined);
+                }
+              }}
+              options={cityOptions}
+              placeholder={t("allCities")}
+              disabled={isLoadingCities}
+              clearable
+            />
+          </div>
+          <div>
+            <Heading
+              variant="label"
+              as="h3"
+              className="mb-3 sm:mb-4 text-sm sm:text-base"
+            >
+              {t("district")}
+            </Heading>
+            <SearchableSelect
+              value={currentFilters["district"]?.toString() || ""}
+              onChange={(val) =>
+                updateFilter("district", val ? Number(val) : undefined)
+              }
+              options={districtOptions}
+              placeholder={
+                currentFilters.city ? t("allDistricts") : t("selectCityFirst")
+              }
+              disabled={!currentFilters.city || isLoadingDistricts}
+              loading={isLoadingDistricts}
+              clearable
+            />
+          </div>
+        </div>
       </div>
 
       {/* Gender Filter */}
@@ -239,6 +335,16 @@ export const FilterBody = ({
           {t("gender")}
         </Heading>
         <Row gap="sm">
+          <IconToggleButton
+            icon={IconGenderBigender}
+            label={t("other")}
+            size="md"
+            isActive={currentFilters["gender"] === PetGender.Unknown}
+            onChange={(isActive) =>
+              updateFilter("gender", isActive ? PetGender.Unknown : undefined)
+            }
+            fullWidth
+          />
           <IconToggleButton
             icon={IconMars}
             label={t("male")}
@@ -416,15 +522,160 @@ export const FilterBody = ({
         >
           {t("color")}
         </Heading>
-        <TextInput
-          type="text"
+        <ColorCombobox
+          options={colorOptions}
+          value={currentFilters["color"]?.toString()}
+          onChange={(val) => updateFilter("color", val || undefined)}
           placeholder={t("colorPlaceholder")}
-          value={currentFilters["color"] || ""}
-          onChange={(e) => updateFilter("color", e.target.value || undefined)}
-          size="md"
-          fullWidth
+          disabled={isLoadingColors}
         />
       </div>
     </div>
   );
 };
+
+/**
+ * Inline combobox for color selection
+ * - Type directly in input to search/filter
+ * - Click to open dropdown
+ * - Clear button to reset
+ * - No separate search field
+ */
+function ColorCombobox({
+  options,
+  value,
+  onChange,
+  placeholder,
+  disabled,
+}: {
+  options: { value: string; label: string }[];
+  value?: string;
+  onChange: (val: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = options.find((o) => o.value === value);
+
+  // Normalize text for search: handles Azerbaijani İ/i, ə, ö, ü, ş, ç, ğ
+  const normalizeForSearch = (s: string) =>
+    s
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const filteredOptions = searchTerm
+    ? options.filter((o) =>
+        normalizeForSearch(o.label).includes(normalizeForSearch(searchTerm)),
+      )
+    : options;
+
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+        setSearchTerm("");
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleSelect = (val: string) => {
+    onChange(val);
+    setIsOpen(false);
+    setSearchTerm("");
+  };
+
+  const handleClear = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onChange("");
+    setSearchTerm("");
+    setIsOpen(false);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (!isOpen) setIsOpen(true);
+  };
+
+  const handleInputFocus = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <div ref={containerRef} className="relative">
+      <div
+        className={cn(
+          "flex items-center rounded-xl border-2 bg-gray-50 transition-all duration-200",
+          isOpen
+            ? "border-gray-300 bg-white"
+            : "border-gray-200 hover:border-gray-300 hover:bg-white",
+          disabled && "opacity-50 pointer-events-none",
+        )}
+      >
+        <input
+          ref={inputRef}
+          type="text"
+          value={isOpen ? searchTerm : selectedOption?.label || ""}
+          onChange={handleInputChange}
+          onFocus={handleInputFocus}
+          placeholder={selectedOption ? selectedOption.label : placeholder}
+          className="flex-1 min-w-0 py-3 px-4 bg-transparent text-gray-900 placeholder-gray-400 focus:outline-none text-base rounded-xl"
+          disabled={disabled}
+        />
+        {value && (
+          <button
+            type="button"
+            onMouseDown={handleClear}
+            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-200 transition-colors"
+          >
+            <IconX size={16} className="text-gray-500" />
+          </button>
+        )}
+        <IconChevronDown
+          size={18}
+          className={cn(
+            "text-gray-400 mr-3 shrink-0 transition-transform duration-200",
+            isOpen && "rotate-180",
+          )}
+        />
+      </div>
+
+      {isOpen && filteredOptions.length > 0 && (
+        <div className="absolute z-50 mt-1 w-full max-h-48 overflow-y-auto bg-white border border-gray-200 rounded-xl shadow-lg">
+          {filteredOptions.map((option) => (
+            <button
+              key={option.value}
+              type="button"
+              onClick={() => handleSelect(option.value)}
+              className={cn(
+                "w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-gray-50",
+                option.value === value
+                  ? "text-primary-600 font-medium bg-primary-50"
+                  : "text-gray-700",
+              )}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {isOpen && filteredOptions.length === 0 && searchTerm && (
+        <div className="absolute z-50 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg p-4 text-center text-sm text-gray-400">
+          Nəticə tapılmadı
+        </div>
+      )}
+    </div>
+  );
+}

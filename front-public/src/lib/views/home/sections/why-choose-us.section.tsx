@@ -11,9 +11,34 @@ import {
 import { cn } from "@/lib/external/utils";
 import { SectionHeader } from "@/lib/components/views/common";
 import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
 
 export const WhyChooseUsSection = () => {
   const t = useTranslations("home.whyChooseUs");
+  const [realStats, setRealStats] = useState<{
+    activeAds: number;
+    totalUsers: number;
+  } | null>(null);
+
+  // Fetch real statistics from backend
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/statistics`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRealStats({
+          activeAds: data.activeAds,
+          totalUsers: data.totalUsers,
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch statistics:", error);
+      });
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num < 500) return num.toString();
+    return `${Math.floor(num / 500) * 500}+`;
+  };
 
   const features = [
     {
@@ -130,7 +155,9 @@ export const WhyChooseUsSection = () => {
           <div className="text-center pt-4 sm:pt-6">
             <div className="max-w-2xl mx-auto space-y-4">
               <p className="text-base sm:text-lg text-gray-700 font-medium">
-                {t("activeUsers")}
+                {realStats
+                  ? `${formatNumber(realStats.totalUsers)} ${t("activeUsersLabel")}`
+                  : t("activeUsers")}
               </p>
               <p className="text-sm sm:text-base text-gray-600">
                 {t("platformDescription")}

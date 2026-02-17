@@ -29,11 +29,11 @@ public class GetUserPendingAdsQueryHandler(
 
 		var currentCulture = currentUserService.CurrentCulture;
 
-		// Get user's pending ads (status = Pending or Rejected)
+		// Get user's pending ads (status = Pending only)
 		var query = dbContext
 			.PetAds.WhereNotDeleted<PetAd, int>()
 			.AsNoTracking()
-			.Where(p => p.UserId == userId && (p.Status == PetAdStatus.Pending || p.Status == PetAdStatus.Rejected))
+			.Where(p => p.UserId == userId && p.Status == PetAdStatus.Pending)
 			.OrderByDescending(p => p.CreatedAt)
 			.Select(PetAdProjections.ToMyListItemDto(currentCulture));
 
@@ -47,6 +47,10 @@ public class GetUserPendingAdsQueryHandler(
 		foreach (var item in items)
 		{
 			item.PrimaryImageUrl = urlService.ToAbsoluteUrl(item.PrimaryImageUrl);
+			foreach (var image in item.Images)
+			{
+				image.Url = urlService.ToAbsoluteUrl(image.Url);
+			}
 		}
 
 		var result = new PaginatedResult<MyPetAdListItemDto>

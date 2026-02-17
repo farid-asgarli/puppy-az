@@ -18,6 +18,11 @@ public class PetBreedLocalization : Localization
 	public string Title { get; set; } = string.Empty;
 
 	/// <summary>
+	/// Gets or sets the URL-friendly slug for this breed in the given locale.
+	/// </summary>
+	public string Slug { get; set; } = string.Empty;
+
+	/// <summary>
 	/// Navigation property to the pet breed.
 	/// </summary>
 	public PetBreed PetBreed { get; set; } = null!;

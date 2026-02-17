@@ -8,6 +8,7 @@ import {
   IconBrandInstagram,
   IconBrandFacebook,
   IconBrandTiktok,
+  IconBrandLinkedin,
   IconArrowRight,
   IconSparkles,
   IconChevronDown,
@@ -43,19 +44,24 @@ const PressView = () => {
 
   const socialLinks = [
     {
-      icon: IconBrandInstagram,
-      name: "Instagram",
-      href: "https://instagram.com/puppy.az",
-    },
-    {
       icon: IconBrandFacebook,
       name: "Facebook",
       href: "https://facebook.com/puppy.az",
     },
     {
+      icon: IconBrandInstagram,
+      name: "Instagram",
+      href: "https://instagram.com/puppy.az",
+    },
+    {
       icon: IconBrandTiktok,
       name: "TikTok",
       href: "https://tiktok.com/@puppy.az",
+    },
+    {
+      icon: IconBrandLinkedin,
+      name: "LinkedIn",
+      href: "https://linkedin.com/company/puppy-az",
     },
   ];
 

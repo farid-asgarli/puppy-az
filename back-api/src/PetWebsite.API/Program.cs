@@ -4,6 +4,8 @@ using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using PetWebsite.API.Conventions;
 using PetWebsite.API.Extensions;
+using PetWebsite.API.Hubs;
+using PetWebsite.API.Services;
 using PetWebsite.Application;
 using PetWebsite.Infrastructure;
 
@@ -70,6 +72,16 @@ builder.Services.AddCachingConfiguration();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
+// Add SignalR
+builder.Services.AddSignalR(options =>
+{
+	options.EnableDetailedErrors = builder.Environment.IsDevelopment();
+	options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+	options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+});
+builder.Services.AddScoped<INotificationService, NotificationService>();
+Console.WriteLine("[DEBUG] SignalR configured");
+
 var app = builder.Build();
 
 // Seed database - DISABLED FOR NOW
@@ -94,6 +106,10 @@ app.ConfigureSwagger();
 
 app.MapControllers();
 Console.WriteLine("[DEBUG] Controllers mapped");
+
+// Map SignalR hub
+app.MapHub<NotificationHub>("/hubs/notifications");
+Console.WriteLine("[DEBUG] SignalR NotificationHub mapped to /hubs/notifications");
 
 // Map health check endpoints
 app.MapHealthCheckEndpoints();

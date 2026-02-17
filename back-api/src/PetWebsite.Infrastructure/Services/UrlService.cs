@@ -29,6 +29,9 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 		// Ensure the relative path starts with a forward slash
 		var path = relativePath.StartsWith('/') ? relativePath : $"/{relativePath}";
 
+		// URL-encode each segment of the path to handle spaces, commas, etc.
+		path = EncodePathSegments(path);
+
 		// Priority 1: Use explicitly configured base URL (most reliable for production)
 		if (!string.IsNullOrEmpty(_configuredBaseUrl))
 		{
@@ -50,6 +53,23 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 		var scheme = !string.IsNullOrEmpty(forwardedProto) ? forwardedProto : request.Scheme;
 
 		return $"{scheme}://{host}{path}";
+	}
+
+	/// <summary>
+	/// Encode each segment of the path individually, preserving '/' separators.
+	/// Handles filenames with spaces, commas, and other special characters.
+	/// </summary>
+	private static string EncodePathSegments(string path)
+	{
+		var segments = path.Split('/');
+		for (var i = 0; i < segments.Length; i++)
+		{
+			if (!string.IsNullOrEmpty(segments[i]))
+			{
+				segments[i] = Uri.EscapeDataString(segments[i]);
+			}
+		}
+		return string.Join("/", segments);
 	}
 
 	public IEnumerable<string> ToAbsoluteUrls(IEnumerable<string?> relativePaths)

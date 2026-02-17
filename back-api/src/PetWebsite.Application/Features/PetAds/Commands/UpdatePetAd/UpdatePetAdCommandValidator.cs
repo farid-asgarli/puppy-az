@@ -2,11 +2,15 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using PetWebsite.Application.Common.Validators;
 using PetWebsite.Domain.Constants;
+using PetWebsite.Domain.Enums;
 
 namespace PetWebsite.Application.Features.PetAds.Commands.UpdatePetAd;
 
 public class UpdatePetAdCommandValidator : BaseValidator<UpdatePetAdCommand>
 {
+	// Ad types where breed and age are optional (Found, Owning)
+	private static readonly PetAdType[] OptionalBreedAgeAdTypes = [PetAdType.Found, PetAdType.Owning];
+
 	public UpdatePetAdCommandValidator(IStringLocalizer localizer)
 		: base(localizer)
 	{
@@ -24,13 +28,24 @@ public class UpdatePetAdCommandValidator : BaseValidator<UpdatePetAdCommand>
 			.MaximumLength(2000)
 			.WithMessage(L(LocalizationKeys.PetAd.DescriptionMaxLength));
 
+		// Age is always optional - user can skip it
 		RuleFor(x => x.AgeInMonths)
 			.GreaterThanOrEqualTo(0)
 			.WithMessage(L(LocalizationKeys.PetAd.AgeInvalid))
 			.LessThanOrEqualTo(300)
-			.WithMessage(L(LocalizationKeys.PetAd.AgeTooHigh));
+			.WithMessage(L(LocalizationKeys.PetAd.AgeTooHigh))
+			.When(x => x.AgeInMonths.HasValue);
 
-		RuleFor(x => x.Gender).IsInEnum().WithMessage(L(LocalizationKeys.PetAd.GenderInvalid));
+		// Gender is required for Sale, Lost, Match but optional for Found, Owning
+		RuleFor(x => x.Gender)
+			.NotNull()
+			.WithMessage(L(LocalizationKeys.PetAd.GenderRequired))
+			.When(x => !OptionalBreedAgeAdTypes.Contains(x.AdType));
+
+		RuleFor(x => x.Gender)
+			.IsInEnum()
+			.WithMessage(L(LocalizationKeys.PetAd.GenderInvalid))
+			.When(x => x.Gender.HasValue);
 
 		RuleFor(x => x.AdType).IsInEnum().WithMessage(L(LocalizationKeys.PetAd.AdTypeInvalid));
 
@@ -54,6 +69,27 @@ public class UpdatePetAdCommandValidator : BaseValidator<UpdatePetAdCommand>
 			.WithMessage(L(LocalizationKeys.PetAd.PriceTooHigh));
 
 		RuleFor(x => x.CityId).GreaterThan(0).WithMessage(L(LocalizationKeys.PetAd.CityIdInvalid));
+
+		// Breed is required for Sale, Lost, Match but optional for Found, Owning
+		// Also optional when user has suggested a new breed name
+		RuleFor(x => x.PetBreedId)
+			.NotNull()
+			.WithMessage(L(LocalizationKeys.PetAd.BreedRequired))
+			.When(x => !OptionalBreedAgeAdTypes.Contains(x.AdType) && string.IsNullOrWhiteSpace(x.SuggestedBreedName));
+
+		RuleFor(x => x.PetBreedId)
+			.GreaterThan(0)
+			.WithMessage(L(LocalizationKeys.PetAd.BreedIdInvalid))
+			.When(x => x.PetBreedId.HasValue);
+
+		RuleFor(x => x.SuggestedBreedName)
+			.MaximumLength(100)
+			.WithMessage(L(LocalizationKeys.BreedSuggestion.NameMaxLength))
+			.When(x => !string.IsNullOrWhiteSpace(x.SuggestedBreedName));
+
+		RuleFor(x => x.CustomDistrictName)
+			.MaximumLength(100)
+			.When(x => !string.IsNullOrWhiteSpace(x.CustomDistrictName));
 
 		RuleFor(x => x.ImageIds).Must(ids => ids == null || ids.Count <= 10).WithMessage(L(LocalizationKeys.PetAd.TooManyImages));
 

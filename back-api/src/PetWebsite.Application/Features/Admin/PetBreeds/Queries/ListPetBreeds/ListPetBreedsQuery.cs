@@ -4,4 +4,8 @@ using PetWebsite.Application.Common.Models;
 
 namespace PetWebsite.Application.Features.Admin.PetBreeds.Queries.ListPetBreeds;
 
-public class ListPetBreedsQuery : QuerySpecification, ICommand<PaginatedResult<PetBreedListItemDto>>;
+public class ListPetBreedsQuery : QuerySpecification, ICommand<PaginatedResult<PetBreedListItemDto>>
+{
+	public int? PetCategoryId { get; init; }
+	public bool? IncludeDeleted { get; init; }
+}

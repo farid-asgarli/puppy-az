@@ -1,4 +1,7 @@
+using System.Globalization;
+using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PetWebsite.Domain.Constants;
@@ -7,7 +10,7 @@ using PetWebsite.Domain.Enums;
 
 namespace PetWebsite.Infrastructure.Persistence;
 
-public static class DatabaseSeeder
+public static partial class DatabaseSeeder
 {
 	public static async Task SeedAsync(
 		ApplicationDbContext context,
@@ -15,8 +18,24 @@ public static class DatabaseSeeder
 		RoleManager<IdentityRole<Guid>> roleManager
 	)
 	{
-		// Ensure database is created
-		await context.Database.MigrateAsync();
+		// Ensure database is created - but don't run migrations if tables exist
+		try
+		{
+			// Check if database has tables
+			var hasData = await context.Database.CanConnectAsync();
+			if (hasData)
+			{
+				// Skip migrations if database already has schema
+				Console.WriteLine("[DatabaseSeeder] Database already exists, skipping migrations");
+				return;
+			}
+			await context.Database.MigrateAsync();
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"[DatabaseSeeder] Migration skipped: {ex.Message}");
+			return;
+		}
 
 		// Seed Roles
 		await SeedRolesAsync(roleManager);
@@ -32,6 +51,9 @@ public static class DatabaseSeeder
 
 		// Seed Pet Colors
 		await SeedPetColorsAsync(context);
+
+		// Seed Pet Ad Types
+		await SeedPetAdTypesAsync(context);
 
 		// Seed Cities
 		await SeedCitiesAsync(context);
@@ -192,6 +214,7 @@ public static class DatabaseSeeder
 					AppLocaleId = azLocale.Id,
 					Title = data.TitleAz,
 					Subtitle = data.SubtitleAz,
+					Slug = Slugify(data.TitleAz),
 				}
 			);
 			category.Localizations.Add(
@@ -200,6 +223,7 @@ public static class DatabaseSeeder
 					AppLocaleId = enLocale.Id,
 					Title = data.TitleEn,
 					Subtitle = data.SubtitleEn,
+					Slug = Slugify(data.TitleEn),
 				}
 			);
 			category.Localizations.Add(
@@ -208,6 +232,7 @@ public static class DatabaseSeeder
 					AppLocaleId = ruLocale.Id,
 					Title = data.TitleRu,
 					Subtitle = data.SubtitleRu,
+					Slug = Slugify(data.TitleRu),
 				}
 			);
 
@@ -218,7 +243,7 @@ public static class DatabaseSeeder
 				{
 					var breed = new PetBreed { IsActive = true, CreatedAt = DateTime.UtcNow };
 
-					breed.Localizations.Add(new PetBreedLocalization { AppLocaleId = azLocale.Id, Title = breedName });
+					breed.Localizations.Add(new PetBreedLocalization { AppLocaleId = azLocale.Id, Title = breedName, Slug = Slugify(breedName) });
 
 					category.Breeds.Add(breed);
 				}
@@ -306,6 +331,158 @@ public static class DatabaseSeeder
 
 		await context.SaveChangesAsync();
 		Console.WriteLine($"Successfully seeded {colors.Count} pet colors with localizations.");
+	}
+
+	private static async Task SeedPetAdTypesAsync(ApplicationDbContext context)
+	{
+		if (await context.PetAdTypes.AnyAsync())
+			return;
+
+		// Get locales
+		var azLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "az");
+		var enLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "en");
+		var ruLocale = await context.AppLocales.FirstOrDefaultAsync(l => l.Code == "ru");
+
+		if (azLocale == null || enLocale == null || ruLocale == null)
+			return;
+
+		var now = DateTime.UtcNow;
+
+		// Pet ad types with their styling and localizations
+		var adTypes = new List<(
+			int Id,
+			string Key,
+			string Emoji,
+			string BgColor,
+			string TextColor,
+			string BorderColor,
+			string TitleAz,
+			string TitleEn,
+			string TitleRu,
+			string DescAz,
+			string DescEn,
+			string DescRu
+		)>
+		{
+			(
+				1,
+				"sale",
+				"💰",
+				"bg-sky-100",
+				"text-sky-600",
+				"border-sky-200",
+				"Satış",
+				"For Sale",
+				"Продажа",
+				"Satılıq ev heyvanları tapın",
+				"Find pets for sale",
+				"Найдите питомцев на продажу"
+			),
+			(
+				2,
+				"match",
+				"❤️",
+				"bg-rose-100",
+				"text-rose-600",
+				"border-rose-200",
+				"Cütləşmə",
+				"Mating",
+				"Вязка",
+				"Cütləşmə sorğuları üçün",
+				"For mating requests",
+				"Для запросов на спаривание"
+			),
+			(
+				3,
+				"found",
+				"🔍",
+				"bg-indigo-100",
+				"text-indigo-600",
+				"border-indigo-200",
+				"Tapılıb",
+				"Found",
+				"Найдено",
+				"Yaxınlıqda tapılmış heyvanlar",
+				"Found pets nearby",
+				"Найденные животные поблизости"
+			),
+			(
+				4,
+				"lost",
+				"😢",
+				"bg-teal-100",
+				"text-teal-600",
+				"border-teal-200",
+				"İtirilmişdir",
+				"Lost",
+				"Потерянно",
+				"İtirilmiş heyvanların tapılmasına kömək edin",
+				"Help find lost pets",
+				"Помогите найти потерянных питомцев"
+			),
+			(
+				5,
+				"owning",
+				"🏠",
+				"bg-amber-100",
+				"text-amber-600",
+				"border-amber-200",
+				"Sahiblənmə",
+				"Adoption",
+				"Усыновление",
+				"Ev axtaran heyvanlar",
+				"Pets looking for a home",
+				"Питомцы в поисках дома"
+			),
+		};
+
+		foreach (var adType in adTypes)
+		{
+			var petAdType = new PetAdTypeEntity
+			{
+				Id = adType.Id,
+				Key = adType.Key,
+				Emoji = adType.Emoji,
+				BackgroundColor = adType.BgColor,
+				TextColor = adType.TextColor,
+				BorderColor = adType.BorderColor,
+				SortOrder = adType.Id,
+				IsActive = true,
+				CreatedAt = now,
+			};
+
+			petAdType.Localizations.Add(
+				new PetAdTypeLocalization
+				{
+					AppLocaleId = azLocale.Id,
+					Title = adType.TitleAz,
+					Description = adType.DescAz,
+				}
+			);
+
+			petAdType.Localizations.Add(
+				new PetAdTypeLocalization
+				{
+					AppLocaleId = enLocale.Id,
+					Title = adType.TitleEn,
+					Description = adType.DescEn,
+				}
+			);
+
+			petAdType.Localizations.Add(
+				new PetAdTypeLocalization
+				{
+					AppLocaleId = ruLocale.Id,
+					Title = adType.TitleRu,
+					Description = adType.DescRu,
+				}
+			);
+
+			context.PetAdTypes.Add(petAdType);
+		}
+
+		await context.SaveChangesAsync();
+		Console.WriteLine($"Successfully seeded {adTypes.Count} pet ad types with localizations.");
 	}
 
 	private static async Task SeedCitiesAsync(ApplicationDbContext context)
@@ -1303,4 +1480,82 @@ public static class DatabaseSeeder
 
 		Console.WriteLine($"Successfully seeded {petAds.Count} pet ads with images.");
 	}
+
+	/// <summary>
+	/// Converts a title string to a URL-friendly slug.
+	/// Handles Azerbaijani, English and Russian characters.
+	/// </summary>
+	public static string Slugify(string text)
+	{
+		if (string.IsNullOrWhiteSpace(text))
+			return string.Empty;
+
+		// Azerbaijani character mappings
+		var azMappings = new Dictionary<char, string>
+		{
+			{ 'ə', "e" }, { 'Ə', "e" },
+			{ 'ü', "u" }, { 'Ü', "u" },
+			{ 'ö', "o" }, { 'Ö', "o" },
+			{ 'ğ', "g" }, { 'Ğ', "g" },
+			{ 'ı', "i" }, { 'İ', "i" },
+			{ 'ç', "c" }, { 'Ç', "c" },
+			{ 'ş', "s" }, { 'Ş', "s" },
+		};
+
+		// Russian transliteration
+		var ruMappings = new Dictionary<char, string>
+		{
+			{ 'а', "a" }, { 'б', "b" }, { 'в', "v" }, { 'г', "g" }, { 'д', "d" },
+			{ 'е', "e" }, { 'ё', "yo" }, { 'ж', "zh" }, { 'з', "z" }, { 'и', "i" },
+			{ 'й', "y" }, { 'к', "k" }, { 'л', "l" }, { 'м', "m" }, { 'н', "n" },
+			{ 'о', "o" }, { 'п', "p" }, { 'р', "r" }, { 'с', "s" }, { 'т', "t" },
+			{ 'у', "u" }, { 'ф', "f" }, { 'х', "kh" }, { 'ц', "ts" }, { 'ч', "ch" },
+			{ 'ш', "sh" }, { 'щ', "shch" }, { 'ъ', "" }, { 'ы', "y" }, { 'ь', "" },
+			{ 'э', "e" }, { 'ю', "yu" }, { 'я', "ya" },
+			{ 'А', "a" }, { 'Б', "b" }, { 'В', "v" }, { 'Г', "g" }, { 'Д', "d" },
+			{ 'Е', "e" }, { 'Ё', "yo" }, { 'Ж', "zh" }, { 'З', "z" }, { 'И', "i" },
+			{ 'Й', "y" }, { 'К', "k" }, { 'Л', "l" }, { 'М', "m" }, { 'Н', "n" },
+			{ 'О', "o" }, { 'П', "p" }, { 'Р', "r" }, { 'С', "s" }, { 'Т', "t" },
+			{ 'У', "u" }, { 'Ф', "f" }, { 'Х', "kh" }, { 'Ц', "ts" }, { 'Ч', "ch" },
+			{ 'Ш', "sh" }, { 'Щ', "shch" }, { 'Ъ', "" }, { 'Ы', "y" }, { 'Ь', "" },
+			{ 'Э', "e" }, { 'Ю', "yu" }, { 'Я', "ya" },
+		};
+
+		var sb = new StringBuilder(text.Length);
+		foreach (var c in text)
+		{
+			if (azMappings.TryGetValue(c, out var azReplacement))
+				sb.Append(azReplacement);
+			else if (ruMappings.TryGetValue(c, out var ruReplacement))
+				sb.Append(ruReplacement);
+			else
+				sb.Append(c);
+		}
+
+		var result = sb.ToString().ToLowerInvariant();
+
+		// Normalize unicode and remove diacritics
+		result = result.Normalize(NormalizationForm.FormD);
+		result = NonAsciiLetterRegex().Replace(result, "");
+
+		// Replace non-alphanumeric with hyphens
+		result = NonAlphanumericRegex().Replace(result, "-");
+
+		// Remove consecutive hyphens
+		result = ConsecutiveHyphensRegex().Replace(result, "-");
+
+		// Trim hyphens
+		result = result.Trim('-');
+
+		return result;
+	}
+
+	[GeneratedRegex(@"[\p{Mn}]")]
+	private static partial Regex NonAsciiLetterRegex();
+
+	[GeneratedRegex(@"[^a-z0-9]+")]
+	private static partial Regex NonAlphanumericRegex();
+
+	[GeneratedRegex(@"-{2,}")]
+	private static partial Regex ConsecutiveHyphensRegex();
 }

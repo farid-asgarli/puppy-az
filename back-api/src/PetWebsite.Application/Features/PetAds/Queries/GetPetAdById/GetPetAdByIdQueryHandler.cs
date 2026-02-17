@@ -20,14 +20,35 @@ public class GetPetAdByIdQueryHandler(
 	public async Task<Result<PetAdDetailsDto>> Handle(GetPetAdByIdQuery request, CancellationToken ct)
 	{
 		var currentCulture = currentUserService.CurrentCulture;
+		var currentUserId = currentUserService.UserId;
 
-		var dto = await dbContext
+		// Build query - if user is viewing their own ad, don't filter by status
+		var query = dbContext
 			.PetAds.WhereNotDeleted<PetAd, int>()
+			.Include(p => p.Questions)
+				.ThenInclude(q => q.User)
+			.Include(p => p.Questions)
+				.ThenInclude(q => q.Replies)
+					.ThenInclude(r => r.User)
 			.AsNoTracking()
-			.Where(p => p.Id == request.Id && p.Status == PetAdStatus.Published)
+			.Where(p => p.Id == request.Id);
+
+		// Only filter by Published status if user is NOT the owner
+		if (currentUserId.HasValue)
+		{
+			query = query.Where(p => p.Status == PetAdStatus.Published || p.UserId == currentUserId);
+		}
+		else
+		{
+			query = query.Where(p => p.Status == PetAdStatus.Published);
+		}
+
+		var dto = await query
 			.Select(p => new PetAdDetailsDto
 			{
 				Id = p.Id,
+				Status = p.Status,
+				RejectionReason = p.RejectionReason,
 				Title = p.Title,
 				Description = p.Description,
 				AgeInMonths = p.AgeInMonths,
@@ -43,7 +64,7 @@ public class GetPetAdByIdQueryHandler(
 				PublishedAt = p.PublishedAt ?? DateTime.UtcNow,
 				UpdatedAt = p.UpdatedAt,
 				ExpiresAt = p.ExpiresAt,
-				Breed = new PetBreedDto
+				Breed = p.Breed != null ? new PetBreedDto
 				{
 					Id = p.Breed.Id,
 					Title =
@@ -52,14 +73,20 @@ public class GetPetAdByIdQueryHandler(
 							.Select(l => l.Title)
 							.FirstOrDefault() ?? "",
 					CategoryId = p.Breed.Category.Id,
-				},
+				} : null,
 				CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 				CityId = p.City.Id,
-				CategoryTitle =
-					p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+				DistrictId = p.DistrictId,
+				DistrictName = p.District != null
+					? (currentCulture == "ru" ? p.District.NameRu : currentCulture == "en" ? p.District.NameEn : p.District.NameAz)
+					: null,
+				CustomDistrictName = p.CustomDistrictName,
+				CategoryTitle = p.Breed != null
+					? p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
 						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
 						.Select(l => l.Title)
-						.FirstOrDefault() ?? "",
+						.FirstOrDefault() ?? ""
+					: "",
 				Owner =
 					p.User != null
 						? new PetAdOwnerDto
@@ -77,7 +104,9 @@ public class GetPetAdByIdQueryHandler(
 					.Select(i => new PetAdImageDto
 					{
 						Id = i.Id,
-						Url = i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath,
+						Url = i.FilePath.StartsWith("http://") || i.FilePath.StartsWith("https://") 
+							? i.FilePath 
+							: (i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath),
 						IsPrimary = i.IsPrimary,
 					})
 					.ToList(),
@@ -87,6 +116,7 @@ public class GetPetAdByIdQueryHandler(
 					.Select(q => new PetAdQuestionDto
 					{
 						Id = q.Id,
+						UserId = q.UserId,
 						Question = q.Question,
 						Answer = q.Answer,
 						QuestionerName = q.User.FirstName + " " + q.User.LastName,
@@ -98,12 +128,13 @@ public class GetPetAdByIdQueryHandler(
 							.Select(r => new PetAdQuestionReplyDto
 							{
 								Id = r.Id,
+								UserId = r.UserId,
 								Text = r.Text,
 								UserName = r.User.FirstName + " " + r.User.LastName,
 								IsOwnerReply = r.IsOwnerReply,
-								CreatedAt = r.CreatedAt,
+								CreatedAt = r.CreatedAt
 							})
-							.ToList(),
+							.ToList()
 					})
 					.ToList(),
 			})

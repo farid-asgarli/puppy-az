@@ -3,7 +3,9 @@
 import { useReducer, useCallback, useEffect, useMemo } from "react";
 import { cn } from "@/lib/external/utils";
 import { PetAdType, PetBreedDto, PetCategoryDetailedDto } from "@/lib/api";
-import { getAdTypes } from "@/lib/utils/mappers";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
+import { FilterValidator } from "@/lib/filtering/filter-validator";
+import { FilterParams } from "@/lib/filtering/types";
 import Button from "@/lib/primitives/button/button.component";
 import { SearchFieldButton } from "./components/search-field-button";
 import { MobileBottomSheet } from "./components/mobile-bottom-sheet";
@@ -34,8 +36,7 @@ export const SearchBarMobileAnimated = () => {
   const { navigateWithTransition } = useViewTransition();
   const tAccessibility = useTranslations("accessibility");
   const tSearch = useTranslations("search");
-  const tCommon = useTranslations("common");
-  const adTypes = getAdTypes(tCommon);
+  const { getAdTypeById, adTypesWithIcons } = useAdTypes();
 
   // Initialize state with values from URL ONLY if on search route (/ads/s)
   // On other routes, start with empty state
@@ -44,12 +45,12 @@ export const SearchBarMobileAnimated = () => {
       createInitialMobileState({
         selectedAdType:
           isSearchRoute && initialValues.adType !== null
-            ? (adTypes[initialValues.adType]?.title ?? null)
+            ? (getAdTypeById(initialValues.adType)?.title ?? null)
             : null,
         selectedCategory: isSearchRoute ? initialValues.category : null,
         selectedBreed: isSearchRoute ? initialValues.breed : null,
       }),
-    [initialValues, isSearchRoute, adTypes],
+    [initialValues, isSearchRoute, getAdTypeById],
   );
 
   const [state, dispatch] = useReducer(
@@ -78,11 +79,11 @@ export const SearchBarMobileAnimated = () => {
 
     // Convert ad type title back to PetAdType enum
     if (selectedAdType) {
-      const adTypeEntry = Object.entries(adTypes).find(
-        ([_, adType]) => adType.title === selectedAdType,
+      const adTypeEntry = adTypesWithIcons.find(
+        (adType) => adType.title === selectedAdType,
       );
       if (adTypeEntry) {
-        filterUpdates["ad-type"] = adTypeEntry[0]; // Use the numeric key
+        filterUpdates["ad-type"] = adTypeEntry.id; // Use the id
       }
     } else {
       filterUpdates["ad-type"] = null; // Clear if empty
@@ -92,16 +93,20 @@ export const SearchBarMobileAnimated = () => {
     filterUpdates["category"] = selectedCategory?.id ?? null;
     filterUpdates["breed"] = selectedBreed?.id ?? null;
 
-    // If not on search route, navigate to /ads/s with filters
+    // If not on search route, navigate using slug-based URL
     if (!isSearchRoute) {
-      const searchParams = new URLSearchParams();
-      Object.entries(filterUpdates).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          searchParams.set(key, String(value));
-        }
-      });
-      const queryString = searchParams.toString();
-      navigateWithTransition(`/ads/s${queryString ? `?${queryString}` : ""}`);
+      const filterParams: FilterParams = {};
+      if (filterUpdates["ad-type"] != null) {
+        filterParams["ad-type"] = filterUpdates["ad-type"] as number;
+      }
+      if (filterUpdates["category"] != null) {
+        filterParams.category = filterUpdates["category"] as number;
+      }
+      if (filterUpdates["breed"] != null) {
+        filterParams.breed = filterUpdates["breed"] as number;
+      }
+      const url = FilterValidator.buildSlugFilterUrl(filterParams);
+      navigateWithTransition(url);
     } else {
       // Already on search route, just update URL filters
       updateUrlFilters(filterUpdates);
@@ -115,7 +120,7 @@ export const SearchBarMobileAnimated = () => {
     handleClose,
     isSearchRoute,
     navigateWithTransition,
-    adTypes,
+    adTypesWithIcons,
   ]);
 
   const handleClearAll = useCallback(() => {
@@ -124,10 +129,10 @@ export const SearchBarMobileAnimated = () => {
 
   const handleAdTypeSelect = useCallback(
     (value: PetAdType) => {
-      const adTypeTitle = adTypes[value]?.title || value.toString();
+      const adTypeTitle = getAdTypeById(value)?.title || value.toString();
       dispatch({ type: "SET_AD_TYPE", payload: adTypeTitle });
     },
-    [adTypes],
+    [getAdTypeById],
   );
 
   const handleCategorySelect = useCallback((value: PetCategoryDetailedDto) => {
@@ -142,12 +147,10 @@ export const SearchBarMobileAnimated = () => {
   const getAdTypeByTitle = useCallback(
     (title: string | null) => {
       if (!title) return null;
-      const entry = Object.entries(adTypes).find(
-        ([_, adType]) => adType.title === title,
-      );
-      return entry ? { key: Number(entry[0]) as PetAdType, ...entry[1] } : null;
+      const adType = adTypesWithIcons.find((t) => t.title === title);
+      return adType ? { ...adType, id: adType.id as PetAdType } : null;
     },
-    [adTypes],
+    [adTypesWithIcons],
   );
 
   // Handle body scroll when modal opens/closes
@@ -183,24 +186,29 @@ export const SearchBarMobileAnimated = () => {
         <button
           onClick={handleExpandClick}
           className={cn(
-            "flex items-center gap-3 w-full px-5 py-3.5",
+            "flex items-stretch w-full",
             "bg-white rounded-full",
             "border border-gray-200",
             "shadow-[0_2px_8px_0_rgba(0,0,0,0.08)]",
             "active:scale-[0.98] transition-all duration-200",
             "hover:shadow-[0_4px_12px_0_rgba(0,0,0,0.12)]",
             "hover:border-gray-300",
+            "overflow-hidden",
           )}
           aria-label={tAccessibility("openSearch")}
         >
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center">
-            <IconSearch className="w-4 h-4 text-white" strokeWidth={2.5} />
+          {/* Left Section: Search Icon */}
+          <div className="flex-shrink-0 w-14 flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-600">
+            <IconSearch className="w-5 h-5 text-white" strokeWidth={2.5} />
           </div>
-          <div className="flex-1 min-w-0 text-left">
-            <div className="text-sm font-semibold text-gray-900 truncate">
+          {/* Vertical Divider */}
+          <div className="w-px bg-gray-200" />
+          {/* Right Section: Text content */}
+          <div className="flex-1 min-w-0 text-left px-4 py-3 flex flex-col justify-center">
+            <div className="text-[15px] font-semibold text-gray-900 truncate">
               {tSearch("searchQuestion")}
             </div>
-            <div className="text-xs text-gray-500 truncate">
+            <div className="text-xs text-gray-500 truncate mt-0.5">
               {hasActiveFilters
                 ? getSummaryText()
                 : tSearch("filterSummaryPlaceholder")}

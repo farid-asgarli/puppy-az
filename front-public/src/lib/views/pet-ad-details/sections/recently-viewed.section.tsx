@@ -48,10 +48,10 @@ export function AdDetailsRecentlyViewedAdsSection() {
         {/* Header */}
         <div className="mb-8 sm:mb-10 lg:mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl font-semibold font-heading text-gray-900 mb-2 sm:mb-3">
-            {t("recentlyViewed.title")}
+            {t("title")}
           </h2>
           <p className="text-base sm:text-lg text-gray-600">
-            {t("recentlyViewed.description")}
+            {t("description")}
           </p>
         </div>
 

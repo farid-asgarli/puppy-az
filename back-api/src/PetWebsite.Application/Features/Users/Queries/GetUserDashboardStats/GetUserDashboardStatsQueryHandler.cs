@@ -41,8 +41,10 @@ public class GetUserDashboardStatsQueryHandler(
 			ActiveAdCount = userAds.Count(a => a.Status == PetAdStatus.Published),
 			PendingAdCount = userAds.Count(a => a.Status == PetAdStatus.Pending),
 			RejectedAdCount = userAds.Count(a => a.Status == PetAdStatus.Rejected),
+			ExpiredAdCount = userAds.Count(a => a.Status == PetAdStatus.Expired),
 			TotalViews = userAds.Sum(a => a.ViewCount),
 			TotalFavoriteCount = await dbContext.FavoriteAds.CountAsync(f => userAds.Select(a => a.Id).Contains(f.PetAdId), ct),
+			MyFavoritesCount = await dbContext.FavoriteAds.CountAsync(f => f.UserId == userId, ct),
 			TotalQuestions = await dbContext.PetAdQuestions.CountAsync(
 				q => !q.IsDeleted && q.PetAd.UserId == userId && !q.PetAd.IsDeleted,
 				ct

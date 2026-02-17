@@ -10,6 +10,7 @@ import {
 import { cn } from "@/lib/external/utils";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
 import { useTranslations } from "next-intl";
+import { useStaticSection } from "@/lib/hooks/use-static-section";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useCallback, useEffect, useState } from "react";
@@ -23,8 +24,33 @@ const CAROUSEL_IMAGES = [
 export const HeroSection = () => {
   const { navigateWithTransition } = useViewTransition();
   const t = useTranslations("home.hero");
+  const { data: heroData } = useStaticSection("home_hero");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [showScrollHint, setShowScrollHint] = useState(true);
+  const [_showScrollHint, setShowScrollHint] = useState(true);
+  const [realStats, setRealStats] = useState<{
+    activeAds: number;
+    totalUsers: number;
+  } | null>(null);
+
+  // Fetch real statistics from backend
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/statistics`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRealStats({
+          activeAds: data.activeAds,
+          totalUsers: data.totalUsers,
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch statistics:", error);
+      });
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num < 500) return num.toString();
+    return `${Math.floor(num / 500) * 500}+`;
+  };
 
   // Hide scroll hint when user scrolls
   useEffect(() => {
@@ -78,26 +104,26 @@ export const HeroSection = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-accent-50 via-primary-50 to-info-50 min-h-screen flex items-center">
+    <div className="relative overflow-hidden bg-gradient-to-br from-info-50 via-primary-50 to-accent-50 min-h-screen flex items-center">
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Floating paw prints */}
         <div className="absolute top-20 left-[10%] opacity-10 ">
-          <IconPaw size={80} className="text-accent-500" />
+          <IconPaw size={80} className="text-info-500" />
         </div>
         <div className="absolute top-40 right-[15%] opacity-10">
           <IconPaw size={60} className="text-primary-500" />
         </div>
         <div className="absolute bottom-32 left-[20%] opacity-10">
-          <IconHeart size={70} className="text-info-500" />
+          <IconHeart size={70} className="text-accent-500" />
         </div>
         <div className="absolute bottom-20 right-[25%] opacity-10">
-          <IconPaw size={90} className="text-accent-400" />
+          <IconPaw size={90} className="text-info-400" />
         </div>
 
         {/* Gradient orbs */}
-        <div className="absolute top-0 -left-40 w-80 h-80 bg-gradient-to-br from-accent-200 to-primary-200 rounded-full blur-3xl opacity-30" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-info-200 to-primary-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute top-0 -left-40 w-80 h-80 bg-gradient-to-br from-info-200 to-primary-200 rounded-full blur-3xl opacity-30" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-br from-accent-200 to-primary-200 rounded-full blur-3xl opacity-30" />
       </div>
 
       {/* Content */}
@@ -114,18 +140,39 @@ export const HeroSection = () => {
             {/* Main Headline */}
             <div className="space-y-4 sm:space-y-6">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold font-heading text-gray-900 leading-tight">
-                {t("titlePart1")}{" "}
-                <span className="bg-gradient-to-r from-accent-500 via-primary-500 to-info-500 bg-clip-text text-transparent">
-                  {t("titleHighlight1")}
-                  <span className="text-primary-500">,</span>
-                </span>{" "}
-                <span className="bg-gradient-to-r from-info-500 via-primary-500 to-accent-500 bg-clip-text text-transparent">
-                  {t("titleHighlight2")}
-                </span>
+                {(() => {
+                  // Parse title: "Mükəmməl dostu tapın, sevin" -> split by comma
+                  const title =
+                    heroData?.title ||
+                    `${t("titlePart1")} ${t("titleHighlight1")}, ${t("titleHighlight2")}`;
+                  const parts = title.split(",");
+                  if (parts.length >= 2) {
+                    // First part: "Mükəmməl dostu tapın" - find last word for highlight
+                    const firstPart = parts[0].trim();
+                    const firstWords = firstPart.split(" ");
+                    const lastWord = firstWords.pop() || "";
+                    const mainText = firstWords.join(" ");
+                    const secondHighlight = parts[1].trim();
+
+                    return (
+                      <>
+                        {mainText}{" "}
+                        <span className="bg-gradient-to-r from-accent-500 via-primary-500 to-info-500 bg-clip-text text-transparent">
+                          {lastWord}
+                          <span className="text-primary-500">,</span>
+                        </span>{" "}
+                        <span className="bg-gradient-to-r from-info-500 via-primary-500 to-accent-500 bg-clip-text text-transparent">
+                          {secondHighlight}
+                        </span>
+                      </>
+                    );
+                  }
+                  return title;
+                })()}
               </h1>
 
               <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed">
-                {t("subtitle")}
+                {heroData?.subtitle || t("subtitle")}
               </p>
             </div>
 
@@ -195,7 +242,9 @@ export const HeroSection = () => {
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full" />
                   <span className="font-medium">
-                    {t("trustIndicators.activeAds")}
+                    {realStats
+                      ? `${formatNumber(realStats.activeAds)} ${t("trustIndicators.activeAdsLabel")}`
+                      : t("trustIndicators.activeAds")}
                   </span>
                 </div>
                 <div className="hidden sm:block w-1 h-1 bg-gray-300 rounded-full" />

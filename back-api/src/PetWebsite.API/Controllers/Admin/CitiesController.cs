@@ -18,7 +18,7 @@ namespace PetWebsite.API.Controllers.Admin;
 /// <summary>
 /// Controller for managing cities (admin only).
 /// </summary>
-[Authorize(Roles = AuthorizationConstants.Roles.Admin)]
+[Authorize(Roles = $"{AuthorizationConstants.Roles.SuperAdmin},{AuthorizationConstants.Roles.Admin}")]
 public class CitiesController(IMediator mediator, IStringLocalizer<CitiesController> localizer) : AdminBaseController(mediator, localizer)
 {
 	/// <summary>
@@ -89,6 +89,7 @@ public class CitiesController(IMediator mediator, IStringLocalizer<CitiesControl
 	/// </summary>
 	[HttpDelete("{id}/soft")]
 	[ProducesResponseType(204)]
+	[ProducesResponseType(400)]
 	[ProducesResponseType(404)]
 	public async Task<IActionResult> SoftDelete(int id)
 	{
@@ -96,7 +97,7 @@ public class CitiesController(IMediator mediator, IStringLocalizer<CitiesControl
 		var result = await Mediator.Send(new SoftDeleteCityCommand(id, userId));
 
 		if (!result.IsSuccess)
-			return NotFound(result.Error);
+			return result.StatusCode == 404 ? NotFound(result.Error) : BadRequest(result.Error);
 
 		return NoContent();
 	}

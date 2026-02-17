@@ -1,6 +1,12 @@
-import { useState, useEffect, useCallback } from 'react';
-import { FilterParams } from '@/lib/filtering/types';
-import { PetCategoryDetailedDto, PetBreedDto, CityDto } from '@/lib/api';
+import { useState, useEffect, useCallback } from "react";
+import { FilterParams } from "@/lib/filtering/types";
+import {
+  PetCategoryDetailedDto,
+  PetBreedDto,
+  CityDto,
+  PetColorDto,
+  DistrictDto,
+} from "@/lib/api";
 import {
   RecentSearch,
   getStoredRecentSearches,
@@ -8,9 +14,10 @@ import {
   enrichRecentSearches,
   isValidSearch,
   clearRecentSearches,
-} from '@/lib/utils/recent-searches';
-import { citiesService } from '@/lib/api/services/cities.service';
-import { useTranslations } from 'next-intl';
+} from "@/lib/utils/recent-searches";
+import { citiesService } from "@/lib/api/services/cities.service";
+import { petAdService } from "@/lib/api/services/pet-ad.service";
+import { useTranslations, useLocale } from "next-intl";
 
 interface UseRecentSearchesOptions {
   categories: PetCategoryDetailedDto[];
@@ -20,31 +27,74 @@ interface UseRecentSearchesOptions {
 /**
  * Hook for managing recent searches
  */
-export function useRecentSearches({ categories, breeds }: UseRecentSearchesOptions) {
-  const t = useTranslations('common');
+export function useRecentSearches({
+  categories,
+  breeds,
+}: UseRecentSearchesOptions) {
+  const t = useTranslations("common");
+  const locale = useLocale();
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [cities, setCities] = useState<CityDto[]>([]);
+  const [colors, setColors] = useState<PetColorDto[]>([]);
+  const [districts, setDistricts] = useState<DistrictDto[]>([]);
 
-  // Load cities and enrich recent searches on mount
+  // Load cities, colors and enrich recent searches on mount
   useEffect(() => {
     async function loadData() {
       try {
-        // Fetch cities from API
-        const citiesData = await citiesService.getCities();
+        // Fetch cities and colors from API
+        const [citiesData, colorsData] = await Promise.all([
+          citiesService.getCities(),
+          petAdService.getPetColors(locale),
+        ]);
         setCities(citiesData);
+        setColors(colorsData);
 
         // Load stored searches (IDs only)
         const storedSearches = getStoredRecentSearches();
 
+        // Load districts for all unique city IDs in stored searches
+        const cityIds = [
+          ...new Set(
+            storedSearches
+              .filter((s) => s.filters.city)
+              .map((s) => Number(s.filters.city)),
+          ),
+        ];
+        let allDistricts: DistrictDto[] = [];
+        if (cityIds.length > 0) {
+          const districtResults = await Promise.all(
+            cityIds.map((id) => citiesService.getDistrictsByCity(id, locale)),
+          );
+          allDistricts = districtResults.flat();
+        }
+        setDistricts(allDistricts);
+
         // Enrich with API data
-        const enrichedSearches = enrichRecentSearches(storedSearches, categories, breeds, citiesData, t);
+        const enrichedSearches = enrichRecentSearches(
+          storedSearches,
+          categories,
+          breeds,
+          citiesData,
+          t,
+          colorsData,
+          allDistricts,
+        );
         setRecentSearches(enrichedSearches);
       } catch (error) {
-        console.error('Failed to load cities:', error);
-        // Still load recent searches even if cities fail
+        console.error("Failed to load data:", error);
+        // Still load recent searches even if API calls fail
         const storedSearches = getStoredRecentSearches();
-        const enrichedSearches = enrichRecentSearches(storedSearches, categories, breeds, [], t);
+        const enrichedSearches = enrichRecentSearches(
+          storedSearches,
+          categories,
+          breeds,
+          [],
+          t,
+          [],
+          [],
+        );
         setRecentSearches(enrichedSearches);
       } finally {
         setIsLoaded(true);
@@ -52,7 +102,7 @@ export function useRecentSearches({ categories, breeds }: UseRecentSearchesOptio
     }
 
     loadData();
-  }, [categories, breeds, t]);
+  }, [categories, breeds, t, locale]);
 
   // Save a new search
   const addRecentSearch = useCallback(
@@ -67,10 +117,18 @@ export function useRecentSearches({ categories, breeds }: UseRecentSearchesOptio
 
       // Reload and enrich
       const storedSearches = getStoredRecentSearches();
-      const enrichedSearches = enrichRecentSearches(storedSearches, categories, breeds, cities, t);
+      const enrichedSearches = enrichRecentSearches(
+        storedSearches,
+        categories,
+        breeds,
+        cities,
+        t,
+        colors,
+        districts,
+      );
       setRecentSearches(enrichedSearches);
     },
-    [categories, breeds, cities, t]
+    [categories, breeds, cities, colors, districts, t],
   );
 
   // Clear all recent searches

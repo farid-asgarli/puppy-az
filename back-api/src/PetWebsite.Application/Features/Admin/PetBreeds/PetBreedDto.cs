@@ -23,5 +23,6 @@ public class PetBreedListItemDto
 	public int PetCategoryId { get; init; }
 	public string CategoryTitle { get; init; } = string.Empty;
 	public int PetAdsCount { get; init; }
+	public List<PetBreedLocalizationDto> Localizations { get; init; } = [];
 	public DateTime CreatedAt { get; init; }
 }

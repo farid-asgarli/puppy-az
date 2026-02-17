@@ -1,4 +1,4 @@
-import { useEffect, RefObject } from 'react';
+import { useEffect, useMemo, RefObject } from "react";
 
 type KeyHandler = (event: KeyboardEvent) => void;
 type KeyOptions = {
@@ -23,7 +23,11 @@ type KeyOptions = {
  * @param callback - Function to execute when key is pressed
  * @param options - Additional options for the key press behavior
  */
-export function useKeyPress(keysToWatch: string | string[], callback: KeyHandler, options: KeyOptions = {}): void {
+export function useKeyPress(
+  keysToWatch: string | string[],
+  callback: KeyHandler,
+  options: KeyOptions = {},
+): void {
   const {
     triggerOnKeyDown = true,
     targetRef = null,
@@ -32,15 +36,22 @@ export function useKeyPress(keysToWatch: string | string[], callback: KeyHandler
   } = options;
 
   // Convert single key to array for consistent handling
-  const keys = Array.isArray(keysToWatch) ? keysToWatch : [keysToWatch];
+  const keys = useMemo(
+    () => (Array.isArray(keysToWatch) ? keysToWatch : [keysToWatch]),
+    [keysToWatch],
+  );
 
   useEffect(() => {
     // Check if modifiers match the event
     const checkModifiers = (event: KeyboardEvent): boolean => {
-      if (modifiers.alt !== undefined && event.altKey !== modifiers.alt) return false;
-      if (modifiers.ctrl !== undefined && event.ctrlKey !== modifiers.ctrl) return false;
-      if (modifiers.meta !== undefined && event.metaKey !== modifiers.meta) return false;
-      if (modifiers.shift !== undefined && event.shiftKey !== modifiers.shift) return false;
+      if (modifiers.alt !== undefined && event.altKey !== modifiers.alt)
+        return false;
+      if (modifiers.ctrl !== undefined && event.ctrlKey !== modifiers.ctrl)
+        return false;
+      if (modifiers.meta !== undefined && event.metaKey !== modifiers.meta)
+        return false;
+      if (modifiers.shift !== undefined && event.shiftKey !== modifiers.shift)
+        return false;
       return true;
     };
 
@@ -61,7 +72,7 @@ export function useKeyPress(keysToWatch: string | string[], callback: KeyHandler
     const targetElement = targetRef?.current || window;
 
     // Add the appropriate event listener
-    const eventType = triggerOnKeyDown ? 'keydown' : 'keyup';
+    const eventType = triggerOnKeyDown ? "keydown" : "keyup";
     targetElement.addEventListener(eventType, handler as EventListener);
 
     // Clean up

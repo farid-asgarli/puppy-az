@@ -12,6 +12,7 @@ public class ListCitiesQueryHandler(IApplicationDbContext dbContext, IDynamicQue
 	{
 		var query =
 			from city in dbContext.Cities.AsNoTracking()
+			where !city.IsDeleted
 			select new CityListItemDto
 			{
 				Id = city.Id,

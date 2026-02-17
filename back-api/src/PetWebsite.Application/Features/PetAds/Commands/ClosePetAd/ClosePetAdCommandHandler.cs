@@ -27,13 +27,15 @@ public class ClosePetAdCommandHandler(IApplicationDbContext dbContext, IStringLo
 		if (petAd.UserId != userId)
 			return Result.Failure(L(LocalizationKeys.Error.Forbidden), 403);
 
-		// Check if ad can be closed/deleted (Published, Pending, Draft, Rejected)
+		// Check if ad can be closed/deactivated (Published, Pending, Draft, Rejected)
 		// Only Closed and Expired ads cannot be modified
 		if (petAd.Status == PetAdStatus.Closed || petAd.Status == PetAdStatus.Expired)
 			return Result.Failure(L(LocalizationKeys.PetAd.CannotCloseNonPublishedAd), 400);
 
-		petAd.Status = PetAdStatus.Closed;
+		// Deactivated ads are marked as Expired so they appear in "Expired" section
+		petAd.Status = PetAdStatus.Expired;
 		petAd.IsAvailable = false;
+		petAd.ExpiresAt = DateTime.UtcNow; // Set expiration to now
 
 		await dbContext.SaveChangesAsync(ct);
 

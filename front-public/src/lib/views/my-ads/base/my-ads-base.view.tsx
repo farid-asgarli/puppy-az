@@ -1,27 +1,40 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { IconPlus } from '@tabler/icons-react';
-import type { MyAdListItemDto, PetAdListItemDto } from '@/lib/api/types/pet-ad.types';
-import { MyAdCard, mapAdToMyAdCard } from '@/lib/components/cards/my-ad-card';
-import { MyAdDetails } from '@/lib/components/drawers/my-ad-drawer';
-import NarrowContainer from '@/lib/components/narrow-container';
-import ConfirmationDialog from '@/lib/components/confirmation-dialog/confirmation-dialog.component';
-import Button from '@/lib/primitives/button/button.component';
-import TransitionLink from '@/lib/components/transition-link';
-import { closeAdAction } from '@/lib/auth/actions';
-import { useInfiniteScroll } from '@/lib/hooks/use-infinite-scroll';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { usePaginatedData } from '@/lib/hooks/use-paginated-data';
-import { EmptyState } from '@/lib/primitives/empty-state';
-import { PaginatedResult, QuerySpecification } from '@/lib/api';
-import { RejectionReasonCard } from '@/lib/components/views/my-ads';
-import { useTranslations } from 'next-intl';
-import { LoadMoreIndicator, SearchInput, InfoBanner, PageHeader, type InfoBannerProps } from '@/lib/components/views/common';
+import React, { useState } from "react";
+import { IconPlus } from "@tabler/icons-react";
+import type {
+  MyAdListItemDto,
+  PetAdListItemDto,
+} from "@/lib/api/types/pet-ad.types";
+import { MyAdCard, mapAdToMyAdCard } from "@/lib/components/cards/my-ad-card";
+import { MyAdDetails } from "@/lib/components/drawers/my-ad-drawer";
+import NarrowContainer from "@/lib/components/narrow-container";
+import ConfirmationDialog from "@/lib/components/confirmation-dialog/confirmation-dialog.component";
+import Button from "@/lib/primitives/button/button.component";
+import TransitionLink from "@/lib/components/transition-link";
+import { closeAdAction, reactivateAdAction } from "@/lib/auth/actions";
+import { useInfiniteScroll } from "@/lib/hooks/use-infinite-scroll";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { usePaginatedData } from "@/lib/hooks/use-paginated-data";
+import { EmptyState } from "@/lib/primitives/empty-state";
+import { PaginatedResult, QuerySpecification } from "@/lib/api";
+import { RejectionReasonCard } from "@/lib/components/views/my-ads";
+import { useTranslations } from "next-intl";
+import {
+  LoadMoreIndicator,
+  SearchInput,
+  InfoBanner,
+  PageHeader,
+  type InfoBannerProps,
+} from "@/lib/components/views/common";
 
-type InfoBannerConfig = Pick<InfoBannerProps, 'icon' | 'title' | 'description' | 'variant'>;
+type InfoBannerConfig = Pick<
+  InfoBannerProps,
+  "icon" | "title" | "description" | "variant"
+>;
 
 interface EmptyStateConfig {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: React.ForwardRefExoticComponent<any>;
   title: string;
   description: string;
@@ -32,10 +45,12 @@ interface MyAdsBaseViewProps {
   initialPage: number;
   pageTitle: string;
   pageSubtitle: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadMoreAction: (spec: QuerySpecification) => Promise<any>;
   infoBanner?: InfoBannerConfig;
   emptyState: EmptyStateConfig;
   showRejectionReason?: boolean;
+  showReactivateButton?: boolean;
   confirmDialog: {
     title: string;
     message: string;
@@ -52,16 +67,19 @@ export default function MyAdsBaseView({
   infoBanner,
   emptyState,
   showRejectionReason = false,
+  showReactivateButton = false,
   confirmDialog,
 }: MyAdsBaseViewProps) {
-  const t = useTranslations('myAds.common');
+  const t = useTranslations("myAds.common");
   const { navigateWithTransition } = useViewTransition();
   const [isClosing, setIsClosing] = useState(false);
+  const [isReactivating, setIsReactivating] = useState(false);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [reactivateDialogOpen, setReactivateDialogOpen] = useState(false);
   const [selectedAdId, setSelectedAdId] = useState<number | null>(null);
   const [drawerAdId, setDrawerAdId] = useState<number | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Paginated data with infinite scroll
   const {
@@ -109,11 +127,11 @@ export default function MyAdsBaseView({
         // Remove the closed ad from the list
         setAds((prev) => prev.filter((ad) => ad.id !== selectedAdId));
       } else {
-        alert(result.error || t('closeError'));
+        alert(result.error || t("closeError"));
       }
     } catch (error) {
-      console.error('Close ad error:', error);
-      alert(t('generalError'));
+      console.error("Close ad error:", error);
+      alert(t("generalError"));
     } finally {
       setIsClosing(false);
     }
@@ -126,13 +144,50 @@ export default function MyAdsBaseView({
     }
   };
 
+  const handleReactivateRequest = (id: number) => {
+    setSelectedAdId(id);
+    setReactivateDialogOpen(true);
+  };
+
+  const handleReactivateConfirm = async () => {
+    if (selectedAdId === null) return;
+
+    setIsReactivating(true);
+    try {
+      const result = await reactivateAdAction(selectedAdId);
+      if (result.success) {
+        setReactivateDialogOpen(false);
+        // Remove the reactivated ad from the list (it moves to pending)
+        setAds((prev) => prev.filter((ad) => ad.id !== selectedAdId));
+      } else {
+        alert(result.error || t("reactivateError"));
+      }
+    } catch (error) {
+      console.error("Reactivate ad error:", error);
+      alert(t("generalError"));
+    } finally {
+      setIsReactivating(false);
+    }
+  };
+
+  const handleReactivateCancel = () => {
+    if (!isReactivating) {
+      setReactivateDialogOpen(false);
+      setSelectedAdId(null);
+    }
+  };
+
   // Filter ads based on search query
   const filteredAds = React.useMemo(() => {
     if (!searchQuery.trim()) return ads;
 
     const query = searchQuery.toLowerCase();
     return ads.filter((ad) => {
-      return ad.title.toLowerCase().includes(query) || ad.categoryTitle.toLowerCase().includes(query) || ad.cityName.toLowerCase().includes(query);
+      return (
+        ad.title.toLowerCase().includes(query) ||
+        ad.categoryTitle.toLowerCase().includes(query) ||
+        ad.cityName.toLowerCase().includes(query)
+      );
     });
   }, [ads, searchQuery]);
 
@@ -144,8 +199,13 @@ export default function MyAdsBaseView({
         subtitle={pageSubtitle}
         actions={
           <TransitionLink href="/ads/ad-placement">
-            <Button variant="solid" size="md" leftSection={<IconPlus size={18} />} aria-label={t('newAdButton')}>
-              {t('newAd')}
+            <Button
+              variant="solid"
+              size="md"
+              leftSection={<IconPlus size={18} />}
+              aria-label={t("newAdButton")}
+            >
+              {t("newAd")}
             </Button>
           </TransitionLink>
         }
@@ -157,13 +217,24 @@ export default function MyAdsBaseView({
         <div className="space-y-6 sm:space-y-8">
           {/* Info Banner (optional) */}
           {infoBanner && (
-            <InfoBanner icon={infoBanner.icon} title={infoBanner.title} description={infoBanner.description} variant={infoBanner.variant} />
+            <InfoBanner
+              icon={infoBanner.icon}
+              title={infoBanner.title}
+              description={infoBanner.description}
+              variant={infoBanner.variant}
+            />
           )}
 
           {/* Filters & View Toggle */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between">
             {/* Search */}
-            <SearchInput value={searchQuery} onChange={setSearchQuery} placeholder={t('searchPlaceholder')} maxWidth="max-w-md" className="flex-1" />
+            <SearchInput
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder={t("searchPlaceholder")}
+              maxWidth="max-w-md"
+              className="flex-1"
+            />
           </div>
 
           {/* Empty State */}
@@ -175,7 +246,7 @@ export default function MyAdsBaseView({
               action={
                 <TransitionLink href="/ads/ad-placement">
                   <Button variant="solid" leftSection={<IconPlus size={18} />}>
-                    {t('newAdButton')}
+                    {t("newAdButton")}
                   </Button>
                 </TransitionLink>
               }
@@ -189,11 +260,14 @@ export default function MyAdsBaseView({
               {filteredAds.length === 0 && searchQuery.trim() && (
                 <EmptyState
                   icon={<emptyState.icon />}
-                  title={t('noSearchResults')}
-                  description={t('noSearchResultsDescription')}
+                  title={t("noSearchResults")}
+                  description={t("noSearchResultsDescription")}
                   action={
-                    <Button variant="secondary" onClick={() => setSearchQuery('')}>
-                      {t('clearSearch')}
+                    <Button
+                      variant="secondary"
+                      onClick={() => setSearchQuery("")}
+                    >
+                      {t("clearSearch")}
                     </Button>
                   }
                 />
@@ -204,10 +278,15 @@ export default function MyAdsBaseView({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                   {filteredAds.map((ad) => (
                     <div key={ad.id} className="relative">
-                      <MyAdCard {...mapAdToMyAdCard(ad as MyAdListItemDto)} onClick={handleCardClick} />
+                      <MyAdCard
+                        {...mapAdToMyAdCard(ad as MyAdListItemDto)}
+                        onClick={handleCardClick}
+                      />
 
                       {/* Rejection Reason (only for rejected ads) */}
-                      {showRejectionReason && ad.rejectionReason && <RejectionReasonCard reason={ad.rejectionReason} />}
+                      {showRejectionReason && ad.rejectionReason && (
+                        <RejectionReasonCard reason={ad.rejectionReason} />
+                      )}
                     </div>
                   ))}
                 </div>
@@ -220,15 +299,20 @@ export default function MyAdsBaseView({
                     isLoading={isLoadingMore}
                     hasMore={hasMore}
                     loadedCount={ads.length}
-                    loadingText={t('loading')}
-                    completedText={t('allAdsLoaded')}
+                    loadingText={t("loading")}
+                    completedText={t("allAdsLoaded")}
                   />
                 </div>
               )}
 
               {/* Search results count */}
               {searchQuery.trim() && filteredAds.length > 0 && (
-                <div className="text-center text-sm text-gray-600">{t('searchResultsCount', { count: filteredAds.length, total: ads.length })}</div>
+                <div className="text-center text-sm text-gray-600">
+                  {t("searchResultsCount", {
+                    count: filteredAds.length,
+                    total: ads.length,
+                  })}
+                </div>
               )}
             </>
           )}
@@ -236,9 +320,18 @@ export default function MyAdsBaseView({
       </NarrowContainer>
 
       {/* Ad Details - Modal on Desktop, Drawer on Mobile */}
-      <MyAdDetails adId={drawerAdId} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} onEdit={handleEdit} onCloseAd={handleCloseRequest} />
+      <MyAdDetails
+        adId={drawerAdId}
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onEdit={handleEdit}
+        onCloseAd={handleCloseRequest}
+        onReactivateAd={
+          showReactivateButton ? handleReactivateRequest : undefined
+        }
+      />
 
-      {/* Confirmation Dialog */}
+      {/* Confirmation Dialog for Closing */}
       <ConfirmationDialog
         isOpen={confirmDialogOpen}
         onClose={handleCloseCancel}
@@ -246,10 +339,25 @@ export default function MyAdsBaseView({
         title={confirmDialog.title}
         message={confirmDialog.message}
         confirmText={confirmDialog.confirmText}
-        cancelText={t('cancelButton')}
+        cancelText={t("cancelButton")}
         variant="danger"
         isLoading={isClosing}
       />
+
+      {/* Confirmation Dialog for Reactivating */}
+      {showReactivateButton && (
+        <ConfirmationDialog
+          isOpen={reactivateDialogOpen}
+          onClose={handleReactivateCancel}
+          onConfirm={handleReactivateConfirm}
+          title={t("reactivateDialog.title")}
+          message={t("reactivateDialog.message")}
+          confirmText={t("reactivateDialog.confirmButton")}
+          cancelText={t("cancelButton")}
+          variant="success"
+          isLoading={isReactivating}
+        />
+      )}
     </div>
   );
 }

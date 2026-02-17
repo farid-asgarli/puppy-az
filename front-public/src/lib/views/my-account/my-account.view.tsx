@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import {
   IconUser,
@@ -8,18 +8,17 @@ import {
   IconPlus,
   IconLayoutGrid,
   IconSettings,
-  IconBell,
   IconShield,
   IconLogout,
   IconChevronRight,
-  IconCrown,
   IconEdit,
   IconCamera,
   IconCheck,
-  IconTrendingUp,
   IconMapPin,
   IconHelp,
   IconMessages,
+  IconMessage,
+  IconQuestionMark,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/external/utils";
 import { Heading, Text } from "@/lib/primitives/typography";
@@ -29,9 +28,12 @@ import type { UserDashboardStatsDto } from "@/lib/api/types/auth.types";
 import { Spinner } from "@/lib/primitives/spinner";
 import { IconButton } from "@/lib/primitives/icon-button";
 import TransitionLink from "@/lib/components/transition-link";
+import { Avatar } from "@/lib/components/avatar";
 import { formatMonthYear } from "@/lib/utils/date-utils";
 import { AccountMenuItem } from "@/lib/components/views/my-account/menu-item/account-menu-item.component";
 import type { Icon } from "@tabler/icons-react";
+import { messageService } from "@/lib/api/services/message.service";
+import { useSignalROptional } from "@/lib/hooks/use-signalr";
 
 interface MenuItem {
   icon: Icon;
@@ -43,13 +45,19 @@ interface MenuItem {
 }
 
 const MyAccountView = () => {
-  const { user, loading } = useAuth();
+  const { user, loading, getToken } = useAuth();
+  const signalR = useSignalROptional();
   const tMyAccount = useTranslations("myAccount");
   const tCommon = useTranslations("common");
   const tDate = useTranslations("dateTime");
 
   const [stats, setStats] = useState<UserDashboardStatsDto | null>(null);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+
+  // Flash animation states for new notifications
+  const [messageFlash, setMessageFlash] = useState(false);
+  const [questionFlash, setQuestionFlash] = useState(false);
 
   // Format date with proper Azerbaijani month names
   const memberSince = React.useMemo(() => {
@@ -58,21 +66,115 @@ const MyAccountView = () => {
   }, [user?.createdAt, tCommon, tDate]);
 
   // Fetch dashboard statistics
+  const fetchStats = useCallback(async () => {
+    if (!user) return;
+    setStatsLoading(true);
+    const result = await getDashboardStatsAction();
+    if (result.success) {
+      setStats(result.data);
+    }
+    setStatsLoading(false);
+  }, [user]);
+
+  // Fetch unread messages count
+  const fetchUnreadCount = useCallback(async () => {
+    try {
+      const token = await getToken();
+      if (!token) return;
+      const count = await messageService.getUnreadCount(token);
+      setUnreadMessagesCount(count);
+    } catch (error) {
+      console.error("Failed to fetch unread messages count:", error);
+    }
+  }, [getToken]);
+
+  // Initial data fetch
   useEffect(() => {
-    const fetchStats = async () => {
-      setStatsLoading(true);
-      const result = await getDashboardStatsAction();
-      if (result.success) {
-        setStats(result.data);
-      }
-
-      setStatsLoading(false);
-    };
-
     if (user) {
       fetchStats();
+      fetchUnreadCount();
     }
-  }, [user]);
+  }, [user, fetchStats, fetchUnreadCount]);
+
+  // SignalR real-time updates
+  useEffect(() => {
+    if (!signalR) return;
+
+    console.log("[Dashboard] Setting up SignalR listeners");
+
+    // Listen for new messages
+    const unsubscribeNewMessage = signalR.onNewMessage((notification) => {
+      console.log("[Dashboard] SignalR: New message received", notification);
+      setUnreadMessagesCount((prev) => prev + 1);
+
+      // Flash animation
+      setMessageFlash(true);
+      setTimeout(() => setMessageFlash(false), 2000);
+    });
+
+    // Listen for new questions on my ads
+    const unsubscribeNewQuestion = signalR.onNewQuestion((notification) => {
+      console.log("[Dashboard] SignalR: New question received", notification);
+      // Refresh stats to get updated unanswered count
+      fetchStats();
+
+      // Flash animation
+      setQuestionFlash(true);
+      setTimeout(() => setQuestionFlash(false), 2000);
+    });
+
+    // Listen for question answered (to update count)
+    const unsubscribeQuestionAnswered = signalR.onQuestionAnswered(() => {
+      console.log("[Dashboard] SignalR: Question answered");
+      fetchStats();
+    });
+
+    return () => {
+      unsubscribeNewMessage();
+      unsubscribeNewQuestion();
+      unsubscribeQuestionAnswered();
+    };
+  }, [signalR, fetchStats]);
+
+  // Fallback polling (only when SignalR is not connected)
+  useEffect(() => {
+    if (signalR?.isConnected) {
+      console.log("[Dashboard] SignalR connected, using reduced polling");
+    }
+
+    // Poll every 60 seconds as fallback (longer interval when SignalR is active)
+    const pollInterval = signalR?.isConnected ? 60000 : 30000;
+
+    const interval = setInterval(() => {
+      if (user) {
+        fetchStats();
+        fetchUnreadCount();
+      }
+    }, pollInterval);
+
+    return () => clearInterval(interval);
+  }, [user, signalR?.isConnected, fetchStats, fetchUnreadCount]);
+
+  // Listen for custom events (for compatibility)
+  useEffect(() => {
+    const handleQuestionAnswered = () => {
+      console.log("[Dashboard] Question answered event received");
+      fetchStats();
+    };
+
+    const handleMessagesRead = () => {
+      console.log("[Dashboard] Messages read event received");
+      fetchUnreadCount();
+    };
+
+    window.addEventListener("questionAnswered", handleQuestionAnswered);
+    window.addEventListener("messagesRead", handleMessagesRead);
+
+    return () => {
+      window.removeEventListener("questionAnswered", handleQuestionAnswered);
+      window.removeEventListener("messagesRead", handleMessagesRead);
+    };
+  }, [fetchStats, fetchUnreadCount]);
 
   // User data with real stats
   const userData = {
@@ -89,8 +191,8 @@ const MyAccountView = () => {
       pendingAds: stats?.pendingAdCount || 0,
       rejectedAds: stats?.rejectedAdCount || 0,
       viewsThisMonth: stats?.totalViews || 0,
-      favorites: stats?.totalFavoriteCount || 0,
-      unansweredQuestions: stats?.unansweredQuestionCount || 0,
+      favorites: stats?.myFavoritesCount || 0,
+      unansweredQuestions: stats?.unansweredQuestions || 0,
     },
   };
 
@@ -165,7 +267,14 @@ const MyAccountView = () => {
           href: "/my-account/ads",
         },
         {
-          icon: IconMessages,
+          icon: IconMessage,
+          title: tMyAccount("menu.messages.title"),
+          subtitle: tMyAccount("menu.messages.subtitle"),
+          href: "/my-account/messages",
+          badge: unreadMessagesCount > 0 ? unreadMessagesCount : undefined,
+        },
+        {
+          icon: IconQuestionMark,
           title: tMyAccount("menu.questions.title"),
           subtitle: tMyAccount("menu.questions.subtitle", {
             count: userData.stats.unansweredQuestions,
@@ -175,18 +284,6 @@ const MyAccountView = () => {
             userData.stats.unansweredQuestions > 0
               ? userData.stats.unansweredQuestions
               : undefined,
-        },
-      ],
-    },
-    {
-      section: tMyAccount("sections.premium"),
-      items: [
-        {
-          icon: IconCrown,
-          title: tMyAccount("menu.premiumServices.title"),
-          subtitle: tMyAccount("menu.premiumServices.subtitle"),
-          href: "/premium",
-          premium: true,
         },
       ],
     },
@@ -242,20 +339,12 @@ const MyAccountView = () => {
             <div className="flex flex-col sm:flex-row gap-6 items-start">
               {/* Avatar */}
               <div className="relative flex-shrink-0 mx-auto sm:mx-0">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                  {userData.avatar ? (
-                    <img
-                      src={userData.avatar}
-                      alt={userData.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <IconUser
-                      size={32}
-                      className="sm:w-9 sm:h-9 text-gray-400"
-                    />
-                  )}
-                </div>
+                <Avatar
+                  src={userData.avatar}
+                  name={userData.name}
+                  size="xl"
+                  rounded="2xl"
+                />
                 {userData.isVerified && (
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
                     <IconCheck
@@ -335,8 +424,8 @@ const MyAccountView = () => {
 
             {/* Stats Grid */}
             {statsLoading ? (
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                {[1, 2, 3].map((i) => (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+                {[1, 2, 3, 4, 5].map((i) => (
                   <div
                     key={i}
                     className="p-4 sm:p-6 rounded-xl border-2 border-gray-200"
@@ -347,8 +436,12 @@ const MyAccountView = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                <div className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+                {/* Total Ads - Clickable */}
+                <TransitionLink
+                  href="/my-account/ads"
+                  className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center transition-all duration-200 hover:border-gray-300 hover:shadow-md"
+                >
                   <Heading
                     variant="section"
                     className="mb-1 text-xl sm:text-2xl lg:text-3xl"
@@ -362,8 +455,13 @@ const MyAccountView = () => {
                   >
                     {tMyAccount("stats.totalAds")}
                   </Text>
-                </div>
-                <div className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center">
+                </TransitionLink>
+
+                {/* Views - Clickable (goes to ads) */}
+                <TransitionLink
+                  href="/my-account/ads"
+                  className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center transition-all duration-200 hover:border-gray-300 hover:shadow-md"
+                >
                   <Heading
                     variant="section"
                     className="mb-1 text-xl sm:text-2xl lg:text-3xl"
@@ -377,8 +475,13 @@ const MyAccountView = () => {
                   >
                     {tMyAccount("stats.viewsThisMonth")}
                   </Text>
-                </div>
-                <div className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center">
+                </TransitionLink>
+
+                {/* Favorites - Clickable */}
+                <TransitionLink
+                  href="/ads/favorites"
+                  className="p-4 sm:p-6 rounded-xl border-2 border-gray-200 text-center transition-all duration-200 hover:border-gray-300 hover:shadow-md"
+                >
                   <Heading
                     variant="section"
                     className="mb-1 text-xl sm:text-2xl lg:text-3xl"
@@ -392,7 +495,76 @@ const MyAccountView = () => {
                   >
                     {tMyAccount("stats.favorites")}
                   </Text>
-                </div>
+                </TransitionLink>
+
+                {/* Messages - Clickable with notification */}
+                <TransitionLink
+                  href="/my-account/messages"
+                  className={cn(
+                    "p-4 sm:p-6 rounded-xl border-2 text-center transition-all duration-200",
+                    unreadMessagesCount > 0
+                      ? "border-red-300 bg-red-50 hover:border-red-400 hover:shadow-md"
+                      : "border-gray-200 hover:border-gray-300 hover:shadow-md",
+                    messageFlash && "animate-pulse ring-2 ring-red-400",
+                  )}
+                >
+                  <div className="relative inline-block">
+                    <Heading
+                      variant="section"
+                      className={cn(
+                        "mb-1 text-xl sm:text-2xl lg:text-3xl",
+                        unreadMessagesCount > 0 && "text-red-600",
+                      )}
+                    >
+                      {unreadMessagesCount}
+                    </Heading>
+                    {unreadMessagesCount > 0 && (
+                      <div className="absolute -top-1 -right-6 w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    )}
+                  </div>
+                  <Text
+                    variant="small"
+                    color="secondary"
+                    className="text-xs sm:text-sm"
+                  >
+                    {tMyAccount("stats.unreadMessages")}
+                  </Text>
+                </TransitionLink>
+
+                {/* Unanswered Questions - Clickable with notification */}
+                <TransitionLink
+                  href="/my-account/questions"
+                  className={cn(
+                    "p-4 sm:p-6 rounded-xl border-2 text-center transition-all duration-200",
+                    userData.stats.unansweredQuestions > 0
+                      ? "border-red-300 bg-red-50 hover:border-red-400 hover:shadow-md"
+                      : "border-gray-200 hover:border-gray-300 hover:shadow-md",
+                    questionFlash && "animate-pulse ring-2 ring-red-400",
+                  )}
+                >
+                  <div className="relative inline-block">
+                    <Heading
+                      variant="section"
+                      className={cn(
+                        "mb-1 text-xl sm:text-2xl lg:text-3xl",
+                        userData.stats.unansweredQuestions > 0 &&
+                          "text-red-600",
+                      )}
+                    >
+                      {userData.stats.unansweredQuestions}
+                    </Heading>
+                    {userData.stats.unansweredQuestions > 0 && (
+                      <div className="absolute -top-1 -right-6 w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    )}
+                  </div>
+                  <Text
+                    variant="small"
+                    color="secondary"
+                    className="text-xs sm:text-sm"
+                  >
+                    {tMyAccount("stats.unansweredQuestions")}
+                  </Text>
+                </TransitionLink>
               </div>
             )}
           </div>

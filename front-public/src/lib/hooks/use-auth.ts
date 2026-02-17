@@ -77,7 +77,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
   });
 
   // Track refresh interval to clean up on unmount
-  const refreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const _refreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchAuthState = useCallback(async () => {
     try {
@@ -99,7 +99,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
           loading: false,
         });
       }
-    } catch (error) {
+    } catch {
       setState({
         isAuthenticated: false,
         user: null,
@@ -122,7 +122,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
    * Check if access token needs refresh and refresh it proactively
    * This prevents the middleware from catching expired tokens and logging users out
    */
-  const checkAndRefreshToken = useCallback(async () => {
+  const _checkAndRefreshToken = useCallback(async () => {
     try {
       const token = await getToken();
 
@@ -190,6 +190,7 @@ export function AuthProvider({ children, initialAuth }: AuthProviderProps) {
     return () => {
       mounted = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialAuth?.isAuthenticated, initialAuth?.user?.id, fetchAuthState]);
 
   // // Proactive token refresh - check every minute

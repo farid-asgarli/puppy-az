@@ -132,7 +132,7 @@ public class GenericFiltering : IGenericFiltering
 
 			Type t
 				when t == typeof(bool)
-					&& (propertyValue.ValueKind == JsonValueKind.True || propertyValue.ValueKind == JsonValueKind.False) =>
+					&& (propertyValue.ValueKind == JsonValueKind.True || propertyValue.ValueKind == JsonValueKind.False || propertyValue.ValueKind == JsonValueKind.String) =>
 				BuildBoolComparisonExpression(propertyExpression, propertyValue, eq),
 
 			Type t when (t.IsEnum || (Nullable.GetUnderlyingType(t)?.IsEnum ?? false)) && propertyValue.ValueKind == JsonValueKind.Number =>

@@ -41,4 +41,9 @@ public class City : SoftDeletableEntity
 	/// Navigation property for pet ads in this city.
 	/// </summary>
 	public ICollection<PetAd> PetAds { get; set; } = [];
+
+	/// <summary>
+	/// Navigation property for districts within this city.
+	/// </summary>
+	public ICollection<District> Districts { get; set; } = [];
 }

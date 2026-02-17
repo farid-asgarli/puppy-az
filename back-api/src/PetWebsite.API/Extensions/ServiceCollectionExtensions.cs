@@ -297,6 +297,17 @@ public static class ServiceCollectionExtensions
 				{
 					OnMessageReceived = context =>
 					{
+						// For SignalR: Check query string first for WebSocket connections
+						var accessToken = context.Request.Query["access_token"];
+						var path = context.HttpContext.Request.Path;
+						
+						if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+						{
+							context.Token = accessToken;
+							return Task.CompletedTask;
+						}
+
+						// For regular API calls: Check Authorization header
 						var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
 
 						if (string.IsNullOrEmpty(token))

@@ -21,7 +21,6 @@ import {
   IconHeartHandshake,
   IconEye,
   IconLock,
-  IconBuildingBank,
 } from "@tabler/icons-react";
 
 interface SafetyTip {

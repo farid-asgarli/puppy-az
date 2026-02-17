@@ -1,0 +1,26 @@
+﻿-- Fix Azerbaijani color localizations with proper encoding
+
+DELETE FROM \"PetColorLocalizations\" WHERE \"AppLocaleId\" = 1;
+
+INSERT INTO \"PetColorLocalizations\" (\"PetColorId\", \"AppLocaleId\", \"Title\")
+VALUES
+  (1, 1, 'Qara'),
+  (2, 1, 'Ağ'),
+  (3, 1, 'Boz'),
+  (4, 1, 'Qəhvəyi'),
+  (5, 1, 'Qızılı'),
+  (6, 1, 'Krem'),
+  (7, 1, 'Bej'),
+  (8, 1, 'Qırmızı'),
+  (9, 1, 'Narıncı'),
+  (10, 1, 'Sarı'),
+  (11, 1, 'Yaşıl'),
+  (12, 1, 'Mavi'),
+  (13, 1, 'Xallı'),
+  (14, 1, 'Zolaqlı'),
+  (15, 1, 'Qarışıq');
+
+SELECT pc.\"Id\", pc.\"Key\", pcl.\"Title\"
+FROM \"PetColors\" pc
+LEFT JOIN \"PetColorLocalizations\" pcl ON pc.\"Id\" = pcl.\"PetColorId\" AND pcl.\"AppLocaleId\" = 1
+ORDER BY pc.\"SortOrder\";

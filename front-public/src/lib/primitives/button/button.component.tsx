@@ -1,152 +1,166 @@
-import { cn } from '@/lib/external/utils';
-import React, { useState, useCallback } from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { ComponentSizing } from '@/lib/types/component-sizing';
+import { cn } from "@/lib/external/utils";
+import React, { useState, useCallback } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { ComponentSizing } from "@/lib/types/component-sizing";
 
 /**
  * Button variants styled after Airbnb's design patterns
  */
 const buttonVariants = cva(
-  'inline-flex justify-center items-center font-medium leading-none text-center transition-all duration-150 no-underline focus-ring clicky',
+  "inline-flex justify-center items-center font-medium leading-none text-center transition-all duration-150 no-underline focus-ring clicky",
   {
     variants: {
       variant: {
         // Primary lavender button (main CTA)
-        primary: 'rounded-24 bg-primary-600 text-white hover:bg-primary-700',
+        primary: "rounded-24 bg-primary-600 text-white hover:bg-primary-700",
 
-        accent: 'rounded-24 bg-primary-600 text-white hover:bg-primary-700',
+        accent: "rounded-24 bg-primary-600 text-white hover:bg-primary-700",
 
         // Outline button with primary border
-        outline: 'rounded-24 bg-white border border-primary-600 text-primary-600 hover:bg-primary-50',
+        outline:
+          "rounded-24 bg-white border border-primary-600 text-primary-600 hover:bg-primary-50",
 
         // Light outline button with gray border
-        light: 'rounded-24 bg-white border border-gray-300 text-black hover:border-black',
+        light:
+          "rounded-24 bg-white border border-gray-300 text-black hover:border-black",
 
         // Underlined text button
-        underlined: 'bg-transparent text-black underline hover:text-gray-800 p-0 h-auto',
+        underlined:
+          "bg-transparent text-black underline hover:text-gray-800 p-0 h-auto",
 
         // Simple text button
-        text: 'bg-transparent text-black hover:underline p-0 h-auto',
+        text: "bg-transparent text-black hover:underline p-0 h-auto",
 
         // Inverse for dark backgrounds
-        inverse: 'rounded-24 bg-white text-black border border-transparent hover:bg-gray-100',
+        inverse:
+          "rounded-24 bg-white text-black border border-transparent hover:bg-gray-100",
 
         // Filter button (matching the images)
-        filter: 'rounded-16 bg-white border border-gray-200 text-black hover:border-black',
+        filter:
+          "rounded-16 bg-white border border-primary-600 text-primary-600 hover:border-primary-700 hover:text-primary-700 hover:bg-primary-50",
 
         // Design System Variants (border-2, rounded-xl)
         // Lavender solid button for primary actions
-        solid: 'rounded-xl border-2 bg-primary-600 border-primary-600 text-white hover:bg-primary-700 hover:border-primary-700',
+        solid:
+          "rounded-xl border-2 bg-primary-600 border-primary-600 text-white hover:bg-primary-700 hover:border-primary-700",
 
         // Secondary outline button with gray border
-        secondary: 'rounded-xl border-2 border-gray-200 bg-white text-gray-700 hover:border-gray-300',
+        secondary:
+          "rounded-xl border-2 border-gray-200 bg-white text-gray-700 hover:border-gray-300",
 
         // Danger/destructive action button
-        danger: 'rounded-xl border-2 bg-red-600 border-red-600 text-white hover:bg-red-700 hover:border-red-700',
+        danger:
+          "rounded-xl border-2 bg-red-600 border-red-600 text-white hover:bg-red-700 hover:border-red-700",
 
         // Disabled state (handled in compound variants but defined here for type safety)
-        ghost: 'rounded-xl border-2 bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed',
+        ghost:
+          "rounded-xl border-2 bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed",
       },
       size: {
-        xs: 'h-8 px-3 text-xs',
-        sm: 'h-10 px-4 text-sm',
-        md: 'h-12 px-5 text-base',
-        lg: 'h-14 px-6 text-base',
-        xl: 'h-16 px-8 text-lg',
+        xs: "h-8 px-3 text-xs",
+        sm: "h-10 px-4 text-sm",
+        md: "h-12 px-5 text-base",
+        lg: "h-14 px-6 text-base",
+        xl: "h-16 px-8 text-lg",
       } as Record<ComponentSizing, string>,
       loading: {
-        true: 'opacity-70 pointer-events-none',
+        true: "opacity-70 pointer-events-none",
       },
       fullWidth: {
-        true: 'w-full',
+        true: "w-full",
       },
       disabled: {
-        true: 'opacity-50 cursor-not-allowed pointer-events-none',
+        true: "opacity-50 cursor-not-allowed pointer-events-none",
       },
     },
     compoundVariants: [
       {
         loading: true,
-        class: 'cursor-wait',
+        class: "cursor-wait",
       },
       {
-        variant: ['text', 'underlined'],
-        class: 'shadow-none border-none',
+        variant: ["text", "underlined"],
+        class: "shadow-none border-none",
       },
       {
-        variant: ['text', 'underlined'],
-        size: ['xs', 'sm', 'md', 'lg', 'xl'],
-        class: 'h-auto',
+        variant: ["text", "underlined"],
+        size: ["xs", "sm", "md", "lg", "xl"],
+        class: "h-auto",
       },
       {
-        variant: 'filter',
-        class: 'flex items-center gap-2',
+        variant: "filter",
+        class: "flex items-center gap-2",
       },
       {
-        variant: 'primary',
+        variant: "primary",
         disabled: true,
-        class: 'bg-gray-300 text-gray-500 hover:bg-gray-300 border-transparent',
+        class: "bg-gray-300 text-gray-500 hover:bg-gray-300 border-transparent",
       },
       {
-        variant: 'accent',
+        variant: "accent",
         disabled: true,
-        class: 'bg-primary-200 text-primary-400 hover:bg-primary-200 border-transparent',
+        class:
+          "bg-primary-200 text-primary-400 hover:bg-primary-200 border-transparent",
       },
       {
-        variant: 'outline',
+        variant: "outline",
         disabled: true,
-        class: 'border-gray-200 text-gray-400 hover:bg-white',
+        class: "border-gray-200 text-gray-400 hover:bg-white",
       },
       {
-        variant: 'light',
+        variant: "light",
         disabled: true,
-        class: 'border-gray-200 text-gray-400 hover:border-gray-200',
+        class: "border-gray-200 text-gray-400 hover:border-gray-200",
       },
       {
-        variant: ['text', 'underlined'],
+        variant: ["text", "underlined"],
         disabled: true,
-        class: 'text-gray-400 hover:no-underline',
+        class: "text-gray-400 hover:no-underline",
       },
       {
-        variant: 'inverse',
+        variant: "inverse",
         disabled: true,
-        class: 'bg-gray-100 text-gray-400 hover:bg-gray-100',
+        class: "bg-gray-100 text-gray-400 hover:bg-gray-100",
       },
       {
-        variant: 'filter',
+        variant: "filter",
         disabled: true,
-        class: 'border-gray-200 text-gray-400 hover:border-gray-200',
+        class: "border-gray-200 text-gray-400 hover:border-gray-200",
       },
       {
-        variant: 'solid',
+        variant: "solid",
         disabled: true,
-        class: 'bg-gray-100 border-gray-200 text-gray-400 hover:bg-gray-100 hover:border-gray-200',
+        class:
+          "bg-gray-100 border-gray-200 text-gray-400 hover:bg-gray-100 hover:border-gray-200",
       },
       {
-        variant: 'secondary',
+        variant: "secondary",
         disabled: true,
-        class: 'border-gray-200 text-gray-400 hover:border-gray-200',
+        class: "border-gray-200 text-gray-400 hover:border-gray-200",
       },
       {
-        variant: 'danger',
+        variant: "danger",
         disabled: true,
-        class: 'bg-red-200 border-red-200 text-red-400 hover:bg-red-200 hover:border-red-200',
+        class:
+          "bg-red-200 border-red-200 text-red-400 hover:bg-red-200 hover:border-red-200",
       },
     ],
     defaultVariants: {
-      variant: 'primary',
-      size: 'md',
+      variant: "primary",
+      size: "md",
       loading: false,
       fullWidth: false,
       disabled: false,
     },
-  }
+  },
 );
 
 /**
  * Button props with support for anchor variant and async handling
  */
-type ButtonProps<TAnchor extends boolean> = React.ComponentProps<TAnchor extends true ? 'a' : 'button'> &
+type ButtonProps<TAnchor extends boolean> = React.ComponentProps<
+  TAnchor extends true ? "a" : "button"
+> &
   VariantProps<typeof buttonVariants> & {
     leftSection?: React.ReactNode;
     rightSection?: React.ReactNode;
@@ -158,7 +172,11 @@ type ButtonProps<TAnchor extends boolean> = React.ComponentProps<TAnchor extends
      * Async click handler that automatically manages loading state
      * Takes precedence over regular onClick when provided
      */
-    onClickAsync?: (event: React.MouseEvent<TAnchor extends true ? HTMLAnchorElement : HTMLButtonElement>) => Promise<void>;
+    onClickAsync?: (
+      event: React.MouseEvent<
+        TAnchor extends true ? HTMLAnchorElement : HTMLButtonElement
+      >,
+    ) => Promise<void>;
     /**
      * Called when async operation completes successfully
      */
@@ -244,7 +262,11 @@ export default function Button<TAnchor extends boolean = false>({
 
   // Handle async click with automatic loading state management
   const handleAsyncClick = useCallback(
-    async (event: React.MouseEvent<TAnchor extends true ? HTMLAnchorElement : HTMLButtonElement>) => {
+    async (
+      event: React.MouseEvent<
+        TAnchor extends true ? HTMLAnchorElement : HTMLButtonElement
+      >,
+    ) => {
       if (!onClickAsync) return;
 
       // Prevent concurrent operations if enabled
@@ -258,7 +280,8 @@ export default function Button<TAnchor extends boolean = false>({
         await onClickAsync(event);
         onAsyncSuccess?.();
       } catch (error) {
-        const errorObj = error instanceof Error ? error : new Error('An error occurred');
+        const errorObj =
+          error instanceof Error ? error : new Error("An error occurred");
         onAsyncError?.(errorObj);
 
         // Re-throw if no error handler provided so it's not silently swallowed
@@ -269,7 +292,13 @@ export default function Button<TAnchor extends boolean = false>({
         setInternalLoading(false);
       }
     },
-    [onClickAsync, onAsyncSuccess, onAsyncError, preventConcurrentAsync, internalLoading]
+    [
+      onClickAsync,
+      onAsyncSuccess,
+      onAsyncError,
+      preventConcurrentAsync,
+      internalLoading,
+    ],
   );
 
   // Loading dots component
@@ -284,9 +313,17 @@ export default function Button<TAnchor extends boolean = false>({
   // Build the content with optional left/right sections
   const content = (
     <>
-      {leftSection && !isLoading && <span className="inline-flex justify-center items-center mr-2">{leftSection}</span>}
+      {leftSection && !isLoading && (
+        <span className="inline-flex justify-center items-center mr-2">
+          {leftSection}
+        </span>
+      )}
       {isLoading ? <LoadingDots /> : children}
-      {rightSection && !isLoading && <span className="inline-flex justify-center items-center ml-2">{rightSection}</span>}
+      {rightSection && !isLoading && (
+        <span className="inline-flex justify-center items-center ml-2">
+          {rightSection}
+        </span>
+      )}
     </>
   );
 
@@ -294,11 +331,20 @@ export default function Button<TAnchor extends boolean = false>({
   const clickHandler = onClickAsync ? handleAsyncClick : onClick;
 
   // Render as either button or anchor
-  return React.createElement(anchor ? 'a' : 'button', {
-    className: cn(buttonVariants({ variant, size, loading: isLoading, fullWidth, disabled }), className),
-    type: anchor ? undefined : 'button',
+  return React.createElement(anchor ? "a" : "button", {
+    className: cn(
+      buttonVariants({
+        variant,
+        size,
+        loading: isLoading,
+        fullWidth,
+        disabled,
+      }),
+      className,
+    ),
+    type: anchor ? undefined : "button",
     disabled: disabled || isLoading,
-    'aria-disabled': disabled || isLoading,
+    "aria-disabled": disabled || isLoading,
     onClick: clickHandler,
     children: content,
     ...props,

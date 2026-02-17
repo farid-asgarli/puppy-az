@@ -98,14 +98,7 @@ const FavoriteAdsView = () => {
         hasNextPage: false,
       };
     },
-    [
-      isAuthenticated,
-      favorites,
-      syncFavoritesFromBackend,
-      t,
-      locale,
-      tDateTime,
-    ],
+    [isAuthenticated, favorites, syncFavoritesFromBackend, locale, tDateTime],
   );
 
   // Use paginated ads hook

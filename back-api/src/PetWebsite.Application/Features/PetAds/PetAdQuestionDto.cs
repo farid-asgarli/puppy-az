@@ -6,6 +6,7 @@ namespace PetWebsite.Application.Features.PetAds;
 public class PetAdQuestionDto
 {
 	public int Id { get; init; }
+	public Guid UserId { get; init; }
 	public string Question { get; init; } = null!;
 	public string? Answer { get; init; }
 	public string QuestionerName { get; init; } = null!;
@@ -21,6 +22,7 @@ public class PetAdQuestionDto
 public class PetAdQuestionReplyDto
 {
 	public int Id { get; init; }
+	public Guid UserId { get; init; }
 	public string Text { get; init; } = null!;
 	public string UserName { get; init; } = null!;
 	public bool IsOwnerReply { get; init; }

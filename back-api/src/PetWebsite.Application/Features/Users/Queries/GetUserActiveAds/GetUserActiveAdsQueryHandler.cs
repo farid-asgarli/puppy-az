@@ -48,6 +48,10 @@ public class GetUserActiveAdsQueryHandler(
 		foreach (var item in items)
 		{
 			item.PrimaryImageUrl = urlService.ToAbsoluteUrl(item.PrimaryImageUrl);
+			foreach (var image in item.Images)
+			{
+				image.Url = urlService.ToAbsoluteUrl(image.Url);
+			}
 		}
 
 		var result = new PaginatedResult<MyPetAdListItemDto>

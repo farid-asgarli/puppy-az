@@ -25,7 +25,47 @@
 import { FilterParams } from "@/lib/filtering/types";
 import { DEFAULT_FILTER_VALUES } from "@/lib/filtering/filter-default-values";
 import { PetAdType, PetGender, PetSize } from "@/lib/api";
+import type { PetCategoryDto } from "@/lib/api";
 import { getEnumValues } from "@/lib/utils/enum-utils";
+import { DisplayCache } from "@/lib/caching/display-cache";
+
+// ============================================================================
+// Slug <-> Enum Mappings
+// ============================================================================
+
+const AD_TYPE_SLUGS: Record<string, PetAdType> = {
+  sale: PetAdType.Sale,
+  match: PetAdType.Match,
+  found: PetAdType.Found,
+  lost: PetAdType.Lost,
+  owning: PetAdType.Owning,
+};
+
+const AD_TYPE_TO_SLUG: Record<number, string> = Object.fromEntries(
+  Object.entries(AD_TYPE_SLUGS).map(([slug, id]) => [id, slug]),
+);
+
+const GENDER_SLUGS: Record<string, PetGender> = {
+  unknown: PetGender.Unknown,
+  male: PetGender.Male,
+  female: PetGender.Female,
+};
+
+const GENDER_TO_SLUG: Record<number, string> = Object.fromEntries(
+  Object.entries(GENDER_SLUGS).map(([slug, id]) => [id, slug]),
+);
+
+const SIZE_SLUGS: Record<string, PetSize> = {
+  xs: PetSize.ExtraSmall,
+  sm: PetSize.Small,
+  md: PetSize.Medium,
+  lg: PetSize.Large,
+  xl: PetSize.ExtraLarge,
+};
+
+const SIZE_TO_SLUG: Record<number, string> = Object.fromEntries(
+  Object.entries(SIZE_SLUGS).map(([slug, id]) => [id, slug]),
+);
 
 export class FilterValidator {
   private static readonly VALID_AD_TYPES = getEnumValues(PetAdType);
@@ -46,9 +86,15 @@ export class FilterValidator {
   // ============================================================================
 
   /**
-   * Validate ad type enum value
+   * Validate ad type enum value (accepts slug like "sale" or number like "1")
    */
   static validateAdType(value: string | number): PetAdType | null {
+    if (
+      typeof value === "string" &&
+      AD_TYPE_SLUGS[value.toLowerCase()] !== undefined
+    ) {
+      return AD_TYPE_SLUGS[value.toLowerCase()];
+    }
     const num = typeof value === "string" ? parseInt(value, 10) : value;
     return this.VALID_AD_TYPES.includes(num) ? num : null;
   }
@@ -80,12 +126,39 @@ export class FilterValidator {
     return !isNaN(cityId) && cityId > 0 ? cityId : null;
   }
 
+  /**
+   * Validate district ID - checks if it's a positive integer
+   * API will validate if district exists
+   */
+  static validateDistrict(value: string | number): number | null {
+    const districtId = typeof value === "string" ? parseInt(value, 10) : value;
+    return !isNaN(districtId) && districtId > 0 ? districtId : null;
+  }
+
+  /**
+   * Validate gender (accepts slug like "male" or number like "1")
+   */
   static validateGender(value: string | number): PetGender | null {
+    if (
+      typeof value === "string" &&
+      GENDER_SLUGS[value.toLowerCase()] !== undefined
+    ) {
+      return GENDER_SLUGS[value.toLowerCase()];
+    }
     const num = typeof value === "string" ? parseInt(value, 10) : value;
     return this.VALID_GENDERS.includes(num) ? num : null;
   }
 
+  /**
+   * Validate size (accepts slug like "md" or number like "3")
+   */
   static validateSize(value: string | number): PetSize | null {
+    if (
+      typeof value === "string" &&
+      SIZE_SLUGS[value.toLowerCase()] !== undefined
+    ) {
+      return SIZE_SLUGS[value.toLowerCase()];
+    }
     const num = typeof value === "string" ? parseInt(value, 10) : value;
     return this.VALID_SIZES.includes(num) ? num : null;
   }
@@ -146,6 +219,11 @@ export class FilterValidator {
       if (city) validated.city = city;
     }
 
+    if (params.district) {
+      const district = this.validateDistrict(params.district);
+      if (district) validated.district = district;
+    }
+
     if (params.gender) {
       const gender = this.validateGender(params.gender);
       if (gender) validated.gender = gender;
@@ -197,7 +275,7 @@ export class FilterValidator {
 
     if (params.sort) {
       const sort = this.validateSort(params.sort);
-      if (sort) validated.sort = sort as any;
+      if (sort) validated.sort = sort as FilterParams["sort"];
     }
 
     // Cross-validation: ensure price-min <= price-max
@@ -207,6 +285,11 @@ export class FilterValidator {
       validated["price-min"] > validated["price-max"]
     ) {
       delete validated["price-max"];
+    }
+
+    // Cross-validation: district requires city
+    if (validated.district && !validated.city) {
+      delete validated.district;
     }
 
     return validated;
@@ -226,13 +309,95 @@ export class FilterValidator {
     const params = new URLSearchParams();
 
     Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
+      if (value === undefined || value === null || value === "") return;
+
+      // Convert enum values to slugs for readable URLs
+      if (
+        key === "ad-type" &&
+        typeof value === "number" &&
+        AD_TYPE_TO_SLUG[value]
+      ) {
+        params.set(key, AD_TYPE_TO_SLUG[value]);
+      } else if (
+        key === "gender" &&
+        typeof value === "number" &&
+        GENDER_TO_SLUG[value]
+      ) {
+        params.set(key, GENDER_TO_SLUG[value]);
+      } else if (
+        key === "size" &&
+        typeof value === "number" &&
+        SIZE_TO_SLUG[value]
+      ) {
+        params.set(key, SIZE_TO_SLUG[value]);
+      } else {
         params.set(key, value.toString());
       }
     });
 
     const queryString = params.toString();
     return queryString ? `${basePath}?${queryString}` : basePath;
+  }
+
+  /**
+   * Build slug-based URL with filter params
+   *
+   * If the filters include a category (and optionally breed), builds a path like:
+   *   /{categorySlug} or /{categorySlug}/{breedSlug}
+   * with remaining filters as query params (excluding category/breed).
+   *
+   * Falls back to /ads/s?category=X if category slug is not available.
+   *
+   * @param filters - The filter params to encode
+   * @param categories - Available categories (for slug lookup). If not provided, falls back to DisplayCache.
+   */
+  static buildSlugFilterUrl(
+    filters: FilterParams,
+    categories?: PetCategoryDto[],
+  ): string {
+    const categoryId = filters.category;
+
+    // If no category, go to /ads/s with all filters as query params
+    if (!categoryId) {
+      return this.buildFilterUrl(filters, "/ads/s");
+    }
+
+    // Look up category slug
+    const categoryList = categories ?? DisplayCache.getCategories();
+    const category = categoryList?.find((c) => c.id === categoryId);
+
+    if (!category?.slug) {
+      // Can't find slug, fall back to query param style
+      return this.buildFilterUrl(filters, "/ads/s");
+    }
+
+    // Build base path with category slug
+    let basePath = `/${category.slug}`;
+
+    // Look up breed slug if breed is in filters
+    const breedId = filters.breed;
+    if (breedId) {
+      const breed = DisplayCache.getBreedById(categoryId, breedId);
+      if (breed?.slug) {
+        basePath = `/${category.slug}/${breed.slug}`;
+      }
+      // If breed slug not found (breeds not cached yet), keep breed as query param
+      // This handles the edge case where breeds haven't been fetched yet
+    }
+
+    // Build remaining filters as query params (exclude category and breed if in path)
+    const remainingFilters: FilterParams = { ...filters };
+    delete remainingFilters.category;
+
+    // Only remove breed from query params if it's in the slug path
+    if (breedId && basePath.includes("/")) {
+      const pathSegments = basePath.split("/").filter(Boolean);
+      if (pathSegments.length >= 2) {
+        delete remainingFilters.breed;
+      }
+    }
+
+    return this.buildFilterUrl(remainingFilters, basePath);
   }
 
   /**

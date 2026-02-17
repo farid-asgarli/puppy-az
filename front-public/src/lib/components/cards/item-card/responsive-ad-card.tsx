@@ -1,16 +1,10 @@
 "use client";
 
 import { IconPaw } from "@tabler/icons-react";
-import { getAdTypes } from "@/lib/utils/mappers";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
 import { cn } from "@/lib/external/utils";
-import {
-  IconCrown,
-  IconShare,
-  IconMessageCircle,
-  IconMapPin,
-} from "@tabler/icons-react";
+import { IconMapPin } from "@tabler/icons-react";
 import { useFavorites } from "@/lib/hooks/use-favorites";
-import { IconButton } from "@/lib/primitives/icon-button";
 import { AnimatedLikeButton } from "./animated-like-button";
 import TransitionLink from "@/lib/components/transition-link";
 import { PetAdCardType } from "@/lib/types/ad-card";
@@ -25,15 +19,14 @@ export default function ResponsiveAdCard({
   viewMode,
   ...props
 }: ResponsiveAdCardProps) {
-  const t = useTranslations("common");
   const tSearch = useTranslations("search");
-  const adTypes = getAdTypes(t);
+  const { getAdTypeById } = useAdTypes();
   const { isFavorite, createToggleHandler } = useFavorites();
   const adId = props.id;
   const isLiked = isFavorite(adId);
   const toggleLike = createToggleHandler(adId);
 
-  const adTypeInfo = adTypes[props.adType];
+  const adTypeInfo = getAdTypeById(props.adType);
 
   // Determine layout classes based on viewMode
   // List mode: always horizontal (flex-row), larger image on mobile for differentiation
@@ -61,11 +54,17 @@ export default function ResponsiveAdCard({
           imageClasses,
         )}
       >
-        <img
-          src={props.imgUrl}
-          alt={props.title}
-          className="w-full h-full object-cover transition-transform duration-300"
-        />
+        {props.imgUrl ? (
+          <img
+            src={props.imgUrl}
+            alt={props.title}
+            className="w-full h-full object-cover transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <IconPaw size={32} className="text-gray-300" strokeWidth={1.5} />
+          </div>
+        )}
 
         {/* Badges */}
         <div
@@ -77,49 +76,17 @@ export default function ResponsiveAdCard({
           )}
         >
           {/* Ad type badge */}
-          <div
-            className={cn(
-              "flex items-center gap-1 bg-white/80 backdrop-blur-sm border border-white/20 text-xs font-medium rounded-full w-fit",
-              viewMode === "list"
-                ? "px-1.5 py-0.5"
-                : "px-1.5 py-0.5 min-[480px]:px-2 min-[480px]:py-1",
-              adTypeInfo.color.text,
-            )}
-          >
-            <adTypeInfo.icon
-              size={10}
-              className={
-                viewMode === "list" ? "" : "min-[480px]:w-3 min-[480px]:h-3"
-              }
-            />
-            <span
-              className={
-                viewMode === "list" ? "hidden" : "hidden min-[480px]:inline"
-              }
-            >
-              {adTypeInfo.title}
-            </span>
-          </div>
-        </div>
-        <div
-          className={cn(
-            "absolute",
-            viewMode === "list"
-              ? "left-1.5 bottom-1.5"
-              : "left-1.5 bottom-1.5 min-[480px]:left-2 min-[480px]:bottom-2",
-          )}
-        >
-          {/* Premium badge */}
-          {props.isPremium && (
+          {adTypeInfo && (
             <div
               className={cn(
-                "flex items-center gap-1 text-premium-500 bg-white text-xs font-medium rounded-full",
+                "flex items-center gap-1 bg-white/80 backdrop-blur-sm border border-white/20 text-xs font-medium rounded-full w-fit",
                 viewMode === "list"
                   ? "px-1.5 py-0.5"
                   : "px-1.5 py-0.5 min-[480px]:px-2 min-[480px]:py-1",
+                adTypeInfo.color.text,
               )}
             >
-              <IconCrown
+              <adTypeInfo.icon
                 size={10}
                 className={
                   viewMode === "list" ? "" : "min-[480px]:w-3 min-[480px]:h-3"
@@ -130,7 +97,7 @@ export default function ResponsiveAdCard({
                   viewMode === "list" ? "hidden" : "hidden min-[480px]:inline"
                 }
               >
-                Premium
+                {adTypeInfo.title}
               </span>
             </div>
           )}

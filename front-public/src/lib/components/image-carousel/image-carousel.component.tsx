@@ -1,12 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import useEmblaCarousel from 'embla-carousel-react';
-import { cn } from '@/lib/external/utils';
-import { IconZoomIn, IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import Fancybox from '@/sections/fancy-box/fancy-box';
-import { useTranslations } from 'next-intl';
-import { ImageWithFallback } from '@/lib/primitives';
+import React from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { cn } from "@/lib/external/utils";
+import {
+  IconZoomIn,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
+import Fancybox from "@/sections/fancy-box/fancy-box";
+import { useTranslations } from "next-intl";
 
 export interface ImageCarouselImage {
   id: number | string;
@@ -18,7 +21,7 @@ export interface ImageCarouselProps {
   images: ImageCarouselImage[];
   title: string;
   galleryId?: string;
-  aspectRatio?: 'square' | '4/3' | '16/9';
+  aspectRatio?: "square" | "4/3" | "16/9";
   showPrimaryBadge?: boolean;
   showCounter?: boolean;
   className?: string;
@@ -31,17 +34,17 @@ export interface ImageCarouselProps {
 export function ImageCarousel({
   images,
   title,
-  galleryId = 'gallery',
-  aspectRatio = '4/3',
+  galleryId = "gallery",
+  aspectRatio = "4/3",
   showPrimaryBadge = false,
   showCounter = true,
   className,
 }: ImageCarouselProps) {
-  const t = useTranslations('imageGallery');
+  const t = useTranslations("imageGallery");
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
-    align: 'start',
+    align: "start",
     slidesToScroll: 1,
   });
 
@@ -59,12 +62,12 @@ export function ImageCarousel({
   React.useEffect(() => {
     if (!emblaApi) return;
     onSelect();
-    emblaApi.on('select', onSelect);
-    emblaApi.on('reInit', onSelect);
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
 
     return () => {
-      emblaApi.off('select', onSelect);
-      emblaApi.off('reInit', onSelect);
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
     };
   }, [emblaApi, onSelect]);
 
@@ -81,9 +84,9 @@ export function ImageCarousel({
   }
 
   const aspectClasses = {
-    square: 'aspect-square',
-    '4/3': 'aspect-[4/3]',
-    '16/9': 'aspect-[16/9]',
+    square: "aspect-square",
+    "4/3": "aspect-[4/3]",
+    "16/9": "aspect-[16/9]",
   };
 
   return (
@@ -95,9 +98,9 @@ export function ImageCarousel({
         Thumbs: true,
         Toolbar: {
           display: {
-            left: ['infobar'],
+            left: ["infobar"],
             middle: [],
-            right: ['close'],
+            right: ["close"],
           },
         },
         trapFocus: false,
@@ -118,21 +121,30 @@ export function ImageCarousel({
             <a
               data-fancybox={galleryId}
               href={images[0].url}
-              className={cn('relative block overflow-hidden rounded-2xl bg-gray-100 group', aspectClasses[aspectRatio])}
+              className={cn(
+                "relative block overflow-hidden rounded-2xl bg-gray-100 group",
+                aspectClasses[aspectRatio],
+              )}
             >
-              <ImageWithFallback src={images[0].url} alt={title} fill className="object-cover" />
+              <img
+                src={images[0].url}
+                alt={title}
+                className="w-full h-full object-cover"
+              />
               <div className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white transition-colors">
                 <IconZoomIn size={20} className="text-gray-900" />
               </div>
               {showPrimaryBadge && images[0].isPrimary && (
                 <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg">
-                  <span className="text-xs font-semibold text-gray-900">{t('primaryBadge')}</span>
+                  <span className="text-xs font-semibold text-gray-900">
+                    {t("primaryBadge")}
+                  </span>
                 </div>
               )}
             </a>
             {showCounter && (
               <div className="text-center mt-3">
-                <p className="text-sm text-gray-600">{t('singleImage')}</p>
+                <p className="text-sm text-gray-600">{t("singleImage")}</p>
               </div>
             )}
           </div>
@@ -143,19 +155,31 @@ export function ImageCarousel({
               <div className="overflow-hidden rounded-2xl" ref={emblaRef}>
                 <div className="flex touch-pan-y">
                   {images.map((image, index) => (
-                    <div key={image.id} className="flex-[0_0_100%] min-w-0 relative">
+                    <div
+                      key={image.id}
+                      className="flex-[0_0_100%] min-w-0 relative"
+                    >
                       <a
                         data-fancybox={galleryId}
                         href={image.url}
-                        className={cn('relative block overflow-hidden bg-gray-100 group', aspectClasses[aspectRatio])}
+                        className={cn(
+                          "relative block overflow-hidden bg-gray-100 group",
+                          aspectClasses[aspectRatio],
+                        )}
                       >
-                        <ImageWithFallback src={image.url} alt={`${title} - ${index + 1}`} fill className="object-cover" />
+                        <img
+                          src={image.url}
+                          alt={`${title} - ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
                         <div className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white transition-colors">
                           <IconZoomIn size={20} className="text-gray-900" />
                         </div>
                         {showPrimaryBadge && image.isPrimary && (
                           <div className="absolute top-3 left-3 px-3 py-1.5 bg-white/90 backdrop-blur-sm rounded-lg">
-                            <span className="text-xs font-semibold text-gray-900">{t('primaryBadge')}</span>
+                            <span className="text-xs font-semibold text-gray-900">
+                              {t("primaryBadge")}
+                            </span>
                           </div>
                         )}
                       </a>
@@ -169,10 +193,10 @@ export function ImageCarousel({
                 onClick={scrollPrev}
                 disabled={!canScrollPrev}
                 className={cn(
-                  'absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-white z-10',
-                  !canScrollPrev && 'opacity-0 pointer-events-none'
+                  "absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-white z-10",
+                  !canScrollPrev && "opacity-0 pointer-events-none",
                 )}
-                aria-label={t('previousImage')}
+                aria-label={t("previousImage")}
               >
                 <IconChevronLeft size={20} className="text-gray-900" />
               </button>
@@ -180,10 +204,10 @@ export function ImageCarousel({
                 onClick={scrollNext}
                 disabled={!canScrollNext}
                 className={cn(
-                  'absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-white z-10',
-                  !canScrollNext && 'opacity-0 pointer-events-none'
+                  "absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg transition-all hover:bg-white z-10",
+                  !canScrollNext && "opacity-0 pointer-events-none",
                 )}
-                aria-label={t('nextImage')}
+                aria-label={t("nextImage")}
               >
                 <IconChevronRight size={20} className="text-gray-900" />
               </button>
@@ -194,8 +218,13 @@ export function ImageCarousel({
                   <button
                     key={index}
                     onClick={() => emblaApi?.scrollTo(index)}
-                    className={cn('h-1.5 rounded-full transition-all', index === selectedIndex ? 'bg-white w-6' : 'bg-white/60 w-1.5')}
-                    aria-label={t('goToSlide', { number: index + 1 })}
+                    className={cn(
+                      "h-1.5 rounded-full transition-all",
+                      index === selectedIndex
+                        ? "bg-white w-6"
+                        : "bg-white/60 w-1.5",
+                    )}
+                    aria-label={t("goToSlide", { number: index + 1 })}
                   />
                 ))}
               </div>
@@ -204,7 +233,12 @@ export function ImageCarousel({
             {/* Image Counter */}
             {showCounter && (
               <div className="text-center mt-3">
-                <p className="text-sm text-gray-600">{t('imageCounter', { current: selectedIndex + 1, total: images.length })}</p>
+                <p className="text-sm text-gray-600">
+                  {t("imageCounter", {
+                    current: selectedIndex + 1,
+                    total: images.length,
+                  })}
+                </p>
               </div>
             )}
           </div>

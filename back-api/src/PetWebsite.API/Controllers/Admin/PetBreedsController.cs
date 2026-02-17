@@ -19,7 +19,7 @@ namespace PetWebsite.API.Controllers.Admin;
 /// <summary>
 /// Controller for managing pet breeds (admin only).
 /// </summary>
-[Authorize(Roles = AuthorizationConstants.Roles.Admin)]
+[Authorize(Roles = $"{AuthorizationConstants.Roles.SuperAdmin},{AuthorizationConstants.Roles.Admin}")]
 public class PetBreedsController(IMediator mediator, IStringLocalizer<PetBreedsController> localizer)
 	: AdminBaseController(mediator, localizer)
 {

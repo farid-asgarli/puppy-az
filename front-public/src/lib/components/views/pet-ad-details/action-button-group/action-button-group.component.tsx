@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { useFavorites } from "@/lib/hooks/use-favorites";
 import { ActionButtonGroupProps } from "./action-button-group.types";
-import { getAdTypes } from "@/lib/utils/mappers";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
 import { Badge } from "@/lib/components/views/pet-ad-details/badge";
 import { useTranslations } from "next-intl";
 import { copyToClipboard } from "@/lib/utils/clipboard";
@@ -41,11 +41,11 @@ export function ActionButtonGroup({
   const tClipboard = useTranslations("common.clipboard");
   const router = useRouter();
   const { isFavorite, toggleFavorite } = useFavorites();
-  const adTypes = getAdTypes(t);
+  const { getAdTypeById } = useAdTypes();
 
   // Determine if back button should be shown
   const isLiked = isHydrated ? isFavorite(adId) : false;
-  const adTypeData = adType ? adTypes[adType] : null;
+  const adTypeData = adType ? getAdTypeById(adType) : null;
 
   // Handlers
   const handleBack = () => {

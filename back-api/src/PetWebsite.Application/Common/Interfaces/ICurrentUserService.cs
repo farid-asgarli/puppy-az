@@ -55,4 +55,10 @@ public interface ICurrentUserService
 	/// Gets the JWT token expiration timestamp (exp claim) from the current request.
 	/// </summary>
 	DateTime? GetTokenExpiration();
+
+	/// <summary>
+	/// Gets the current admin user's ID (for admin endpoints).
+	/// Returns null for regular users. This is the Guid ID from AdminUser.
+	/// </summary>
+	Guid? AdminUserId { get; }
 }

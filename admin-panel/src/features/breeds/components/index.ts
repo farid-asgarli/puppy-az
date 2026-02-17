@@ -1,0 +1,1 @@
+export { BreedModal } from "./BreedModal";

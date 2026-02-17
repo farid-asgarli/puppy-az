@@ -18,9 +18,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 	public DbSet<PetCategoryLocalization> PetCategoryLocalizations { get; set; } = null!;
 	public DbSet<PetColor> PetColors { get; set; } = null!;
 	public DbSet<PetColorLocalization> PetColorLocalizations { get; set; } = null!;
+	public DbSet<PetAdTypeEntity> PetAdTypes { get; set; } = null!;
+	public DbSet<PetAdTypeLocalization> PetAdTypeLocalizations { get; set; } = null!;
 	public DbSet<PetBreed> PetBreeds { get; set; } = null!;
 	public DbSet<PetBreedLocalization> PetBreedLocalizations { get; set; } = null!;
 	public DbSet<City> Cities { get; set; } = null!;
+	public DbSet<District> Districts { get; set; } = null!;
 	public DbSet<PetAd> PetAds { get; set; } = null!;
 	public DbSet<PetAdImage> PetAdImages { get; set; } = null!;
 	public DbSet<PetAdView> PetAdViews { get; set; } = null!;
@@ -30,6 +33,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 	public DbSet<BlacklistedToken> BlacklistedTokens { get; set; } = null!;
 	public DbSet<Conversation> Conversations { get; set; } = null!;
 	public DbSet<Message> Messages { get; set; } = null!;
+	public DbSet<ContactMessage> ContactMessages { get; set; } = null!;
+	public DbSet<BreedSuggestion> BreedSuggestions { get; set; } = null!;
+
+	// Admin users - exposed via interface for contact message admin lookups
+	public DbSet<AdminUser> AdminUsers { get; set; } = null!;
+
+	// Static sections for CMS
+	public DbSet<StaticSection> StaticSections { get; set; } = null!;
+	public DbSet<StaticSectionLocalization> StaticSectionLocalizations { get; set; } = null!;
 
 	// Regular users (consumers) - not exposed via interface
 	public DbSet<User> RegularUsers { get; set; } = null!;

@@ -12,7 +12,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./backup_PetWebsiteDb.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      # - ./backup_PetWebsiteDb.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U petwebsite_user -d PetWebsiteDb"]
       interval: 10s

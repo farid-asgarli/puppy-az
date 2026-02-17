@@ -35,6 +35,13 @@ export function MobileNavbar({
   // Check if we're on the search route where filtering happens
   const isSearchRoute = pathname === "/ads/s";
 
+  // Cache categories for slug URL building
+  useEffect(() => {
+    if (categories.length > 0) {
+      DisplayCache.setCategories(categories);
+    }
+  }, [categories]);
+
   // Prefetch breeds for current category if not in cache (with locale from URL)
   useEffect(() => {
     const categoryId = filters.category ? Number(filters.category) : null;

@@ -86,7 +86,11 @@ export class PetAdService extends BaseService {
     token: string,
     locale?: string,
   ): Promise<void> {
-    return this.http.put("/api/pet-ads", data, this.withAuth(token, locale));
+    return this.http.put(
+      `/api/pet-ads/${data.id}`,
+      data,
+      this.withAuth(token, locale),
+    );
   }
 
   /**
@@ -166,10 +170,80 @@ export class PetAdService extends BaseService {
   }
 
   /**
+   * Get a category by its localized slug
+   */
+  async getCategoryBySlug(
+    slug: string,
+    locale?: string,
+  ): Promise<PetCategoryDetailedDto> {
+    const context = locale ? this.withLocale(locale) : this.noContext();
+    return this.http.get<PetCategoryDetailedDto>(
+      `/api/pet-ads/categories/by-slug/${encodeURIComponent(slug)}`,
+      context,
+    );
+  }
+
+  /**
+   * Get a breed by its localized slug within a category slug
+   */
+  async getBreedBySlug(
+    categorySlug: string,
+    breedSlug: string,
+    locale?: string,
+  ): Promise<{
+    id: number;
+    title: string;
+    slug: string;
+    categoryId: number;
+    categoryTitle: string;
+    categorySlug: string;
+  }> {
+    const context = locale ? this.withLocale(locale) : this.noContext();
+    return this.http.get(
+      `/api/pet-ads/breeds/by-slug/${encodeURIComponent(categorySlug)}/${encodeURIComponent(breedSlug)}`,
+      context,
+    );
+  }
+
+  /**
+   * Suggest a new breed that is not in the system
+   */
+  async suggestBreed(
+    name: string,
+    petCategoryId: number,
+    token: string,
+    locale?: string,
+  ): Promise<number> {
+    const context = this.withAuth(token, locale);
+    return this.http.post<number>(
+      `/api/pet-ads/breed-suggestions`,
+      { name, petCategoryId },
+      context,
+    );
+  }
+
+  /**
    * Get pet ad details by ID
    */
   async getPetAdDetails(id: number, locale?: string): Promise<PetAdDetailsDto> {
     const context = locale ? this.withLocale(locale) : this.noContext();
+    return this.http.get<PetAdDetailsDto>(`/api/pet-ads/${id}`, context);
+  }
+
+  /**
+   * Get pet ad details by ID with authentication (for viewing own unpublished ads)
+   */
+  async getPetAdDetailsWithAuth(
+    id: number,
+    token?: string,
+    locale?: string,
+  ): Promise<PetAdDetailsDto> {
+    const context =
+      token && locale
+        ? this.withAuth(token, locale)
+        : locale
+          ? this.withLocale(locale)
+          : this.noContext();
     return this.http.get<PetAdDetailsDto>(`/api/pet-ads/${id}`, context);
   }
 
@@ -240,6 +314,36 @@ export class PetAdService extends BaseService {
     return this.http.post<PaginatedResult<PetAdListItemDto>>(
       "/api/users/ads/rejected",
       spec,
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Get user's expired ads with pagination
+   */
+  async getUserExpiredAds(
+    spec: QuerySpecification,
+    token: string,
+    locale?: string,
+  ): Promise<PaginatedResult<PetAdListItemDto>> {
+    return this.http.post<PaginatedResult<PetAdListItemDto>>(
+      "/api/users/ads/expired",
+      spec,
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Reactivate an expired or closed ad (sends to pending for admin review)
+   */
+  async reactivateAd(
+    id: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.post<void>(
+      `/api/pet-ads/${id}/reactivate`,
+      undefined,
       this.withAuth(token, locale),
     );
   }
@@ -369,7 +473,7 @@ export class PetAdService extends BaseService {
     token: string,
     locale?: string,
   ): Promise<void> {
-    return this.http.post<void>(
+    return this.http.put<void>(
       `/api/pet-ads/questions/${questionId}/answer`,
       data,
       this.withAuth(token, locale),
@@ -393,6 +497,129 @@ export class PetAdService extends BaseService {
   ): Promise<void> {
     return this.http.post<void>(
       `/api/pet-ads/questions/${questionId}/replies`,
+      { text },
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Delete a question.
+   * Only the question author or ad owner can delete.
+   *
+   * @param questionId - The ID of the question
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async deleteQuestion(
+    questionId: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.delete<void>(
+      `/api/pet-ads/questions/${questionId}`,
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Delete a reply.
+   * Only the reply author or ad owner can delete.
+   *
+   * @param replyId - The ID of the reply
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async deleteReply(
+    replyId: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.delete<void>(
+      `/api/pet-ads/replies/${replyId}`,
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Delete an answer from a question.
+   * Only the ad owner can delete.
+   *
+   * @param questionId - The ID of the question
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async deleteAnswer(
+    questionId: number,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.delete<void>(
+      `/api/pet-ads/questions/${questionId}/answer`,
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Update a question text.
+   * Only the question author can update.
+   *
+   * @param questionId - The ID of the question
+   * @param question - The new question text
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async updateQuestion(
+    questionId: number,
+    question: string,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.put<void>(
+      `/api/pet-ads/questions/${questionId}`,
+      { question },
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Update an answer text.
+   * Only the ad owner can update.
+   *
+   * @param questionId - The ID of the question
+   * @param answer - The new answer text
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async updateAnswer(
+    questionId: number,
+    answer: string,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.put<void>(
+      `/api/pet-ads/questions/${questionId}/answer`,
+      { answer },
+      this.withAuth(token, locale),
+    );
+  }
+
+  /**
+   * Update a reply text.
+   * Only the reply author can update.
+   *
+   * @param replyId - The ID of the reply
+   * @param text - The new reply text
+   * @param token - Authorization token
+   * @returns Promise<void>
+   */
+  async updateReply(
+    replyId: number,
+    text: string,
+    token: string,
+    locale?: string,
+  ): Promise<void> {
+    return this.http.put<void>(
+      `/api/pet-ads/replies/${replyId}`,
       { text },
       this.withAuth(token, locale),
     );

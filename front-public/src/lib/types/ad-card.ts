@@ -1,4 +1,4 @@
-import { PetAdType } from '@/lib/api';
+import { PetAdType } from "@/lib/api";
 
 export type PetAdCardType = {
   id: number;
@@ -6,7 +6,7 @@ export type PetAdCardType = {
   adType: PetAdType;
   imgUrl: string;
   price: string | number | null;
-  age: number;
+  age: number | null;
   location: string;
   animalCategory: string;
   postedDate: string;

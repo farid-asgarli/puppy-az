@@ -3,7 +3,8 @@
 import {
   IconBrandFacebook,
   IconBrandInstagram,
-  IconBrandTwitter,
+  IconBrandTiktok,
+  IconBrandLinkedin,
   IconWorld,
   IconChevronDown,
 } from "@tabler/icons-react";
@@ -66,13 +67,22 @@ export function DesktopFooter() {
                 <IconBrandInstagram size={20} />
               </a>
               <a
-                href="https://twitter.com/puppy.az"
+                href="https://tiktok.com/@puppy.az"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-sky-100 text-gray-600 hover:text-sky-600 transition-all duration-200"
-                aria-label={tAccessibility("twitter")}
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all duration-200"
+                aria-label={tAccessibility("tiktok")}
               >
-                <IconBrandTwitter size={20} />
+                <IconBrandTiktok size={20} />
+              </a>
+              <a
+                href="https://linkedin.com/company/puppy-az"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-600 transition-all duration-200"
+                aria-label={tAccessibility("linkedin")}
+              >
+                <IconBrandLinkedin size={20} />
               </a>
             </div>
           </div>
@@ -206,7 +216,7 @@ export function DesktopFooter() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             {/* Left: Copyright & Legal */}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
-              <span>{t("copyright")}</span>
+              <span>{t("copyright", { year: new Date().getFullYear() })}</span>
               <span className="hidden lg:inline text-gray-400">·</span>
               <TransitionLink
                 href="/terms"

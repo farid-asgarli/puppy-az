@@ -34,20 +34,20 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
 			ValidationException validationEx => (
 				(int)HttpStatusCode.BadRequest,
 				localizer["Error.BadRequest"].Value,
-				"One or more validation errors occurred.",
+				localizer["Error.BadRequest"].Value,
 				(object)
 					validationEx.Errors.GroupBy(e => e.PropertyName).ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray())
 			),
 			UnauthorizedAccessException => (
 				(int)HttpStatusCode.Unauthorized,
 				localizer["Error.Unauthorized"].Value,
-				"You are not authorized to access this resource.",
+				localizer["Error.Unauthorized"].Value,
 				(object?)null
 			),
 			KeyNotFoundException => (
 				(int)HttpStatusCode.NotFound,
 				localizer["Error.NotFound"].Value,
-				"The requested resource was not found.",
+				localizer["Error.NotFound"].Value,
 				(object?)null
 			),
 			ArgumentException argumentEx => ((int)HttpStatusCode.BadRequest, "Bad Request", argumentEx.Message, (object?)null),
@@ -55,7 +55,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
 			_ => (
 				(int)HttpStatusCode.InternalServerError,
 				localizer["Error.InternalServerError"].Value,
-				"An unexpected error occurred while processing your request.",
+				localizer["Error.InternalServerError"].Value,
 				(object?)null
 			),
 		};
@@ -81,6 +81,11 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
 		{
 			problemDetails["exception"] = exception.GetType().Name;
 			problemDetails["stackTrace"] = exception.StackTrace ?? string.Empty;
+			if (exception.InnerException != null)
+			{
+				problemDetails["innerException"] = exception.InnerException.Message;
+				problemDetails["innerExceptionType"] = exception.InnerException.GetType().Name;
+			}
 		}
 
 		var options = new JsonSerializerOptions

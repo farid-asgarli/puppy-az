@@ -38,10 +38,6 @@ public class SendMessageCommandHandler(
 		if (petAd.Status != PetAdStatus.Published)
 			return Result<SendMessageResponse>.Failure(L(LocalizationKeys.PetAd.NotPublished), 400);
 
-		// Verify receiver is the pet ad owner
-		if (petAd.UserId != request.ReceiverId)
-			return Result<SendMessageResponse>.Failure(L(LocalizationKeys.Message.ReceiverNotFound), 404);
-
 		// Check if receiver exists
 		var receiver = await dbContext.RegularUsers.FindAsync([request.ReceiverId], ct);
 		if (receiver == null)
@@ -51,8 +47,8 @@ public class SendMessageCommandHandler(
 		var existingConversation = await dbContext.Conversations
 			.FirstOrDefaultAsync(c =>
 				c.PetAdId == request.PetAdId &&
-				c.InitiatorId == userId.Value &&
-				c.OwnerId == request.ReceiverId, ct);
+				((c.InitiatorId == userId.Value && c.OwnerId == request.ReceiverId) ||
+				 (c.InitiatorId == request.ReceiverId && c.OwnerId == userId.Value)), ct);
 
 		int conversationId;
 		var now = DateTime.UtcNow;
@@ -78,7 +74,19 @@ public class SendMessageCommandHandler(
 			// Update conversation
 			existingConversation.LastMessageContent = messagePreview;
 			existingConversation.LastMessageAt = now;
-			existingConversation.OwnerUnreadCount++;
+			
+			// Increment unread count for the receiver
+			if (userId.Value == existingConversation.InitiatorId)
+			{
+				// Current user is initiator, so owner hasn't read
+				existingConversation.OwnerUnreadCount++;
+			}
+			else
+			{
+				// Current user is owner, so initiator hasn't read
+				existingConversation.InitiatorUnreadCount++;
+			}
+			
 			existingConversation.UpdatedAt = now;
 		}
 		else

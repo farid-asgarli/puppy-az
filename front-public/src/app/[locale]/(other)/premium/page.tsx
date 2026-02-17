@@ -1,10 +1,5 @@
-import PremiumAdView from '@/lib/views/premium-ad/premium-ad.view';
-import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
-
-export async function generateMetadata() {
-  return createSimpleLocalizedMetadata('metadata.premium');
-}
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <PremiumAdView />;
+  redirect("/");
 }

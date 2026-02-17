@@ -23,6 +23,11 @@ public class PetCategoryLocalization : Localization
 	public string Subtitle { get; set; } = string.Empty;
 
 	/// <summary>
+	/// Gets or sets the URL-friendly slug for this category in the given locale.
+	/// </summary>
+	public string Slug { get; set; } = string.Empty;
+
+	/// <summary>
 	/// Navigation property to the pet category.
 	/// </summary>
 	public PetCategory PetCategory { get; set; } = null!;

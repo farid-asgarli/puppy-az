@@ -1,0 +1,59 @@
+﻿{
+    "id":  309,
+    "title":  "Simba - Sheep cinsi",
+    "description":  "??ox mehriban v?? oyna??ma???? sevir. Ail?? ??????n ??lad??r.",
+    "ageInMonths":  19,
+    "gender":  1,
+    "adType":  5,
+    "color":  "Qəhvəyi",
+    "weight":  null,
+    "size":  3,
+    "price":  0.00,
+    "viewCount":  301,
+    "isPremium":  true,
+    "premiumExpiresAt":  "2025-11-30T13:11:01.97394Z",
+    "publishedAt":  "2026-02-01T18:26:11.488034Z",
+    "updatedAt":  null,
+    "expiresAt":  "2026-03-03T18:26:11.488034Z",
+    "breed":  {
+                  "id":  124,
+                  "title":  "Sheep",
+                  "categoryId":  9
+              },
+    "cityName":  "Quba",
+    "cityId":  9,
+    "categoryTitle":  "Vəhşi heyvanlar",
+    "owner":  {
+                  "id":  "47621ad0-d695-4b55-8aa8-aa2ab917a2e1",
+                  "fullName":  "Nigar Hüseynova",
+                  "profilePictureUrl":  "",
+                  "memberSince":  "2025-11-04T13:11:01.862318Z",
+                  "contactPhoneNumber":  "+994503456789",
+                  "contactEmail":  "user3@example.com"
+              },
+    "images":  [
+                   {
+                       "id":  778,
+                       "filePath":  "",
+                       "fileName":  "",
+                       "fileSize":  0,
+                       "contentType":  "",
+                       "isPrimary":  true,
+                       "uploadedAt":  "0001-01-01T00:00:00",
+                       "url":  "http://localhost:5005/uploads/seed_photo/pexels-pixabay-301448.jpg"
+                   },
+                   {
+                       "id":  779,
+                       "filePath":  "",
+                       "fileName":  "",
+                       "fileSize":  0,
+                       "contentType":  "",
+                       "isPrimary":  false,
+                       "uploadedAt":  "0001-01-01T00:00:00",
+                       "url":  "http://localhost:5005/uploads/seed_photo/pexels-mikebirdy-104373.jpg"
+                   }
+               ],
+    "questions":  [
+
+                  ]
+}

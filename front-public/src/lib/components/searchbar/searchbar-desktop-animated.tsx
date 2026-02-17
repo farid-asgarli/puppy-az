@@ -9,7 +9,9 @@ import React, {
   useEffect,
 } from "react";
 import { PetAdType, PetBreedDto, PetCategoryDetailedDto } from "@/lib/api";
-import { getAdTypes } from "@/lib/utils/mappers";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
+import { FilterValidator } from "@/lib/filtering/filter-validator";
+import { FilterParams } from "@/lib/filtering/types";
 import { LAYOUT, type ActiveField } from "./constants";
 import { searchBarReducer, createInitialState } from "./state";
 import { Divider } from "./components/divider";
@@ -47,8 +49,7 @@ export const SearchBarDesktopAnimated = ({
   const { initialValues, updateUrlFilters, isSearchRoute } = useSearchBarSync();
   const { navigateWithTransition } = useViewTransition();
   const t = useTranslations("search");
-  const tCommon = useTranslations("common");
-  const adTypes = getAdTypes(tCommon);
+  const { getAdTypeById, adTypesWithIcons } = useAdTypes();
 
   // Initialize state with values from URL ONLY if on search route (/ads/s)
   // On other routes, start with empty state
@@ -57,12 +58,12 @@ export const SearchBarDesktopAnimated = ({
       createInitialState({
         selectedAdType:
           isSearchRoute && initialValues.adType !== null
-            ? (adTypes[initialValues.adType]?.title ?? null)
+            ? (getAdTypeById(initialValues.adType)?.title ?? null)
             : null,
         selectedCategory: isSearchRoute ? initialValues.category : null,
         selectedBreed: isSearchRoute ? initialValues.breed : null,
       }),
-    [initialValues, isSearchRoute, adTypes],
+    [initialValues, isSearchRoute, getAdTypeById],
   );
 
   const [state, dispatch] = useReducer(
@@ -116,11 +117,11 @@ export const SearchBarDesktopAnimated = ({
 
   const handleAdTypeSelect = useCallback(
     (value: PetAdType) => {
-      const adTypeTitle = adTypes[value]?.title || value.toString();
+      const adTypeTitle = getAdTypeById(value)?.title || value.toString();
       console.log("Selected ad type:", adTypeTitle);
       dispatch({ type: "SET_AD_TYPE", payload: adTypeTitle });
     },
-    [adTypes],
+    [getAdTypeById],
   );
 
   const handleCategorySelect = useCallback((value: PetCategoryDetailedDto) => {
@@ -138,11 +139,11 @@ export const SearchBarDesktopAnimated = ({
 
     // Convert ad type title back to PetAdType enum
     if (selectedAdType) {
-      const adTypeEntry = Object.entries(adTypes).find(
-        ([_, adType]) => adType.title === selectedAdType,
+      const adTypeEntry = adTypesWithIcons.find(
+        (adType) => adType.title === selectedAdType,
       );
       if (adTypeEntry) {
-        filterUpdates["ad-type"] = adTypeEntry[0]; // Use the numeric key
+        filterUpdates["ad-type"] = adTypeEntry.id; // Use the id
       }
     } else {
       filterUpdates["ad-type"] = null; // Clear if empty
@@ -152,16 +153,20 @@ export const SearchBarDesktopAnimated = ({
     filterUpdates["category"] = selectedCategory?.id ?? null;
     filterUpdates["breed"] = selectedBreed?.id ?? null;
 
-    // If not on search route, navigate to /ads/s with filters
+    // If not on search route, navigate using slug-based URL
     if (!isSearchRoute) {
-      const searchParams = new URLSearchParams();
-      Object.entries(filterUpdates).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          searchParams.set(key, String(value));
-        }
-      });
-      const queryString = searchParams.toString();
-      navigateWithTransition(`/ads/s${queryString ? `?${queryString}` : ""}`);
+      const filterParams: FilterParams = {};
+      if (filterUpdates["ad-type"] != null) {
+        filterParams["ad-type"] = filterUpdates["ad-type"] as number;
+      }
+      if (filterUpdates["category"] != null) {
+        filterParams.category = filterUpdates["category"] as number;
+      }
+      if (filterUpdates["breed"] != null) {
+        filterParams.breed = filterUpdates["breed"] as number;
+      }
+      const url = FilterValidator.buildSlugFilterUrl(filterParams);
+      navigateWithTransition(url);
     } else {
       // Already on search route, just update URL filters
       updateUrlFilters(filterUpdates);
@@ -173,7 +178,7 @@ export const SearchBarDesktopAnimated = ({
     updateUrlFilters,
     isSearchRoute,
     navigateWithTransition,
-    adTypes,
+    adTypesWithIcons,
   ]);
 
   const handleBreedSelect = useCallback((value: PetBreedDto) => {

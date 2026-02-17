@@ -9,8 +9,10 @@ public class UserDashboardStatsDto
 	public int ActiveAdCount { get; init; }
 	public int PendingAdCount { get; init; }
 	public int RejectedAdCount { get; init; }
+	public int ExpiredAdCount { get; init; }
 	public int TotalViews { get; init; }
 	public int TotalFavoriteCount { get; init; }
+	public int MyFavoritesCount { get; init; }
 	public int TotalQuestions { get; init; }
 	public int UnansweredQuestions { get; init; }
 }

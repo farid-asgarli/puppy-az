@@ -5,6 +5,7 @@
     "myAds": "Elanlarım",
     "draftAds": "Tamamlanmamış elan",
     "favorites": "Seçilmişlər",
+    "messages": "Mesajlar",
     "myAccount": "Hesabım",
     "login": "Daxil ol",
     "register": "Qeydiyyat",
@@ -97,12 +98,23 @@
       }
     },
     "petGender": {
+      "other": "Bilmirəm",
       "male": "Erkək",
       "female": "Dişi"
+    },
+    "petBreed": {
+      "other": "Digər"
     },
     "clipboard": {
       "linkCopied": "Link kopyalandı!",
       "copyFailed": "Kopyalama uğursuz oldu"
+    },
+    "allPets": "Bütün elanlar",
+    "recentSearch": {
+      "upTo": "qədər",
+      "size": "ölçü",
+      "monthShort": "ay",
+      "yearShort": "il"
     }
   },
   "auth": {
@@ -495,6 +507,7 @@
     "maxPhotos": "Maksimum {count} şəkil",
     "age": "Yaş",
     "gender": "Cins",
+    "other": "Digər",
     "male": "Erkək",
     "female": "Dişi",
     "vaccinated": "Peyvəndli",
@@ -570,6 +583,7 @@
     "searchTips": "Axtarış məsləhətləri",
     "searchTipsActive": "Filtrləri dəyişmək üçün istənilən sahəyə toxunun. Hamısını təmizləmək üçün sıfırdan başlayın.",
     "searchTipsInactive": "Mükəmməl ev heyvanınızı tapmaq üçün filtrləri seçin. Bir neçə meyar birləşdirə bilərsiniz.",
+    "categories": "Populyar kateqoriyalar",
     "clearAll": "Hamısını təmizlə",
     "searchButton": "Axtar",
     "yearsOld": "yaşında",
@@ -599,7 +613,11 @@
     "showResults": "Nəticələri göstər",
     "reset": "Sıfırla",
     "city": "Şəhər",
+    "district": "Rayon",
     "allCities": "Bütün şəhərlər",
+    "allDistricts": "Bütün rayonlar",
+    "selectCityFirst": "Əvvəlcə şəhər seçin",
+    "other": "Digər",
     "male": "Erkək",
     "female": "Dişi",
     "size": "Ölçü",
@@ -628,6 +646,7 @@
       "badge": "Azərbaycanda ev heyvanları bazarı",
       "trustIndicators": {
         "activeAds": "10,000+ aktiv elan",
+        "activeAdsLabel": "aktiv elan",
         "safeShopping": "Təhlükəsiz alış-veriş",
         "verifiedSellers": "Təsdiqlənmiş satıcılar"
       },
@@ -637,6 +656,7 @@
       "title": "Niyə puppy.az?",
       "subtitle": "Bizi seçmək üçün çoxlu səbəblər var",
       "activeUsers": "10,000+ aktiv istifadəçi artıq bizə etibar edir",
+      "activeUsersLabel": "aktiv istifadəçi artıq bizə etibar edir",
       "platformDescription": "Ev heyvanınızı tapmaq və ya satmaq üçün ən etibarlı və rahat platforma",
       "stats": {
         "users": "İstifadəçi",
@@ -705,6 +725,7 @@
       "trustIndicators": {
         "freeRegistration": "Pulsuz qeydiyyat",
         "activeAds": "10,000+ aktiv elan",
+        "activeAdsLabel": "aktiv elan",
         "safePlatform": "Təhlükəsiz platforma"
       }
     },
@@ -712,11 +733,22 @@
       "title": "Populyar kateqoriyalar",
       "viewAll": "Hamısına bax"
     },
+    "latestAds": {
+      "title": "Ən son əlavə olunanlar",
+      "subtitle": "Platformamıza ən son əlavə olunan elanlar",
+      "badge": "Yeni elanlar"
+    },
     "premiumAds": {
       "title": "Seçilmiş ev heyvanları",
       "subtitle": "Təsdiqlənmiş və etibarlı satıcılardan premium elanlar",
       "badge": "Premium Elanlar",
       "carouselTitle": "Premium elanlar",
+      "viewAll": "Hamısına bax"
+    },
+    "recentlyViewed": {
+      "title": "Son baxdıqlarınız",
+      "subtitle": "Son baxdığınız elanlar",
+      "empty": "Hələ heç bir elana baxmamısınız",
       "viewAll": "Hamısına bax"
     }
   },
@@ -726,10 +758,15 @@
       "subtitle": "Heyvan sevərlər üçün yaradılmış platforma"
     },
     "hero": {
-      "title": "Azərbaycanda heyvan alqı-satqısını təhlükəsiz və asan edən platforma",
-      "description1": "puppy.az 2023-cü ildə Azərbaycanda heyvan sevərlər üçün etibarlı və istifadəçi dostu platforma yaratmaq missiyası ilə təsis edilmişdir.",
-      "description2": "Heyvanların layiqli evlər tapmasına və onlara qayğı göstərəcək məsuliyyətli sahiblərlə tanış olmasına kömək etmək istəyirik.",
+      "title": "Azərbaycanda ev heyvanları üçün etibarlı və təhlükəsiz platforma",
+      "description1": "2017-ci ildə ideyası yaranmış, 2024-cü ildə aktiv inkişafa başlanmış puppy.az platforması ev heyvanlarının alqı-satqısı və qəbulu prosesini şəffaf və etibarlı şəkildə təşkil edir.",
+      "description2": "Azərbaycanda hər heyvanın təhlükəsiz və məsuliyyətli sahib tapması üçün texnologiya və humanist dəyərləri birləşdiririk.",
       "imageCaption": "Heyvanlarla dolu dünya"
+    },
+    "mission": {
+      "title": "Missiyamız",
+      "subtitle": "Ev heyvanlarının təhlükəsiz gələcəyini təmin etmək",
+      "description": "Azərbaycanda ev heyvanlarının alqı-satqısı və qəbulu prosesini şəffaf, etibarlı və təhlükəsiz platformada birləşdirərək, hər heyvanın layiqli qayğı görsün və hər sahibin məsuliyyətli seçim edə bilsin."
     },
     "sections": {
       "stats": {
@@ -779,38 +816,46 @@
     },
     "team": {
       "founder": {
-        "name": "Əli Məmmədov",
+        "name": "Rüfət Əliyev",
         "role": "Təsisçi və CEO",
-        "description": "Heyvan sevgisi və texnologiya arasında körpü qurmaq istəyi ilə puppy.az-ı yaratdı."
+        "description": "Şirkətin strateji istiqamətini müəyyən edir və vizyonunu həyata keçirir."
       },
       "productManager": {
-        "name": "Leyla Həsənova",
-        "role": "Baş Məhsul Meneceri",
-        "description": "10 illik təcrübəyə malik məhsul dizayneri və heyvan hüquqları fəalı."
+        "name": "Şəfiqə Ələkbərova",
+        "role": "İdarə heyətinin üzvü və COO",
+        "description": "Şirkətin gündəlik əməliyyatlarını və komanda idarəçiliyini həyata keçirir."
       },
       "technicalDirector": {
-        "name": "Rəşad İsmayılov",
-        "role": "Texniki Direktor",
-        "description": "Platforma arxitekturasını və texniki həlləri idarə edir."
+        "name": "Fərid Əsgərli",
+        "role": "CTO",
+        "description": "Texnoloji infrastrukturu və məhsul inkişafını idarə edir."
       }
     },
     "milestones": {
+      "idea": {
+        "year": "2017",
+        "title": "Layihə ideyası",
+        "description": "puppy.az platformasının ilkin konsepti və əsas məqsədi müəyyənləşdirildi."
+      },
+      "research": {
+        "year": "2018-2023",
+        "title": "Strategiya və hazırlıq",
+        "description": "Bazar araşdırması, texnoloji infrastruktur və biznes modelinin planlaşdırılması."
+      },
+      "development": {
+        "year": "2024",
+        "title": "Aktiv işə başlanması",
+        "description": "Komandanın formalaşması və layihəyə tam vaxtlı həsr edilməsi."
+      },
       "launch": {
-        "title": "Platforma işə salındı",
-        "description": "puppy.az Azərbaycanda heyvan ticarəti üçün ilk onlayn platforma kimi fəaliyyətə başladı."
-      },
-      "tenKAds": {
-        "title": "10,000+ elan",
-        "description": "İlk ildə 10,000-dən çox uğurlu elan yerləşdirildi və minlərlə heyvan yeni evlər tapdı."
-      },
-      "premium": {
-        "title": "Premium xidmətlər",
-        "description": "İstifadəçilər üçün premium xidmətlər və əlavə funksiyalar təqdim edildi."
+        "year": "2025",
+        "title": "Platformanın inşası",
+        "description": "Texniki inkişaf, funksionallığın hazırlanması və testlərin aparılması."
       },
       "future": {
-        "year": "Gələcək",
-        "title": "Genişlənmə planları",
-        "description": "Regional genişlənmə və mobil tətbiq üzərində işləyirik."
+        "year": "2026",
+        "title": "İstifadəyə verildi",
+        "description": "puppy.az platforması istifadəçilərə rəsmi olaraq təqdim edildi."
       }
     },
     "contact": {
@@ -1235,7 +1280,7 @@
     }
   },
   "footer": {
-    "description": "Azərbaycanda ev heyvanları üçün elan platforması. İt, pişik və digər heyvanlar üçün ən asan yol.",
+    "description": "Azərbaycanda ev heyvanları üçün etibarlı elan platforması. Hər heyvan xоşbəxt bir ev tapsın.",
     "company": "Şirkət",
     "about": "Haqqımızda",
     "careers": "Karyera",
@@ -1251,7 +1296,7 @@
     "events": "Tədbirlər",
     "guides": "Bələdçilər",
     "partnership": "Əməkdaşlıq",
-    "copyright": "© 2026 Puppy.az",
+    "copyright": "© {year} Puppy.az",
     "terms": "Şərtlər",
     "privacy": "Məxfilik",
     "allRightsReserved": "Bütün hüquqlar qorunur",
@@ -1288,7 +1333,8 @@
     "closeMessage": "Mesajı bağla",
     "facebook": "Facebook",
     "instagram": "Instagram",
-    "twitter": "Twitter",
+    "tiktok": "TikTok",
+    "linkedin": "LinkedIn",
     "priceRange": "Qiymət aralığı",
     "minPrice": "Minimum qiymət",
     "maxPrice": "Maksimum qiymət",
@@ -1557,6 +1603,10 @@
       "myAds": {
         "title": "Elanlarım",
         "description": "Bütün ev heyvanı elanlarınızı idarə edin"
+      },
+      "messages": {
+        "title": "Mesajlar",
+        "description": "Elanlarla bağlı söhbətləriniz"
       }
     },
     "privacy": {
@@ -1637,7 +1687,9 @@
     "stats": {
       "totalAds": "Ümumi elanlar",
       "viewsThisMonth": "Bu ay baxışlar",
-      "favorites": "Seçilmişlər"
+      "favorites": "Seçilmişlər",
+      "unreadMessages": "Oxunmamış mesajlar",
+      "unansweredQuestions": "Cavabsız suallar"
     },
     "quickActions": {
       "newAd": {
@@ -1692,6 +1744,10 @@
         "title": "Sual və Cavablar",
         "subtitle": "{count} cavabsız sual"
       },
+      "messages": {
+        "title": "Mesajlar",
+        "subtitle": "Elanlarla bağlı söhbətləriniz"
+      },
       "stats": {
         "title": "Statistika",
         "subtitle": "Baxışlar və performans"
@@ -1709,6 +1765,21 @@
         "subtitle": "Tətbiq və məxfilik"
       }
     },
+    "notifications": {
+      "title": "Bildirişlər",
+      "empty": "Hazırda yeni bildirişiniz yoxdur",
+      "recent": "Son bildirişlər",
+      "newMessages": {
+        "title": "Sizə yeni mesaj gəlib!",
+        "description": "{count, plural, one {# oxunmamış mesajınız var} other {# oxunmamış mesajınız var}}",
+        "action": "Mesajları Oxu"
+      },
+      "newQuestions": {
+        "title": "Elanlarınıza yeni sual gəlib!",
+        "description": "{count, plural, one {# cavabsız sualınız var} other {# cavabsız sualınız var}}",
+        "action": "Cavablandır"
+      }
+    },
     "questions": {
       "title": "Sual və Cavablar",
       "subtitle": "Elanlarınızla bağlı sualları idarə edin",
@@ -1722,8 +1793,10 @@
         "unansweredQuestions": "Cavabsız",
         "answeredQuestions": "Cavablanmış",
         "adsWithQuestions": "Suallı Elanlar",
-        "latestQuestion": "Son Sual"
+        "latestQuestion": "Son Sual",
+        "allAnswered": "Bütün suallara cavab verildi! Əla iş! 🎉"
       },
+      "endOfList": "Sona çatdınız",
       "card": {
         "askedBy": "{name} tərəfindən soruşulub",
         "askedAt": "{time} soruşulub",
@@ -1733,7 +1806,10 @@
         "viewAd": "Elanı Gör",
         "yourAnswer": "Cavabınız:",
         "question": "Sual:",
-        "noAnswer": "Hələ cavablandırılmayıb"
+        "noAnswer": "Hələ cavablandırılmayıb",
+        "replies": "Cavablar",
+        "owner": "Sahibi",
+        "answered": "Cavablandırıldı"
       },
       "emptyStates": {
         "noQuestions": {
@@ -1772,13 +1848,15 @@
         "active": "Aktiv",
         "pending": "Gözləmədə",
         "rejected": "Rədd edilmiş",
+        "expired": "Vaxtı keçmiş",
         "all": "Hamısı"
       },
       "summary": {
         "totalAds": "Ümumi Elanlar",
         "activeAds": "Aktiv",
         "pendingAds": "Təsdiq Gözləyir",
-        "rejectedAds": "Rədd Edilmiş"
+        "rejectedAds": "Rədd Edilmiş",
+        "expiredAds": "Vaxtı Keçmiş"
       },
       "emptyStates": {
         "noAds": {
@@ -1796,6 +1874,10 @@
         "noRejected": {
           "title": "Rədd Edilmiş Elan Yoxdur",
           "description": "Əla! Heç bir elanınız rədd edilməmişdir. Bütün elanlarınız aktiv və ya gözləmədədir."
+        },
+        "noExpired": {
+          "title": "Vaxtı Keçmiş Elan Yoxdur",
+          "description": "Hazırda vaxtı keçmiş elanınız yoxdur."
         }
       },
       "actions": {
@@ -1836,7 +1918,7 @@
     "data": {
       "lastUpdated": "15 Yanvar 2025",
       "supportEmail": "support@puppy.az",
-      "phoneNumber": "+994 12 345 67 89",
+      "phoneNumber": "+994 55 338 81 06",
       "workingHours": "Bazar ertəsi - Cümə, 09:00-18:00"
     },
     "categories": {
@@ -1970,7 +2052,7 @@
         "faqs": {
           "technicalIssue": {
             "question": "Texniki problem yaşayıram, nə etməliyəm?",
-            "answer": "Əvvəlcə səhifəni yeniləməyi, brauzeri və ya cihazı dəyişməyi sınayın. Problem davam edərsə, support@puppy.az ünvanına və ya +994 12 345 67 89 nömrəsinə müraciət edin. Problem haqqında ətraflı məlumat verin."
+            "answer": "Əvvəlcə səhifəni yeniləməyi, brauzeri və ya cihazı dəyişməyi sınayın. Problem davam edərsə, support@puppy.az ünvanına və ya +994 55 338 81 06 nömrəsinə müraciət edin. Problem haqqında ətraflı məlumat verin."
           },
           "photoUpload": {
             "question": "Şəkil yükləyə bilmirəm, niyə?",
@@ -1982,7 +2064,7 @@
           },
           "contactSupport": {
             "question": "Dəstək komandası ilə necə əlaqə saxlaya bilərəm?",
-            "answer": "E-poçt: support@puppy.az, Telefon: +994 12 345 67 89, İş saatları: Bazar ertəsi - Cümə, 09:00-18:00. Həmçinin 'Yardım Mərkəzi' səhifəsindəki əlaqə formasından istifadə edə bilərsiniz."
+            "answer": "E-poçt: support@puppy.az, Telefon: +994 55 338 81 06, İş saatları: Bazar ertəsi - Cümə, 09:00-18:00. Həmçinin 'Yardım Mərkəzi' səhifəsindəki əlaqə formasından istifadə edə bilərsiniz."
           }
         }
       },
@@ -2254,6 +2336,8 @@
   },
   "adsSearch": {
     "resultsHeader": {
+      "postAd": "Elan yerləşdir",
+      "postAdShort": "Elan",
       "searching": "Axtarılır...",
       "adsCount": "{count} elan",
       "foundInCategory": "{category} kateqoriyasında {count} elan tapıldı",
@@ -2271,7 +2355,9 @@
       "category": "Kateqoriya: {value}",
       "breed": "Cins",
       "city": "Şəhər: {value}",
+      "district": "Rayon",
       "gender": {
+        "other": "Cins: Digər",
         "male": "Cins: Erkək",
         "female": "Cins: Dişi"
       },
@@ -2303,7 +2389,8 @@
     },
     "recentSearches": {
       "title": "Son axtarışlar",
-      "clearAll": "Hamısını təmizlə"
+      "clearAll": "Hamısını təmizlə",
+      "clearHistory": "Təmizlə"
     },
     "recentlyViewed": {
       "title": "Son baxılanlar",
@@ -2314,6 +2401,33 @@
     "justNow": "İndicə"
   },
   "petAdDetails": {
+    "statusBanner": {
+      "editButton": "Redakt\u0259 et",
+      "pending": {
+        "title": "Elanınız yoxlanılır",
+        "description": "Təsdiqdən sonra hamıya görünəcək.",
+        "badge": "Gözləmədə"
+      },
+      "rejected": {
+        "title": "Elanınız rədd edildi",
+        "description": "Elanı redaktə edib yenidən göndərə bilərsiniz.",
+        "reasonLabel": "Səbəb",
+        "badge": "Rədd"
+      },
+      "expired": {
+        "title": "Elanınızın müddəti bitib",
+        "description": "Elanı yeniləyin ki, yenidən aktiv olsun.",
+        "renewButton": "Yenilə",
+        "renewError": "Elanı yeniləmək mümkün olmadı. Yenidən cəhd edin.",
+        "renewedTitle": "Elan yeniləndi!",
+        "renewedDescription": "Elanınız yoxlanışa göndərildi və təsdiqdən sonra aktiv olacaq."
+      },
+      "deactivateButton": "Deaktiv et",
+      "deactivateConfirm": "Bu elanı deaktiv etdikdən sonra artıq heç kimə görünməyəcək. Daha sonra elanı yenidən aktivləşdirə bilərsiniz.",
+      "deactivateError": "Elanı deaktiv etmək mümkün olmadı. Yenidən cəhd edin.",
+      "deactivateModalTitle": "Elanı deaktiv et?",
+      "cancelButton": "Ləğv et"
+    },
     "hero": {
       "premium": "Premium",
       "priceNotApplicable": "Qiymət yoxdur",
@@ -2330,17 +2444,20 @@
       "gender": {
         "label": "Cins",
         "male": "Erkək",
-        "female": "Dişi"
+        "female": "Dişi",
+        "notSpecified": "Qeyd olunmayıb"
       },
       "age": {
         "label": "Yaş",
         "months": "{count} ay",
         "years": "{count} il",
-        "yearsMonths": "{years} il {months} ay"
+        "yearsMonths": "{years} il {months} ay",
+        "notSpecified": "Qeyd olunmayıb"
       },
       "weight": {
         "label": "Çəki",
-        "kg": "{weight} kq"
+        "kg": "{weight} kq",
+        "notSpecified": "Qeyd olunmayıb"
       },
       "color": {
         "label": "Rəng"
@@ -2362,6 +2479,7 @@
     "contactCard": {
       "price": "Qiymət",
       "free": "Pulsuz",
+      "negotiable": "Razılaşma yolu ilə",
       "contact": "Əlaqə",
       "memberSince": "{date} tarixindən bəri",
       "seller": "Satıcı",
@@ -2380,6 +2498,11 @@
       "messageSent": "Mesaj uğurla göndərildi",
       "messageFailed": "Mesaj göndərilə bilmədi",
       "cannotMessageSelf": "Özünüzə mesaj göndərə bilməzsiniz"
+    },
+    "recentlyViewed": {
+      "title": "Son baxdıqlarınız",
+      "description": "Bu heyvanları əvvəllər baxmısınız",
+      "empty": "Hələ heç bir elana baxmamısınız"
     },
     "questions": {
       "title": "Suallar və cavablar",
@@ -2400,10 +2523,25 @@
       "answerPlaceholder": "Cavabınızı yazın...",
       "sendAnswer": "Cavabı Göndər",
       "answerQuestion": "Cavabla",
-      "cancel": "Ləğv et",
       "submitting": "Göndərilir...",
       "answerSuccess": "Cavab uğurla göndərildi",
       "answerError": "Cavab göndərilmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "edit": "Düzəlt",
+      "delete": "Sil",
+      "deleteReply": "Cavabı sil",
+      "deleteAnswer": "Cavabı sil",
+      "deleteQuestionTitle": "Sualı silmək",
+      "deleteReplyTitle": "Cavabı silmək",
+      "deleteAnswerTitle": "Cavabı silmək",
+      "deleteConfirm": "Bu sualı silmək istədiyinizə əminsiniz? Bütün cavablar da silinəcək.",
+      "deleteReplyConfirm": "Bu cavabı silmək istədiyinizə əminsiniz?",
+      "deleteAnswerConfirm": "Bu cavabı silmək istədiyinizə əminsiniz?",
+      "deleteSuccess": "Sual uğurla silindi",
+      "deleteError": "Sual silinmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "deleteReplySuccess": "Cavab uğurla silindi",
+      "deleteReplyError": "Cavab silinmədi. Zəhmət olmasa yenidən cəhd edin.",
+      "deleteAnswerSuccess": "Cavab uğurla silindi",
+      "deleteAnswerError": "Cavab silinmədi. Zəhmət olmasa yenidən cəhd edin.",
       "modal": {
         "title": "Sual verin",
         "close": "Bağla",
@@ -2415,8 +2553,8 @@
         "submit": "Göndər",
         "submitting": "Göndərilir...",
         "success": {
-          "title": "Sual göndərildi",
-          "message": "Satıcı cavab verdikdən sonra bildiriş alacaqsınız"
+          "title": "Sualınız göndərildi!",
+          "message": "Cavab gələndə bildiriş alacaqsınız"
         },
         "error": {
           "title": "Xəta",
@@ -2520,11 +2658,17 @@
       "loading": "Yüklənir...",
       "allAdsLoaded": "Bütün elanlar yükləndi",
       "closeError": "Elan bağlanarkən xəta baş verdi",
+      "reactivateError": "Elan aktivləşdirilə bilmədi",
       "generalError": "Xəta baş verdi. Zəhmət olmasa yenidən cəhd edin.",
       "noSearchResults": "Heç bir nəticə tapılmadı",
       "noSearchResultsDescription": "Axtarışınıza uyğun elan tapılmadı. Fərqli açar söz istifadə edin.",
       "clearSearch": "Axtarışı təmizlə",
-      "searchResultsCount": "{count} / {total} elan göstərilir"
+      "searchResultsCount": "{count} / {total} elan göstərilir",
+      "reactivateDialog": {
+        "title": "Elanı yenidən aktivləşdir",
+        "message": "Bu elanı yenidən aktivləşdirmək istəyirsiniz? Elan moderator tərəfindən yenidən yoxlanılacaq.",
+        "confirmButton": "Aktivləşdir"
+      }
     },
     "active": {
       "pageTitle": "Aktiv Elanlar",
@@ -2582,6 +2726,26 @@
         "confirmButton": "Sil"
       }
     },
+    "expired": {
+      "pageTitle": "Vaxtı Keçmiş Elanlar",
+      "subtitle": {
+        "withCount": "{count} elanın vaxtı keçib",
+        "empty": "Vaxtı keçmiş elan yoxdur"
+      },
+      "infoBanner": {
+        "title": "Vaxtı keçmiş elanlar",
+        "description": "Bu elanların 30 günlük müddəti bitib. Elanı yenidən aktivləşdirmək üçün 'Yenidən aktivləşdir' düyməsinə klikləyin. Elan yenidən moderator tərəfindən yoxlanılacaq."
+      },
+      "emptyState": {
+        "title": "Vaxtı keçmiş elan yoxdur",
+        "description": "Hazırda vaxtı keçmiş elanınız yoxdur. Aktiv elanlarınız 30 gün sonra avtomatik olaraq deaktiv olacaq."
+      },
+      "confirmDialog": {
+        "title": "Elanı sil",
+        "message": "Bu elanı silmək istədiyinizdən əminsiniz? Bu əməliyyat geri qaytarıla bilməz.",
+        "confirmButton": "Sil"
+      }
+    },
     "drawer": {
       "title": "Elan Təfərrüatları",
       "loadError": "Elan təfərrüatları yüklənə bilmədi",
@@ -2616,6 +2780,7 @@
       "expires": "Bitmə tarixi",
       "edit": "Redaktə et",
       "closeAd": "Elanı Bağla",
+      "reactivate": "Yenidən Aktivləşdir",
       "delete": "Sil",
       "viewPublicPage": "Açıq Səhifəyə Bax",
       "status": {
@@ -2881,7 +3046,8 @@
       "month": "ay",
       "months": "ay",
       "exampleLabel": "Nümunə:",
-      "exampleAge": "2 il 6 ay"
+      "exampleAge": "2 il 6 ay",
+      "optional": "(ixtiyari)"
     },
     "reviewView": {
       "heading": "Elanınızı nəzərdən keçirin",
@@ -2900,6 +3066,7 @@
       "editDetails": "Detalları redaktə et",
       "adTypeLabel": "Elan növü",
       "breedLabel": "Cins",
+      "suggestedBreed": "təklif edilib",
       "genderLabel": "Cins",
       "sizeLabel": "Ölçü",
       "ageLabel": "Yaş",
@@ -2917,9 +3084,13 @@
       "whatHappensText": "Göndərdikdən sonra elanınız yoxlanılacaq və 24 saat ərzində dərc olunacaq. Aktiv olduqda bildiriş alacaqsınız.",
       "submittingLabel": "Göndərilir...",
       "submitLabel": "Elanı göndər",
+      "updateLabel": "Yenilə",
+      "fillAllFields": "Zəhmət olmasa bütün məcburi sahələri doldurun",
       "successDialog": {
         "title": "Elan uğurla göndərildi!",
         "message": "Təbriklər! Elanınız göndərildi və moderasiyadan sonra dərc olunacaq.",
+        "updateTitle": "Elan yeniləndi!",
+        "updateMessage": "Elanınız uğurla yeniləndi və yoxlanış üçün göndərildi.",
         "infoText": "Elanınız adətən 24 saat ərzində yoxlanılır. Aktivləşdirildikdə bildiriş alacaqsınız.",
         "buttonText": "Elanlarıma bax"
       }
@@ -2987,7 +3158,23 @@
       "resultsCount": "{count} şəhər",
       "noMatch": "\"{query}\" üzrə heç bir şəhər uyğun gəlmir",
       "clearSearch": "Axtarışı təmizlə",
-      "loading": "Şəhərlər yüklənir..."
+      "loading": "Şəhərlər yüklənir...",
+      "districtHeading": "Dəqiq ünvanı göstərin",
+      "districtSubtitle": "{city} daxilində uyğun ərazini seçin",
+      "districtPlaceholderHint": "Əvvəlcə şəhər seçin",
+      "districtPlaceholderTitle": "Rayon seçimi",
+      "districtPlaceholderDescription": "Şəhər seçdikdən sonra burada ərazilər görünəcək",
+      "districtSearchPlaceholder": "Axtar...",
+      "districtLoading": "Ərazilər yüklənir...",
+      "noDistricts": "Bu şəhər üçün ərazilər mövcud deyil",
+      "cantFindDistrict": "Siyahıda yoxdur? Özünüz əlavə edin",
+      "customDistrictTitle": "Ərazini özünüz daxil edin",
+      "customDistrictDescription": "Siyahıda olmayan ərazinin adını yazın",
+      "customDistrictPlaceholder": "Məsələn: Badamdar, Şüvəlan...",
+      "customDistrictAdded": "Ərazi adı qeyd edildi",
+      "submitCustomDistrict": "Təsdiq et",
+      "customDistrictSuccess": "Ərazi uğurla qeyd edildi! Yoxlanıldıqdan sonra siyahıya əlavə olunacaq.",
+      "cancelCustomDistrict": "Ləğv et"
     },
     "breedView": {
       "heading": "Ev heyvanınızın cinsini seçin",
@@ -2996,7 +3183,22 @@
       "searchPlaceholder": "Cins axtarın...",
       "noResults": "Nəticə tapılmadı",
       "resultsCount": "{count} cins",
-      "loading": "Cinslər yüklənir..."
+      "loading": "Cinslər yüklənir...",
+      "optional": "Bu sahə ixtiyaridir",
+      "otherBreed": "Digər",
+      "noMatchMessage": "\"{query}\" ilə uyğun cins tapılmadı",
+      "suggestBreed": "\"{name}\" cinsini təklif et",
+      "clearSearch": "Axtarışı təmizlə",
+      "cantFindBreed": "Cinsinizi tapa bilmirsiniz?",
+      "suggestTitle": "Yeni cins təklif edin",
+      "suggestDescription": "Əgər heyvanınızın cinsi siyahıda yoxdursa, adını yazın. Təklifiniz yoxlanıldıqdan sonra əlavə olunacaq.",
+      "suggestPlaceholder": "Cinsin adını yazın...",
+      "submitSuggestion": "Təklif göndər",
+      "submitting": "Göndərilir...",
+      "cancel": "Ləğv et",
+      "suggestionSent": "Təklifiniz göndərildi! Yoxlanıldıqdan sonra siyahıya əlavə olunacaq.",
+      "suggestionError": "Təklif göndərilə bilmədi. Yenidən cəhd edin.",
+      "suggestionNote": "Cinsin adını düzgün yazın. Təklif yoxlanıldıqdan sonra siyahıya əlavə olunacaq."
     },
     "categoryView": {
       "heading": "Hansı növ ev heyvanını siyahıya salırsınız?",
@@ -3078,7 +3280,8 @@
     },
     "price": {
       "notApplicable": "Qiymət tətbiq olunmur",
-      "free": "Pulsuz"
+      "free": "Pulsuz",
+      "negotiable": "Razılaşma yolu ilə"
     }
   },
   "adEdit": {
@@ -3489,7 +3692,8 @@
       "success": {
         "title": "Mesajınız Göndərildi!",
         "message": "Tezliklə sizinlə əlaqə saxlayacağıq. Təşəkkür edirik!"
-      }
+      },
+      "error": "Mesaj göndərilərkən xəta baş verdi. Zəhmət olmasa bir az sonra yenidən cəhd edin."
     },
     "quickLinks": {
       "title": "Faydalı Keçidlər",
@@ -3629,6 +3833,32 @@
       "title": "Bloq Tezliklə",
       "description": "Ev heyvanlarının qayğısı, sağlamlığı və təlimi haqqında faydalı məqalələr hazırlanır. Tezliklə burada olacaq!",
       "backHome": "Ana Səhifəyə Qayıt"
+    }
+  },
+  "messages": {
+    "title": "Mesajlar",
+    "subtitle": "Elanlarla bağlı söhbətləriniz",
+    "searchPlaceholder": "Söhbət və ya istifadəçi axtar...",
+    "emptyTitle": "Hələ Mesaj Yoxdur",
+    "emptyDescription": "Elan sahibləri ilə ünsiyyət qurmaq üçün elan səhifəsindən mesaj göndərin.",
+    "browseAds": "Elanlara Bax",
+    "noResultsTitle": "Nəticə Tapılmadı",
+    "noResultsDescription": "Axtarışınıza uyğun söhbət tapılmadı.",
+    "unreadCount": "{count} oxunmamış",
+    "conversationNotFound": "Söhbət tapılmadı",
+    "backToMessages": "Mesajlara qayıt",
+    "typeMessage": "Mesajınızı yazın...",
+    "send": "Göndər",
+    "edit": "Redaktə et",
+    "delete": "Sil",
+    "edited": "redaktə edilib",
+    "deleteConfirm": "Mesajı silmək istədiyinizə əminsiniz?",
+    "messageTime": {
+      "justNow": "İndicə",
+      "minutesAgo": "{count} dəqiqə əvvəl",
+      "hoursAgo": "{count} saat əvvəl",
+      "daysAgo": "{count} gün əvvəl",
+      "weeksAgo": "{count} həftə əvvəl"
     }
   }
 }

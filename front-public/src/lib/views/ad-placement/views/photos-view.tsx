@@ -15,7 +15,6 @@ import { cn } from "@/lib/external/utils";
 import { ViewFooter, ViewLayout } from "@/lib/views/ad-placement/components";
 import { Heading, Text } from "@/lib/primitives/typography";
 import { useLocale } from "@/lib/hooks/use-client-locale";
-import { PetAdType } from "@/lib/api/types/pet-ad.types";
 
 /**
  * Photos Upload View

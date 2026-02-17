@@ -1,0 +1,460 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font Face Declarations */
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCereal_W_Bk.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCereal_W_Md.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCereal_W_Bd.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCereal_W_Lt.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCereal_W_XBd.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Cyrillic Support */
+@font-face {
+  font-family: "Cereal";
+  src: url("./fonts/Cereal/AirbnbCerealVF-Cyr-Roman.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  unicode-range: U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("./fonts/DMSans/DMSans-VariableFont_opsz,wght.ttf")
+    format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./fonts/Poppins/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./fonts/Poppins/Poppins-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./fonts/Poppins/Poppins-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url("./fonts/Poppins/Poppins-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Base Styles */
+:root {
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family:
+    "Cereal",
+    "DM Sans",
+    "Poppins",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Ant Design Overrides */
+@layer components {
+  /* Cards */
+  .card {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm;
+  }
+
+  /* Form Labels */
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+
+  /* Status Badges */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-badge-pending {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400;
+  }
+
+  .status-badge-approved {
+    @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400;
+  }
+
+  .status-badge-rejected {
+    @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400;
+  }
+
+  /* Skeleton Pulse Animation */
+  .skeleton-pulse {
+    @apply animate-pulse bg-gray-200 dark:bg-gray-700 rounded;
+  }
+
+  /* Glass Effect */
+  .glass {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg;
+  }
+}
+
+/* Ant Design Dark Mode Fixes */
+.dark .ant-table {
+  background: transparent;
+}
+
+.dark .ant-table-thead > tr > th {
+  background: rgb(31 41 55) !important;
+  border-bottom-color: rgb(75 85 99) !important;
+  color: rgb(209 213 219) !important;
+}
+
+.dark .ant-table-tbody > tr > td {
+  border-bottom-color: rgb(55 65 81) !important;
+}
+
+.dark .ant-table-tbody > tr:hover > td {
+  background: rgb(55 65 81) !important;
+}
+
+.dark .ant-table-tbody > tr.ant-table-row:hover > td {
+  background: rgb(55 65 81) !important;
+}
+
+.dark .ant-pagination-item {
+  background: rgb(55 65 81);
+  border-color: rgb(75 85 99);
+}
+
+.dark .ant-pagination-item a {
+  color: rgb(209 213 219);
+}
+
+.dark .ant-pagination-item-active {
+  border-color: var(--primary-500);
+}
+
+.dark .ant-select-selector {
+  background: rgb(55 65 81) !important;
+  border-color: rgb(75 85 99) !important;
+  color: rgb(209 213 219) !important;
+}
+
+.dark .ant-select-arrow {
+  color: rgb(156 163 175);
+}
+
+.dark .ant-input {
+  background: rgb(55 65 81);
+  border-color: rgb(75 85 99);
+  color: rgb(209 213 219);
+}
+
+.dark .ant-input::placeholder {
+  color: rgb(156 163 175);
+}
+
+.dark .ant-input-affix-wrapper {
+  background: rgb(55 65 81);
+  border-color: rgb(75 85 99);
+}
+
+.dark .ant-modal-content {
+  background: rgb(31 41 55);
+}
+
+.dark .ant-modal-header {
+  background: rgb(31 41 55);
+  border-bottom-color: rgb(55 65 81);
+}
+
+.dark .ant-modal-title {
+  color: rgb(243 244 246);
+}
+
+.dark .ant-modal-close-x {
+  color: rgb(156 163 175);
+}
+
+.dark .ant-modal-body {
+  color: rgb(209 213 219);
+}
+
+.dark .ant-form-item-label > label {
+  color: rgb(209 213 219);
+}
+
+.dark .ant-card {
+  background: rgb(31 41 55);
+  border-color: rgb(55 65 81);
+}
+
+.dark .ant-card-head {
+  border-bottom-color: rgb(55 65 81);
+  color: rgb(243 244 246);
+}
+
+.dark .ant-tabs-tab {
+  color: rgb(156 163 175);
+}
+
+.dark .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--primary-500) !important;
+}
+
+.dark .ant-tabs-ink-bar {
+  background: var(--primary-500);
+}
+
+.dark .ant-descriptions-bordered .ant-descriptions-item-label {
+  background: rgb(55 65 81);
+  border-color: rgb(75 85 99);
+  color: rgb(156 163 175);
+}
+
+.dark .ant-descriptions-bordered .ant-descriptions-item-content {
+  border-color: rgb(75 85 99);
+  color: rgb(209 213 219);
+}
+
+.dark .ant-statistic-content-value {
+  color: rgb(243 244 246);
+}
+
+.dark .ant-typography {
+  color: rgb(209 213 219);
+}
+
+.dark h1.ant-typography,
+.dark h2.ant-typography,
+.dark h3.ant-typography,
+.dark h4.ant-typography,
+.dark h5.ant-typography {
+  color: rgb(243 244 246);
+}
+
+/* Sidebar Styles */
+.sidebar-menu-item {
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 
+         hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer;
+}
+
+.sidebar-menu-item.active {
+  @apply bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 font-medium;
+}
+
+.sidebar-menu-item.danger {
+  @apply hover:bg-red-50 dark:hover:bg-red-900/20;
+}
+
+.sidebar-menu-item.danger.active {
+  @apply bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400;
+}
+
+/* Animation Classes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* Mobile Responsive Fixes */
+@media (max-width: 768px) {
+  /* Ant Design table pagination compact */
+  .ant-pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .ant-pagination-options {
+    display: none;
+  }
+
+  .ant-pagination-total-text {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  /* Ant Design modal full-screen on mobile */
+  .ant-modal {
+    max-width: calc(100vw - 16px) !important;
+    margin: 8px auto !important;
+    top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .ant-modal-content {
+    border-radius: 12px !important;
+  }
+
+  /* Ant Design Drawer close button bigger for touch */
+  .ant-drawer-close {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Compact table cells on mobile */
+  .ant-table-cell {
+    padding: 8px !important;
+    font-size: 13px;
+  }
+
+  /* Title sizes reduced on mobile */
+  h2.ant-typography {
+    font-size: 1.25rem !important;
+  }
+
+  /* Sidebar drawer overrides */
+  .sidebar-drawer .ant-drawer-body {
+    padding: 0 !important;
+  }
+
+  /* Make Segmented (tabs) scrollable */
+  .ant-segmented {
+    max-width: 100%;
+  }
+
+  /* Descriptions table responsive */
+  .ant-descriptions-bordered .ant-descriptions-item-label,
+  .ant-descriptions-bordered .ant-descriptions-item-content {
+    padding: 8px 12px !important;
+    font-size: 13px;
+  }
+}

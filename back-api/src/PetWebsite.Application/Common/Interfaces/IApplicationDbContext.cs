@@ -37,6 +37,16 @@ public interface IApplicationDbContext
 	DbSet<PetColorLocalization> PetColorLocalizations { get; }
 
 	/// <summary>
+	/// Gets the DbSet for PetAdTypeEntity entities.
+	/// </summary>
+	DbSet<PetAdTypeEntity> PetAdTypes { get; }
+
+	/// <summary>
+	/// Gets the DbSet for PetAdTypeLocalization entities.
+	/// </summary>
+	DbSet<PetAdTypeLocalization> PetAdTypeLocalizations { get; }
+
+	/// <summary>
 	/// Gets the DbSet for PetBreed entities.
 	/// </summary>
 	DbSet<PetBreed> PetBreeds { get; }
@@ -50,6 +60,11 @@ public interface IApplicationDbContext
 	/// Gets the DbSet for City entities.
 	/// </summary>
 	DbSet<City> Cities { get; }
+
+	/// <summary>
+	/// Gets the DbSet for District entities.
+	/// </summary>
+	DbSet<District> Districts { get; }
 
 	/// <summary>
 	/// Gets the DbSet for PetAd entities.
@@ -105,6 +120,31 @@ public interface IApplicationDbContext
 	/// Gets the DbSet for Message entities.
 	/// </summary>
 	DbSet<Message> Messages { get; }
+
+	/// <summary>
+	/// Gets the DbSet for ContactMessage entities.
+	/// </summary>
+	DbSet<ContactMessage> ContactMessages { get; }
+
+	/// <summary>
+	/// Gets the DbSet for BreedSuggestion entities.
+	/// </summary>
+	DbSet<BreedSuggestion> BreedSuggestions { get; }
+
+	/// <summary>
+	/// Gets the DbSet for AdminUser entities.
+	/// </summary>
+	DbSet<AdminUser> AdminUsers { get; }
+
+	/// <summary>
+	/// Gets the DbSet for StaticSection entities.
+	/// </summary>
+	DbSet<StaticSection> StaticSections { get; }
+
+	/// <summary>
+	/// Gets the DbSet for StaticSectionLocalization entities.
+	/// </summary>
+	DbSet<StaticSectionLocalization> StaticSectionLocalizations { get; }
 
 	/// <summary>
 	/// Provides access to database-related information and operations.

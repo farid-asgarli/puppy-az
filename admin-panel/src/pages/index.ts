@@ -1,0 +1,15 @@
+export { default as DashboardPage } from "./dashboard/DashboardPage";
+export { default as LoginPage } from "./login/LoginPage";
+export { default as ListingsPage } from "./listings/ListingsPage";
+export { default as CreateAdPage } from "./create-ad";
+export { default as UsersPage } from "./users/UsersPage";
+export { default as CitiesPage } from "./cities/CitiesPage";
+export { default as DistrictsPage } from "./districts/DistrictsPage";
+export { default as ColorsPage } from "./colors/ColorsPage";
+export { default as ListingTypesPage } from "./listing-types/ListingTypesPage";
+export { default as CategoriesPage } from "./categories/CategoriesPage";
+export { default as BreedsPage } from "./breeds/BreedsPage";
+export { default as ContactMessagesPage } from "./contact-messages/ContactMessagesPage";
+export { default as StaticSectionsPage } from "./static-sections/StaticSectionsPage";
+export { default as NotFoundPage } from "./not-found/NotFoundPage";
+export { default as NoAccessPage } from "./no-access/NoAccessPage";

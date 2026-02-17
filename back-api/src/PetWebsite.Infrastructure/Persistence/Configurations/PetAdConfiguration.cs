@@ -17,9 +17,11 @@ public class PetAdConfiguration : IEntityTypeConfiguration<PetAd>
 
 		builder.Property(e => e.Description).IsRequired().HasMaxLength(2000);
 
-		builder.Property(e => e.AgeInMonths).IsRequired();
+		// AgeInMonths is optional for Found and Owning ad types
+		builder.Property(e => e.AgeInMonths).IsRequired(false);
 
-		builder.Property(e => e.Gender).IsRequired();
+		// Gender is optional for Found and Owning ad types
+		builder.Property(e => e.Gender).IsRequired(false);
 
 		builder.Property(e => e.AdType).IsRequired();
 
@@ -33,9 +35,15 @@ public class PetAdConfiguration : IEntityTypeConfiguration<PetAd>
 
 		builder.Property(e => e.CityId).IsRequired();
 
+		builder.Property(e => e.DistrictId).IsRequired(false);
+
+		builder.Property(e => e.CustomDistrictName).HasMaxLength(100).IsRequired(false);
+
 		builder.Property(e => e.Status).IsRequired().HasDefaultValue(Domain.Enums.PetAdStatus.Pending);
 
 		builder.Property(e => e.RejectionReason).HasMaxLength(500);
+
+		builder.Property(e => e.SuggestedBreedName).HasMaxLength(100).IsRequired(false);
 
 		builder.Property(e => e.IsAvailable).HasDefaultValue(true);
 
@@ -44,6 +52,12 @@ public class PetAdConfiguration : IEntityTypeConfiguration<PetAd>
 		builder.Property(e => e.PremiumActivatedAt);
 
 		builder.Property(e => e.PremiumExpiresAt);
+
+		builder.Property(e => e.IsVip).HasDefaultValue(false);
+
+		builder.Property(e => e.VipActivatedAt);
+
+		builder.Property(e => e.VipExpiresAt);
 
 		builder.Property(e => e.ViewCount).HasDefaultValue(0);
 
@@ -63,16 +77,27 @@ public class PetAdConfiguration : IEntityTypeConfiguration<PetAd>
 		// User relationship is configured in UserConfiguration.cs to avoid duplication
 
 		builder.HasIndex(e => e.PetBreedId);
+		builder.HasIndex(e => e.PetCategoryId);
 		builder.HasIndex(e => e.CityId);
+		builder.HasIndex(e => e.DistrictId);
 		builder.HasIndex(e => e.AdType);
 		builder.HasIndex(e => e.Size);
 		builder.HasIndex(e => e.Status);
 		builder.HasIndex(e => e.IsAvailable);
 		builder.HasIndex(e => e.IsPremium);
 		builder.HasIndex(e => e.PremiumExpiresAt);
+		builder.HasIndex(e => e.IsVip);
+		builder.HasIndex(e => e.VipExpiresAt);
 		builder.HasIndex(e => e.IsDeleted);
 		builder.HasIndex(e => e.CreatedAt);
 		builder.HasIndex(e => e.PublishedAt);
 		builder.HasIndex(e => e.UserId);
+
+		// Category relationship
+		builder.HasOne(e => e.Category)
+			.WithMany()
+			.HasForeignKey(e => e.PetCategoryId)
+			.OnDelete(DeleteBehavior.Restrict)
+			.IsRequired(false);
 	}
 }

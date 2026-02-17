@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   IconUser,
   IconHeart,
@@ -12,6 +12,7 @@ import {
   IconMenu2,
   IconPencil,
   IconUserPlus,
+  IconMessageCircle,
 } from "@tabler/icons-react";
 import { cn } from "@/lib/external/utils";
 import TransitionLink from "@/lib/components/transition-link";
@@ -20,6 +21,9 @@ import { logoutAction } from "@/lib/auth/actions";
 import { Text } from "@/lib/primitives/typography";
 import { useClickOutside } from "@/lib/hooks/use-click-outside";
 import { useTranslations } from "next-intl";
+import { messageService } from "@/lib/api";
+import { getMyAdsQuestionsSummaryAction } from "@/lib/auth/actions";
+import { useSignalROptional } from "@/lib/hooks/use-signalr";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -89,9 +93,12 @@ const MenuItem = ({
 const MenuDivider = () => <div className="h-px bg-gray-200 my-2" />;
 
 export default function NavbarUserMenu() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, getToken } = useAuth();
+  const signalR = useSignalROptional();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasDraft, setHasDraft] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [unansweredQuestionsCount, setUnansweredQuestionsCount] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("navigation");
   const tAccessibility = useTranslations("accessibility");
@@ -125,6 +132,125 @@ export default function NavbarUserMenu() {
     return () => window.removeEventListener("focus", checkDraft);
   }, [user?.id]);
 
+  // Load unread message count
+  const loadUnreadCount = useCallback(async () => {
+    if (!isAuthenticated || !user?.id) {
+      setUnreadCount(0);
+      return;
+    }
+    try {
+      const token = await getToken();
+      if (!token) return;
+      const count = await messageService.getUnreadCount(token);
+      setUnreadCount(count);
+    } catch (error) {
+      console.error("Failed to load unread messages count:", error);
+      setUnreadCount(0);
+    }
+  }, [isAuthenticated, user?.id, getToken]);
+
+  // Load unanswered questions count
+  const loadUnansweredCount = useCallback(async () => {
+    if (!isAuthenticated || !user?.id) {
+      setUnansweredQuestionsCount(0);
+      return;
+    }
+    try {
+      const result = await getMyAdsQuestionsSummaryAction();
+      if (result.success && result.data) {
+        setUnansweredQuestionsCount(result.data.unansweredQuestions);
+      }
+    } catch (error) {
+      console.error("Failed to load unanswered questions count:", error);
+      setUnansweredQuestionsCount(0);
+    }
+  }, [isAuthenticated, user?.id]);
+
+  // Initial load of counts
+  useEffect(() => {
+    loadUnreadCount();
+    loadUnansweredCount();
+  }, [loadUnreadCount, loadUnansweredCount]);
+
+  // SignalR real-time updates for counts
+  useEffect(() => {
+    if (!signalR) return;
+
+    console.log("[Navbar] Setting up SignalR listeners for badge counts");
+
+    // Subscribe to unread count updates
+    const unsubscribeUnreadCount = signalR.onUnreadCountUpdate(
+      (notification) => {
+        console.log("[Navbar] SignalR unread count update:", notification);
+        setUnreadCount(notification.unreadMessages);
+      },
+    );
+
+    // Subscribe to new messages (increment unread count)
+    const unsubscribeNewMessage = signalR.onNewMessage((notification) => {
+      console.log("[Navbar] SignalR new message:", notification);
+      setUnreadCount((prev) => prev + 1);
+    });
+
+    // Subscribe to new questions (increment unanswered count)
+    const unsubscribeNewQuestion = signalR.onNewQuestion((notification) => {
+      console.log("[Navbar] SignalR new question:", notification);
+      setUnansweredQuestionsCount((prev) => prev + 1);
+    });
+
+    // Subscribe to question answered (decrement count)
+    const unsubscribeQuestionAnswered = signalR.onQuestionAnswered(() => {
+      setUnansweredQuestionsCount((prev) => Math.max(0, prev - 1));
+    });
+
+    return () => {
+      unsubscribeUnreadCount();
+      unsubscribeNewMessage();
+      unsubscribeNewQuestion();
+      unsubscribeQuestionAnswered();
+    };
+  }, [signalR]);
+
+  // Fallback polling (only when SignalR is not connected)
+  useEffect(() => {
+    if (signalR?.isConnected) {
+      console.log("[Navbar] SignalR connected, skipping polling");
+      return;
+    }
+
+    // Refresh counts every 60 seconds as fallback
+    const interval = setInterval(() => {
+      console.log("[Navbar] Fallback polling for counts...");
+      loadUnreadCount();
+      loadUnansweredCount();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [signalR?.isConnected, loadUnreadCount, loadUnansweredCount]);
+
+  // Listen for custom events (for compatibility with existing code)
+  useEffect(() => {
+    const handleMessagesRead = () => {
+      console.log("[Navbar] Messages read event received, refreshing count...");
+      loadUnreadCount();
+    };
+
+    const handleQuestionAnswered = () => {
+      console.log(
+        "[Navbar] Question answered event received, refreshing count...",
+      );
+      loadUnansweredCount();
+    };
+
+    window.addEventListener("messagesRead", handleMessagesRead);
+    window.addEventListener("questionAnswered", handleQuestionAnswered);
+
+    return () => {
+      window.removeEventListener("messagesRead", handleMessagesRead);
+      window.removeEventListener("questionAnswered", handleQuestionAnswered);
+    };
+  }, [loadUnreadCount, loadUnansweredCount]);
+
   console.log(
     "NavbarUserMenu - isAuthenticated:",
     isAuthenticated,
@@ -157,7 +283,12 @@ export default function NavbarUserMenu() {
         {
           icon: <IconReceipt size={20} />,
           label: t("myAds"),
-          href: "/my-account/ads/active",
+          href: "/my-account/ads?tab=active",
+        },
+        {
+          icon: <IconMessageCircle size={20} />,
+          label: t("messages"),
+          href: "/my-account/messages",
         },
         {
           icon: <IconHeart size={20} />,
@@ -251,19 +382,28 @@ export default function NavbarUserMenu() {
       {isAuthenticated && (
         <TransitionLink
           href="/my-account"
-          className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors overflow-hidden"
+          className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors relative"
           aria-label={tAccessibility("userMenu")}
         >
-          {user?.profilePictureUrl ? (
-            <img
-              src={user.profilePictureUrl}
-              alt={user.firstName || "User"}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-white text-sm font-medium">
-              {getUserInitials()}
-            </span>
+          <div className="w-full h-full rounded-full overflow-hidden">
+            {user?.profilePictureUrl ? (
+              <img
+                src={user.profilePictureUrl}
+                alt={user.firstName || "User"}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-white text-sm font-medium flex items-center justify-center w-full h-full">
+                {getUserInitials()}
+              </span>
+            )}
+          </div>
+          {(unreadCount > 0 || unansweredQuestionsCount > 0) && (
+            <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1 shadow-md border-2 border-white">
+              {unreadCount + unansweredQuestionsCount > 99
+                ? "99+"
+                : unreadCount + unansweredQuestionsCount}
+            </div>
           )}
         </TransitionLink>
       )}
@@ -280,7 +420,11 @@ export default function NavbarUserMenu() {
         <div className="absolute right-0 top-14 z-50 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 py-2 overflow-hidden">
           {isAuthenticated && user && (
             <>
-              <div className="px-4 py-4 bg-gray-50 m-2 rounded-xl border border-gray-200">
+              <TransitionLink
+                href="/my-account"
+                onClick={closeMenu}
+                className="block px-4 py-4 bg-gray-50 m-2 rounded-xl border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
+              >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-sm overflow-hidden">
                     {user.profilePictureUrl ? (
@@ -309,7 +453,7 @@ export default function NavbarUserMenu() {
                     </Text>
                   </div>
                 </div>
-              </div>
+              </TransitionLink>
               <MenuDivider />
             </>
           )}

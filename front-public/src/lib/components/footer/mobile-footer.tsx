@@ -6,7 +6,8 @@ import {
   IconChevronDown,
   IconBrandFacebook,
   IconBrandInstagram,
-  IconBrandTwitter,
+  IconBrandTiktok,
+  IconBrandLinkedin,
   IconWorld,
 } from "@tabler/icons-react";
 import { useState, useRef } from "react";
@@ -101,13 +102,22 @@ export function MobileFooter() {
               <IconBrandInstagram size={18} />
             </a>
             <a
-              href="https://twitter.com/puppy.az"
+              href="https://tiktok.com/@puppy.az"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-sky-100 text-gray-600 hover:text-sky-600 transition-all"
-              aria-label={tAccessibility("twitter")}
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 hover:text-gray-900 transition-all"
+              aria-label={tAccessibility("tiktok")}
             >
-              <IconBrandTwitter size={18} />
+              <IconBrandTiktok size={18} />
+            </a>
+            <a
+              href="https://linkedin.com/company/puppy-az"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-600 transition-all"
+              aria-label={tAccessibility("linkedin")}
+            >
+              <IconBrandLinkedin size={18} />
             </a>
           </div>
         </div>
@@ -313,7 +323,8 @@ export function MobileFooter() {
               </TransitionLink>
             </div>
             <p className="text-sm text-gray-600">
-              {t("copyright")}. {t("allRightsReserved")}.
+              {t("copyright", { year: new Date().getFullYear() })}.{" "}
+              {t("allRightsReserved")}.
             </p>
           </div>
         </div>

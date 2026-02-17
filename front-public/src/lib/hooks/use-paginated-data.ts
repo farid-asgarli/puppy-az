@@ -1,14 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useCallback } from 'react';
-import { PaginatedResult, QuerySpecification } from '@/lib/api/types/common.types';
-import { ActionResult } from '@/lib/auth/utils';
+import { useState, useCallback } from "react";
+import {
+  PaginatedResult,
+  QuerySpecification,
+} from "@/lib/api/types/common.types";
+import { ActionResult } from "@/lib/auth/utils";
 
 interface UsePaginatedDataOptions<T> {
   initialData: PaginatedResult<T>;
   initialPage: number;
   pageSize?: number;
-  fetchAction: (spec: QuerySpecification) => Promise<ActionResult<PaginatedResult<T>>>;
+  fetchAction: (
+    spec: QuerySpecification,
+  ) => Promise<ActionResult<PaginatedResult<T>>>;
 }
 
 interface UsePaginatedDataReturn<T> {
@@ -31,7 +36,12 @@ interface UsePaginatedDataReturn<T> {
  *   fetchAction: getUserActiveAdsAction,
  * });
  */
-export function usePaginatedData<T>({ initialData, initialPage, pageSize = 12, fetchAction }: UsePaginatedDataOptions<T>): UsePaginatedDataReturn<T> {
+export function usePaginatedData<T>({
+  initialData,
+  initialPage,
+  pageSize = 12,
+  fetchAction,
+}: UsePaginatedDataOptions<T>): UsePaginatedDataReturn<T> {
   const [items, setItems] = useState<T[]>(initialData.items);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [hasMore, setHasMore] = useState(initialData.hasNextPage);
@@ -53,7 +63,7 @@ export function usePaginatedData<T>({ initialData, initialPage, pageSize = 12, f
         setHasMore(result.data.hasNextPage);
       }
     } catch (error) {
-      console.error('Load more error:', error);
+      console.error("Load more error:", error);
     } finally {
       setIsLoading(false);
     }

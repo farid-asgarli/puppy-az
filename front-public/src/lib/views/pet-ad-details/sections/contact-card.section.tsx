@@ -21,6 +21,15 @@ import { useRouter } from "@/i18n";
 import toast from "react-hot-toast";
 import { sendMessageAction } from "@/lib/auth/actions";
 
+/** Check if email is a real user email (not a system placeholder) */
+const isRealEmail = (email: string | null | undefined): boolean => {
+  if (!email) return false;
+  if (email.endsWith("@placeholder.local")) return false;
+  if (email.endsWith("@placeholder.com")) return false;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  return emailRegex.test(email);
+};
+
 export interface AdDetailsContactCardSectionProps {
   owner: PetOwnerDto;
   contactPhone: string;
@@ -111,7 +120,7 @@ export function AdDetailsContactCardSection({
       } else {
         toast.error(result.error || t("messageFailed"));
       }
-    } catch (error) {
+    } catch {
       toast.error(t("messageFailed"));
     } finally {
       setIsSending(false);
@@ -195,8 +204,14 @@ export function AdDetailsContactCardSection({
           <div className="text-xs sm:text-sm text-gray-600 mb-2">
             {t("price")}
           </div>
-          <div className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">
-            {price === 0 ? t("free") : `${price.toLocaleString()} ₼`}
+          <div
+            className={`font-semibold text-gray-900 mb-4 ${price === null || price === undefined ? "text-lg sm:text-xl" : "text-2xl sm:text-3xl"}`}
+          >
+            {price === null || price === undefined
+              ? t("negotiable")
+              : price === 0
+                ? t("free")
+                : `${price.toLocaleString()} ₼`}
           </div>
         </div>
 
@@ -249,7 +264,9 @@ export function AdDetailsContactCardSection({
               {t("call")}
             </Button>
 
-            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            <div
+              className={`grid ${isRealEmail(contactEmail) ? "grid-cols-2" : "grid-cols-1"} gap-2 sm:gap-3`}
+            >
               <Button
                 variant="secondary"
                 size="md"
@@ -264,17 +281,19 @@ export function AdDetailsContactCardSection({
               >
                 {t("sendMessage")}
               </Button>
-              <Button
-                variant="secondary"
-                size="md"
-                className="rounded-xl font-medium text-xs sm:text-sm"
-                leftSection={
-                  <IconMail size={16} className="sm:w-[18px] sm:h-[18px]" />
-                }
-                onClick={handleEmail}
-              >
-                {t("email")}
-              </Button>
+              {isRealEmail(contactEmail) && (
+                <Button
+                  variant="secondary"
+                  size="md"
+                  className="rounded-xl font-medium text-xs sm:text-sm"
+                  leftSection={
+                    <IconMail size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  }
+                  onClick={handleEmail}
+                >
+                  {t("email")}
+                </Button>
+              )}
             </div>
           </div>
 
@@ -289,13 +308,15 @@ export function AdDetailsContactCardSection({
                 {formatPhoneForDisplay(contactPhone)}
               </span>
             </div>
-            <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-              <IconMail
-                size={14}
-                className="sm:w-4 sm:h-4 text-gray-400 flex-shrink-0"
-              />
-              <span className="text-gray-700 truncate">{contactEmail}</span>
-            </div>
+            {isRealEmail(contactEmail) && (
+              <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
+                <IconMail
+                  size={14}
+                  className="sm:w-4 sm:h-4 text-gray-400 flex-shrink-0"
+                />
+                <span className="text-gray-700 truncate">{contactEmail}</span>
+              </div>
+            )}
           </div>
         </div>
         {messageModalJsx}
@@ -309,8 +330,14 @@ export function AdDetailsContactCardSection({
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 p-4 sm:p-6 z-20">
         <div className="flex items-center justify-between gap-3 sm:gap-4">
           <div className="flex-1 min-w-0">
-            <div className="text-xl sm:text-2xl font-semibold text-gray-900">
-              {price === 0 ? t("free") : `${price.toLocaleString()} ₼`}
+            <div
+              className={`font-semibold text-gray-900 ${price === null || price === undefined ? "text-base sm:text-lg" : "text-xl sm:text-2xl"}`}
+            >
+              {price === null || price === undefined
+                ? t("negotiable")
+                : price === 0
+                  ? t("free")
+                  : `${price.toLocaleString()} ₼`}
             </div>
             <div className="text-xs sm:text-sm text-gray-600">{t("price")}</div>
           </div>

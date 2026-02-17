@@ -1,13 +1,15 @@
-import { cn } from '@/lib/external/utils';
-import React from 'react';
+import { cn } from "@/lib/external/utils";
+import React from "react";
 
 export default function NarrowContainer({
   className,
-  as = 'div',
+  as = "div",
   ...props
-}: React.ComponentPropsWithoutRef<'div'> & { as?: keyof React.JSX.IntrinsicElements | React.JSXElementConstructor<any> }) {
+}: React.ComponentPropsWithoutRef<"div"> & {
+  as?: keyof React.JSX.IntrinsicElements | React.JSXElementConstructor<unknown>;
+}) {
   return React.createElement(as, {
-    className: cn('sm:px-8 md:px-12 px-4 max-w-7xl mx-auto py-2', className),
+    className: cn("sm:px-8 md:px-12 px-4 max-w-7xl mx-auto py-2", className),
     ...props,
   });
 }

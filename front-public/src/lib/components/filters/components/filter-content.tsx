@@ -7,7 +7,7 @@ import {
   DEFAULT_FILTER_VALUES,
   DEFAULT_SECONDARY_FILTER_VALUES,
 } from "@/lib/filtering/filter-default-values";
-import { FilterParamsSecondary, FilterParams } from "@/lib/filtering/types";
+import { FilterParams } from "@/lib/filtering/types";
 import { useFilterUrl } from "@/lib/filtering/use-filter-url";
 import { sleep } from "@/lib/utils/sleep";
 import { useState } from "react";

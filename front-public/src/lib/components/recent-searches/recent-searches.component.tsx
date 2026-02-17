@@ -8,6 +8,13 @@ import { getAdTypes } from "@/lib/utils/mappers";
 import { useFilterUrl } from "@/lib/filtering/use-filter-url";
 import { useTranslations } from "next-intl";
 
+/** Remap amber/orange icon colors to modern alternatives */
+function remapIconColor(color: string): string {
+  if (color.includes("amber")) return color.replace("amber", "indigo");
+  if (color.includes("orange")) return color.replace("orange", "teal");
+  return color;
+}
+
 interface RecentSearchesProps {
   searches: RecentSearch[];
   onClearAll: () => void;
@@ -53,6 +60,12 @@ export function RecentSearches({
               {t("title")}
             </span>
           </div>
+          <button
+            onClick={onClearAll}
+            className="text-xs font-medium text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            {t("clearHistory")}
+          </button>
         </div>
 
         {/* Horizontal scrollable chips */}
@@ -63,8 +76,8 @@ export function RecentSearches({
               onClick={() => handleSearchClick(search)}
               className={cn(
                 "flex-shrink-0 flex items-center gap-2 px-3 py-1.5",
-                "bg-gray-100 hover:bg-gray-200 rounded-full",
-                "text-sm font-medium text-gray-700",
+                "bg-gray-50 hover:bg-gray-100 rounded-full",
+                "text-sm font-normal text-gray-600",
                 "transition-colors duration-150",
               )}
             >
@@ -72,7 +85,7 @@ export function RecentSearches({
                 <div
                   className={cn(
                     "w-4 h-4 flex justify-center items-center",
-                    search.category.iconColor,
+                    remapIconColor(search.category.iconColor),
                   )}
                   dangerouslySetInnerHTML={{ __html: search.category.svgIcon }}
                 />
@@ -92,14 +105,16 @@ export function RecentSearches({
       {/* Header */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
-          <IconClock size={20} className="text-gray-700" strokeWidth={2} />
-          <h3 className="text-lg font-semibold text-gray-900">{t("title")}</h3>
+          <IconClock size={18} className="text-gray-400" strokeWidth={1.75} />
+          <h3 className="text-[15px] font-medium text-gray-500">
+            {t("title")}
+          </h3>
         </div>
         <button
           onClick={onClearAll}
-          className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors underline underline-offset-2"
+          className="text-xs font-normal text-gray-400 hover:text-gray-600 transition-colors"
         >
-          {t("clearAll")}
+          {t("clearHistory")}
         </button>
       </div>
 
@@ -151,11 +166,11 @@ function RecentSearchCard({ search, onClick }: RecentSearchCardProps) {
       <div className="flex items-center gap-3">
         {/* Category Icon */}
         {search.category && (
-          <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
             <div
               className={cn(
-                "w-6 h-6 flex justify-center items-center",
-                search.category.iconColor,
+                "w-5 h-5 flex justify-center items-center",
+                remapIconColor(search.category.iconColor),
               )}
               dangerouslySetInnerHTML={{ __html: search.category.svgIcon }}
             />
@@ -164,11 +179,11 @@ function RecentSearchCard({ search, onClick }: RecentSearchCardProps) {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <p className="text-base font-semibold text-gray-900 mb-0.5 truncate">
+          <p className="text-sm font-medium text-gray-700 mb-0.5 truncate">
             {search.displayText.primary}
           </p>
           {details.length > 0 && (
-            <p className="text-sm text-gray-600 truncate">
+            <p className="text-xs text-gray-400 truncate">
               {details.join(" • ")}
             </p>
           )}

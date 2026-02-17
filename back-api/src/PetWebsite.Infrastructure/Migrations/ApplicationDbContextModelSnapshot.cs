@@ -333,6 +333,62 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.ToTable("BlacklistedTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.BreedSuggestion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdminNote")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("ApprovedBreedId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("PetCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovedBreedId");
+
+                    b.HasIndex("PetCategoryId");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BreedSuggestions");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.City", b =>
                 {
                     b.Property<int>("Id")
@@ -405,6 +461,139 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasIndex("NameAz");
 
                     b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.ContactMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AdminReply")
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("InternalNotes")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("IpAddress")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("IsArchived")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsSpam")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsStarred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasDefaultValue("az");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("character varying(5000)");
+
+                    b.Property<int>("MessageType")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ReadByAdminId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("RepliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("RepliedByAdminId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("SenderEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("SenderName")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("SenderPhone")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<string>("SourceUrl")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Subject")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedAt");
+
+                    b.HasIndex("IsArchived");
+
+                    b.HasIndex("IsSpam");
+
+                    b.HasIndex("IsStarred");
+
+                    b.HasIndex("MessageType");
+
+                    b.HasIndex("ReadByAdminId");
+
+                    b.HasIndex("RepliedByAdminId");
+
+                    b.HasIndex("SenderEmail");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ContactMessages", (string)null);
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
@@ -480,6 +669,80 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.ToTable("Conversations", (string)null);
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("NameAz")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("NameRu")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("IsActive");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("NameAz");
+
+                    b.ToTable("Districts");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.FavoriteAd", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -514,8 +777,8 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<int>("ConversationId")
                         .HasColumnType("integer");
@@ -575,7 +838,7 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Property<int>("AdType")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AgeInMonths")
+                    b.Property<int?>("AgeInMonths")
                         .HasColumnType("integer");
 
                     b.Property<int>("CityId")
@@ -603,10 +866,13 @@ namespace PetWebsite.Infrastructure.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("character varying(2000)");
 
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsAvailable")
@@ -624,7 +890,15 @@ namespace PetWebsite.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("PetBreedId")
+                    b.Property<bool>("IsVip")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<int?>("PetBreedId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("PetCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("PremiumActivatedAt")
@@ -633,7 +907,7 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Property<DateTime?>("PremiumExpiresAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasPrecision(18, 2)
                         .HasColumnType("numeric(18,2)");
 
@@ -651,6 +925,10 @@ namespace PetWebsite.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
+
+                    b.Property<string>("SuggestedBreedName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -671,6 +949,12 @@ namespace PetWebsite.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasDefaultValue(0);
 
+                    b.Property<DateTime?>("VipActivatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("VipExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<decimal?>("Weight")
                         .HasPrecision(8, 2)
                         .HasColumnType("numeric(8,2)");
@@ -683,13 +967,19 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.HasIndex("CreatedAt");
 
+                    b.HasIndex("DistrictId");
+
                     b.HasIndex("IsAvailable");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("IsPremium");
 
+                    b.HasIndex("IsVip");
+
                     b.HasIndex("PetBreedId");
+
+                    b.HasIndex("PetCategoryId");
 
                     b.HasIndex("PremiumExpiresAt");
 
@@ -700,6 +990,8 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasIndex("Status");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("VipExpiresAt");
 
                     b.ToTable("PetAds");
                 });
@@ -866,6 +1158,121 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasIndex("QuestionId", "CreatedAt");
 
                     b.ToTable("PetAdQuestionReplies", (string)null);
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdTypeEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("BorderColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<string>("IconName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("SortOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("TextColor")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("Key")
+                        .IsUnique();
+
+                    b.HasIndex("SortOrder");
+
+                    b.ToTable("PetAdTypes", (string)null);
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdTypeLocalization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppLocaleId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("PetAdTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppLocaleId");
+
+                    b.HasIndex("PetAdTypeId", "AppLocaleId")
+                        .IsUnique();
+
+                    b.ToTable("PetAdTypeLocalizations", (string)null);
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdView", b =>
@@ -1205,6 +1612,76 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.ToTable("SmsVerificationCodes");
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.StaticSection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StaticSections");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.StaticSectionLocalization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AppLocaleId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Metadata")
+                        .HasColumnType("text");
+
+                    b.Property<int>("StaticSectionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Subtitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppLocaleId");
+
+                    b.HasIndex("StaticSectionId");
+
+                    b.ToTable("StaticSectionLocalizations");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1236,6 +1713,9 @@ namespace PetWebsite.Infrastructure.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsCreatedByAdmin")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastLoginAt")
@@ -1351,6 +1831,41 @@ namespace PetWebsite.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.BreedSuggestion", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.PetBreed", "ApprovedBreed")
+                        .WithMany()
+                        .HasForeignKey("ApprovedBreedId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("PetWebsite.Domain.Entities.PetCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("PetCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("ApprovedBreed");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.ContactMessage", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
                 {
                     b.HasOne("PetWebsite.Domain.Entities.User", "Initiator")
@@ -1368,7 +1883,7 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.HasOne("PetWebsite.Domain.Entities.PetAd", "PetAd")
                         .WithMany()
                         .HasForeignKey("PetAdId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Initiator");
@@ -1376,6 +1891,17 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("Owner");
 
                     b.Navigation("PetAd");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.District", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.City", "City")
+                        .WithMany("Districts")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.FavoriteAd", b =>
@@ -1424,11 +1950,20 @@ namespace PetWebsite.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("PetWebsite.Domain.Entities.District", "District")
+                        .WithMany("PetAds")
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("PetWebsite.Domain.Entities.PetBreed", "Breed")
                         .WithMany("PetAds")
                         .HasForeignKey("PetBreedId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PetWebsite.Domain.Entities.PetCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("PetCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PetWebsite.Domain.Entities.User", "User")
                         .WithMany("PetAds")
@@ -1437,7 +1972,11 @@ namespace PetWebsite.Infrastructure.Migrations
 
                     b.Navigation("Breed");
 
+                    b.Navigation("Category");
+
                     b.Navigation("City");
+
+                    b.Navigation("District");
 
                     b.Navigation("User");
                 });
@@ -1496,6 +2035,24 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("Question");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdTypeLocalization", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.AppLocale", "AppLocale")
+                        .WithMany()
+                        .HasForeignKey("AppLocaleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.PetAdTypeEntity", "PetAdType")
+                        .WithMany("Localizations")
+                        .HasForeignKey("PetAdTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("AppLocale");
+
+                    b.Navigation("PetAdType");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdView", b =>
@@ -1582,14 +2139,40 @@ namespace PetWebsite.Infrastructure.Migrations
                     b.Navigation("PetColor");
                 });
 
+            modelBuilder.Entity("PetWebsite.Domain.Entities.StaticSectionLocalization", b =>
+                {
+                    b.HasOne("PetWebsite.Domain.Entities.AppLocale", "AppLocale")
+                        .WithMany()
+                        .HasForeignKey("AppLocaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetWebsite.Domain.Entities.StaticSection", "StaticSection")
+                        .WithMany("Localizations")
+                        .HasForeignKey("StaticSectionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppLocale");
+
+                    b.Navigation("StaticSection");
+                });
+
             modelBuilder.Entity("PetWebsite.Domain.Entities.City", b =>
                 {
+                    b.Navigation("Districts");
+
                     b.Navigation("PetAds");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.Conversation", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.District", b =>
+                {
+                    b.Navigation("PetAds");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAd", b =>
@@ -1602,6 +2185,11 @@ namespace PetWebsite.Infrastructure.Migrations
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdQuestion", b =>
                 {
                     b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.PetAdTypeEntity", b =>
+                {
+                    b.Navigation("Localizations");
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetBreed", b =>
@@ -1619,6 +2207,11 @@ namespace PetWebsite.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("PetWebsite.Domain.Entities.PetColor", b =>
+                {
+                    b.Navigation("Localizations");
+                });
+
+            modelBuilder.Entity("PetWebsite.Domain.Entities.StaticSection", b =>
                 {
                     b.Navigation("Localizations");
                 });

@@ -42,8 +42,9 @@ public class GetPetAdsQueryHandler(
 		var (items, totalCount) = await queryRepo
 			.WithQuery(query)
 			.ApplyFilters(request.Filter)
-			// Premium ads always first, then apply user's sorting preference
+			// Premium ads always first (across all), then VIP (within category), then apply user's sorting preference
 			.OrderByDescending(p => p.IsPremium)
+			.ThenByDescending(p => p.IsVip)
 			.ApplySorting(request.Sorting, "PublishedAt", SortDirection.Descending)
 			.ApplyPagination(request.Pagination)
 			.ToListWithCountAsync(ct);

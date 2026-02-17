@@ -99,12 +99,12 @@ export default function PhysicalView() {
             ) : (
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {colors.map((colorOption) => {
-                  const isSelected = color === colorOption.title;
+                  const isSelected = color === colorOption.key;
                   return (
                     <button
                       key={colorOption.id}
                       type="button"
-                      onClick={() => handleColorSelect(colorOption.title)}
+                      onClick={() => handleColorSelect(colorOption.key)}
                       className={cn(
                         "px-4 py-3 rounded-xl transition-all font-medium text-sm",
                         isSelected

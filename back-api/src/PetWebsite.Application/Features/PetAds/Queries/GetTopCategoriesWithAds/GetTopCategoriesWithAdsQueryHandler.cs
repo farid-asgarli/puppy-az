@@ -28,9 +28,10 @@ public class GetTopCategoriesWithAdsQueryHandler(
 			.Select(c => new
 			{
 				Category = c,
-				PetAdsCount = c
-					.Breeds.SelectMany(b => b.PetAds)
-					.Count(a => a.Status == PetAdStatus.Published && !a.IsDeleted && a.IsAvailable),
+				// Count ads that have either direct PetCategoryId or via Breed
+				PetAdsCount = dbContext.PetAds
+					.Count(a => a.Status == PetAdStatus.Published && !a.IsDeleted && a.IsAvailable 
+						&& (a.PetCategoryId == c.Id || (a.Breed != null && a.Breed.PetCategoryId == c.Id))),
 			})
 			.Where(x => x.PetAdsCount > 0)
 			.OrderByDescending(x => x.PetAdsCount)
@@ -42,8 +43,10 @@ public class GetTopCategoriesWithAdsQueryHandler(
 		var petAdsQuery = await dbContext
 			.PetAds.WhereNotDeleted<PetAd, int>()
 			.AsNoTracking()
-			.Where(p => p.Status == PetAdStatus.Published && p.IsAvailable && categoryIds.Contains(p.Breed.PetCategoryId))
-			.OrderByDescending(p => p.IsPremium)
+			.Where(p => p.Status == PetAdStatus.Published && p.IsAvailable 
+				&& (categoryIds.Contains(p.PetCategoryId ?? 0) || (p.Breed != null && categoryIds.Contains(p.Breed.PetCategoryId))))
+			.OrderByDescending(p => p.IsPremium) // Premium first (across all categories)
+			.ThenByDescending(p => p.IsVip) // VIP second (within category)
 			.ThenByDescending(p => p.PublishedAt)
 			.Select(PetAdProjections.ToListItemDto(currentCulture))
 			.ToListAsync(ct);
@@ -51,7 +54,7 @@ public class GetTopCategoriesWithAdsQueryHandler(
 		// Group and map in memory (minimal processing)
 		var result = categoriesWithCounts
 			.OrderBy(x => x.Category.Id == 10 ? 1 : 0) // "Digər" always last
-			.ThenByDescending(x => x.PetAdsCount)
+			.ThenBy(x => x.Category.Id) // Order by category ID: 1=İtlər, 2=Pişiklər, etc.
 			.Select(x =>
 			{
 				var c = x.Category;

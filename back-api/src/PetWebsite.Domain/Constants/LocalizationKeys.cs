@@ -173,6 +173,47 @@ public static class LocalizationKeys
 	}
 
 	/// <summary>
+	/// District-related localization keys.
+	/// </summary>
+	public static class District
+	{
+		public const string NotFound = "District.NotFound";
+		public const string CreateSuccess = "District.CreateSuccess";
+		public const string UpdateSuccess = "District.UpdateSuccess";
+		public const string DeleteSuccess = "District.DeleteSuccess";
+		public const string RestoreSuccess = "District.RestoreSuccess";
+		public const string IdInvalid = "District.IdInvalid";
+		public const string NameRequired = "District.NameRequired";
+		public const string NameMaxLength = "District.NameMaxLength";
+		public const string AlreadyExists = "District.AlreadyExists";
+		public const string CityRequired = "District.CityRequired";
+		public const string CannotDeleteWithPetAds = "District.CannotDeleteWithPetAds";
+	}
+
+	/// <summary>
+	/// Pet ad type-related localization keys.
+	/// </summary>
+	public static class PetAdType
+	{
+		public const string NotFound = "PetAdType.NotFound";
+		public const string CreateSuccess = "PetAdType.CreateSuccess";
+		public const string UpdateSuccess = "PetAdType.UpdateSuccess";
+		public const string DeleteSuccess = "PetAdType.DeleteSuccess";
+		public const string RestoreSuccess = "PetAdType.RestoreSuccess";
+		public const string IdInvalid = "PetAdType.IdInvalid";
+		public const string KeyRequired = "PetAdType.KeyRequired";
+		public const string KeyMaxLength = "PetAdType.KeyMaxLength";
+		public const string TitleRequired = "PetAdType.TitleRequired";
+		public const string TitleMaxLength = "PetAdType.TitleMaxLength";
+		public const string EmojiRequired = "PetAdType.EmojiRequired";
+		public const string ColorRequired = "PetAdType.ColorRequired";
+		public const string ColorMaxLength = "PetAdType.ColorMaxLength";
+		public const string AlreadyExists = "PetAdType.AlreadyExists";
+		public const string InvalidLocaleCode = "PetAdType.InvalidLocaleCode";
+		public const string CannotDeleteWithPetAds = "PetAdType.CannotDeleteWithPetAds";
+	}
+
+	/// <summary>
 	/// Pet advertisement-related localization keys.
 	/// </summary>
 	public static class PetAd
@@ -194,6 +235,7 @@ public static class LocalizationKeys
 		public const string TitleMaxLength = "PetAd.TitleMaxLength";
 		public const string DescriptionRequired = "PetAd.DescriptionRequired";
 		public const string DescriptionMaxLength = "PetAd.DescriptionMaxLength";
+		public const string AgeRequired = "PetAd.AgeRequired";
 		public const string AgeInvalid = "PetAd.AgeInvalid";
 		public const string AgeTooHigh = "PetAd.AgeTooHigh";
 		public const string GenderRequired = "PetAd.GenderRequired";
@@ -214,10 +256,13 @@ public static class LocalizationKeys
 		public const string ContactPhoneInvalid = "PetAd.ContactPhoneInvalid";
 		public const string ContactEmailMaxLength = "PetAd.ContactEmailMaxLength";
 		public const string ContactEmailInvalid = "PetAd.ContactEmailInvalid";
+		public const string BreedRequired = "PetAd.BreedRequired";
 		public const string BreedIdInvalid = "PetAd.BreedIdInvalid";
 		public const string BreedNotFound = "PetAd.BreedNotFound";
+		public const string CategoryNotFound = "PetAd.CategoryNotFound";
 		public const string CityIdInvalid = "PetAd.CityIdInvalid";
 		public const string CityNotFound = "PetAd.CityNotFound";
+		public const string DistrictNotFound = "PetAd.DistrictNotFound";
 		public const string TooManyImages = "PetAd.TooManyImages";
 		public const string ImageIdInvalid = "PetAd.ImageIdInvalid";
 		public const string AlreadyPublished = "PetAd.AlreadyPublished";
@@ -229,6 +274,8 @@ public static class LocalizationKeys
 		public const string RejectionReasonMaxLength = "PetAd.RejectionReasonMaxLength";
 		public const string CannotReviewNonPendingAd = "PetAd.CannotReviewNonPendingAd";
 		public const string CannotCloseNonPublishedAd = "PetAd.CannotCloseNonPublishedAd";
+		public const string CannotReactivateAd = "PetAd.CannotReactivateAd";
+		public const string ReactivateSuccess = "PetAd.ReactivateSuccess";
 		public const string CannotEditPublishedAd = "PetAd.CannotEditPublishedAd";
 		public const string CloseSuccess = "PetAd.CloseSuccess";
 		public const string CannotAskQuestionOnUnpublishedAd = "PetAd.CannotAskQuestionOnUnpublishedAd";
@@ -240,6 +287,16 @@ public static class LocalizationKeys
 		public const string QuestionAnsweredSuccess = "PetAd.QuestionAnsweredSuccess";
 		public const string ReplyAddedSuccess = "PetAd.ReplyAddedSuccess";
 		public const string OnlyAdOwnerCanDeleteQuestion = "PetAd.OnlyAdOwnerCanDeleteQuestion";
+		public const string QuestionDeletedSuccess = "PetAd.QuestionDeletedSuccess";
+		public const string ReplyNotFound = "PetAd.ReplyNotFound";
+		public const string OnlyReplyAuthorCanDelete = "PetAd.OnlyReplyAuthorCanDelete";
+		public const string ReplyDeletedSuccess = "PetAd.ReplyDeletedSuccess";
+		public const string AnswerNotFound = "PetAd.AnswerNotFound";
+		public const string OnlyAdOwnerCanDeleteAnswer = "PetAd.OnlyAdOwnerCanDeleteAnswer";
+		public const string AnswerDeletedSuccess = "PetAd.AnswerDeletedSuccess";
+		public const string QuestionUpdatedSuccess = "PetAd.QuestionUpdatedSuccess";
+		public const string AnswerUpdatedSuccess = "PetAd.AnswerUpdatedSuccess";
+		public const string ReplyUpdatedSuccess = "PetAd.ReplyUpdatedSuccess";
 	}
 
 	/// <summary>
@@ -291,6 +348,9 @@ public static class LocalizationKeys
 		public const string Range = "Validation.Range";
 		public const string EmailFormat = "Validation.EmailFormat";
 		public const string UrlFormat = "Validation.UrlFormat";
+		public const string GreaterThan = "Validation.GreaterThan";
+		public const string GreaterThanOrEqual = "Validation.GreaterThanOrEqual";
+		public const string Invalid = "Validation.Invalid";
 	}
 
 	/// <summary>
@@ -336,6 +396,40 @@ public static class LocalizationKeys
 		public const string NotAuthorized = "Message.NotAuthorized";
 		public const string PetAdNotFound = "Message.PetAdNotFound";
 		public const string ReceiverNotFound = "Message.ReceiverNotFound";
+		public const string NotFound = "Message.NotFound";
+		public const string UpdatedSuccess = "Message.UpdatedSuccess";
+		public const string DeletedSuccess = "Message.DeletedSuccess";
+	}
+
+	/// <summary>
+	/// Static section-related localization keys.
+	/// </summary>
+	public static class StaticSection
+	{
+		public const string NotFound = "StaticSection.NotFound";
+		public const string CreateSuccess = "StaticSection.CreateSuccess";
+		public const string UpdateSuccess = "StaticSection.UpdateSuccess";
+		public const string DeleteSuccess = "StaticSection.DeleteSuccess";
+		public const string KeyAlreadyExists = "StaticSection.KeyAlreadyExists";
+		public const string KeyRequired = "StaticSection.KeyRequired";
+		public const string InvalidLocaleCode = "StaticSection.InvalidLocaleCode";
+	}
+
+	/// <summary>
+	/// Breed suggestion-related localization keys.
+	/// </summary>
+	public static class BreedSuggestion
+	{
+		public const string NotFound = "BreedSuggestion.NotFound";
+		public const string NameRequired = "BreedSuggestion.NameRequired";
+		public const string NameMaxLength = "BreedSuggestion.NameMaxLength";
+		public const string IdInvalid = "BreedSuggestion.IdInvalid";
+		public const string AlreadySuggested = "BreedSuggestion.AlreadySuggested";
+		public const string AlreadyProcessed = "BreedSuggestion.AlreadyProcessed";
+		public const string AdminNoteMaxLength = "BreedSuggestion.AdminNoteMaxLength";
+		public const string SubmitSuccess = "BreedSuggestion.SubmitSuccess";
+		public const string ApproveSuccess = "BreedSuggestion.ApproveSuccess";
+		public const string RejectSuccess = "BreedSuggestion.RejectSuccess";
 	}
 
 	/// <summary>

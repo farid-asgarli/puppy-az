@@ -1,13 +1,17 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Drawer } from 'vaul';
-import { Dialog, DialogContent, DialogTitle } from '@/lib/external/components/ui/dialog';
-import { MyPetAdDto } from '@/lib/api/types/pet-ad.types';
-import { getMyPetAdAction } from '@/lib/auth/actions';
-import { useTranslations } from 'next-intl';
-import { useMediaQuery } from '@/lib/hooks/use-media-query';
-import { MyAdDetailsContent } from './my-ad-details-content';
+import { useState, useEffect } from "react";
+import { Drawer } from "vaul";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/lib/external/components/ui/dialog";
+import { MyPetAdDto } from "@/lib/api/types/pet-ad.types";
+import { getMyPetAdAction } from "@/lib/auth/actions";
+import { useTranslations } from "next-intl";
+import { useMediaQuery } from "@/lib/hooks/use-media-query";
+import { MyAdDetailsContent } from "./my-ad-details-content";
 
 interface MyAdDetailsProps {
   adId: number | null;
@@ -15,6 +19,7 @@ interface MyAdDetailsProps {
   onClose: () => void;
   onEdit?: (id: number) => void;
   onCloseAd?: (id: number) => void;
+  onReactivateAd?: (id: number) => void;
   onDelete?: (id: number) => void;
 }
 
@@ -23,9 +28,17 @@ interface MyAdDetailsProps {
  * - Desktop (≥768px): Modal dialog
  * - Mobile (<768px): Bottom drawer
  */
-export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete }: MyAdDetailsProps) {
-  const t = useTranslations('myAds.drawer');
-  const isDesktop = useMediaQuery('(min-width: 768px)');
+export function MyAdDetails({
+  adId,
+  isOpen,
+  onClose,
+  onEdit,
+  onCloseAd,
+  onReactivateAd,
+  onDelete,
+}: MyAdDetailsProps) {
+  const t = useTranslations("myAds.drawer");
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [adData, setAdData] = useState<MyPetAdDto | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,11 +59,11 @@ export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete
         if (result.success && result.data) {
           setAdData(result.data);
         } else {
-          setError(t('loadError'));
+          setError(t("loadError"));
         }
       } catch (err) {
-        setError(t('loadError'));
-        console.error('Failed to load ad data:', err);
+        setError(t("loadError"));
+        console.error("Failed to load ad data:", err);
       } finally {
         setIsLoading(false);
       }
@@ -63,7 +76,7 @@ export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete
   const handleDialogChange = (open: boolean) => {
     if (!open) {
       // Check if Fancybox is currently open
-      const fancyboxOpen = document.querySelector('.fancybox__container');
+      const fancyboxOpen = document.querySelector(".fancybox__container");
       if (fancyboxOpen) {
         // Fancybox is open, don't close the dialog
         return;
@@ -78,7 +91,7 @@ export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete
       <Dialog open={isOpen} onOpenChange={handleDialogChange}>
         <DialogContent className="max-w-3xl max-h-[90vh] p-0 overflow-hidden flex flex-col">
           {/* Hidden DialogTitle for accessibility */}
-          <DialogTitle className="sr-only">{t('title')}</DialogTitle>
+          <DialogTitle className="sr-only">{t("title")}</DialogTitle>
 
           <MyAdDetailsContent
             adData={adData}
@@ -87,6 +100,7 @@ export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete
             onClose={onClose}
             onEdit={onEdit}
             onCloseAd={onCloseAd}
+            onReactivateAd={onReactivateAd}
             onDelete={onDelete}
             showCloseButton={true}
           />
@@ -111,6 +125,7 @@ export function MyAdDetails({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete
             onClose={onClose}
             onEdit={onEdit}
             onCloseAd={onCloseAd}
+            onReactivateAd={onReactivateAd}
             onDelete={onDelete}
             showCloseButton={true}
           />

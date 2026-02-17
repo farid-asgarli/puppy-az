@@ -20,13 +20,15 @@ public class PetAd : SoftDeletableEntity
 
 	/// <summary>
 	/// Gets or sets the pet's age in months.
+	/// Optional for Found and Owning ad types.
 	/// </summary>
-	public int AgeInMonths { get; set; }
+	public int? AgeInMonths { get; set; }
 
 	/// <summary>
 	/// Gets or sets the pet's gender.
+	/// Optional for Found and Owning ad types.
 	/// </summary>
-	public PetGender Gender { get; set; }
+	public PetGender? Gender { get; set; }
 
 	/// <summary>
 	/// Gets or sets the type of advertisement.
@@ -49,14 +51,26 @@ public class PetAd : SoftDeletableEntity
 	public PetSize? Size { get; set; }
 
 	/// <summary>
-	/// Gets or sets the price in the local currency (required, minimum 0).
+	/// Gets or sets the price in the local currency (optional).
 	/// </summary>
-	public decimal Price { get; set; }
+	public decimal? Price { get; set; }
 
 	/// <summary>
 	/// Gets or sets the city ID where the pet is located.
 	/// </summary>
 	public int CityId { get; set; }
+
+	/// <summary>
+	/// Gets or sets the district ID within the city (optional).
+	/// Used for detailed location tracking (village, settlement, etc.)
+	/// </summary>
+	public int? DistrictId { get; set; }
+
+	/// <summary>
+	/// Gets or sets a user-suggested district name when no existing district matches.
+	/// Similar to SuggestedBreedName - allows users to suggest a new district.
+	/// </summary>
+	public string? CustomDistrictName { get; set; }
 
 	/// <summary>
 	/// Gets or sets the status of the advertisement.
@@ -75,6 +89,7 @@ public class PetAd : SoftDeletableEntity
 
 	/// <summary>
 	/// Gets or sets whether this is a premium/featured ad.
+	/// Premium ads appear at the top across ALL categories and within their own category.
 	/// </summary>
 	public bool IsPremium { get; set; }
 
@@ -87,6 +102,22 @@ public class PetAd : SoftDeletableEntity
 	/// Gets or sets when the premium status expires.
 	/// </summary>
 	public DateTime? PremiumExpiresAt { get; set; }
+
+	/// <summary>
+	/// Gets or sets whether this is a VIP ad.
+	/// VIP ads appear at the top only within their OWN category.
+	/// </summary>
+	public bool IsVip { get; set; }
+
+	/// <summary>
+	/// Gets or sets when the VIP status was activated.
+	/// </summary>
+	public DateTime? VipActivatedAt { get; set; }
+
+	/// <summary>
+	/// Gets or sets when the VIP status expires.
+	/// </summary>
+	public DateTime? VipExpiresAt { get; set; }
 
 	/// <summary>
 	/// Gets or sets the number of views this ad has received.
@@ -105,13 +136,31 @@ public class PetAd : SoftDeletableEntity
 
 	/// <summary>
 	/// Gets or sets the breed ID this ad belongs to.
+	/// Optional for Found and Owning ad types.
 	/// </summary>
-	public int PetBreedId { get; set; }
+	public int? PetBreedId { get; set; }
+
+	/// <summary>
+	/// Gets or sets a user-suggested breed name when no existing breed matches.
+	/// This is used when a user suggests a new breed that doesn't exist in the system yet.
+	/// </summary>
+	public string? SuggestedBreedName { get; set; }
 
 	/// <summary>
 	/// Navigation property to the breed.
 	/// </summary>
-	public PetBreed Breed { get; set; } = null!;
+	public PetBreed? Breed { get; set; }
+
+	/// <summary>
+	/// Gets or sets the pet category ID.
+	/// This allows storing category even when breed is not selected (e.g., Found/Owning ad types).
+	/// </summary>
+	public int? PetCategoryId { get; set; }
+
+	/// <summary>
+	/// Navigation property to the category.
+	/// </summary>
+	public PetCategory? Category { get; set; }
 
 	/// <summary>
 	/// Gets or sets the user ID who created this ad.
@@ -127,6 +176,11 @@ public class PetAd : SoftDeletableEntity
 	/// Navigation property to the city.
 	/// </summary>
 	public City City { get; set; } = null!;
+
+	/// <summary>
+	/// Navigation property to the district (optional).
+	/// </summary>
+	public District? District { get; set; }
 
 	/// <summary>
 	/// Navigation property for ad images.

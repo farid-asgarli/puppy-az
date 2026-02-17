@@ -80,6 +80,13 @@ public static class TypeParser
 		{
 			JsonValueKind.True => true,
 			JsonValueKind.False => false,
+			JsonValueKind.String => propertyValue.GetString()?.ToLowerInvariant() switch
+			{
+				"true" or "1" or "yes" => true,
+				"false" or "0" or "no" => false,
+				_ => throw new ArgumentException($"Unable to parse '{propertyValue.GetString()}' as boolean.")
+			},
+			JsonValueKind.Number => propertyValue.GetInt32() != 0,
 			_ => throw new ArgumentException($"Expected boolean value, got {propertyValue.ValueKind}."),
 		};
 	}

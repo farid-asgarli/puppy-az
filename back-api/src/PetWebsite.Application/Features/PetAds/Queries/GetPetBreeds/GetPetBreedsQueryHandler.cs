@@ -34,6 +34,11 @@ public class GetPetBreedsQueryHandler(IApplicationDbContext dbContext, ICurrentU
 						.Select(l => l.Title)
 						.FirstOrDefault() ?? "",
 				CategoryId = b.PetCategoryId,
+				Slug =
+					b.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
+						.Select(l => l.Slug)
+						.FirstOrDefault() ?? "",
 			})
 			.ToListAsync(ct);
 

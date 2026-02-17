@@ -43,8 +43,23 @@ public class JsonStringLocalizer : IStringLocalizer
 				return new LocalizedString(name, name, true);
 			}
 
-			var value = string.Format(format, arguments);
-			return new LocalizedString(name, value, false);
+			// Only apply string.Format if arguments are provided, to avoid FormatException
+			// when the format string has placeholders like {0} but no arguments are passed
+			if (arguments == null || arguments.Length == 0)
+			{
+				return new LocalizedString(name, format, false);
+			}
+
+			try
+			{
+				var value = string.Format(format, arguments);
+				return new LocalizedString(name, value, false);
+			}
+			catch (FormatException)
+			{
+				// If format placeholders don't match arguments, return the raw format string
+				return new LocalizedString(name, format, false);
+			}
 		}
 	}
 

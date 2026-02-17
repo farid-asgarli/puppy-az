@@ -10,12 +10,19 @@ using PetWebsite.Application.Features.PetAds;
 using PetWebsite.Application.Features.PetAds.Commands.AnswerQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.AskQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.ClosePetAd;
+using PetWebsite.Application.Features.PetAds.Commands.DeleteAnswer;
 using PetWebsite.Application.Features.PetAds.Commands.DeleteQuestion;
+using PetWebsite.Application.Features.PetAds.Commands.DeleteReply;
 using PetWebsite.Application.Features.PetAds.Commands.IncrementViewCount;
+using PetWebsite.Application.Features.PetAds.Commands.ReactivatePetAd;
 using PetWebsite.Application.Features.PetAds.Commands.RecordPetAdView;
 using PetWebsite.Application.Features.PetAds.Commands.ReplyToQuestion;
 using PetWebsite.Application.Features.PetAds.Commands.SubmitPetAd;
+using PetWebsite.Application.Features.PetAds.Commands.SuggestBreed;
+using PetWebsite.Application.Features.PetAds.Commands.UpdateAnswer;
 using PetWebsite.Application.Features.PetAds.Commands.UpdatePetAd;
+using PetWebsite.Application.Features.PetAds.Commands.UpdateQuestion;
+using PetWebsite.Application.Features.PetAds.Commands.UpdateReply;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetAdById;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetAdQuestions;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetAds;
@@ -23,9 +30,12 @@ using PetWebsite.Application.Features.PetAds.Queries.GetPetBreeds;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetCategories;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetCategoriesDetailed;
 using PetWebsite.Application.Features.PetAds.Queries.GetPetColors;
+using PetWebsite.Application.Features.PetAds.Queries.GetPetAdTypes;
 using PetWebsite.Application.Features.PetAds.Queries.GetPremiumPetAds;
 using PetWebsite.Application.Features.PetAds.Queries.GetRelatedPetAds;
 using PetWebsite.Application.Features.PetAds.Queries.GetTopCategoriesWithAds;
+using PetWebsite.Application.Features.PetAds.Queries.GetCategoryBySlug;
+using PetWebsite.Application.Features.PetAds.Queries.GetBreedBySlug;
 using PetWebsite.Domain.Constants;
 
 namespace PetWebsite.API.Controllers.Pets;
@@ -165,6 +175,72 @@ public class PetAdsController(
 	}
 
 	/// <summary>
+	/// Get a pet category by its localized slug.
+	/// </summary>
+	/// <param name="slug">The URL-friendly slug of the category</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>The category details</returns>
+	/// <response code="200">Returns the category</response>
+	/// <response code="404">Category not found</response>
+	[HttpGet("categories/by-slug/{slug}")]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(PetCategoryDetailedDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> GetCategoryBySlug(string slug, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new GetCategoryBySlugQuery(slug), cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Get a pet breed by its localized slug within a category slug.
+	/// </summary>
+	/// <param name="categorySlug">The URL-friendly slug of the category</param>
+	/// <param name="breedSlug">The URL-friendly slug of the breed</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>The breed details with category info</returns>
+	/// <response code="200">Returns the breed with category</response>
+	/// <response code="404">Breed or category not found</response>
+	[HttpGet("breeds/by-slug/{categorySlug}/{breedSlug}")]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(PetBreedWithCategoryDto), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> GetBreedBySlug(string categorySlug, string breedSlug, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new GetBreedBySlugQuery(categorySlug, breedSlug), cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Suggest a new breed that is not in the system.
+	/// </summary>
+	/// <param name="command">Breed suggestion details</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>The ID of the created suggestion</returns>
+	/// <response code="201">Breed suggestion submitted successfully</response>
+	/// <response code="400">Validation error or duplicate suggestion</response>
+	[HttpPost("breed-suggestions")]
+	[ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public async Task<IActionResult> SuggestBreed([FromBody] SuggestBreedCommand command, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(command, cancellationToken);
+
+		if (result.IsSuccess)
+			return StatusCode(201, result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
 	/// Get all pet colors.
 	/// </summary>
 	/// <param name="cancellationToken">Cancellation token</param>
@@ -176,6 +252,25 @@ public class PetAdsController(
 	public async Task<IActionResult> GetPetColors(CancellationToken cancellationToken)
 	{
 		var result = await Mediator.Send(new GetPetColorsQuery(), cancellationToken);
+
+		if (result.IsSuccess)
+			return Ok(result.Data);
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Get list of pet ad types (e.g., Sale, Match, Found, Lost, Owning).
+	/// </summary>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>List of pet ad types with localized information</returns>
+	/// <response code="200">Returns the list of ad types</response>
+	[HttpGet("types")]
+	[AllowAnonymous]
+	[ProducesResponseType(typeof(List<PetAdTypePublicDto>), StatusCodes.Status200OK)]
+	public async Task<IActionResult> GetPetAdTypes(CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new GetPetAdTypesQuery(), cancellationToken);
 
 		if (result.IsSuccess)
 			return Ok(result.Data);
@@ -382,6 +477,34 @@ public class PetAdsController(
 	}
 
 	/// <summary>
+	/// Reactivate an expired or closed pet advertisement.
+	/// The ad will be set to Pending status for admin review.
+	/// </summary>
+	/// <param name="id">Pet ad ID</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>No content on success</returns>
+	/// <response code="204">Pet ad reactivated successfully and is pending review</response>
+	/// <response code="400">Ad cannot be reactivated (must be expired or closed)</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">User does not own this ad</response>
+	/// <response code="404">Pet ad not found</response>
+	[HttpPost("{id:int}/reactivate")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> ReactivatePetAd(int id, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new ReactivatePetAdCommand(id), cancellationToken);
+
+		if (result.IsSuccess)
+			return NoContent();
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
 	/// Get all questions and answers for a specific pet advertisement.
 	/// </summary>
 	/// <param name="id">Pet ad ID</param>
@@ -434,11 +557,13 @@ public class PetAdsController(
 		var result = await Mediator.Send(questionCommand, cancellationToken);
 
 		if (result.IsSuccess)
+		{
 			return CreatedAtAction(
 				nameof(GetPetAdQuestions),
 				new { id },
 				new { message = Localizer[LocalizationKeys.PetAd.QuestionAskedSuccess] }
 			);
+		}
 
 		return result.ToActionResult();
 	}
@@ -471,7 +596,9 @@ public class PetAdsController(
 		var result = await Mediator.Send(answerCommand, cancellationToken);
 
 		if (result.IsSuccess)
+		{
 			return Ok(new { message = Localizer[LocalizationKeys.PetAd.QuestionAnsweredSuccess] });
+		}
 
 		return result.ToActionResult();
 	}
@@ -497,7 +624,96 @@ public class PetAdsController(
 		var result = await Mediator.Send(replyCommand, cancellationToken);
 
 		if (result.IsSuccess)
+		{
 			return Ok(new { message = Localizer[LocalizationKeys.PetAd.ReplyAddedSuccess] });
+		}
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Update a question text. Only the question author can update their question.
+	/// </summary>
+	/// <param name="questionId">Question ID</param>
+	/// <param name="command">Update command with new question text</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="200">Question updated successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">Only the question author can update the question</response>
+	/// <response code="404">Question not found</response>
+	[HttpPut("questions/{questionId:int}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> UpdateQuestion(int questionId, UpdateQuestionCommand command, CancellationToken cancellationToken)
+	{
+		var updateCommand = command with { QuestionId = questionId };
+		var result = await Mediator.Send(updateCommand, cancellationToken);
+
+		if (result.IsSuccess)
+		{
+			return Ok(new { message = Localizer[LocalizationKeys.PetAd.QuestionUpdatedSuccess] });
+		}
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Update an answer text. Only the ad owner can update their answer.
+	/// </summary>
+	/// <param name="questionId">Question ID</param>
+	/// <param name="command">Update command with new answer text</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="200">Answer updated successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">Only the ad owner can update the answer</response>
+	/// <response code="404">Question or answer not found</response>
+	[HttpPut("questions/{questionId:int}/answer")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> UpdateAnswer(int questionId, UpdateAnswerCommand command, CancellationToken cancellationToken)
+	{
+		var updateCommand = command with { QuestionId = questionId };
+		var result = await Mediator.Send(updateCommand, cancellationToken);
+
+		if (result.IsSuccess)
+		{
+			return Ok(new { message = Localizer[LocalizationKeys.PetAd.AnswerUpdatedSuccess] });
+		}
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Update a reply text. Only the reply author can update their reply.
+	/// </summary>
+	/// <param name="replyId">Reply ID</param>
+	/// <param name="command">Update command with new reply text</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="200">Reply updated successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">Only the reply author can update the reply</response>
+	/// <response code="404">Reply not found</response>
+	[HttpPut("replies/{replyId:int}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> UpdateReply(int replyId, UpdateReplyCommand command, CancellationToken cancellationToken)
+	{
+		var updateCommand = command with { ReplyId = replyId };
+		var result = await Mediator.Send(updateCommand, cancellationToken);
+
+		if (result.IsSuccess)
+		{
+			return Ok(new { message = Localizer[LocalizationKeys.PetAd.ReplyUpdatedSuccess] });
+		}
 
 		return result.ToActionResult();
 	}
@@ -510,7 +726,7 @@ public class PetAdsController(
 	/// <returns>Success or failure result</returns>
 	/// <response code="204">Question deleted successfully</response>
 	/// <response code="401">User is not authenticated</response>
-	/// <response code="403">Only the ad owner can delete questions</response>
+	/// <response code="403">Only the question author or ad owner can delete questions</response>
 	/// <response code="404">Question not found</response>
 	[HttpDelete("questions/{questionId:int}")]
 	[ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -522,7 +738,64 @@ public class PetAdsController(
 		var result = await Mediator.Send(new DeleteQuestionCommand { QuestionId = questionId }, cancellationToken);
 
 		if (result.IsSuccess)
+		{
 			return NoContent();
+		}
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Delete a reply on a question.
+	/// Only the reply author or ad owner can delete replies.
+	/// </summary>
+	/// <param name="replyId">Reply ID</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="204">Reply deleted successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">Only the reply author or ad owner can delete replies</response>
+	/// <response code="404">Reply not found</response>
+	[HttpDelete("replies/{replyId:int}")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> DeleteReply(int replyId, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new DeleteReplyCommand { ReplyId = replyId }, cancellationToken);
+
+		if (result.IsSuccess)
+		{
+			return NoContent();
+		}
+
+		return result.ToActionResult();
+	}
+
+	/// <summary>
+	/// Deletes the answer from a question (owner only).
+	/// </summary>
+	/// <param name="questionId">The ID of the question</param>
+	/// <param name="cancellationToken">Cancellation token</param>
+	/// <returns>Success or failure result</returns>
+	/// <response code="204">Answer deleted successfully</response>
+	/// <response code="401">User is not authenticated</response>
+	/// <response code="403">Only the ad owner can delete the answer</response>
+	/// <response code="404">Question or answer not found</response>
+	[HttpDelete("questions/{questionId:int}/answer")]
+	[ProducesResponseType(StatusCodes.Status204NoContent)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<IActionResult> DeleteAnswer(int questionId, CancellationToken cancellationToken)
+	{
+		var result = await Mediator.Send(new DeleteAnswerCommand { QuestionId = questionId }, cancellationToken);
+
+		if (result.IsSuccess)
+		{
+			return NoContent();
+		}
 
 		return result.ToActionResult();
 	}

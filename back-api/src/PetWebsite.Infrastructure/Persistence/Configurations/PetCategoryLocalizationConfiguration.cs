@@ -16,6 +16,8 @@ public class PetCategoryLocalizationConfiguration : IEntityTypeConfiguration<Pet
 
 		builder.Property(e => e.Subtitle).IsRequired().HasMaxLength(200);
 
+		builder.Property(e => e.Slug).IsRequired().HasMaxLength(150);
+
 		builder
 			.HasOne(e => e.PetCategory)
 			.WithMany(c => c.Localizations)
@@ -27,5 +29,8 @@ public class PetCategoryLocalizationConfiguration : IEntityTypeConfiguration<Pet
 
 		// Unique constraint: One localization per category per locale
 		builder.HasIndex(e => new { e.PetCategoryId, e.AppLocaleId }).IsUnique();
+
+		// Unique slug per locale for URL routing
+		builder.HasIndex(e => new { e.Slug, e.AppLocaleId }).IsUnique();
 	}
 }

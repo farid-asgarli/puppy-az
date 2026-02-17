@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
 import {
   PetAdType,
   PetGender,
@@ -16,7 +17,9 @@ import {
   updatePetAdAction,
   getPetBreedsAction,
   getCitiesAction,
+  getDistrictsByCityAction,
 } from "@/lib/auth/actions";
+import { petAdService } from "@/lib/api/services/pet-ad.service";
 import { ReviewCard } from "@/lib/components/views/ad-placement";
 import { ViewFooter, ViewLayout, InfoBox } from "../components";
 import { Heading, Text } from "@/lib/primitives/typography";
@@ -24,25 +27,14 @@ import { getPetSizes } from "@/lib/utils/mappers";
 import { AdSubmissionSuccessDialog } from "@/lib/components/confirmation-dialog";
 
 /**
- * Helper to get ad type display name
- */
-const getAdTypeLabel = (adType: PetAdType | null, t: any): string => {
-  if (!adType) return t("notSelected");
-  const labels = {
-    [PetAdType.Sale]: t("adTypeForSale"),
-    [PetAdType.Found]: t("adTypeFound"),
-    [PetAdType.Lost]: t("adTypeLost"),
-    [PetAdType.Match]: t("adTypeMatch"),
-    [PetAdType.Owning]: t("adTypeOwning"),
-  };
-  return labels[adType] || t("unknown");
-};
-
-/**
  * Helper to get gender label
  */
-const getGenderLabel = (gender: PetGender | null, t: any): string => {
-  if (!gender) return t("notSelected");
+const getGenderLabel = (
+  gender: PetGender | null,
+  t: (key: string) => string,
+): string => {
+  if (!gender && gender !== 0) return t("notSelected");
+  if (gender === PetGender.Unknown) return t("petGender.other");
   return gender === PetGender.Male
     ? t("petGender.male")
     : t("petGender.female");
@@ -54,19 +46,33 @@ const getGenderLabel = (gender: PetGender | null, t: any): string => {
  */
 export default function ReviewView() {
   const t = useTranslations("adPlacementDetails.reviewView");
-  const tCommon = useTranslations("adPlacement");
   const tPetSizes = useTranslations("common");
   const tGender = useTranslations("common");
   const tA11y = useTranslations("accessibility");
+  const { getAdTypeById } = useAdTypes();
+  const locale = useLocale();
   const { formData, resetFormData, isEditMode, editingAdId, clearEditMode } =
     useAdPlacement();
   const { navigateWithTransition } = useViewTransition();
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [breedName, setBreedName] = useState<string | null>(null);
+  const [colorName, setColorName] = useState<string | null>(null);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const petSizes = getPetSizes(tPetSizes);
+
+  // Check if breed/gender/age are optional for this ad type (Found=3, Owning=5)
+  const isOptionalFieldsAdType =
+    formData.adType === PetAdType.Found || formData.adType === PetAdType.Owning;
+
+  /**
+   * Helper to get ad type label
+   */
+  const getAdTypeLabel = (adType: PetAdType | null): string => {
+    if (!adType) return t("notSelected");
+    return getAdTypeById(adType)?.title || t("unknown");
+  };
 
   /**
    * Helper to get size label
@@ -76,6 +82,7 @@ export default function ReviewView() {
     return petSizes[size]?.label || t("unknown");
   };
   const [cityName, setCityName] = useState<string | null>(null);
+  const [districtName, setDistrictName] = useState<string | null>(null);
   const [loadingNames, setLoadingNames] = useState(true);
 
   // Fetch breed and city names using Server Actions
@@ -103,16 +110,46 @@ export default function ReviewView() {
             );
             setCityName(city?.name || null);
           }
+
+          // Fetch district name if we have districtId
+          if (formData.districtId) {
+            const districtsResult = await getDistrictsByCityAction(
+              formData.cityId,
+            );
+            if (districtsResult.success) {
+              const district = districtsResult.data.find(
+                (d) => d.id === formData.districtId,
+              );
+              setDistrictName(district?.name || null);
+            }
+          }
         }
       } catch (error) {
         console.error("Error fetching names:", error);
       } finally {
         setLoadingNames(false);
       }
+
+      // Fetch color name if we have a color key
+      if (formData.color) {
+        try {
+          const colors = await petAdService.getPetColors(locale);
+          const found = colors.find((c) => c.key === formData.color);
+          setColorName(found?.title || formData.color);
+        } catch {
+          setColorName(formData.color);
+        }
+      }
     };
 
     fetchNames();
-  }, [formData.categoryId, formData.petBreedId, formData.cityId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formData.categoryId,
+    formData.petBreedId,
+    formData.cityId,
+    formData.districtId,
+  ]);
 
   const handleEdit = (step: string) => {
     navigateWithTransition(`/ads/ad-placement/${step}`);
@@ -136,19 +173,27 @@ export default function ReviewView() {
     setSubmitError(null);
 
     try {
-      // Validate required fields
-      if (
-        !formData.adType ||
-        !formData.categoryId ||
-        !formData.petBreedId ||
-        !formData.gender ||
-        !formData.size ||
-        !formData.ageInMonths ||
-        !formData.cityId ||
-        !formData.title ||
-        !formData.description ||
-        formData.uploadedImages.length === 0
-      ) {
+      // Validate required fields - breed, gender, age are optional for Found/Owning
+      const baseFieldsValid =
+        formData.adType &&
+        formData.categoryId &&
+        formData.size &&
+        formData.cityId &&
+        formData.title &&
+        formData.description &&
+        formData.uploadedImages.length > 0;
+
+      // For Found/Owning: breed, gender, age are optional
+      // For other types: all fields required (breed can be selected OR suggested)
+      // Note: gender can be 0 (Unknown), so we check !== null instead of truthy
+      const hasBreed =
+        formData.petBreedId !== null ||
+        formData.suggestedBreedName.trim().length > 0;
+      const optionalFieldsValid = isOptionalFieldsAdType
+        ? true // breed, gender, age optional
+        : hasBreed && formData.gender !== null;
+
+      if (!baseFieldsValid || !optionalFieldsValid) {
         setSubmitError(t("fillAllFields"));
         setSubmitting(false);
         return;
@@ -170,14 +215,18 @@ export default function ReviewView() {
           description: formData.description,
           ageInMonths: formData.ageInMonths,
           gender: formData.gender,
-          adType: formData.adType,
+          adType: formData.adType!,
           color: formData.color || "",
           weight: formData.weight,
           size: formData.size,
           price: formData.price,
-          cityId: formData.cityId,
+          cityId: formData.cityId!,
+          districtId: formData.districtId,
           petBreedId: formData.petBreedId,
+          petCategoryId: formData.categoryId,
           imageIds: formData.uploadedImages.map((img) => img.id),
+          suggestedBreedName: formData.suggestedBreedName || null,
+          customDistrictName: formData.customDistrictName || null,
         };
 
         // Update existing ad
@@ -197,14 +246,18 @@ export default function ReviewView() {
           description: formData.description,
           ageInMonths: formData.ageInMonths,
           gender: formData.gender,
-          adType: formData.adType,
+          adType: formData.adType!,
           color: formData.color || "",
           weight: formData.weight,
           size: formData.size,
           price: formData.price,
-          cityId: formData.cityId,
+          cityId: formData.cityId!,
+          districtId: formData.districtId,
           petBreedId: formData.petBreedId,
+          petCategoryId: formData.categoryId,
           imageIds: formData.uploadedImages.map((img) => img.id),
+          suggestedBreedName: formData.suggestedBreedName || null,
+          customDistrictName: formData.customDistrictName || null,
         };
 
         // Submit new ad to backend
@@ -350,7 +403,7 @@ export default function ReviewView() {
                 <div>
                   <p className="text-sm text-gray-600">{t("adTypeLabel")}</p>
                   <p className="text-gray-900 font-medium">
-                    {getAdTypeLabel(formData.adType, tCommon)}
+                    {getAdTypeLabel(formData.adType)}
                   </p>
                 </div>
                 <div>
@@ -360,8 +413,17 @@ export default function ReviewView() {
                       <span className="text-gray-400">{t("loading")}</span>
                     ) : breedName ? (
                       breedName
+                    ) : formData.suggestedBreedName ? (
+                      <span className="italic">
+                        {formData.suggestedBreedName}{" "}
+                        <span className="text-xs text-amber-600 font-normal">
+                          ({t("suggestedBreed")})
+                        </span>
+                      </span>
                     ) : formData.petBreedId ? (
                       `Breed ID: ${formData.petBreedId}`
+                    ) : isOptionalFieldsAdType ? (
+                      tPetSizes("petBreed.other")
                     ) : (
                       t("notSelected")
                     )}
@@ -386,7 +448,7 @@ export default function ReviewView() {
                 <div>
                   <p className="text-sm text-gray-600">{t("colorLabel")}</p>
                   <p className="text-gray-900 font-medium">
-                    {formData.color || t("notSet")}
+                    {colorName || formData.color || t("notSet")}
                   </p>
                 </div>
                 <div>
@@ -403,7 +465,22 @@ export default function ReviewView() {
                     {loadingNames ? (
                       <span className="text-gray-400">{t("loading")}</span>
                     ) : cityName ? (
-                      cityName
+                      <>
+                        {cityName}
+                        {districtName && (
+                          <span className="text-gray-500 font-normal">
+                            {" "}
+                            — {districtName}
+                          </span>
+                        )}
+                        {!districtName &&
+                          formData.customDistrictName?.trim() && (
+                            <span className="text-gray-500 font-normal">
+                              {" "}
+                              — {formData.customDistrictName}
+                            </span>
+                          )}
+                      </>
                     ) : formData.cityId ? (
                       `City ID: ${formData.cityId}`
                     ) : (

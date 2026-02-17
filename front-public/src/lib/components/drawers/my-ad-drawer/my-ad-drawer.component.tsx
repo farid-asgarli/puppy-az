@@ -1,15 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Drawer } from 'vaul';
-import { IconX, IconEdit, IconTrash, IconEye, IconClock, IconTrendingUp, IconCircleCheck, IconAlertCircle } from '@tabler/icons-react';
-import { MyPetAdDto, PetAdStatus } from '@/lib/api/types/pet-ad.types';
-import { getMyPetAdAction } from '@/lib/auth/actions';
-import { cn } from '@/lib/external/utils';
-import { useTranslations } from 'next-intl';
-import Button from '@/lib/primitives/button/button.component';
-import { Heading, Text, Label } from '@/lib/primitives/typography';
-import { ImageWithFallback } from '@/lib/primitives';
+import { useState, useEffect } from "react";
+import { Drawer } from "vaul";
+import {
+  IconX,
+  IconEdit,
+  IconTrash,
+  IconEye,
+  IconClock,
+  IconCircleCheck,
+  IconAlertCircle,
+} from "@tabler/icons-react";
+import { MyPetAdDto, PetAdStatus } from "@/lib/api/types/pet-ad.types";
+import { getMyPetAdAction } from "@/lib/auth/actions";
+import { cn } from "@/lib/external/utils";
+import { useTranslations, useLocale } from "next-intl";
+import { formatDateShort } from "@/lib/utils/date-utils";
+import { petAdService } from "@/lib/api/services/pet-ad.service";
+import Button from "@/lib/primitives/button/button.component";
+import { Heading, Text, Label } from "@/lib/primitives/typography";
 
 interface MyAdDrawerProps {
   adId: number | null;
@@ -25,11 +34,20 @@ interface MyAdDrawerProps {
  * Displays full information fetched from getMyPetAd endpoint
  * Status-dependent actions and information
  */
-export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete }: MyAdDrawerProps) {
-  const t = useTranslations('myAds.drawer');
+export function MyAdDrawer({
+  adId,
+  isOpen,
+  onClose,
+  onEdit,
+  onCloseAd,
+  onDelete,
+}: MyAdDrawerProps) {
+  const t = useTranslations("myAds.drawer");
+  const locale = useLocale();
   const [adData, setAdData] = useState<MyPetAdDto | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [colorName, setColorName] = useState<string | null>(null);
 
   // Fetch ad data when drawer opens
   useEffect(() => {
@@ -47,11 +65,11 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
         if (result.success && result.data) {
           setAdData(result.data);
         } else {
-          setError(t('loadError'));
+          setError(t("loadError"));
         }
       } catch (err) {
-        setError(t('loadError'));
-        console.error('Failed to load ad data:', err);
+        setError(t("loadError"));
+        console.error("Failed to load ad data:", err);
       } finally {
         setIsLoading(false);
       }
@@ -60,43 +78,60 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
     fetchAdData();
   }, [adId, isOpen, t]);
 
+  // Fetch localized color name
+  useEffect(() => {
+    if (adData?.color) {
+      petAdService
+        .getPetColors(locale)
+        .then((colors) => {
+          const found = colors.find((c) => c.key === adData.color);
+          setColorName(found?.title || adData.color);
+        })
+        .catch(() => {
+          setColorName(adData.color);
+        });
+    } else {
+      setColorName(null);
+    }
+  }, [adData?.color, locale]);
+
   // Status configuration
   const statusConfig = {
     [PetAdStatus.Pending]: {
       icon: IconClock,
-      label: t('status.pending'),
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
+      label: t("status.pending"),
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
     },
     [PetAdStatus.Published]: {
       icon: IconCircleCheck,
-      label: t('status.published'),
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      label: t("status.published"),
+      color: "text-green-600",
+      bgColor: "bg-green-50",
     },
     [PetAdStatus.Rejected]: {
       icon: IconAlertCircle,
-      label: t('status.rejected'),
-      color: 'text-red-600',
-      bgColor: 'bg-red-50',
+      label: t("status.rejected"),
+      color: "text-red-600",
+      bgColor: "bg-red-50",
     },
     [PetAdStatus.Expired]: {
       icon: IconClock,
-      label: t('status.expired'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.expired"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
     [PetAdStatus.Closed]: {
       icon: IconAlertCircle,
-      label: t('status.closed'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.closed"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
     [PetAdStatus.Draft]: {
       icon: IconClock,
-      label: t('status.draft'),
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50',
+      label: t("status.draft"),
+      color: "text-gray-600",
+      bgColor: "bg-gray-50",
     },
   };
 
@@ -115,10 +150,13 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
             <Drawer.Title asChild>
               <Heading variant="card" as="h2">
-                {t('title')}
+                {t("title")}
               </Heading>
             </Drawer.Title>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
               <IconX size={20} className="text-gray-500" />
             </button>
           </div>
@@ -145,10 +183,18 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                 {/* Image Gallery */}
                 {adData.images && adData.images.length > 0 && (
                   <div className="relative aspect-[16/9] bg-gray-100 mb-6">
-                    <ImageWithFallback src={adData.images[0].url} alt={adData.title} fill className="object-cover" />
+                    <img
+                      src={adData.images[0].url}
+                      alt={adData.title}
+                      className="w-full h-full object-cover"
+                    />
                     {adData.images.length > 1 && (
                       <div className="absolute bottom-4 right-4 px-3 py-1.5 bg-black/60 backdrop-blur-sm rounded-full">
-                        <Text variant="small" weight="medium" className="text-white">
+                        <Text
+                          variant="small"
+                          weight="medium"
+                          className="text-white"
+                        >
                           1 / {adData.images.length}
                         </Text>
                       </div>
@@ -157,21 +203,26 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                 )}
 
                 <div className="px-6 space-y-6">
-                  {/* Status & Premium Badge */}
+                  {/* Status Badge */}
                   <div className="flex items-center gap-2">
                     {currentStatus && StatusIcon && (
-                      <div className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-full', currentStatus.bgColor)}>
-                        <StatusIcon size={16} strokeWidth={2.5} className={currentStatus.color} />
-                        <Label variant="badge" as="span" className={currentStatus.color}>
+                      <div
+                        className={cn(
+                          "flex items-center gap-1.5 px-3 py-1.5 rounded-full",
+                          currentStatus.bgColor,
+                        )}
+                      >
+                        <StatusIcon
+                          size={16}
+                          strokeWidth={2.5}
+                          className={currentStatus.color}
+                        />
+                        <Label
+                          variant="badge"
+                          as="span"
+                          className={currentStatus.color}
+                        >
                           {currentStatus.label}
-                        </Label>
-                      </div>
-                    )}
-                    {adData.isPremium && (
-                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full">
-                        <IconTrendingUp size={16} strokeWidth={2.5} className="text-yellow-900" />
-                        <Label variant="badge" as="span" className="text-yellow-900">
-                          {t('premium')}
                         </Label>
                       </div>
                     )}
@@ -183,15 +234,19 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                       {adData.title}
                     </Heading>
                     {adData.price !== null ? (
-                      <Text variant="body-xl" weight="bold" className="text-3xl">
-                        {adData.price}{' '}
+                      <Text
+                        variant="body-xl"
+                        weight="bold"
+                        className="text-3xl"
+                      >
+                        {adData.price}{" "}
                         <Text as="span" variant="body-lg" color="tertiary">
                           AZN
                         </Text>
                       </Text>
                     ) : (
                       <Text variant="body-lg" color="muted">
-                        {t('noPrice')}
+                        {t("noPrice")}
                       </Text>
                     )}
                   </div>
@@ -200,28 +255,33 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label variant="field" as="p" className="mb-1">
-                        {t('category')}
+                        {t("category")}
                       </Label>
                       <Label variant="value">{adData.categoryTitle}</Label>
                     </div>
                     <div>
                       <Label variant="field" as="p" className="mb-1">
-                        {t('breed')}
-                      </Label>
-                      <Label variant="value">{adData.breed.title}</Label>
-                    </div>
-                    <div>
-                      <Label variant="field" as="p" className="mb-1">
-                        {t('location')}
-                      </Label>
-                      <Label variant="value">{adData.cityName}</Label>
-                    </div>
-                    <div>
-                      <Label variant="field" as="p" className="mb-1">
-                        {t('age')}
+                        {t("breed")}
                       </Label>
                       <Label variant="value">
-                        {adData.ageInMonths} {t('months')}
+                        {adData.breed?.title ?? "-"}
+                      </Label>
+                    </div>
+                    <div>
+                      <Label variant="field" as="p" className="mb-1">
+                        {t("location")}
+                      </Label>
+                      <Label variant="value">
+                        {adData.cityName}
+                        {adData.districtName ? ` — ${adData.districtName}` : ""}
+                      </Label>
+                    </div>
+                    <div>
+                      <Label variant="field" as="p" className="mb-1">
+                        {t("age")}
+                      </Label>
+                      <Label variant="value">
+                        {adData.ageInMonths} {t("months")}
                       </Label>
                     </div>
                   </div>
@@ -231,11 +291,15 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                     <div className="flex items-center gap-2">
                       <IconEye size={20} className="text-gray-400" />
                       <div>
-                        <Text variant="body-xl" weight="bold" className="text-2xl">
+                        <Text
+                          variant="body-xl"
+                          weight="bold"
+                          className="text-2xl"
+                        >
                           {adData.viewCount}
                         </Text>
                         <Text variant="tiny" color="tertiary">
-                          {t('views')}
+                          {t("views")}
                         </Text>
                       </div>
                     </div>
@@ -244,55 +308,68 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                   {/* Description */}
                   <div>
                     <Heading variant="label" as="h3" className="mb-3">
-                      {t('description')}
+                      {t("description")}
                     </Heading>
-                    <Text variant="body" leading="relaxed" className="whitespace-pre-wrap">
+                    <Text
+                      variant="body"
+                      leading="relaxed"
+                      className="whitespace-pre-wrap"
+                    >
                       {adData.description}
                     </Text>
                   </div>
 
                   {/* Rejection Reason (if applicable) */}
-                  {adData.status === PetAdStatus.Rejected && adData.rejectionReason && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                      <Label variant="badge" as="p" className="text-red-900 mb-2">
-                        {t('rejectionReason')}
-                      </Label>
-                      <Text variant="small" className="text-red-700">
-                        {adData.rejectionReason}
-                      </Text>
-                    </div>
-                  )}
+                  {adData.status === PetAdStatus.Rejected &&
+                    adData.rejectionReason && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <Label
+                          variant="badge"
+                          as="p"
+                          className="text-red-900 mb-2"
+                        >
+                          {t("rejectionReason")}
+                        </Label>
+                        <Text variant="small" className="text-red-700">
+                          {adData.rejectionReason}
+                        </Text>
+                      </div>
+                    )}
 
                   {/* Additional Details */}
                   <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200">
                     <div>
                       <Label variant="field" as="p" className="mb-1">
-                        {t('gender')}
+                        {t("gender")}
                       </Label>
-                      <Label variant="value">{adData.gender === 1 ? t('male') : t('female')}</Label>
+                      <Label variant="value">
+                        {adData.gender === 1 ? t("male") : t("female")}
+                      </Label>
                     </div>
                     <div>
                       <Label variant="field" as="p" className="mb-1">
-                        {t('color')}
+                        {t("color")}
                       </Label>
-                      <Label variant="value">{adData.color}</Label>
+                      <Label variant="value">{colorName || adData.color}</Label>
                     </div>
                     {adData.weight && (
                       <div>
                         <Label variant="field" as="p" className="mb-1">
-                          {t('weight')}
+                          {t("weight")}
                         </Label>
                         <Label variant="value">
-                          {adData.weight} {t('kg')}
+                          {adData.weight} {t("kg")}
                         </Label>
                       </div>
                     )}
                     {adData.size && (
                       <div>
                         <Label variant="field" as="p" className="mb-1">
-                          {t('size')}
+                          {t("size")}
                         </Label>
-                        <Label variant="value">{t(`sizes.${adData.size}`)}</Label>
+                        <Label variant="value">
+                          {t(`sizes.${adData.size}`)}
+                        </Label>
                       </div>
                     )}
                   </div>
@@ -300,16 +377,16 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                   {/* Dates */}
                   <div className="text-sm text-gray-500 space-y-1">
                     <Text variant="small" color="tertiary">
-                      {t('created')}: {new Date(adData.createdAt).toLocaleDateString()}
+                      {t("created")}: {formatDateShort(adData.createdAt)}
                     </Text>
                     {adData.publishedAt && (
                       <Text variant="small" color="tertiary">
-                        {t('published')}: {new Date(adData.publishedAt).toLocaleDateString()}
+                        {t("published")}: {formatDateShort(adData.publishedAt)}
                       </Text>
                     )}
                     {adData.expiresAt && (
                       <Text variant="small" color="tertiary">
-                        {t('expires')}: {new Date(adData.expiresAt).toLocaleDateString()}
+                        {t("expires")}: {formatDateShort(adData.expiresAt)}
                       </Text>
                     )}
                   </div>
@@ -334,7 +411,7 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                     }}
                     className="flex-1"
                   >
-                    {t('edit')}
+                    {t("edit")}
                   </Button>
                 )}
 
@@ -349,25 +426,27 @@ export function MyAdDrawer({ adId, isOpen, onClose, onEdit, onCloseAd, onDelete 
                     }}
                     className="flex-1"
                   >
-                    {t('closeAd')}
+                    {t("closeAd")}
                   </Button>
                 )}
 
                 {/* Delete button - for rejected or draft ads */}
-                {(adData.status === PetAdStatus.Rejected || adData.status === PetAdStatus.Draft) && onDelete && (
-                  <Button
-                    variant="danger"
-                    size="lg"
-                    leftSection={<IconTrash size={18} />}
-                    onClick={() => {
-                      onDelete(adData.id);
-                      onClose();
-                    }}
-                    className="flex-1"
-                  >
-                    {t('delete')}
-                  </Button>
-                )}
+                {(adData.status === PetAdStatus.Rejected ||
+                  adData.status === PetAdStatus.Draft) &&
+                  onDelete && (
+                    <Button
+                      variant="danger"
+                      size="lg"
+                      leftSection={<IconTrash size={18} />}
+                      onClick={() => {
+                        onDelete(adData.id);
+                        onClose();
+                      }}
+                      className="flex-1"
+                    >
+                      {t("delete")}
+                    </Button>
+                  )}
               </div>
             </div>
           )}

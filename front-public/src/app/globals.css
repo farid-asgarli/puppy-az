@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 :root {
   --radius: 0.625rem;
@@ -72,15 +72,19 @@
 
 @theme {
   /* Fonts - Cereal as primary UI font with proper fallback stack */
-  --font-sans: var(--font-cereal), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  --font-sans:
+    var(--font-cereal), ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   --font-cereal: var(--font-cereal);
 
   /* ===========================
      SEMANTIC COLOR PALETTE
      =========================== */
 
-  /* Primary - Lavender (Main brand color, CTAs, links) */
+  /* Primary - Purple (Main brand color, CTAs, links) */
   --color-primary: #a855f7;
   --color-primary-50: #faf5ff;
   --color-primary-100: #f3e8ff;
@@ -171,18 +175,18 @@
   --color-info-800: #3730a3;
   --color-info-900: #312e81;
 
-  /* Highlight - Orange (Featured items, attention) */
-  --color-highlight: #f97316;
-  --color-highlight-50: #fff7ed;
-  --color-highlight-100: #ffedd5;
-  --color-highlight-200: #fed7aa;
-  --color-highlight-300: #fdba74;
-  --color-highlight-400: #fb923c;
-  --color-highlight-500: #f97316;
-  --color-highlight-600: #ea580c;
-  --color-highlight-700: #c2410c;
-  --color-highlight-800: #9a3412;
-  --color-highlight-900: #7c2d12;
+  /* Highlight - Purple (Featured items, attention) */
+  --color-highlight: #a855f7;
+  --color-highlight-50: #faf5ff;
+  --color-highlight-100: #f3e8ff;
+  --color-highlight-200: #e9d5ff;
+  --color-highlight-300: #d8b4fe;
+  --color-highlight-400: #c084fc;
+  --color-highlight-500: #a855f7;
+  --color-highlight-600: #9333ea;
+  --color-highlight-700: #7e22ce;
+  --color-highlight-800: #6b21a8;
+  --color-highlight-900: #581c87;
 
   /* Font Sizes */
   --text-12: 12px;
@@ -233,8 +237,8 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     font-feature-settings:
-      'rlig' 1,
-      'calt' 1;
+      "rlig" 1,
+      "calt" 1;
   }
 
   h1,
@@ -421,4 +425,11 @@ button {
 
 .animate-pulse-soft {
   animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }

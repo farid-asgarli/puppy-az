@@ -1,4 +1,4 @@
-import type { RequestConfig, ApiResponse } from './base-client';
+import type { RequestConfig, ApiResponse } from "./base-client";
 
 /**
  * Request context that flows through the interceptor chain
@@ -10,6 +10,16 @@ import type { RequestConfig, ApiResponse } from './base-client';
  * - Request metadata
  */
 export interface RequestContext {
+  /**
+   * HTTP method (GET, POST, etc.) - set by HttpClient before interceptors
+   */
+  method?: string;
+
+  /**
+   * Request URL/endpoint - set by HttpClient before interceptors
+   */
+  url?: string;
+
   /**
    * Authentication token (JWT)
    * Auto-injected by auth interceptor if available
@@ -66,8 +76,10 @@ export interface RequestInterceptor {
   onRequest(
     endpoint: string,
     config: RequestConfig,
-    context: RequestContext
-  ): Promise<{ config: RequestConfig; context: RequestContext }> | { config: RequestConfig; context: RequestContext };
+    context: RequestContext,
+  ):
+    | Promise<{ config: RequestConfig; context: RequestContext }>
+    | { config: RequestConfig; context: RequestContext };
 }
 
 /**
@@ -84,7 +96,10 @@ export interface ResponseInterceptor {
    * @param context - Request context
    * @returns Modified response (or throw error to reject)
    */
-  onResponse<T>(response: ApiResponse<T>, context: RequestContext): Promise<ApiResponse<T>> | ApiResponse<T>;
+  onResponse<T>(
+    response: ApiResponse<T>,
+    context: RequestContext,
+  ): Promise<ApiResponse<T>> | ApiResponse<T>;
 
   /**
    * Handle error responses
@@ -126,13 +141,17 @@ export class InterceptorManager {
   async executeRequestInterceptors(
     endpoint: string,
     config: RequestConfig,
-    context: RequestContext
+    context: RequestContext,
   ): Promise<{ config: RequestConfig; context: RequestContext }> {
     let currentConfig = config;
     let currentContext = context;
 
     for (const interceptor of this.requestInterceptors) {
-      const result = await interceptor.onRequest(endpoint, currentConfig, currentContext);
+      const result = await interceptor.onRequest(
+        endpoint,
+        currentConfig,
+        currentContext,
+      );
       currentConfig = result.config;
       currentContext = result.context;
     }
@@ -143,7 +162,10 @@ export class InterceptorManager {
   /**
    * Execute all response interceptors in sequence
    */
-  async executeResponseInterceptors<T>(response: ApiResponse<T>, context: RequestContext): Promise<ApiResponse<T>> {
+  async executeResponseInterceptors<T>(
+    response: ApiResponse<T>,
+    context: RequestContext,
+  ): Promise<ApiResponse<T>> {
     let currentResponse = response;
 
     for (const interceptor of this.responseInterceptors) {
@@ -156,7 +178,10 @@ export class InterceptorManager {
   /**
    * Execute error handlers from response interceptors
    */
-  async executeErrorInterceptors(error: Error, context: RequestContext): Promise<never> {
+  async executeErrorInterceptors(
+    error: Error,
+    context: RequestContext,
+  ): Promise<never> {
     // Execute error handlers in order
     for (const interceptor of this.responseInterceptors) {
       if (interceptor.onError) {

@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
-import { ListDropdown, type ListDropdownOption } from '../components/dropdown-wrapper';
-import { petAdService } from '@/lib/api/services/pet-ad.service';
-import type { PetBreedDto } from '@/lib/api/types/pet-ad.types';
-import { useTranslations } from 'next-intl';
-import { useLocale } from '@/lib/hooks/use-client-locale';
+import { useEffect, useState } from "react";
+import {
+  ListDropdown,
+  type ListDropdownOption,
+} from "../components/dropdown-wrapper";
+import { petAdService } from "@/lib/api/services/pet-ad.service";
+import type { PetBreedDto } from "@/lib/api/types/pet-ad.types";
+import { DisplayCache } from "@/lib/caching/display-cache";
+import { useTranslations } from "next-intl";
+import { useLocale } from "@/lib/hooks/use-client-locale";
 
 interface BreedDropdownProps {
   categoryId: number | null;
@@ -14,14 +18,18 @@ interface BreedDropdownProps {
 /**
  * Breed Dropdown Content (fetches from API)
  */
-export const BreedDropdown = ({ categoryId, onSelect, searchQuery = '' }: BreedDropdownProps) => {
+export const BreedDropdown = ({
+  categoryId,
+  onSelect,
+  searchQuery = "",
+}: BreedDropdownProps) => {
   const locale = useLocale();
   const [breeds, setBreeds] = useState<PetBreedDto[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const tSearch = useTranslations('search');
-  const tCommon = useTranslations('common');
-  const tErrors = useTranslations('errors');
+  const tSearch = useTranslations("search");
+  const tCommon = useTranslations("common");
+  const tErrors = useTranslations("errors");
 
   useEffect(() => {
     if (!categoryId) {
@@ -36,10 +44,14 @@ export const BreedDropdown = ({ categoryId, onSelect, searchQuery = '' }: BreedD
         if (mounted) {
           setBreeds(result ?? []);
           setError(null);
+          // Cache breeds so buildSlugFilterUrl can resolve breed slugs for SEO URLs
+          if (categoryId && result) {
+            DisplayCache.setBreeds(categoryId, result);
+          }
         }
       })
       .catch(() => {
-        setError(tErrors('fetchBreedsFailed'));
+        setError(tErrors("fetchBreedsFailed"));
         setBreeds([]);
       })
       .finally(() => {
@@ -54,7 +66,7 @@ export const BreedDropdown = ({ categoryId, onSelect, searchQuery = '' }: BreedD
     id: breed.id,
     value: breed.id,
     label: breed.title,
-    description: '',
+    description: "",
   }));
 
   const handleSelect = (breedId: number) => {
@@ -63,14 +75,26 @@ export const BreedDropdown = ({ categoryId, onSelect, searchQuery = '' }: BreedD
   };
 
   if (!categoryId) {
-    return <div className="px-4 py-3 text-gray-500">{tSearch('selectCategoryFirst')}</div>;
+    return (
+      <div className="px-4 py-3 text-gray-500">
+        {tSearch("selectCategoryFirst")}
+      </div>
+    );
   }
   if (loading) {
-    return <div className="px-4 py-3 text-gray-500">{tCommon('loading')}</div>;
+    return <div className="px-4 py-3 text-gray-500">{tCommon("loading")}</div>;
   }
   if (error) {
     return <div className="px-4 py-3 text-red-500">{error}</div>;
   }
 
-  return <ListDropdown<number> title={tSearch('breed')} titleId="breeds" options={options} searchQuery={searchQuery} onSelect={handleSelect} />;
+  return (
+    <ListDropdown<number>
+      title={tSearch("breed")}
+      titleId="breeds"
+      options={options}
+      searchQuery={searchQuery}
+      onSelect={handleSelect}
+    />
+  );
 };

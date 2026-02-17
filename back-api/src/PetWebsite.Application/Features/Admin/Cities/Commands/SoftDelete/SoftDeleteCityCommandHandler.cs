@@ -26,6 +26,7 @@ public class SoftDeleteCityCommandHandler(IApplicationDbContext dbContext, IStri
 		if (!success)
 			return Result.Failure(L(LocalizationKeys.City.NotFound), 404);
 
+		await dbContext.SaveChangesAsync(ct);
 		return Result.Success();
 	}
 }

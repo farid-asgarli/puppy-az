@@ -9,6 +9,7 @@ import {
   IconSearch,
   IconCheck,
   IconX,
+  IconLoader2,
 } from "@tabler/icons-react";
 import { Drawer } from "vaul";
 import { Badge } from "@/lib/primitives/badge";
@@ -70,7 +71,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
       usePortal,
       ...props
     },
-    ref,
+    _ref,
   ) => {
     const t = useTranslations("form.select");
     const defaultPlaceholder = placeholder || t("placeholder");
@@ -90,17 +91,28 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
     const containerRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const searchInputRef = useRef<HTMLInputElement>(null);
+    const inlineInputRef = useRef<HTMLInputElement>(null);
     const optionsRef = useRef<HTMLDivElement>(null);
+    const portalRef = useRef<HTMLDivElement>(null);
 
     const isMobile = useMediaQuery("(max-width: 992px)");
 
     const currentValue =
       controlledValue !== undefined ? controlledValue : internalValue;
 
+    // Normalize text for search: handles Azerbaijani İ/i, ə, ö, ü, ş, ç, ğ
+    const normalizeForSearch = (s: string) =>
+      s
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase();
+
     // Filter options based on search term
     const filteredOptions = searchable
       ? options.filter((option) =>
-          option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+          normalizeForSearch(option.label).includes(
+            normalizeForSearch(searchTerm),
+          ),
         )
       : options;
 
@@ -111,20 +123,31 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
 
     // Calculate dropdown position
     const updateDropdownPosition = () => {
-      if (triggerRef.current && !isMobile) {
-        const rect = triggerRef.current.getBoundingClientRect();
+      const el = triggerRef.current || containerRef.current;
+      if (el && !isMobile) {
+        const rect = el.getBoundingClientRect();
 
         // Use the trigger width, but with a reasonable minimum
         const minWidth = 150;
         const triggerWidth = rect.width;
         const finalWidth = Math.max(triggerWidth, minWidth);
 
-        setDropdownPosition({
+        const pos = {
           top: rect.bottom + 4,
           left: rect.left,
           width: finalWidth,
-        });
+        };
+        setDropdownPosition(pos);
+        return pos;
       }
+      return null;
+    };
+
+    // Open dropdown with position pre-calculated to avoid flash at (0,0)
+    const openDropdown = () => {
+      if (disabled) return;
+      updateDropdownPosition();
+      setIsOpen(true);
     };
 
     // Handle value change
@@ -140,6 +163,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
 
     // Handle clear
     const handleClear = (e: React.MouseEvent) => {
+      e.preventDefault();
       e.stopPropagation();
       handleValueChange("");
     };
@@ -169,7 +193,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
               handleValueChange(filteredOptions[highlightedIndex].value);
             }
           } else {
-            setIsOpen(true);
+            openDropdown();
           }
           break;
         case "Escape":
@@ -180,7 +204,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
         case "ArrowDown":
           e.preventDefault();
           if (!isOpen) {
-            setIsOpen(true);
+            openDropdown();
           } else {
             setHighlightedIndex((prev) =>
               prev < filteredOptions.length - 1 ? prev + 1 : 0,
@@ -201,34 +225,32 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
       }
     };
 
-    // Handle click outside
+    // Handle click outside - for both portal and non-portal mode
     useEffect(() => {
       if (!isOpen || isMobile) return;
 
       const handleClickOutside = (event: MouseEvent) => {
         const target = event.target as Node;
 
-        // Check if click is outside both the container and the portal dropdown
-        const isOutsideContainer =
-          containerRef.current && !containerRef.current.contains(target);
-        const portalElement = document.querySelector("[data-dropdown-portal]");
-        const isOutsidePortal = !portalElement?.contains(target);
+        // Check container
+        if (containerRef.current?.contains(target)) return;
+        // Check portal dropdown
+        if (portalRef.current?.contains(target)) return;
 
-        if (isOutsideContainer && isOutsidePortal) {
-          setIsOpen(false);
-          setSearchTerm("");
-          setHighlightedIndex(-1);
-        }
+        setIsOpen(false);
+        setSearchTerm("");
+        setHighlightedIndex(-1);
       };
 
+      // Use capture phase to run before other mousedown handlers
       // Small delay to prevent immediate closing when opening
       const timeoutId = setTimeout(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-      }, 0);
+        document.addEventListener("mousedown", handleClickOutside, true);
+      }, 10);
 
       return () => {
         clearTimeout(timeoutId);
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside, true);
       };
     }, [isOpen, isMobile]);
 
@@ -259,6 +281,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
           window.removeEventListener("scroll", handleScroll);
         };
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, isMobile]);
 
     // Focus search input when dropdown opens
@@ -318,9 +341,11 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
             <button
               key={option.value}
               type="button"
-              onClick={() =>
-                !option.disabled && handleValueChange(option.value)
-              }
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (!option.disabled) handleValueChange(option.value);
+              }}
               disabled={option.disabled}
               className={cn(
                 "w-full px-4 py-3 text-left flex items-center justify-between transition-colors duration-150",
@@ -349,7 +374,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
 
       return (
         <div className="p-3 border-b border-gray-200">
-          <div className="relative flex items-center rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white focus-within:border-black focus-within:bg-white transition-all duration-200">
+          <div className="relative flex items-center rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-50 hover:border-gray-300 hover:bg-white focus-within:border-gray-300 focus-within:bg-white transition-all duration-200">
             <div className="flex items-center px-4 shrink-0">
               <IconSearch size={18} className="text-gray-400" />
             </div>
@@ -374,37 +399,72 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
       if (!isOpen || isMobile) return null;
 
       return createPortal(
-        <div
-          data-dropdown-portal
-          className={cn(
-            "fixed z-[9999] bg-white border border-gray-300 rounded-xl shadow-lg",
-            dropdownClassName,
-          )}
-          style={{
-            top: dropdownPosition.top,
-            left: dropdownPosition.left,
-            width: dropdownPosition.width,
-            minWidth: "150px", // Fallback minimum width
-          }}
-          onMouseDown={(e) => {
-            // Prevent the click from bubbling up and triggering handleClickOutside
-            e.stopPropagation();
-          }}
-        >
-          {renderSearchInput()}
-          {renderOptions()}
-        </div>,
+        <>
+          {/* Invisible overlay to block hover events on elements behind the dropdown */}
+          <div
+            className="fixed inset-0 z-[9998]"
+            style={{ pointerEvents: "auto" }}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setIsOpen(false);
+              setSearchTerm("");
+              setHighlightedIndex(-1);
+            }}
+          />
+          <div
+            ref={portalRef}
+            data-dropdown-portal
+            className={cn(
+              "fixed z-[9999] bg-white border border-gray-300 rounded-xl shadow-lg",
+              dropdownClassName,
+            )}
+            style={{
+              top: dropdownPosition.top,
+              left: dropdownPosition.left,
+              width: dropdownPosition.width,
+              minWidth: "150px",
+              pointerEvents: "auto",
+              visibility:
+                dropdownPosition.top === 0 && dropdownPosition.left === 0
+                  ? "hidden"
+                  : "visible",
+            }}
+            onMouseDown={(e) => e.stopPropagation()}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            {!searchable && renderSearchInput()}
+            {renderOptions()}
+          </div>
+        </>,
         document.body,
       );
     };
 
+    // Focus inline input when dropdown opens
+    useEffect(() => {
+      if (isOpen && searchable && !isMobile && inlineInputRef.current) {
+        inlineInputRef.current.focus();
+      }
+    }, [isOpen, searchable, isMobile]);
+
     return (
-      <div ref={containerRef} className={cn("relative", className)} {...props}>
-        {/* Trigger Button */}
+      <div
+        ref={containerRef}
+        className={cn("relative", isOpen && "z-[9999]", className)}
+        {...props}
+      >
+        {/* Trigger */}
         <div
+          onClick={() => {
+            if (!disabled && !isOpen) {
+              openDropdown();
+            }
+          }}
           className={cn(
             "relative flex items-center rounded-xl overflow-hidden transition-all duration-200 border-2",
             disabled && "bg-gray-50 cursor-not-allowed",
+            !disabled && "cursor-pointer",
             error
               ? "border-red-500 bg-red-50/30"
               : isOpen && !disabled
@@ -420,52 +480,115 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
             </div>
           )}
 
-          <button
-            ref={triggerRef}
-            type="button"
-            onClick={() => !disabled && setIsOpen(!isOpen)}
-            onKeyDown={handleKeyDown}
-            disabled={disabled}
-            className={cn(
-              "flex-1 min-w-0 flex items-center justify-between bg-transparent focus:outline-none",
-              sizeClasses[size],
-              leftIcon ? "pr-4" : "px-4",
-              disabled
-                ? "text-gray-400 cursor-not-allowed"
-                : "text-gray-900 cursor-pointer",
-            )}
-          >
-            <span
-              className={cn("truncate", !selectedOption && "text-gray-400")}
-            >
-              {selectedOption ? selectedOption.label : defaultPlaceholder}
-            </span>
-
-            <div className="flex items-center space-x-1 flex-shrink-0 ml-2">
-              {clearable && selectedOption && !disabled && (
-                <span
-                  role="button"
-                  title={t("clearSelection")}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleClear(
-                      e as unknown as React.MouseEvent<HTMLButtonElement>,
-                    );
-                  }}
-                  className="p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
-                >
-                  <IconX size={16} className="text-gray-400" />
-                </span>
+          {/* Inline search input mode: when searchable, open, and desktop */}
+          {searchable && isOpen && !isMobile ? (
+            <div
+              className={cn(
+                "flex-1 min-w-0 flex items-center bg-transparent",
+                sizeClasses[size],
+                leftIcon ? "pr-4" : "px-4",
               )}
-              <IconChevronDown
-                size={20}
-                className={cn(
-                  "text-gray-400 transition-transform duration-200",
-                  isOpen && "rotate-180",
-                )}
+            >
+              <input
+                ref={inlineInputRef}
+                type="text"
+                value={searchTerm}
+                onChange={handleSearch}
+                onKeyDown={handleKeyDown}
+                placeholder={
+                  selectedOption ? selectedOption.label : defaultPlaceholder
+                }
+                className="flex-1 min-w-0 bg-transparent text-gray-900 placeholder-gray-400 focus:outline-none"
+                onClick={(e) => e.stopPropagation()}
               />
+              <div className="flex items-center space-x-1 flex-shrink-0 ml-2">
+                {clearable && selectedOption && !disabled && (
+                  <span
+                    role="button"
+                    title={t("clearSelection")}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleClear(
+                        e as unknown as React.MouseEvent<HTMLButtonElement>,
+                      );
+                    }}
+                    className="p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    <IconX size={16} className="text-gray-400" />
+                  </span>
+                )}
+                {loading ? (
+                  <IconLoader2
+                    size={20}
+                    className="text-gray-400 animate-spin"
+                  />
+                ) : (
+                  <IconChevronDown
+                    size={20}
+                    className="text-gray-400 rotate-180 transition-transform duration-200"
+                  />
+                )}
+              </div>
             </div>
-          </button>
+          ) : (
+            <button
+              ref={triggerRef}
+              type="button"
+              onClick={() =>
+                !disabled && (isOpen ? setIsOpen(false) : openDropdown())
+              }
+              onKeyDown={handleKeyDown}
+              disabled={disabled}
+              className={cn(
+                "flex-1 min-w-0 flex items-center justify-between bg-transparent focus:outline-none",
+                sizeClasses[size],
+                leftIcon ? "pr-4" : "px-4",
+                disabled
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-gray-900 cursor-pointer",
+              )}
+            >
+              <span
+                className={cn("truncate", !selectedOption && "text-gray-400")}
+              >
+                {selectedOption ? selectedOption.label : defaultPlaceholder}
+              </span>
+
+              <div className="flex items-center space-x-1 flex-shrink-0 ml-2">
+                {clearable && selectedOption && !disabled && (
+                  <span
+                    role="button"
+                    title={t("clearSelection")}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleClear(
+                        e as unknown as React.MouseEvent<HTMLButtonElement>,
+                      );
+                    }}
+                    className="p-1 rounded-full hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    <IconX size={16} className="text-gray-400" />
+                  </span>
+                )}
+                {loading ? (
+                  <IconLoader2
+                    size={20}
+                    className="text-gray-400 animate-spin"
+                  />
+                ) : (
+                  <IconChevronDown
+                    size={20}
+                    className={cn(
+                      "text-gray-400 transition-transform duration-200",
+                      isOpen && "rotate-180",
+                    )}
+                  />
+                )}
+              </div>
+            </button>
+          )}
 
           {rightIcon && (
             <div className="flex items-center px-4 shrink-0">
@@ -476,16 +599,36 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
           )}
         </div>
 
-        {/* Desktop Dropdown Portal */}
-        {usePortal !== false
-          ? renderDropdownPortal()
-          : isOpen &&
-            !isMobile && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-xl shadow-lg z-50">
-                {renderSearchInput()}
-                {renderOptions()}
-              </div>
-            )}
+        {/* Desktop Dropdown */}
+        {isOpen &&
+          !isMobile &&
+          (usePortal !== false ? (
+            renderDropdownPortal()
+          ) : (
+            <div
+              ref={portalRef}
+              className={cn(
+                "fixed bg-white border border-gray-300 rounded-xl shadow-lg z-[99999]",
+                dropdownClassName,
+              )}
+              style={{
+                top: dropdownPosition.top,
+                left: dropdownPosition.left,
+                width: dropdownPosition.width,
+                minWidth: "150px",
+                pointerEvents: "auto",
+                visibility:
+                  dropdownPosition.top === 0 && dropdownPosition.left === 0
+                    ? "hidden"
+                    : "visible",
+              }}
+              onWheel={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
+              {!searchable && renderSearchInput()}
+              {renderOptions()}
+            </div>
+          ))}
 
         {/* Mobile Drawer */}
         <Drawer.Root
@@ -552,7 +695,7 @@ const SearchableSelect = forwardRef<HTMLDivElement, SearchableSelectProps>(
                   </div>
                 ) : (
                   <div className="px-6 py-4">
-                    {filteredOptions.map((option, index) => (
+                    {filteredOptions.map((option, _index) => (
                       <button
                         key={option.value}
                         type="button"

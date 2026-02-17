@@ -14,6 +14,7 @@ using PetWebsite.Infrastructure.Services.Communication;
 using PetWebsite.Infrastructure.Services.Files;
 using PetWebsite.Infrastructure.Services.Identity;
 using PetWebsite.Infrastructure.Services.Images;
+using PetWebsite.Infrastructure.Settings;
 
 namespace PetWebsite.Infrastructure;
 
@@ -150,6 +151,15 @@ public static class DependencyInjection
 
 		// Register URL Service
 		services.AddScoped<IUrlService, UrlService>();
+
+		// Register Background Services
+		services.AddHostedService<AdExpirationService>();
+
+		// Configure Telegram settings
+		services.Configure<TelegramSettings>(configuration.GetSection(TelegramSettings.SectionName));
+		
+		// Register Telegram Service
+		services.AddHttpClient<ITelegramService, TelegramService>();
 
 		return services;
 	}

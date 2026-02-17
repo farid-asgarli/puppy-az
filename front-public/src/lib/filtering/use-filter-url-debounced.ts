@@ -1,6 +1,6 @@
-import { useCallback, useRef, useEffect } from 'react';
-import { useFilterUrl } from './use-filter-url';
-import { FilterParams } from './types';
+import { useCallback, useRef, useEffect } from "react";
+import { useFilterUrl } from "./use-filter-url";
+import { FilterParams } from "./types";
 
 /**
  * Debounced version of useFilterUrl for continuous value updates (sliders, range inputs)
@@ -34,9 +34,14 @@ export function useFilterUrlDebounced(delay: number = 300) {
   }, []);
 
   const updateFilterDebounced = useCallback(
-    (key: keyof FilterParams, value: any) => {
+    (key: keyof FilterParams, value: FilterParams[keyof FilterParams]) => {
       // Store pending update
-      pendingUpdatesRef.current[key] = value;
+      (
+        pendingUpdatesRef.current as Record<
+          string,
+          FilterParams[keyof FilterParams]
+        >
+      )[key as string] = value;
 
       // Clear previous timeout
       if (timeoutRef.current) {
@@ -50,13 +55,16 @@ export function useFilterUrlDebounced(delay: number = 300) {
         pendingUpdatesRef.current = {};
       }, delay);
     },
-    [filterUrl, delay]
+    [filterUrl, delay],
   );
 
   const updateFiltersDebounced = useCallback(
     (newFilters: Partial<FilterParams>) => {
       // Merge with pending updates
-      pendingUpdatesRef.current = { ...pendingUpdatesRef.current, ...newFilters };
+      pendingUpdatesRef.current = {
+        ...pendingUpdatesRef.current,
+        ...newFilters,
+      };
 
       // Clear previous timeout
       if (timeoutRef.current) {
@@ -69,7 +77,7 @@ export function useFilterUrlDebounced(delay: number = 300) {
         pendingUpdatesRef.current = {};
       }, delay);
     },
-    [filterUrl, delay]
+    [filterUrl, delay],
   );
 
   // Flush immediately (useful for form submit or blur events)

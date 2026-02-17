@@ -37,6 +37,7 @@ public class ReviewPetAdCommandHandler(IApplicationDbContext dbContext, IStringL
 		if (request.Status == PetAdStatus.Published)
 		{
 			petAd.PublishedAt = DateTime.UtcNow;
+			petAd.ExpiresAt = DateTime.UtcNow.AddDays(30); // Ad expires after 30 days
 		}
 
 		await dbContext.SaveChangesAsync(ct);

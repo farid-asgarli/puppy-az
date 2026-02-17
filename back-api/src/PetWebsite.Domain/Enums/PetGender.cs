@@ -6,6 +6,11 @@ namespace PetWebsite.Domain.Enums;
 public enum PetGender
 {
     /// <summary>
+    /// Unknown/Other gender.
+    /// </summary>
+    Unknown = 0,
+
+    /// <summary>
     /// Male pet.
     /// </summary>
     Male = 1,

@@ -21,7 +21,7 @@ export enum FilterEquation {
 // Search types
 export interface FilterEntry {
   key: string;
-  value: any;
+  value: unknown;
   equation: FilterEquation;
 }
 

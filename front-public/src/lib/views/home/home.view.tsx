@@ -5,8 +5,8 @@ import {
   PetAdListItemDto,
 } from "@/lib/api/types/pet-ad.types";
 import { HeroSection } from "./sections/hero.section";
+import { LatestAdsSection } from "./sections/latest-ads.section";
 import { HowItWorksSection } from "./sections/how-it-works.section";
-import { PremiumAdsCarouselSection } from "./sections/premium-ads-carousel.section";
 import { CategoryCarouselsSection } from "./sections/category-carousels.section";
 import { WhyChooseUsSection } from "./sections/why-choose-us.section";
 import { FinalCtaSection } from "./sections/final-cta.section";
@@ -14,17 +14,17 @@ import { RecentlyViewedSection } from "@/lib/views/home/sections/recently-viewed
 
 export interface HomeViewProps {
   categoriesWithAds: PetCategoryWithAdsDto[];
-  premiumAds: PetAdListItemDto[];
+  latestAds: PetAdListItemDto[];
 }
 
-export const HomeView = ({ categoriesWithAds, premiumAds }: HomeViewProps) => {
+export const HomeView = ({ categoriesWithAds, latestAds }: HomeViewProps) => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Premium Ads Carousel */}
-      <PremiumAdsCarouselSection premiumAds={premiumAds} />
+      {/* Latest Ads - Newest additions */}
+      <LatestAdsSection latestAds={latestAds} />
 
       {/* Recently Viewed Ads - Personalized for authenticated users */}
       <RecentlyViewedSection />

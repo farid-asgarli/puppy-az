@@ -2,7 +2,7 @@
  * Ad Placement Wizard Types
  */
 
-import { PetAdType, PetGender, PetSize } from '@/lib/api/types/pet-ad.types';
+import { PetAdType, PetGender, PetSize } from "@/lib/api/types/pet-ad.types";
 
 /**
  * Uploaded file tracking for photos
@@ -23,6 +23,7 @@ export interface AdPlacementFormData {
 
   // Step 2: Breed
   petBreedId: number | null;
+  suggestedBreedName: string;
 
   // Step 3: Basic Details
   gender: PetGender | null;
@@ -35,6 +36,8 @@ export interface AdPlacementFormData {
 
   // Step 5: Location
   cityId: number | null;
+  districtId: number | null;
+  customDistrictName: string;
 
   // Step 6: Photos
   // Uploaded images with backend IDs
@@ -55,15 +58,18 @@ export const INITIAL_AD_PLACEMENT_DATA: AdPlacementFormData = {
   adType: null,
   categoryId: null,
   petBreedId: null,
+  suggestedBreedName: "",
   gender: null,
   size: null,
   ageInMonths: null,
-  color: '',
+  color: "",
   weight: null,
   cityId: null,
+  districtId: null,
+  customDistrictName: "",
   uploadedImages: [],
-  title: '',
-  description: '',
+  title: "",
+  description: "",
   price: null,
 };
 
@@ -72,11 +78,11 @@ export const INITIAL_AD_PLACEMENT_DATA: AdPlacementFormData = {
  */
 export function getMinPhotoCount(adType: PetAdType | null): number {
   if (!adType) return 1;
-  // Sale, Match, Owning = 3 photos minimum
-  if ([PetAdType.Sale, PetAdType.Match, PetAdType.Owning].includes(adType)) {
+  // Sale, Match = 3 photos minimum
+  if ([PetAdType.Sale, PetAdType.Match].includes(adType)) {
     return 3;
   }
-  // Found, Lost = 1 photo minimum
+  // Found, Lost, Owning = 1 photo minimum
   return 1;
 }
 
@@ -95,71 +101,98 @@ export interface WizardStep {
 }
 
 /**
+ * Check if breed and age are optional for given ad type
+ * Found (2) and Owning (5) ad types don't require breed/age
+ */
+function isBreedAgeOptional(adType: PetAdType | null): boolean {
+  return adType === PetAdType.Found || adType === PetAdType.Owning;
+}
+
+/**
  * Wizard steps definition
  */
 export const WIZARD_STEPS: WizardStep[] = [
   {
     id: 1,
-    path: 'category',
-    title: 'Tell us about your pet',
-    description: 'Choose what type of ad and which category',
+    path: "category",
+    title: "Tell us about your pet",
+    description: "Choose what type of ad and which category",
     isValid: (data) => data.adType !== null && data.categoryId !== null,
   },
   {
     id: 2,
-    path: 'breed',
-    title: 'Select the breed',
-    description: 'What breed is your pet?',
-    isValid: (data) => data.petBreedId !== null,
+    path: "breed",
+    title: "Select the breed",
+    description: "What breed is your pet?",
+    // Breed is optional for Found and Owning ad types
+    // User can either select an existing breed OR suggest a new one
+    isValid: (data) =>
+      data.petBreedId !== null ||
+      data.suggestedBreedName.trim().length > 0 ||
+      isBreedAgeOptional(data.adType),
   },
   {
     id: 3,
-    path: 'basics',
-    title: 'Basic details',
-    description: 'Tell us about gender, size, and age',
-    isValid: (data) => data.gender !== null && data.size !== null && data.ageInMonths !== null && data.ageInMonths > 0,
+    path: "basics",
+    title: "Basic details",
+    description: "Tell us about gender, size, and age",
+    // For Found/Owning: only size is required, gender and age are optional
+    // Age is always optional for all ad types
+    isValid: (data) => {
+      if (isBreedAgeOptional(data.adType)) {
+        // Found/Owning: only size required
+        return data.size !== null;
+      }
+      // Other types: gender and size required, age is optional
+      return data.gender !== null && data.size !== null;
+    },
   },
   {
     id: 4,
-    path: 'physical',
-    title: 'Physical characteristics',
-    description: 'Color and weight information',
+    path: "physical",
+    title: "Physical characteristics",
+    description: "Color and weight information",
     isValid: (data) => data.color.trim().length > 0,
   },
   {
     id: 5,
-    path: 'location',
-    title: 'Where is your pet located?',
-    description: 'Select the city',
+    path: "location",
+    title: "Where is your pet located?",
+    description: "Select the city",
     isValid: (data) => data.cityId !== null,
   },
   {
     id: 6,
-    path: 'photos',
-    title: 'Add some photos',
+    path: "photos",
+    title: "Add some photos",
     description: "You'll need at least 1 photo to get started",
-    isValid: (data) => data.uploadedImages.length >= getMinPhotoCount(data.adType),
+    isValid: (data) =>
+      data.uploadedImages.length >= getMinPhotoCount(data.adType),
   },
   {
     id: 7,
-    path: 'details',
-    title: 'Create your title and description',
-    description: 'Make it stand out',
-    isValid: (data) => data.title.trim().length >= 10 && data.description.trim().length >= 30,
+    path: "details",
+    title: "Create your title and description",
+    description: "Make it stand out",
+    isValid: (data) =>
+      data.title.trim().length >= 10 && data.description.trim().length >= 30,
   },
   {
     id: 8,
-    path: 'price',
-    title: 'Set your price',
-    description: 'How much do you want to charge?',
+    path: "price",
+    title: "Set your price",
+    description: "How much do you want to charge?",
     shouldShow: (data) => data.adType === PetAdType.Sale,
-    isValid: (data) => data.adType !== PetAdType.Sale || (data.price !== null && data.price >= 0),
+    isValid: (data) =>
+      data.adType !== PetAdType.Sale ||
+      (data.price !== null && data.price >= 0),
   },
   {
     id: 9,
-    path: 'review',
-    title: 'Review your listing',
-    description: "Here's what we'll show to guests. Make sure everything looks good.",
+    path: "review",
+    title: "Review your listing",
+    description:
+      "Here's what we'll show to guests. Make sure everything looks good.",
     isValid: () => true, // Always valid, this is the final step
   },
 ];

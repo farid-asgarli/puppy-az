@@ -9,18 +9,83 @@ import { useFilterUrl } from "@/lib/filtering/use-filter-url";
 import { RecentSearches } from "@/lib/components/recent-searches";
 import { useRecentSearches } from "@/lib/hooks/use-recent-searches";
 import { cn } from "@/lib/external/utils";
+import {
+  SlugRouteProvider,
+  type SlugRouteInfo,
+} from "@/lib/filtering/slug-route-context";
 
 export interface AdsSearchViewProps {
   categories: PetCategoryDetailedDto[];
   cities: CityDto[];
   breeds?: PetBreedDto[] | null;
+  /** Category ID when navigating via slug route (e.g., /az/itler) */
+  initialCategory?: number;
+  /** Category slug from URL path */
+  initialCategorySlug?: string;
+  /** Breed ID when navigating via slug route (e.g., /az/itler/labrador-retriever) */
+  initialBreed?: number;
+  /** Breed slug from URL path */
+  initialBreedSlug?: string;
 }
 
 export const AdsSearchView = ({
   categories,
   cities,
   breeds = null,
+  initialCategory,
+  initialCategorySlug,
+  initialBreed,
+  initialBreedSlug,
 }: AdsSearchViewProps) => {
+  // Build slug route info if we have path-derived category
+  const slugRouteInfo: SlugRouteInfo | null = (() => {
+    if (!initialCategory || !initialCategorySlug) return null;
+
+    const info: SlugRouteInfo = {
+      categoryId: initialCategory,
+      categorySlug: initialCategorySlug,
+      categories,
+    };
+
+    if (initialBreed && initialBreedSlug) {
+      info.breedId = initialBreed;
+      info.breedSlug = initialBreedSlug;
+    }
+
+    return info;
+  })();
+
+  // Wrap content in SlugRouteProvider if on a slug route
+  if (slugRouteInfo) {
+    return (
+      <SlugRouteProvider value={slugRouteInfo}>
+        <AdsSearchViewInner
+          categories={categories}
+          cities={cities}
+          breeds={breeds}
+          initialCategory={initialCategory}
+          initialBreed={initialBreed}
+        />
+      </SlugRouteProvider>
+    );
+  }
+
+  return (
+    <AdsSearchViewInner
+      categories={categories}
+      cities={cities}
+      breeds={breeds}
+    />
+  );
+};
+
+const AdsSearchViewInner = ({
+  categories,
+  cities,
+  breeds = null,
+  initialCategory,
+  initialBreed: _initialBreed,
+}: Omit<AdsSearchViewProps, "initialCategorySlug" | "initialBreedSlug">) => {
   const { filters, hasFilters, hasAnyUrlParams } = useFilterUrl();
   const [totalCount, setTotalCount] = useState(0);
   const [isLoadingResults, setIsLoadingResults] = useState(true);
@@ -29,9 +94,11 @@ export const AdsSearchView = ({
   const { recentSearches, addRecentSearch, clearAll, isLoaded } =
     useRecentSearches({ categories, breeds });
 
-  // Get category title for header
-  const categoryTitle = filters.category
-    ? categories.find((c) => c.id === Number(filters.category))?.title || null
+  // Get category title for header — use initialCategory or URL-based category
+  const effectiveCategoryId = initialCategory ?? filters.category;
+  const categoryTitle = effectiveCategoryId
+    ? categories.find((c) => c.id === Number(effectiveCategoryId))?.title ||
+      null
     : null;
 
   // Save search when filters are applied

@@ -14,18 +14,20 @@
  * @param redirectUrl - The URL to validate
  * @returns True if the URL is safe to redirect to
  */
-export function isValidRedirectUrl(redirectUrl: string | null | undefined): boolean {
+export function isValidRedirectUrl(
+  redirectUrl: string | null | undefined,
+): boolean {
   if (!redirectUrl) {
     return false;
   }
 
   // Must start with / but not //
-  if (!redirectUrl.startsWith('/') || redirectUrl.startsWith('//')) {
+  if (!redirectUrl.startsWith("/") || redirectUrl.startsWith("//")) {
     return false;
   }
 
   // Must not contain backslashes (Windows path traversal)
-  if (redirectUrl.includes('\\')) {
+  if (redirectUrl.includes("\\")) {
     return false;
   }
 
@@ -45,9 +47,15 @@ export function isValidRedirectUrl(redirectUrl: string | null | undefined): bool
  * @param defaultUrl - The default URL to use if redirect is invalid (default: '/')
  * @returns A safe redirect URL
  */
-export function getSafeRedirectUrl(redirectParam: string | null | undefined, defaultUrl: string = '/'): string {
+export function getSafeRedirectUrl(
+  redirectParam: string | null | undefined,
+  defaultUrl: string = "/",
+): string {
   if (isValidRedirectUrl(redirectParam)) {
-    return redirectParam!;
+    // Remove locale prefix if present to prevent double locale paths
+    // The router will automatically add the correct locale prefix
+    const withoutLocale = redirectParam!.replace(/^\/(az|en|ru)(\/|$)/, "/");
+    return withoutLocale === "/" ? defaultUrl : withoutLocale;
   }
   return defaultUrl;
 }

@@ -11,13 +11,13 @@ public class MyPetAdDetailsDto
 	public int Id { get; init; }
 	public string Title { get; init; } = string.Empty;
 	public string Description { get; init; } = string.Empty;
-	public int AgeInMonths { get; init; }
-	public PetGender Gender { get; init; }
+	public int? AgeInMonths { get; init; }
+	public PetGender? Gender { get; init; }
 	public PetAdType AdType { get; init; }
 	public string Color { get; init; } = string.Empty;
 	public decimal? Weight { get; init; }
 	public PetSize? Size { get; init; }
-	public decimal Price { get; init; }
+	public decimal? Price { get; init; }
 	public int ViewCount { get; set; }
 	public bool IsPremium { get; init; }
 	public DateTime? PremiumExpiresAt { get; init; }
@@ -35,7 +35,7 @@ public class MyPetAdDetailsDto
 	public bool IsAvailable { get; init; }
 
 	// Related data
-	public PetBreedDto Breed { get; init; } = null!;
+	public PetBreedDto? Breed { get; init; }
 	public string CityName { get; init; } = string.Empty;
 	public int CityId { get; init; }
 	public string CategoryTitle { get; init; } = string.Empty;

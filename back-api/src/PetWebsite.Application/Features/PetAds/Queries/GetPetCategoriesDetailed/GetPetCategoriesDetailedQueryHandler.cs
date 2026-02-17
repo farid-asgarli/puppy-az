@@ -39,6 +39,11 @@ public class GetPetCategoriesDetailedQueryHandler(
 						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
 						.Select(l => l.Subtitle)
 						.FirstOrDefault() ?? "",
+				Slug =
+					c.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
+						.Select(l => l.Slug)
+						.FirstOrDefault() ?? "",
 				SvgIcon = c.SvgIcon,
 				IconColor = c.IconColor,
 				BackgroundColor = c.BackgroundColor,

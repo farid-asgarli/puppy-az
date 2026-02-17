@@ -10,10 +10,35 @@ import {
 import { cn } from "@/lib/external/utils";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
 import { useTranslations } from "next-intl";
+import { useState, useEffect } from "react";
 
 export const FinalCtaSection = () => {
   const { navigateWithTransition } = useViewTransition();
   const t = useTranslations("home.finalCta");
+  const [realStats, setRealStats] = useState<{
+    activeAds: number;
+    totalUsers: number;
+  } | null>(null);
+
+  // Fetch real statistics from backend
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/statistics`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRealStats({
+          activeAds: data.activeAds,
+          totalUsers: data.totalUsers,
+        });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch statistics:", error);
+      });
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num < 500) return num.toString();
+    return `${Math.floor(num / 500) * 500}+`;
+  };
 
   const handleBrowseAds = () => {
     navigateWithTransition("/ads/s");
@@ -114,7 +139,11 @@ export const FinalCtaSection = () => {
                     size={18}
                     className="text-accent-400 fill-accent-400"
                   />
-                  <span>{t("trustIndicators.activeAds")}</span>
+                  <span>
+                    {realStats
+                      ? `${formatNumber(realStats.activeAds)} ${t("trustIndicators.activeAdsLabel")}`
+                      : t("trustIndicators.activeAds")}
+                  </span>
                 </div>
                 <div className="hidden sm:block w-1 h-1 bg-gray-500 rounded-full" />
                 <div className="flex items-center gap-2">

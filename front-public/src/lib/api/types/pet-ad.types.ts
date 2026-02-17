@@ -16,12 +16,14 @@ export interface PetColorDto {
 
 /**
  * Pet Ad Types (enums as numbers from API)
+ * Must match PetAdTypes table in database:
+ * 1=sale, 2=match, 3=found, 4=lost, 5=owning
  */
 export enum PetAdType {
   Sale = 1,
-  Found = 2,
-  Lost = 3,
-  Match = 4,
+  Match = 2,
+  Found = 3,
+  Lost = 4,
   Owning = 5,
 }
 
@@ -29,6 +31,7 @@ export enum PetAdType {
  * Pet Gender
  */
 export enum PetGender {
+  Unknown = 0,
   Male = 1,
   Female = 2,
 }
@@ -83,6 +86,7 @@ export interface PetCategoryDto {
   id: number;
   title: string;
   subtitle: string;
+  slug: string;
 }
 
 export interface PetCategoryWithAdsDto extends PetCategoryDetailedDto {
@@ -105,8 +109,8 @@ export interface PetCategoryDetailedDto extends PetCategoryDto {
 export interface PetAdListItemDto {
   id: number;
   title: string;
-  ageInMonths: number;
-  gender: PetGender;
+  ageInMonths: number | null;
+  gender: PetGender | null;
   adType: PetAdType;
   size: PetSize;
   price: number;
@@ -114,7 +118,12 @@ export interface PetAdListItemDto {
   categoryTitle: string;
   categoryId: number;
   breedId: number;
+  categorySlug: string;
+  breedSlug: string;
   cityId: number;
+  districtId: number | null;
+  districtName: string | null;
+  customDistrictName: string | null;
   primaryImageUrl: string;
   publishedAt: string; // ISO date-time
   isPremium: boolean;
@@ -126,10 +135,12 @@ export interface PetAdListItemDto {
  */
 export interface PetAdDetailsDto {
   id: number;
+  status: PetAdStatus;
+  rejectionReason: string | null;
   title: string;
   description: string;
-  ageInMonths: number;
-  gender: PetGender;
+  ageInMonths: number | null;
+  gender: PetGender | null;
   adType: PetAdType;
   color: string;
   weight: number | null;
@@ -141,9 +152,12 @@ export interface PetAdDetailsDto {
   publishedAt: string;
   expiresAt: string | null;
   updatedAt: string | null;
-  breed: PetBreedDto;
+  breed: PetBreedDto | null;
   cityName: string;
   cityId: number;
+  districtId: number | null;
+  districtName: string | null;
+  customDistrictName: string | null;
   categoryTitle: string;
   images: PetAdImageDto[];
   questions: PetAdQuestionDto[];
@@ -167,6 +181,7 @@ export interface PetBreedDto {
   id: number;
   title: string;
   categoryId: number;
+  slug: string;
 }
 
 /**
@@ -176,6 +191,7 @@ export interface PetCategoryDetailedDto {
   id: number;
   title: string;
   subtitle: string;
+  slug: string;
   svgIcon: string;
   iconColor: string;
   backgroundColor: string;
@@ -196,6 +212,7 @@ export interface PetAdImageDto {
  */
 export interface PetAdQuestionDto {
   id: number;
+  userId: string;
   question: string;
   answer: string | null;
   questionerName: string;
@@ -210,6 +227,7 @@ export interface PetAdQuestionDto {
  */
 export interface PetAdQuestionReplyDto {
   id: number;
+  userId: string;
   text: string;
   userName: string;
   isOwnerReply: boolean;
@@ -242,6 +260,7 @@ export interface AnswerQuestionCommand {
 
 export type MyAdQuestionDto = {
   questionId: number;
+  userId: string;
   petAdId: number;
   petAdTitle: string;
   question: string;
@@ -251,6 +270,7 @@ export type MyAdQuestionDto = {
   answeredAt?: string;
   isAnswered: boolean;
   primaryImageUrl?: string;
+  replies: PetAdQuestionReplyDto[];
 };
 
 export type MyAdQuestionsSummaryDto = {
@@ -294,6 +314,9 @@ export type MyPetAdDto = {
   breed: PetBreedDto;
   cityName: string;
   cityId: number;
+  districtId: number | null;
+  districtName: string | null;
+  customDistrictName: string | null;
   categoryTitle: string;
   images: PetAdImageDto[];
   questions: PetAdQuestionDto[];
@@ -319,16 +342,20 @@ export interface DeletePetAdImageResponse {
 export interface SubmitPetAdCommand {
   title: string;
   description: string;
-  ageInMonths: number;
-  gender: PetGender;
+  ageInMonths: number | null; // Optional for Found/Owning ad types
+  gender: PetGender | null; // Optional for Found/Owning ad types
   adType: PetAdType;
   color: string;
   weight: number | null;
   size: PetSize | null;
   price: number;
   cityId: number;
-  petBreedId: number;
+  districtId: number | null;
+  petBreedId: number | null; // Optional for Found/Owning ad types or when suggestedBreedName is provided
+  petCategoryId: number | null; // Category can be set even without breed
   imageIds?: number[] | null;
+  suggestedBreedName?: string | null; // User-suggested breed name when no existing breed matches
+  customDistrictName?: string | null; // User-suggested district name when no existing district matches
 }
 
 /**

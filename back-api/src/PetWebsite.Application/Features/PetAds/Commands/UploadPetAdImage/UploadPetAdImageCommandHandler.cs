@@ -20,10 +20,20 @@ public class UploadPetAdImageCommandHandler(
 {
 	public async Task<Result<PetAdImageDto>> Handle(UploadPetAdImageCommand request, CancellationToken ct)
 	{
-		// Get current user ID
-		var userId = currentUserService.UserId;
-		if (userId is null)
-			return Result<PetAdImageDto>.Failure(L(LocalizationKeys.Error.Unauthorized), 401);
+		var isAdmin = currentUserService.IsInAnyRole("Admin", "SuperAdmin");
+		
+		// If admin specified a target user, use that user's ID (image belongs to user, not admin)
+		Guid? uploaderId;
+		if (request.UploadForUserId.HasValue && isAdmin)
+		{
+			uploaderId = request.UploadForUserId.Value;
+		}
+		else
+		{
+			uploaderId = currentUserService.UserId;
+			if (uploaderId is null)
+				return Result<PetAdImageDto>.Failure(L(LocalizationKeys.Error.Unauthorized), 401);
+		}
 
 		// Open the file stream
 		await using var originalStream = request.File.OpenReadStream();
@@ -81,7 +91,7 @@ public class UploadPetAdImageCommandHandler(
 			FileName = fileMetadata.FileName,
 			FileSize = fileMetadata.Size,
 			ContentType = fileMetadata.ContentType,
-			UploadedById = userId.Value,
+			UploadedById = uploaderId.Value,
 			UploadedAt = DateTime.UtcNow,
 			IsPrimary = false,
 			PetAdId = null, // Orphaned state - not yet attached to an ad

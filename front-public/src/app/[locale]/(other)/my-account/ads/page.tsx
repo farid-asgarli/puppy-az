@@ -1,14 +1,21 @@
-import { redirect } from '@/i18n';
-import { getLocale } from 'next-intl/server';
-import { getUserActiveAdsAction, getUserPendingAdsAction, getUserRejectedAdsAction, getAllUserAdsAction, getDashboardStatsAction } from '@/lib/auth/actions';
-import { MyAdsView } from '@/lib/views/my-account/my-ads';
-import { createSimpleLocalizedMetadata } from '@/lib/utils/metadata';
+import { redirect } from "@/i18n";
+import { getLocale } from "next-intl/server";
+import {
+  getUserActiveAdsAction,
+  getUserPendingAdsAction,
+  getUserRejectedAdsAction,
+  getUserExpiredAdsAction,
+  getAllUserAdsAction,
+  getDashboardStatsAction,
+} from "@/lib/auth/actions";
+import { MyAdsView } from "@/lib/views/my-account/my-ads";
+import { createSimpleLocalizedMetadata } from "@/lib/utils/metadata";
 
 // This page requires authentication, so it must be dynamic
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
-  return createSimpleLocalizedMetadata('metadata.myAccount.myAds');
+  return createSimpleLocalizedMetadata("metadata.myAccount.myAds");
 }
 
 interface MyAdsPageProps {
@@ -18,20 +25,24 @@ interface MyAdsPageProps {
 export default async function MyAdsPage({ searchParams }: MyAdsPageProps) {
   const locale = await getLocale();
   const params = await searchParams;
-  const page = parseInt(params.page || '1', 10);
-  const tab = (params.tab as 'active' | 'pending' | 'rejected' | 'all') || 'active';
+  const page = parseInt(params.page || "1", 10);
+  const tab =
+    (params.tab as "active" | "pending" | "rejected" | "expired" | "all") ||
+    "active";
   const pageSize = 12;
 
   // Determine which action to use based on tab
   const getAdsFetchAction = () => {
     switch (tab) {
-      case 'active':
+      case "active":
         return getUserActiveAdsAction;
-      case 'pending':
+      case "pending":
         return getUserPendingAdsAction;
-      case 'rejected':
+      case "rejected":
         return getUserRejectedAdsAction;
-      case 'all':
+      case "expired":
+        return getUserExpiredAdsAction;
+      case "all":
         return getAllUserAdsAction;
       default:
         return getUserActiveAdsAction;
@@ -51,7 +62,7 @@ export default async function MyAdsPage({ searchParams }: MyAdsPageProps) {
 
   // Redirect to login if not authenticated
   if (!statsResult.success || !adsResult.success) {
-    return redirect({ href: '/auth?redirect=/my-account/ads', locale });
+    return redirect({ href: "/auth?redirect=/my-account/ads", locale });
   }
 
   // Prepare stats for the view
@@ -60,7 +71,15 @@ export default async function MyAdsPage({ searchParams }: MyAdsPageProps) {
     activeAds: statsResult.data.activeAdCount,
     pendingAds: statsResult.data.pendingAdCount,
     rejectedAds: statsResult.data.rejectedAdCount,
+    expiredAds: statsResult.data.expiredAdCount,
   };
 
-  return <MyAdsView initialData={adsResult.data} initialStats={stats} initialPage={page} initialTab={tab} />;
+  return (
+    <MyAdsView
+      initialData={adsResult.data}
+      initialStats={stats}
+      initialPage={page}
+      initialTab={tab}
+    />
+  );
 }

@@ -33,6 +33,7 @@ public class GetPetAdQuestionsQueryHandler(IApplicationDbContext dbContext, IDyn
 			.Select(q => new PetAdQuestionDto
 			{
 				Id = q.Id,
+				UserId = q.UserId,
 				Question = q.Question,
 				Answer = q.Answer,
 				QuestionerName = q.User.FirstName + " " + q.User.LastName,
@@ -44,6 +45,7 @@ public class GetPetAdQuestionsQueryHandler(IApplicationDbContext dbContext, IDyn
 					.Select(r => new PetAdQuestionReplyDto
 					{
 						Id = r.Id,
+						UserId = r.UserId,
 						Text = r.Text,
 						UserName = r.User.FirstName + " " + r.User.LastName,
 						IsOwnerReply = r.IsOwnerReply,

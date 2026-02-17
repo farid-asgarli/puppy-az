@@ -24,8 +24,17 @@ public class ListPetCategoriesQueryHandler(
 				Id = category.Id,
 				Title = localization != null ? localization.Title : "",
 				Subtitle = localization != null ? localization.Subtitle : "",
+				Icon = category.SvgIcon,
 				IconColor = category.IconColor,
 				BackgroundColor = category.BackgroundColor,
+				Localizations = category.Localizations.Select(l => new PetCategoryLocalizationDto
+				{
+					Id = l.Id,
+					PetCategoryId = l.PetCategoryId,
+					LocaleCode = l.AppLocale.Code,
+					Title = l.Title,
+					Subtitle = l.Subtitle
+				}).ToList(),
 				IsActive = category.IsActive,
 				IsDeleted = category.IsDeleted,
 				BreedsCount = category.Breeds.Count(b => !b.IsDeleted),

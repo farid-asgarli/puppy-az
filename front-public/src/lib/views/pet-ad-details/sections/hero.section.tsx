@@ -1,20 +1,70 @@
-'use client';
+"use client";
 
-import { PetAdDetailsDto } from '@/lib/api/types/pet-ad.types';
-import { IconMapPin, IconEye, IconClock, IconCrown } from '@tabler/icons-react';
-import { formatDate } from '@/lib/utils/date-utils';
-import { ActionButtonGroup } from '@/lib/components/views/pet-ad-details/action-button-group';
-import { Badge } from '@/lib/components/views/pet-ad-details/badge';
-import { useTranslations } from 'next-intl';
+import { useState } from "react";
+import { PetAdDetailsDto, PetAdStatus } from "@/lib/api/types/pet-ad.types";
+import {
+  IconMapPin,
+  IconEye,
+  IconClock,
+  IconPencil,
+  IconPower,
+  IconLoader2,
+} from "@tabler/icons-react";
+import { formatDate } from "@/lib/utils/date-utils";
+import { ActionButtonGroup } from "@/lib/components/views/pet-ad-details/action-button-group";
+import { Badge } from "@/lib/components/views/pet-ad-details/badge";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { closeAdAction } from "@/lib/auth/actions";
+import { useRouter } from "next/navigation";
+import ConfirmationDialog from "@/lib/components/confirmation-dialog/confirmation-dialog.component";
 
 export interface AdDetailsHeroSectionProps {
   adDetails: PetAdDetailsDto;
   isHydrated: boolean;
+  isOwner?: boolean;
 }
 
-export function AdDetailsHeroSection({ adDetails, isHydrated }: AdDetailsHeroSectionProps) {
-  const t = useTranslations('petAdDetails.hero');
-  const tDate = useTranslations('dateTime');
+export function AdDetailsHeroSection({
+  adDetails,
+  isHydrated,
+  isOwner = false,
+}: AdDetailsHeroSectionProps) {
+  const t = useTranslations("petAdDetails.hero");
+  const tEdit = useTranslations("petAdDetails.statusBanner");
+  const tDate = useTranslations("dateTime");
+  const router = useRouter();
+  const [isDeactivating, setIsDeactivating] = useState(false);
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+
+  // Check if ad can be deactivated (only Active or Pending ads)
+  const canDeactivate =
+    isOwner &&
+    (adDetails.status === PetAdStatus.Published ||
+      adDetails.status === PetAdStatus.Pending);
+
+  const handleDeactivateClick = () => {
+    setShowDeactivateModal(true);
+  };
+
+  const handleDeactivateConfirm = async () => {
+    if (isDeactivating) return;
+
+    setIsDeactivating(true);
+    try {
+      const result = await closeAdAction(adDetails.id);
+      if (result.success) {
+        setShowDeactivateModal(false);
+        router.refresh();
+      } else {
+        alert(result.error || tEdit("deactivateError"));
+      }
+    } catch {
+      alert(tEdit("deactivateError"));
+    } finally {
+      setIsDeactivating(false);
+    }
+  };
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -28,23 +78,49 @@ export function AdDetailsHeroSection({ adDetails, isHydrated }: AdDetailsHeroSec
         isHydrated={isHydrated}
       />
 
-      {/* Title and Premium Badge */}
+      {/* Title */}
       <div className="space-y-3 sm:space-y-4">
-        <div className="flex items-start gap-3 sm:gap-4">
-          <h1 className="flex-1 text-2xl sm:text-3xl lg:text-4xl font-semibold font-heading text-gray-900 leading-tight">{adDetails.title}</h1>
-          {adDetails.isPremium && (
-            <Badge variant="premium" icon={IconCrown} className="flex-shrink-0">
-              {t('premium')}
-            </Badge>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold font-heading text-gray-900 leading-tight">
+            {adDetails.title}
+          </h1>
+          {isOwner && (
+            <div className="flex-shrink-0 flex items-center gap-2 mt-1">
+              <Link
+                href={`/ads/ad-placement?edit=${adDetails.id}`}
+                className="inline-flex items-center gap-2 rounded-xl border border-primary-600 bg-white px-5 py-2.5 text-sm font-semibold text-primary-600 hover:bg-primary-50 transition-all duration-200"
+              >
+                <IconPencil size={17} stroke={2} />
+                {tEdit("editButton")}
+              </Link>
+              {canDeactivate && (
+                <button
+                  onClick={handleDeactivateClick}
+                  disabled={isDeactivating}
+                  className="inline-flex items-center gap-2 rounded-xl border border-red-500 bg-white px-5 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50 transition-all duration-200 disabled:opacity-60"
+                >
+                  {isDeactivating ? (
+                    <IconLoader2 size={17} className="animate-spin" />
+                  ) : (
+                    <IconPower size={17} stroke={2} />
+                  )}
+                  {tEdit("deactivateButton")}
+                </button>
+              )}
+            </div>
           )}
         </div>
 
         {/* Price */}
         <div>
           {adDetails.price !== null ? (
-            <div className="text-3xl sm:text-4xl font-semibold text-gray-900">{adDetails.price.toLocaleString()} ₼</div>
+            <div className="text-3xl sm:text-4xl font-semibold text-gray-900">
+              {adDetails.price.toLocaleString()} ₼
+            </div>
           ) : (
-            <div className="text-xl sm:text-2xl font-medium text-gray-600">{t('priceNotApplicable')}</div>
+            <div className="text-xl sm:text-2xl font-medium text-gray-600">
+              {t("priceNotApplicable")}
+            </div>
           )}
         </div>
       </div>
@@ -55,9 +131,10 @@ export function AdDetailsHeroSection({ adDetails, isHydrated }: AdDetailsHeroSec
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <Badge variant="meta" icon={IconMapPin}>
             {adDetails.cityName}
+            {adDetails.districtName ? ` — ${adDetails.districtName}` : ""}
           </Badge>
           <Badge variant="meta" icon={IconEye}>
-            {t('views', { count: adDetails.viewCount.toLocaleString() })}
+            {t("views", { count: adDetails.viewCount.toLocaleString() })}
           </Badge>
           <Badge variant="meta" icon={IconClock}>
             {formatDate(adDetails.publishedAt, tDate)}
@@ -65,20 +142,18 @@ export function AdDetailsHeroSection({ adDetails, isHydrated }: AdDetailsHeroSec
         </div>
       </div>
 
-      {/* Premium Banner (if premium) */}
-      {adDetails.isPremium && (
-        <div className="p-4 sm:p-6 bg-gradient-to-r from-premium-50 to-accent-50 border-2 border-premium-200 rounded-xl">
-          <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-premium-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <IconCrown size={20} className="sm:w-6 sm:h-6 text-premium-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="text-base sm:text-lg font-semibold text-premium-900 mb-1">{t('premiumBanner.title')}</h3>
-              <p className="text-xs sm:text-sm text-premium-700">{t('premiumBanner.description')}</p>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Deactivate Confirmation Modal */}
+      <ConfirmationDialog
+        isOpen={showDeactivateModal}
+        onClose={() => setShowDeactivateModal(false)}
+        onConfirm={handleDeactivateConfirm}
+        title={tEdit("deactivateModalTitle")}
+        message={tEdit("deactivateConfirm")}
+        confirmText={tEdit("deactivateButton")}
+        cancelText={tEdit("cancelButton")}
+        variant="danger"
+        isLoading={isDeactivating}
+      />
     </div>
   );
 }

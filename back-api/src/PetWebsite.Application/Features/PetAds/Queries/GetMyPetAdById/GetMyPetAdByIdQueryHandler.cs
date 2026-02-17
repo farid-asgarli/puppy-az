@@ -52,7 +52,7 @@ public class GetMyPetAdByIdQueryHandler(
 				Status = p.Status,
 				RejectionReason = p.RejectionReason,
 				IsAvailable = p.IsAvailable,
-				Breed = new PetBreedDto
+				Breed = p.Breed != null ? new PetBreedDto
 				{
 					Id = p.Breed.Id,
 					Title =
@@ -61,14 +61,15 @@ public class GetMyPetAdByIdQueryHandler(
 							.Select(l => l.Title)
 							.FirstOrDefault() ?? "",
 					CategoryId = p.Breed.Category.Id,
-				},
+				} : null,
 				CityName = currentCulture == "ru" ? p.City.NameRu : currentCulture == "en" ? p.City.NameEn : p.City.NameAz,
 				CityId = p.City.Id,
-				CategoryTitle =
-					p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+				CategoryTitle = p.Breed != null
+					? p.Breed.Category.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
 						.OrderByDescending(l => l.AppLocale.Code == currentCulture)
 						.Select(l => l.Title)
-						.FirstOrDefault() ?? "",
+						.FirstOrDefault() ?? ""
+					: "",
 				Images = p
 					.Images.OrderBy(i => i.Id)
 					.Select(i => new PetAdImageDto
@@ -84,6 +85,7 @@ public class GetMyPetAdByIdQueryHandler(
 					.Select(q => new PetAdQuestionDto
 					{
 						Id = q.Id,
+						UserId = q.UserId,
 						Question = q.Question,
 						Answer = q.Answer,
 						QuestionerName = q.User.FirstName + " " + q.User.LastName,
@@ -95,6 +97,7 @@ public class GetMyPetAdByIdQueryHandler(
 							.Select(r => new PetAdQuestionReplyDto
 							{
 								Id = r.Id,
+								UserId = r.UserId,
 								Text = r.Text,
 								UserName = r.User.FirstName + " " + r.User.LastName,
 								IsOwnerReply = r.IsOwnerReply,

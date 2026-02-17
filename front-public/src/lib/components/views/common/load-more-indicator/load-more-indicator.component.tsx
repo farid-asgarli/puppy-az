@@ -14,7 +14,7 @@ import type { LoadMoreIndicatorProps } from "./load-more-indicator.types";
 export const LoadMoreIndicator: React.FC<LoadMoreIndicatorProps> = ({
   isLoading,
   hasMore,
-  loadedCount,
+  loadedCount: _loadedCount,
   loadingText,
   completedText,
   className,

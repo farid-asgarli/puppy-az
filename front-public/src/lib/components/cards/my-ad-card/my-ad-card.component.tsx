@@ -3,7 +3,6 @@
 import {
   IconEye,
   IconClock,
-  IconTrendingUp,
   IconAlertCircle,
   IconCircleCheck,
   IconDotsVertical,
@@ -12,7 +11,7 @@ import { cn } from "@/lib/external/utils";
 import { PetAdType } from "@/lib/api";
 import { PetAdStatus } from "@/lib/api/types/pet-ad.types";
 import { useTranslations } from "next-intl";
-import { ImageWithFallback } from "@/lib/primitives";
+import { useAdTypes } from "@/lib/hooks/use-ad-types";
 
 interface MyAdCardProps {
   id: number;
@@ -44,14 +43,14 @@ export function MyAdCard({
   categoryTitle,
   cityName,
   viewCount,
-  isPremium,
+  isPremium: _isPremium,
   createdAt: _createdAt,
   onClick,
 }: MyAdCardProps) {
-  console.log("status", status);
   const t = useTranslations("myAds.card");
   const tCommon = useTranslations("common");
   const tA11y = useTranslations("accessibility");
+  const { getAdTypeById } = useAdTypes();
 
   const handleClick = () => {
     onClick?.(id);
@@ -115,14 +114,8 @@ export function MyAdCard({
   const currentStatus = statusConfig[status];
   const StatusIcon = currentStatus.icon;
 
-  // Ad type labels
-  const adTypeLabels = {
-    [PetAdType.Sale]: tCommon("adTypes.sale.title"),
-    [PetAdType.Found]: tCommon("adTypes.found.title"),
-    [PetAdType.Lost]: tCommon("adTypes.lost.title"),
-    [PetAdType.Match]: tCommon("adTypes.match.title"),
-    [PetAdType.Owning]: tCommon("adTypes.owning.title"),
-  };
+  // Get ad type label from context
+  const adTypeLabel = getAdTypeById(adType)?.title || tCommon("unknown");
 
   return (
     <div
@@ -132,12 +125,10 @@ export function MyAdCard({
       {/* Image Section */}
       <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
         {imageUrl ? (
-          <ImageWithFallback
+          <img
             src={imageUrl}
             alt={title}
-            fill
-            className="object-cover transition-transform duration-700 ease-out"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="w-full h-full object-cover transition-transform duration-700 ease-out"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
@@ -156,20 +147,6 @@ export function MyAdCard({
 
         {/* Overlay Badges */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Premium badge - Enhanced */}
-          {isPremium && (
-            <div className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 rounded-xl shadow-lg animate-pulse-slow">
-              <IconTrendingUp
-                size={16}
-                strokeWidth={2.5}
-                className="text-yellow-900"
-              />
-              <span className="text-xs font-bold text-yellow-900 uppercase tracking-wide">
-                {t("premium")}
-              </span>
-            </div>
-          )}
-
           {/* Top-right: Status and Ad Number badges */}
           <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
             {/* Status badge */}
@@ -253,11 +230,31 @@ export function MyAdCard({
           </div>
         </div>
 
-        {/* Ad Type Label (subtle) */}
+        {/* Ad Type Badge (colored like homepage) */}
         <div className="mt-3 pt-3 border-t border-gray-100">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">
-            {adTypeLabels[adType]}
-          </span>
+          {(() => {
+            const adTypeInfo = getAdTypeById(adType);
+            if (adTypeInfo) {
+              return (
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border",
+                    adTypeInfo.color.bg,
+                    adTypeInfo.color.text,
+                    adTypeInfo.color.border,
+                  )}
+                >
+                  <adTypeInfo.icon size={12} />
+                  {adTypeInfo.title}
+                </div>
+              );
+            }
+            return (
+              <span className="text-xs text-gray-400 uppercase tracking-wide">
+                {adTypeLabel}
+              </span>
+            );
+          })()}
         </div>
       </div>
 

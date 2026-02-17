@@ -6,7 +6,6 @@ import {
   IconTrash,
   IconEye,
   IconClock,
-  IconTrendingUp,
   IconCircleCheck,
   IconAlertCircle,
   IconExternalLink,
@@ -26,6 +25,7 @@ interface MyAdDetailsContentProps {
   onClose: () => void;
   onEdit?: (id: number) => void;
   onCloseAd?: (id: number) => void;
+  onReactivateAd?: (id: number) => void;
   onDelete?: (id: number) => void;
   showCloseButton?: boolean;
 }
@@ -41,7 +41,8 @@ export function MyAdDetailsContent({
   onClose,
   onEdit,
   onCloseAd,
-  onDelete,
+  onReactivateAd,
+  onDelete: _onDelete,
   showCloseButton = true,
 }: MyAdDetailsContentProps) {
   const t = useTranslations("myAds.drawer");
@@ -171,18 +172,6 @@ export function MyAdDetailsContent({
                   </Label>
                 </div>
               )}
-              {adData.isPremium && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-full shadow-sm">
-                  <IconTrendingUp
-                    size={16}
-                    strokeWidth={2.5}
-                    className="text-yellow-900"
-                  />
-                  <Label variant="badge" as="span" className="text-yellow-900">
-                    {t("premium")}
-                  </Label>
-                </div>
-              )}
             </div>
 
             {/* Title & Price */}
@@ -228,7 +217,7 @@ export function MyAdDetailsContent({
                 >
                   {t("breed")}
                 </Label>
-                <Label variant="value">{adData.breed.title}</Label>
+                <Label variant="value">{adData.breed?.title ?? "-"}</Label>
               </div>
               <div>
                 <Label
@@ -238,7 +227,10 @@ export function MyAdDetailsContent({
                 >
                   {t("location")}
                 </Label>
-                <Label variant="value">{adData.cityName}</Label>
+                <Label variant="value">
+                  {adData.cityName}
+                  {adData.districtName ? ` — ${adData.districtName}` : ""}
+                </Label>
               </div>
               <div>
                 <Label
@@ -466,6 +458,23 @@ export function MyAdDetailsContent({
                 {t("closeAd")}
               </Button>
             )}
+
+            {/* Reactivate button - only for expired or closed ads */}
+            {(adData.status === PetAdStatus.Expired ||
+              adData.status === PetAdStatus.Closed) &&
+              onReactivateAd && (
+                <Button
+                  variant="solid"
+                  size="lg"
+                  onClick={() => {
+                    onReactivateAd(adData.id);
+                    onClose();
+                  }}
+                  className="flex-1"
+                >
+                  {t("reactivate")}
+                </Button>
+              )}
 
             {/* Delete button - for pending, rejected or draft ads */}
             {(adData.status === PetAdStatus.Pending ||

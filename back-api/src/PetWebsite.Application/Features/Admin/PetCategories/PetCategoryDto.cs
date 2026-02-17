@@ -23,6 +23,8 @@ public class PetCategoryListItemDto
 	public string Subtitle { get; init; } = string.Empty;
 	public string IconColor { get; init; } = string.Empty;
 	public string BackgroundColor { get; init; } = string.Empty;
+	public string? Icon { get; init; }
+	public List<PetCategoryLocalizationDto> Localizations { get; init; } = [];
 	public bool IsActive { get; init; }
 	public bool IsDeleted { get; init; }
 	public int BreedsCount { get; init; }

@@ -26,11 +26,18 @@ public class GetRelatedPetAdsQueryHandler(
 
 		var sourcePetAd = await dbContext
 			.PetAds.Where(p => p.Id == request.PetAdId && !p.IsDeleted)
-			.Select(p => new { p.PetBreedId, p.Breed.PetCategoryId })
+			.Select(p => new
+			{
+				p.PetBreedId,
+				p.PetCategoryId,
+				BreedCategoryId = p.PetBreedId != null ? (int?)p.Breed!.PetCategoryId : null
+			})
 			.FirstOrDefaultAsync(ct);
 
 		if (sourcePetAd == null)
 			return Result<PaginatedResult<PetAdListItemDto>>.Failure(L(LocalizationKeys.PetAd.NotFound), 404);
+
+		var categoryId = sourcePetAd.PetCategoryId ?? sourcePetAd.BreedCategoryId;
 
 		var query = dbContext
 			.PetAds.WhereNotDeleted<PetAd, int>()
@@ -39,9 +46,13 @@ public class GetRelatedPetAdsQueryHandler(
 				p.Id != request.PetAdId
 				&& p.Status == PetAdStatus.Published
 				&& p.IsAvailable
-				&& (p.PetBreedId == sourcePetAd.PetBreedId || p.Breed.PetCategoryId == sourcePetAd.PetCategoryId)
+				&& (
+					(sourcePetAd.PetBreedId != null && p.PetBreedId == sourcePetAd.PetBreedId)
+					|| (categoryId != null && (p.PetCategoryId == categoryId || (p.PetBreedId != null && p.Breed!.PetCategoryId == categoryId)))
+				)
 			)
 			.OrderByDescending(p => p.IsPremium)
+			.ThenByDescending(p => p.IsVip)
 			.ThenByDescending(p => p.PublishedAt)
 			.Select(PetAdProjections.ToListItemDto(currentCulture));
 

@@ -13,7 +13,6 @@ import {
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/external/utils";
 import { Heading, Text } from "@/lib/primitives/typography";
-import TransitionLink from "@/lib/components/transition-link";
 import toast from "react-hot-toast";
 
 type ReportType = "fake" | "scam" | "inappropriate" | "spam" | "other";

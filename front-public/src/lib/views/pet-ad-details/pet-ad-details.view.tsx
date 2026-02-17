@@ -4,9 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import {
   PetAdDetailsDto,
   PetAdListItemDto,
+  PetAdStatus,
   PetCategoryDetailedDto,
 } from "@/lib/api/types/pet-ad.types";
-import { IconCrown } from "@tabler/icons-react";
 import NarrowContainer from "@/lib/components/narrow-container";
 import { AdDetailsHeroSection } from "./sections/hero.section";
 import { AdDetailsImageGallerySection } from "./sections/image-gallery.section";
@@ -18,7 +18,10 @@ import { AdDetailsStatsSection } from "./sections/stats.section";
 import { AdDetailsSimilarAdsSection } from "./sections/related-ads.section";
 import { AdDetailsCategoriesSection } from "@/lib/views/pet-ad-details/sections/pet-categories.section";
 import { StickyHeaderSection } from "./sections/sticky-header.section";
+import { AdStatusBanner } from "./sections/ad-status-banner.section";
 import { ActionButtonGroup } from "@/lib/components/views/pet-ad-details/action-button-group";
+import { IconPencil } from "@tabler/icons-react";
+import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { recordViewAction } from "@/lib/auth/actions";
 import { useAuth } from "@/lib/hooks/use-auth";
@@ -38,10 +41,11 @@ export default function PetAdDetailsView({
   petCategories,
   isInModal = false,
 }: PetAdDetailsViewProps) {
-  const t = useTranslations("petAdDetailsPage.premium");
   const tPrice = useTranslations("petAdDetailsPage.price");
+  const tEdit = useTranslations("petAdDetails.statusBanner");
   const locale = useLocale();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
+  const isOwner = isAuthenticated && user?.id === adDetails.owner.id;
   const [isHydrated, setIsHydrated] = useState(false);
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const contactSectionRef = useRef<HTMLDivElement>(null);
@@ -118,6 +122,18 @@ export default function PetAdDetailsView({
           />
         </div>
 
+        {/* Status Banner - above gallery so it's immediately visible */}
+        {adDetails.status !== PetAdStatus.Published && (
+          <div className="px-4 pb-3">
+            <AdStatusBanner
+              status={adDetails.status}
+              rejectionReason={adDetails.rejectionReason}
+              adId={adDetails.id}
+              isOwner={isOwner}
+            />
+          </div>
+        )}
+
         {/* Gallery at the very top (no padding) */}
         <AdDetailsImageGallerySection
           images={adDetails.images}
@@ -130,26 +146,33 @@ export default function PetAdDetailsView({
             <div className="space-y-6">
               {/* Hero Section (without action buttons) */}
               <div className="space-y-4">
-                {/* Title and Premium Badge */}
+                {/* Title */}
                 <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <h1 className="flex-1 text-2xl font-semibold font-heading text-gray-900 leading-tight">
+                  <div className="flex items-start justify-between gap-3">
+                    <h1 className="text-2xl font-semibold font-heading text-gray-900 leading-tight">
                       {adDetails.title}
                     </h1>
-                    {adDetails.isPremium && (
-                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-premium-500 text-white text-xs font-medium flex-shrink-0">
-                        <IconCrown size={14} />
-                        <span>{t("badge")}</span>
-                      </div>
+                    {isOwner && (
+                      <Link
+                        href={`/ads/ad-placement?edit=${adDetails.id}`}
+                        className="flex-shrink-0 inline-flex items-center gap-2 rounded-xl border border-primary-600 bg-white px-5 py-2.5 text-sm font-semibold text-primary-600 hover:bg-primary-50 transition-all duration-200"
+                      >
+                        <IconPencil size={17} stroke={2} />
+                        {tEdit("editButton")}
+                      </Link>
                     )}
                   </div>
 
                   {/* Price */}
                   <div>
-                    <div className="text-3xl font-semibold text-gray-900">
-                      {adDetails.price === 0
-                        ? tPrice("free")
-                        : `${adDetails.price.toLocaleString()} ₼`}
+                    <div
+                      className={`font-semibold text-gray-900 ${adDetails.price === null || adDetails.price === undefined ? "text-xl" : "text-3xl"}`}
+                    >
+                      {adDetails.price === null || adDetails.price === undefined
+                        ? tPrice("negotiable")
+                        : adDetails.price === 0
+                          ? tPrice("free")
+                          : `${adDetails.price.toLocaleString()} ₼`}
                     </div>
                   </div>
                 </div>
@@ -176,7 +199,8 @@ export default function PetAdDetailsView({
               {/* Related Ads Section */}
               <AdDetailsSimilarAdsSection
                 relatedAds={relatedAds}
-                categoryId={adDetails.breed.categoryId}
+                categoryId={adDetails.breed?.categoryId}
+                categorySlug={relatedAds[0]?.categorySlug}
               />
 
               {/* Categories Section */}
@@ -208,7 +232,18 @@ export default function PetAdDetailsView({
             <AdDetailsHeroSection
               adDetails={adDetails}
               isHydrated={isHydrated}
+              isOwner={isOwner}
             />
+
+            {/* Status Banner */}
+            {adDetails.status !== PetAdStatus.Published && (
+              <AdStatusBanner
+                status={adDetails.status}
+                rejectionReason={adDetails.rejectionReason}
+                adId={adDetails.id}
+                isOwner={isOwner}
+              />
+            )}
 
             {/* Image Gallery */}
             <AdDetailsImageGallerySection
@@ -258,7 +293,8 @@ export default function PetAdDetailsView({
             {/* Related Ads Section */}
             <AdDetailsSimilarAdsSection
               relatedAds={relatedAds}
-              categoryId={adDetails.breed.categoryId}
+              categoryId={adDetails.breed?.categoryId}
+              categorySlug={relatedAds[0]?.categorySlug}
             />
 
             {/* Categories Section */}

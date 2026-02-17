@@ -34,7 +34,7 @@ export interface RegisterCommand {
  */
 export interface SendVerificationCodeCommand {
   phoneNumber: string;
-  purpose: 'Registration' | 'Login' | 'PasswordReset';
+  purpose: "Registration" | "Login" | "PasswordReset";
 }
 
 /**
@@ -91,9 +91,12 @@ export interface UserDashboardStatsDto {
   activeAdCount: number;
   pendingAdCount: number;
   rejectedAdCount: number;
+  expiredAdCount: number;
   totalViews: number;
   totalFavoriteCount: number;
-  unansweredQuestionCount: number;
+  myFavoritesCount: number;
+  totalQuestions: number;
+  unansweredQuestions: number;
 }
 
 /**
@@ -130,10 +133,12 @@ export interface ProblemDetails {
   /** Multiple validation errors as array of strings */
   errors?: string[] | Record<string, string[]>;
   /** Allow other extensions */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
  * API response wrapper for typed responses
  */
-export type ApiResponse<T> = { success: true; data: T } | { success: false; error: ProblemDetails };
+export type ApiResponse<T> =
+  | { success: true; data: T }
+  | { success: false; error: ProblemDetails };

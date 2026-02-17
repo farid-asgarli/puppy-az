@@ -114,8 +114,8 @@ const ContactView = () => {
     {
       icon: IconPhone,
       title: t("info.phone.title"),
-      value: "+994 50 123 45 67",
-      href: "tel:+994501234567",
+      value: "+994 55 338 81 06",
+      href: "tel:+994553388106",
       iconColor: "text-emerald-500",
       bgColor: "bg-emerald-50",
     },

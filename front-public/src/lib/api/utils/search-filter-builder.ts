@@ -52,6 +52,15 @@ export function buildSearchFilter(
     });
   }
 
+  // District
+  if (filters.district !== undefined) {
+    entries.push({
+      key: "districtId",
+      value: +filters.district,
+      equation: FilterEquation.EQUALS,
+    });
+  }
+
   // Gender
   if (filters.gender !== undefined) {
     entries.push({

@@ -6,6 +6,7 @@ import type {
   PetCategoryWithAdsDto,
   PetAdListItemDto,
 } from "@/lib/api/types/pet-ad.types";
+import { SortDirection } from "@/lib/api/types/common.types";
 import { getLocale } from "next-intl/server";
 
 export async function generateMetadata() {
@@ -16,31 +17,31 @@ export default async function Page() {
   // Get locale for backend API calls
   const locale = await getLocale();
 
-  // Fetch data for SSR (for navbar and filtering)
-  // Handle errors gracefully to prevent infinite retry loops
+  // Fetch data for SSR in parallel
   let categoriesWithAds: PetCategoryWithAdsDto[] = [];
-  let premiumAds: PetAdListItemDto[] = [];
+  let latestAds: PetAdListItemDto[] = [];
 
   try {
-    const [_categories, categoriesResult, premiumAdsResponse] =
-      await Promise.all([
-        petAdService.getPetCategoriesDetailed(locale).catch(() => []),
-        petAdService.getPetCategoriesWithAds(locale).catch(() => []),
-        petAdService
-          .getPremiumAds({ pagination: { number: 1, size: 10 } }, locale)
-          .catch(() => ({ items: [], totalCount: 0 })),
-      ]);
-
+    const [categoriesResult, latestAdsResult] = await Promise.all([
+      petAdService.getPetCategoriesWithAds(locale),
+      petAdService.searchPetAds(
+        {
+          pagination: { number: 1, size: 12 },
+          sorting: [{ key: "CreatedAt", direction: SortDirection.DESCENDING }],
+        },
+        locale,
+      ),
+    ]);
     categoriesWithAds = categoriesResult;
-    premiumAds = premiumAdsResponse.items;
+    latestAds = latestAdsResult.items;
   } catch (error) {
-    // If all API calls fail, use empty data
+    // If API call fails, use empty data
     console.error("Failed to fetch homepage data:", error);
   }
 
   return (
     <>
-      <HomeView categoriesWithAds={categoriesWithAds} premiumAds={premiumAds} />
+      <HomeView categoriesWithAds={categoriesWithAds} latestAds={latestAds} />
       <MobileBottomNav />
     </>
   );

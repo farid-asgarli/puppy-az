@@ -1,28 +1,32 @@
-'use client';
+"use client";
 
-import { PetCategoryWithAdsDto } from '@/lib/api/types/pet-ad.types';
-import { mapAdToCardItem } from '@/lib/components/cards/item-card/ad-card.utils';
-import { useViewTransition } from '@/lib/hooks/use-view-transition';
-import { useTranslations } from 'next-intl';
-import { AdListingCarousel } from '../components';
+import { PetCategoryWithAdsDto } from "@/lib/api/types/pet-ad.types";
+import { mapAdToCardItem } from "@/lib/components/cards/item-card/ad-card.utils";
+import { useViewTransition } from "@/lib/hooks/use-view-transition";
+import { useTranslations } from "next-intl";
+import { AdListingCarousel } from "../components";
 
 export interface CategoryCarouselsSectionProps {
   categoriesWithAds: PetCategoryWithAdsDto[];
 }
 
-export const CategoryCarouselsSection = ({ categoriesWithAds }: CategoryCarouselsSectionProps) => {
+export const CategoryCarouselsSection = ({
+  categoriesWithAds,
+}: CategoryCarouselsSectionProps) => {
   const { navigateWithTransition } = useViewTransition();
-  const tDateTime = useTranslations('dateTime');
+  const tDateTime = useTranslations("dateTime");
 
   // Filter out categories with no ads
-  const categoriesWithContent = categoriesWithAds.filter((category) => category.petAds && category.petAds.length > 0);
+  const categoriesWithContent = categoriesWithAds.filter(
+    (category) => category.petAds && category.petAds.length > 0,
+  );
 
   if (!categoriesWithContent || categoriesWithContent.length === 0) {
     return null;
   }
 
-  const handleViewAll = (categoryId: number) => {
-    navigateWithTransition(`/ads/s?category=${categoryId}`);
+  const handleViewAll = (categorySlug: string) => {
+    navigateWithTransition(`/${categorySlug}`);
   };
 
   return (
@@ -33,8 +37,10 @@ export const CategoryCarouselsSection = ({ categoriesWithAds }: CategoryCarousel
             <AdListingCarousel
               key={category.id}
               title={category.title}
-              items={category.petAds.map((ad) => mapAdToCardItem(ad, tDateTime))}
-              onViewAll={() => handleViewAll(category.id)}
+              items={category.petAds.map((ad) =>
+                mapAdToCardItem(ad, tDateTime),
+              )}
+              onViewAll={() => handleViewAll(category.slug)}
               backgroundColor={category.backgroundColor}
               svgIcon={category.svgIcon}
               iconColor={category.iconColor}

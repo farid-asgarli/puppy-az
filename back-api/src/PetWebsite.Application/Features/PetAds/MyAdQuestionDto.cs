@@ -7,6 +7,7 @@ namespace PetWebsite.Application.Features.PetAds;
 public class MyAdQuestionDto
 {
 	public int QuestionId { get; init; }
+	public Guid UserId { get; init; }
 	public int PetAdId { get; init; }
 	public string PetAdTitle { get; init; } = null!;
 	public string Question { get; init; } = null!;
@@ -16,4 +17,6 @@ public class MyAdQuestionDto
 	public DateTime? AnsweredAt { get; init; }
 	public bool IsAnswered => Answer != null;
 	public string? PrimaryImageUrl { get; init; }
+	public List<PetAdQuestionReplyDto> Replies { get; init; } = new();
 }
+

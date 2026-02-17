@@ -4,36 +4,35 @@
 
 /**
  * Format phone number for display
- * Converts +994055... to +994 55...
- * Removes leading 0 after country code
+ * Converts +994XXXXXXXXX to 0XX XXX XX XX format
  *
  * @param phone - Phone number string
- * @returns Formatted phone number for display
+ * @returns Formatted phone number for display (e.g. 055 555 55 55)
  */
 export function formatPhoneForDisplay(
   phone: string | undefined | null,
 ): string {
   if (!phone) return "";
 
-  let formatted = phone.trim();
+  let digits = phone.trim().replace(/[^\d]/g, "");
 
-  // If starts with +994, format it properly
-  if (formatted.startsWith("+994")) {
-    const numberPart = formatted.substring(4); // Remove +994
-    // Remove leading 0 if present (e.g., 055 -> 55)
-    const cleanNumber = numberPart.startsWith("0")
-      ? numberPart.substring(1)
-      : numberPart;
-    // Add space after country code for display
-    return `+994 ${cleanNumber}`;
+  // If starts with 994, remove country code
+  if (digits.startsWith("994")) {
+    digits = digits.substring(3);
   }
 
-  // If starts with 0, remove it for display purposes
-  if (formatted.startsWith("0")) {
-    return formatted.substring(1);
+  // Ensure it starts with 0
+  if (!digits.startsWith("0")) {
+    digits = "0" + digits;
   }
 
-  return formatted;
+  // Format as 0XX XXX XX XX
+  if (digits.length === 10) {
+    return `${digits.substring(0, 3)} ${digits.substring(3, 6)} ${digits.substring(6, 8)} ${digits.substring(8, 10)}`;
+  }
+
+  // Fallback: return with leading 0
+  return digits;
 }
 
 /**
@@ -69,7 +68,7 @@ export function formatPhoneForStorage(
   if (!phone) return "";
 
   // Remove all non-digit characters except +
-  let cleaned = phone.replace(/[^\d+]/g, "");
+  const cleaned = phone.replace(/[^\d+]/g, "");
 
   // If already starts with +994, return as is
   if (cleaned.startsWith("+994")) {

@@ -29,6 +29,8 @@ public class GetMyAdsQuestionsQueryHandler(
 			.Include(q => q.PetAd)
 			.ThenInclude(p => p.Images)
 			.Include(q => q.User)
+			.Include(q => q.Replies)
+			.ThenInclude(r => r.User)
 			.Where(q => !q.IsDeleted && q.PetAd.UserId == userId.Value && !q.PetAd.IsDeleted);
 
 		// Order by unanswered first, then by newest
@@ -38,6 +40,7 @@ public class GetMyAdsQuestionsQueryHandler(
 		var projectedQuery = query.Select(q => new MyAdQuestionDto
 		{
 			QuestionId = q.Id,
+			UserId = q.UserId,
 			PetAdId = q.PetAdId,
 			PetAdTitle = q.PetAd.Title,
 			Question = q.Question,
@@ -52,6 +55,19 @@ public class GetMyAdsQuestionsQueryHandler(
 					?? q.PetAd.Images.OrderBy(i => i.Id).Select(i => i.FilePath).FirstOrDefault()
 					?? ""
 				),
+			Replies = q.Replies
+				.Where(r => !r.IsDeleted)
+				.OrderBy(r => r.CreatedAt)
+				.Select(r => new PetAdQuestionReplyDto
+				{
+					Id = r.Id,
+					UserId = r.UserId,
+					Text = r.Text,
+					UserName = r.User.FirstName + " " + r.User.LastName,
+					IsOwnerReply = r.IsOwnerReply,
+					CreatedAt = r.CreatedAt
+				})
+				.ToList()
 		});
 
 		var (items, totalCount) = await queryRepo
@@ -77,6 +93,7 @@ public class GetMyAdsQuestionsQueryHandler(
 						AskedAt = item.AskedAt,
 						AnsweredAt = item.AnsweredAt,
 						PrimaryImageUrl = urlService.ToAbsoluteUrl(item.PrimaryImageUrl),
+						Replies = item.Replies
 					};
 				}
 				return item;

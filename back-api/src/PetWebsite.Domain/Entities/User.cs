@@ -14,6 +14,7 @@ public class User : IdentityUser<Guid>
 	public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	public DateTime? LastLoginAt { get; set; }
 	public bool IsActive { get; set; } = true;
+	public bool IsCreatedByAdmin { get; set; } = false;
 	public string? ProfilePictureUrl { get; set; }
 
 	// Navigation properties

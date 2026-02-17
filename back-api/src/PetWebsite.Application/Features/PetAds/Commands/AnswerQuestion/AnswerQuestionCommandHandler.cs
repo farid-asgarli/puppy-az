@@ -11,13 +11,13 @@ public class AnswerQuestionCommandHandler(
 	IApplicationDbContext dbContext,
 	ICurrentUserService currentUserService,
 	IStringLocalizer localizer
-) : BaseHandler(localizer), ICommandHandler<AnswerQuestionCommand, Result>
+) : BaseHandler(localizer), ICommandHandler<AnswerQuestionCommand, Result<AnswerQuestionResultDto>>
 {
-	public async Task<Result> Handle(AnswerQuestionCommand request, CancellationToken ct)
+	public async Task<Result<AnswerQuestionResultDto>> Handle(AnswerQuestionCommand request, CancellationToken ct)
 	{
 		var userId = currentUserService.UserId;
 		if (userId == null)
-			return Result.Failure(L(LocalizationKeys.Error.Unauthorized), 401);
+			return Result<AnswerQuestionResultDto>.Failure(L(LocalizationKeys.Error.Unauthorized), 401);
 
 		// Get the question with the pet ad
 		var question = await dbContext
@@ -25,15 +25,15 @@ public class AnswerQuestionCommandHandler(
 			.FirstOrDefaultAsync(q => q.Id == request.QuestionId && !q.IsDeleted, ct);
 
 		if (question == null)
-			return Result.Failure(L(LocalizationKeys.PetAd.QuestionNotFound), 404);
+			return Result<AnswerQuestionResultDto>.Failure(L(LocalizationKeys.PetAd.QuestionNotFound), 404);
 
-		// Check if the current user is the ad owner
-		if (question.PetAd.UserId != userId)
-			return Result.Failure(L(LocalizationKeys.PetAd.OnlyAdOwnerCanAnswer), 403);
+		// Check if the current user is the ad owner or the question asker
+		if (question.PetAd.UserId != userId && question.UserId != userId)
+			return Result<AnswerQuestionResultDto>.Failure(L(LocalizationKeys.PetAd.OnlyAdOwnerCanAnswer), 403);
 
 		// Check if question is already answered
 		if (question.Answer != null)
-			return Result.Failure(L(LocalizationKeys.PetAd.QuestionAlreadyAnswered), 400);
+			return Result<AnswerQuestionResultDto>.Failure(L(LocalizationKeys.PetAd.QuestionAlreadyAnswered), 400);
 
 		// Update the answer
 		question.Answer = request.Answer.Trim();
@@ -41,6 +41,14 @@ public class AnswerQuestionCommandHandler(
 
 		await dbContext.SaveChangesAsync(ct);
 
-		return Result.Success();
+		// Return result with data needed for SignalR notification
+		return Result<AnswerQuestionResultDto>.Success(new AnswerQuestionResultDto
+		{
+			QuestionId = question.Id,
+			PetAdId = question.PetAdId,
+			QuestionerId = question.UserId,
+			Answer = question.Answer,
+			AnsweredAt = question.AnsweredAt.Value
+		});
 	}
 }

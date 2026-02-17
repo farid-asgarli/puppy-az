@@ -33,7 +33,7 @@ export function DesktopNavbarWithSearchbar({
   const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("search");
 
-  // Check if we're on the search route where filtering happens
+  // Check if we're on a search route where filtering happens
   const isSearchRoute = pathname === "/ads/s";
 
   const handleSearchBarExpandedChange = useCallback((expanded: boolean) => {
@@ -44,6 +44,13 @@ export function DesktopNavbarWithSearchbar({
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Cache categories for slug URL building
+  useEffect(() => {
+    if (categories.length > 0) {
+      DisplayCache.setCategories(categories);
+    }
+  }, [categories]);
 
   // Determine navbar state:
   // - Manual expansion only (no auto-expand based on scroll)

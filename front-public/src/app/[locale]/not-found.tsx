@@ -1,6 +1,8 @@
 import NotFoundView from "@/lib/views/not-found";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { getLocale } from "@/i18n";
+import { getCachedCategories } from "@/lib/data/cached-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("notFound.metadata");
@@ -20,6 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
  *
  * Provides a friendly, helpful 404 experience with multiple recovery paths.
  */
-export default function NotFound() {
-  return <NotFoundView />;
+export default async function NotFound() {
+  const locale = await getLocale();
+  let categories: Awaited<ReturnType<typeof getCachedCategories>> = [];
+  try {
+    categories = await getCachedCategories(locale);
+  } catch {
+    categories = [];
+  }
+  return <NotFoundView categories={categories} />;
 }

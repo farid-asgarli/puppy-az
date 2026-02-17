@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { PetGender, PetSize } from "@/lib/api/types/pet-ad.types";
+import { PetAdType, PetGender, PetSize } from "@/lib/api/types/pet-ad.types";
 import { useAdPlacement } from "@/lib/contexts/ad-placement-context";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
 import { cn } from "@/lib/external/utils";
-import { OptionCard } from "@/lib/components/views/ad-placement";
 import { ViewFooter, ViewLayout } from "../components";
 import { Heading, Text, Label } from "@/lib/primitives/typography";
 import { getPetGender, getPetSizes } from "@/lib/utils/mappers";
@@ -26,6 +25,22 @@ export default function BasicsView() {
   const [ageInMonths, setAgeInMonths] = useState<number | null>(
     formData.ageInMonths,
   );
+
+  // Check if age is optional for current ad type (Found=2, Owning=5)
+  const isAgeOptional =
+    formData.adType === PetAdType.Found || formData.adType === PetAdType.Owning;
+
+  // DEBUG
+  console.log("BasicsView DEBUG:", {
+    adType: formData.adType,
+    adTypeValue: typeof formData.adType,
+    isAgeOptional,
+    Found: PetAdType.Found,
+    Owning: PetAdType.Owning,
+    gender,
+    size,
+    ageInMonths,
+  });
 
   const petSizes = useMemo(() => getPetSizes(tCommon), [tCommon]);
   const petGenders = useMemo(() => getPetGender(tCommon), [tCommon]);
@@ -70,8 +85,11 @@ export default function BasicsView() {
     navigateWithTransition("/ads/ad-placement/breed");
   };
 
-  const canProceed =
-    gender !== null && size !== null && ageInMonths !== null && ageInMonths > 0;
+  // For Found/Owning: only size is required, gender and age are optional
+  // For other types: gender and size are required, age is always optional
+  const canProceed = isAgeOptional
+    ? size !== null // Found/Owning: only size required
+    : gender !== null && size !== null;
 
   return (
     <>
@@ -164,6 +182,9 @@ export default function BasicsView() {
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-500"></span>
                 <Heading variant="subsection">{t("ageLabel")}</Heading>
+                <Text variant="small" color="muted">
+                  {t("optional")}
+                </Text>
               </div>
               <div className="flex gap-4">
                 {/* Years Input */}
