@@ -18,51 +18,25 @@ public static partial class DatabaseSeeder
 		RoleManager<IdentityRole<Guid>> roleManager
 	)
 	{
-		// Ensure database is created - but don't run migrations if tables exist
+		// Run migrations if needed (safe to call even if already up to date)
 		try
 		{
-			// Check if database has tables
-			var hasData = await context.Database.CanConnectAsync();
-			if (hasData)
-			{
-				// Skip migrations if database already has schema
-				Console.WriteLine("[DatabaseSeeder] Database already exists, skipping migrations");
-				return;
-			}
 			await context.Database.MigrateAsync();
+			Console.WriteLine("[DatabaseSeeder] Migrations applied");
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"[DatabaseSeeder] Migration skipped: {ex.Message}");
-			return;
+			Console.WriteLine($"[DatabaseSeeder] Migration warning: {ex.Message}");
 		}
 
-		// Seed Roles
+		// Each seed method guards itself with an existence check — safe to call repeatedly
 		await SeedRolesAsync(roleManager);
-
-		// Seed Super Admin User
 		await SeedSuperAdminAsync(userManager);
-
-		// Seed Locales
 		await SeedLocalesAsync(context);
-
-		// Seed Pet Categories and Breeds
 		await SeedPetCategoriesAndBreedsAsync(context);
-
-		// Seed Pet Colors
 		await SeedPetColorsAsync(context);
-
-		// Seed Pet Ad Types
 		await SeedPetAdTypesAsync(context);
-
-		// Seed Cities
 		await SeedCitiesAsync(context);
-
-		// Seed Test Users
-		await SeedTestUsersAsync(context);
-
-		// Seed Pet Ads with Images
-		await SeedPetAdsAsync(context);
 	}
 
 	private static async Task SeedRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
