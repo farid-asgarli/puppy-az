@@ -88,7 +88,7 @@ export function App() {
         <QueryClientProvider client={queryClient}>
           <ConfigProvider theme={isDark ? darkTheme : lightTheme} locale={antdLocale}>
             <AntApp>
-              <BrowserRouter basename={import.meta.env.BASE_URL}>
+              <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, '')}>
                 <Suspense fallback={<GlobalLoading />}>
                   <AppRouter />
                 </Suspense>
