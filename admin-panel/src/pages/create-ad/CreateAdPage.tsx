@@ -1,38 +1,17 @@
-import { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  InputNumber,
-  Select,
-  Button,
-  Card,
-  Typography,
-  message,
-  Row,
-  Col,
-  Space,
-  Radio,
-} from "antd";
-import {
-  PlusOutlined,
-  SaveOutlined,
-  UserAddOutlined,
-  DeleteOutlined,
-  LeftOutlined,
-  RightOutlined,
-  StarFilled,
-} from "@ant-design/icons";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { useCategories } from "@/features/categories";
-import { useCities } from "@/features/cities";
-import { useRegularUsers } from "@/features/users";
-import { useDistrictsByCity } from "@/features/districts";
+import { useState, useEffect } from 'react';
+import { Form, Input, InputNumber, Select, Button, Card, Typography, message, Row, Col, Space, Radio } from 'antd';
+import { PlusOutlined, SaveOutlined, UserAddOutlined, DeleteOutlined, LeftOutlined, RightOutlined, StarFilled } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import { useCategories } from '@/features/categories';
+import { useCities } from '@/features/cities';
+import { useRegularUsers } from '@/features/users';
+import { useDistrictsByCity } from '@/features/districts';
 
-import { ListingType, Gender, AnimalSize } from "@/shared/api/types";
+import { ListingType, Gender, AnimalSize } from '@/shared/api/types';
 
-import { api } from "@/shared/api/httpClient";
-import { useQuery } from "@tanstack/react-query";
+import { api } from '@/shared/api/httpClient';
+import { useQuery } from '@tanstack/react-query';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -60,21 +39,15 @@ export default function CreateAdPage() {
   const navigate = useNavigate();
   const [form] = Form.useForm<CreateAdFormValues>();
   const [submitting, setSubmitting] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState<
-    { id: number; url: string }[]
-  >([]);
+  const [uploadedImages, setUploadedImages] = useState<{ id: number; url: string }[]>([]);
   const [uploadingCount, setUploadingCount] = useState(0);
-  const [selectedAdType, setSelectedAdType] = useState<
-    ListingType | undefined
-  >();
-  const [selectedCategoryId, setSelectedCategoryId] = useState<
-    number | undefined
-  >();
+  const [selectedAdType, setSelectedAdType] = useState<ListingType | undefined>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>();
   const [isNewUser, setIsNewUser] = useState(true);
   const [selectedCityId, setSelectedCityId] = useState<number | undefined>();
-  const [newUserPhone, setNewUserPhone] = useState("+994 ");
-  const [newUserFirstName, setNewUserFirstName] = useState("");
-  const [newUserLastName, setNewUserLastName] = useState("");
+  const [newUserPhone, setNewUserPhone] = useState('+994 ');
+  const [newUserFirstName, setNewUserFirstName] = useState('');
+  const [newUserLastName, setNewUserLastName] = useState('');
   const [creatingUser, setCreatingUser] = useState(false);
 
   // Queries
@@ -84,14 +57,10 @@ export default function CreateAdPage() {
   });
   const { data: categories } = useCategories();
   const { data: breeds } = useQuery({
-    queryKey: ["public-breeds", selectedCategoryId],
+    queryKey: ['public-breeds', selectedCategoryId],
     queryFn: async () => {
-      const params = selectedCategoryId
-        ? `?categoryId=${selectedCategoryId}`
-        : "";
-      return api.get<{ id: number; title: string; categoryId: number }[]>(
-        `/pet-ads/breeds${params}`,
-      );
+      const params = selectedCategoryId ? `?categoryId=${selectedCategoryId}` : '';
+      return api.get<{ id: number; title: string; categoryId: number }[]>(`/pet-ads/breeds${params}`);
     },
     enabled: !!selectedCategoryId,
   });
@@ -101,7 +70,7 @@ export default function CreateAdPage() {
   });
   const { data: districts } = useDistrictsByCity(selectedCityId);
   const { data: colors } = useQuery({
-    queryKey: ["public-colors-az"],
+    queryKey: ['public-colors-az'],
     queryFn: async () => {
       return api.get<
         {
@@ -112,11 +81,11 @@ export default function CreateAdPage() {
           textColor: string;
           borderColor: string;
         }[]
-      >("/pet-ads/colors", { headers: { "Accept-Language": "az" } });
+      >('/pet-ads/colors', { headers: { 'Accept-Language': 'az' } });
     },
   });
   const { data: adTypes } = useQuery({
-    queryKey: ["public-ad-types"],
+    queryKey: ['public-ad-types'],
     queryFn: async () => {
       return api.get<
         {
@@ -126,7 +95,7 @@ export default function CreateAdPage() {
           description: string;
           emoji: string;
         }[]
-      >("/pet-ads/types");
+      >('/pet-ads/types');
     },
   });
 
@@ -141,22 +110,22 @@ export default function CreateAdPage() {
 
   // Gender options
   const genderOptions = [
-    { value: Gender.Male, label: t("listings.gender.male") },
-    { value: Gender.Female, label: t("listings.gender.female") },
+    { value: Gender.Male, label: t('listings.gender.male') },
+    { value: Gender.Female, label: t('listings.gender.female') },
   ];
 
   // Size options
   const sizeOptions = [
     {
       value: AnimalSize.ExtraSmall,
-      label: t("listings.size.extraSmall"),
+      label: t('listings.size.extraSmall'),
     },
-    { value: AnimalSize.Small, label: t("listings.size.small") },
-    { value: AnimalSize.Medium, label: t("listings.size.medium") },
-    { value: AnimalSize.Large, label: t("listings.size.large") },
+    { value: AnimalSize.Small, label: t('listings.size.small') },
+    { value: AnimalSize.Medium, label: t('listings.size.medium') },
+    { value: AnimalSize.Large, label: t('listings.size.large') },
     {
       value: AnimalSize.ExtraLarge,
-      label: t("listings.size.extraLarge"),
+      label: t('listings.size.extraLarge'),
     },
   ];
 
@@ -169,7 +138,7 @@ export default function CreateAdPage() {
     const filesToUpload = Array.from(files).slice(0, remainingSlots);
 
     if (filesToUpload.length === 0) {
-      message.warning(t("createAd.maxImages", { count: 10 }));
+      message.warning(t('createAd.maxImages', { count: 10 }));
       return;
     }
 
@@ -177,33 +146,30 @@ export default function CreateAdPage() {
 
     for (const file of filesToUpload) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
 
-      const currentUserId = form.getFieldValue("userId");
+      const currentUserId = form.getFieldValue('userId');
       if (currentUserId) {
-        formData.append("userId", currentUserId);
+        formData.append('userId', currentUserId);
       }
 
       try {
-        const response = await api.post<Array<{ id: number; url: string }>>(
-          "/admin/pet-ads/images/upload",
-          formData,
-        );
+        const response = await api.post<Array<{ id: number; url: string }>>('/admin/pet-ads/images/upload', formData);
 
         const img = response[0];
         if (img) {
           setUploadedImages((prev) => [...prev, { id: img.id, url: img.url }]);
         }
       } catch (error) {
-        console.error("Image upload failed:", error);
-        message.error(t("createAd.imageUploadError"));
+        console.error('Image upload failed:', error);
+        message.error(t('createAd.imageUploadError'));
       } finally {
         setUploadingCount((prev) => Math.max(0, prev - 1));
       }
     }
 
     // Reset input so same file can be selected again
-    e.target.value = "";
+    e.target.value = '';
   };
 
   // Move image left/right for reordering
@@ -222,31 +188,30 @@ export default function CreateAdPage() {
   };
   const handleCreateUser = async () => {
     if (!newUserPhone.trim()) {
-      message.error(t("createAd.phoneRequired"));
+      message.error(t('createAd.phoneRequired'));
       return;
     }
 
     setCreatingUser(true);
     try {
       // Remove spaces from phone number before sending
-      const phoneNumberWithoutSpaces = newUserPhone.replace(/\s/g, "");
+      const phoneNumberWithoutSpaces = newUserPhone.replace(/\s/g, '');
 
-      const response = await api.post<{ id: string }>("/admin/regular-users", {
+      const response = await api.post<{ id: string }>('/admin/regular-users', {
         phoneNumber: phoneNumberWithoutSpaces,
         firstName: newUserFirstName || undefined,
         lastName: newUserLastName || undefined,
       });
 
-      message.success(t("createAd.userCreatedSuccess"));
-      form.setFieldValue("userId", response.id);
+      message.success(t('createAd.userCreatedSuccess'));
+      form.setFieldValue('userId', response.id);
       setIsNewUser(false);
-      setNewUserPhone("+994 ");
-      setNewUserFirstName("");
-      setNewUserLastName("");
+      setNewUserPhone('+994 ');
+      setNewUserFirstName('');
+      setNewUserLastName('');
     } catch (error: any) {
-      console.error("User creation failed:", error);
-      const errorMessage =
-        error.response?.data?.message || t("createAd.userCreationError");
+      console.error('User creation failed:', error);
+      const errorMessage = error.response?.data?.message || t('createAd.userCreationError');
       message.error(errorMessage);
     } finally {
       setCreatingUser(false);
@@ -254,13 +219,13 @@ export default function CreateAdPage() {
   };
   const handleSubmit = async (values: CreateAdFormValues) => {
     if (uploadedImages.length === 0) {
-      message.warning(t("createAd.atLeastOneImage"));
+      message.warning(t('createAd.atLeastOneImage'));
       return;
     }
 
     // If new user mode is active but user not created yet
     if (isNewUser && !values.userId) {
-      message.error(t("createAd.createUserFirst"));
+      message.error(t('createAd.createUserFirst'));
       return;
     }
 
@@ -275,8 +240,7 @@ export default function CreateAdPage() {
         petCategoryId: values.petCategoryId,
         cityId: values.cityId,
         districtId: values.districtId || undefined,
-        ageInMonths:
-          (values.ageYears || 0) * 12 + (values.ageMonths || 0) || undefined,
+        ageInMonths: (values.ageYears || 0) * 12 + (values.ageMonths || 0) || undefined,
         gender: values.gender,
         color: values.color,
         weight: values.weight,
@@ -285,15 +249,12 @@ export default function CreateAdPage() {
         imageIds: uploadedImages.map((img) => img.id),
       };
 
-      const response = await api.post<{ id: number }>(
-        "/admin/pet-ads",
-        payload,
-      );
-      message.success(t("createAd.success"));
+      const response = await api.post<{ id: number }>('/admin/pet-ads', payload);
+      message.success(t('createAd.success'));
       navigate(`/listings/${response.id}`);
     } catch (error: any) {
-      console.error("Ad creation failed:", error);
-      const errorMessage = error.response?.data?.message || t("createAd.error");
+      console.error('Ad creation failed:', error);
+      const errorMessage = error.response?.data?.message || t('createAd.error');
       message.error(errorMessage);
     } finally {
       setSubmitting(false);
@@ -302,28 +263,21 @@ export default function CreateAdPage() {
 
   // Handle category change from breed selection
   useEffect(() => {
-    const selectedBreed = breeds?.find(
-      (b: any) => b.id === form.getFieldValue("petBreedId"),
-    );
+    const selectedBreed = breeds?.find((b: any) => b.id === form.getFieldValue('petBreedId'));
     if (selectedBreed && selectedBreed.categoryId) {
-      form.setFieldValue("petCategoryId", selectedBreed.categoryId);
+      form.setFieldValue('petCategoryId', selectedBreed.categoryId);
       setSelectedCategoryId(selectedBreed.categoryId);
     }
-  }, [form.getFieldValue("petBreedId"), breeds, form]);
+  }, [form.getFieldValue('petBreedId'), breeds, form]);
 
   // Determine if breed is required based on ad type
-  const isBreedRequired =
-    selectedAdType === ListingType.Sale ||
-    selectedAdType === ListingType.Match ||
-    selectedAdType === ListingType.Lost;
+  const isBreedRequired = selectedAdType === ListingType.Sale || selectedAdType === ListingType.Match || selectedAdType === ListingType.Lost;
 
   return (
     <div className="p-6">
       <div className="mb-6">
-        <Title level={2}>{t("createAd.title")}</Title>
-        <p className="text-gray-600 dark:text-gray-400">
-          {t("createAd.description")}
-        </p>
+        <Title level={2}>{t('createAd.title')}</Title>
+        <p className="text-gray-600 dark:text-gray-400">{t('createAd.description')}</p>
       </div>
 
       <Card>
@@ -343,12 +297,12 @@ export default function CreateAdPage() {
                 onChange={(e) => {
                   setIsNewUser(e.target.value);
                   if (e.target.value) {
-                    form.setFieldValue("userId", undefined);
+                    form.setFieldValue('userId', undefined);
                   }
                 }}
               >
-                <Radio value={false}>{t("createAd.existingUser")}</Radio>
-                <Radio value={true}>{t("createAd.newUser")}</Radio>
+                <Radio value={false}>{t('createAd.existingUser')}</Radio>
+                <Radio value={true}>{t('createAd.newUser')}</Radio>
               </Radio.Group>
             </Col>
 
@@ -357,26 +311,22 @@ export default function CreateAdPage() {
               <Col xs={24} md={12}>
                 <Form.Item
                   name="userId"
-                  label={t("createAd.user")}
+                  label={t('createAd.user')}
                   rules={[
                     {
                       required: !isNewUser,
-                      message: t("createAd.userRequired"),
+                      message: t('createAd.userRequired'),
                     },
                   ]}
                 >
                   <Select
                     showSearch
-                    placeholder={t("createAd.selectUser")}
+                    placeholder={t('createAd.selectUser')}
                     optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
+                    filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                     options={users.map((user) => ({
                       value: user.id,
-                      label: `${user.firstName || ""} ${user.lastName || ""} (${user.email || user.phoneNumber || user.id})`,
+                      label: `${user.firstName || ''} ${user.lastName || ''} (${user.email || user.phoneNumber || user.id})`,
                     }))}
                   />
                 </Form.Item>
@@ -387,18 +337,18 @@ export default function CreateAdPage() {
             {isNewUser && (
               <>
                 <Col xs={24} md={8}>
-                  <Form.Item label={t("createAd.newUserPhone")} required>
+                  <Form.Item label={t('createAd.newUserPhone')} required>
                     <Input
                       placeholder="+994 55 338 81 06"
                       value={newUserPhone}
                       onChange={(e) => {
                         const value = e.target.value;
                         // Remove all non-digit characters except +
-                        const digitsOnly = value.replace(/[^\d+]/g, "");
+                        const digitsOnly = value.replace(/[^\d+]/g, '');
 
                         // Ensure it starts with +994
-                        if (!digitsOnly.startsWith("+994")) {
-                          setNewUserPhone("+994 ");
+                        if (!digitsOnly.startsWith('+994')) {
+                          setNewUserPhone('+994 ');
                           return;
                         }
 
@@ -411,18 +361,18 @@ export default function CreateAdPage() {
                         }
 
                         // Format: +994 XX XXX XX XX
-                        let formatted = "+994";
+                        let formatted = '+994';
                         if (phoneDigits.length > 0) {
-                          formatted += " " + phoneDigits.substring(0, 2);
+                          formatted += ' ' + phoneDigits.substring(0, 2);
                         }
                         if (phoneDigits.length > 2) {
-                          formatted += " " + phoneDigits.substring(2, 5);
+                          formatted += ' ' + phoneDigits.substring(2, 5);
                         }
                         if (phoneDigits.length > 5) {
-                          formatted += " " + phoneDigits.substring(5, 7);
+                          formatted += ' ' + phoneDigits.substring(5, 7);
                         }
                         if (phoneDigits.length > 7) {
-                          formatted += " " + phoneDigits.substring(7, 9);
+                          formatted += ' ' + phoneDigits.substring(7, 9);
                         }
 
                         setNewUserPhone(formatted);
@@ -433,9 +383,9 @@ export default function CreateAdPage() {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={6}>
-                  <Form.Item label={t("createAd.newUserFirstName")}>
+                  <Form.Item label={t('createAd.newUserFirstName')}>
                     <Input
-                      placeholder={t("createAd.firstNamePlaceholder")}
+                      placeholder={t('createAd.firstNamePlaceholder')}
                       value={newUserFirstName}
                       onChange={(e) => setNewUserFirstName(e.target.value)}
                       disabled={creatingUser}
@@ -443,9 +393,9 @@ export default function CreateAdPage() {
                   </Form.Item>
                 </Col>
                 <Col xs={24} md={6}>
-                  <Form.Item label={t("createAd.newUserLastName")}>
+                  <Form.Item label={t('createAd.newUserLastName')}>
                     <Input
-                      placeholder={t("createAd.lastNamePlaceholder")}
+                      placeholder={t('createAd.lastNamePlaceholder')}
                       value={newUserLastName}
                       onChange={(e) => setNewUserLastName(e.target.value)}
                       disabled={creatingUser}
@@ -454,14 +404,8 @@ export default function CreateAdPage() {
                 </Col>
                 <Col xs={24} md={4}>
                   <Form.Item label=" ">
-                    <Button
-                      type="primary"
-                      icon={<UserAddOutlined />}
-                      onClick={handleCreateUser}
-                      loading={creatingUser}
-                      block
-                    >
-                      {t("createAd.createUser")}
+                    <Button type="primary" icon={<UserAddOutlined />} onClick={handleCreateUser} loading={creatingUser} block>
+                      {t('createAd.createUser')}
                     </Button>
                   </Form.Item>
                 </Col>
@@ -470,18 +414,8 @@ export default function CreateAdPage() {
 
             {/* Ad Type */}
             <Col xs={24} md={isNewUser ? 24 : 12}>
-              <Form.Item
-                name="adType"
-                label={t("createAd.adType")}
-                rules={[
-                  { required: true, message: t("createAd.adTypeRequired") },
-                ]}
-              >
-                <Select
-                  placeholder={t("createAd.selectAdType")}
-                  options={adTypeOptions}
-                  onChange={(value) => setSelectedAdType(value)}
-                />
+              <Form.Item name="adType" label={t('createAd.adType')} rules={[{ required: true, message: t('createAd.adTypeRequired') }]}>
+                <Select placeholder={t('createAd.selectAdType')} options={adTypeOptions} onChange={(value) => setSelectedAdType(value)} />
               </Form.Item>
             </Col>
 
@@ -489,17 +423,13 @@ export default function CreateAdPage() {
             <Col xs={24}>
               <Form.Item
                 name="title"
-                label={t("createAd.titleLabel")}
+                label={t('createAd.titleLabel')}
                 rules={[
-                  { required: true, message: t("createAd.titleRequired") },
-                  { max: 200, message: t("createAd.titleMaxLength") },
+                  { required: true, message: t('createAd.titleRequired') },
+                  { max: 200, message: t('createAd.titleMaxLength') },
                 ]}
               >
-                <Input
-                  placeholder={t("createAd.titlePlaceholder")}
-                  maxLength={200}
-                  showCount
-                />
+                <Input placeholder={t('createAd.titlePlaceholder')} maxLength={200} showCount />
               </Form.Item>
             </Col>
 
@@ -507,29 +437,24 @@ export default function CreateAdPage() {
             <Col xs={24}>
               <Form.Item
                 name="description"
-                label={t("createAd.descriptionLabel")}
+                label={t('createAd.descriptionLabel')}
                 rules={[
                   {
                     required: true,
-                    message: t("createAd.descriptionRequired"),
+                    message: t('createAd.descriptionRequired'),
                   },
-                  { max: 2000, message: t("createAd.descriptionMaxLength") },
+                  { max: 2000, message: t('createAd.descriptionMaxLength') },
                 ]}
               >
-                <TextArea
-                  rows={4}
-                  placeholder={t("createAd.descriptionPlaceholder")}
-                  maxLength={2000}
-                  showCount
-                />
+                <TextArea rows={4} placeholder={t('createAd.descriptionPlaceholder')} maxLength={2000} showCount />
               </Form.Item>
             </Col>
 
             {/* Category */}
             <Col xs={24} md={12}>
-              <Form.Item name="petCategoryId" label={t("createAd.category")}>
+              <Form.Item name="petCategoryId" label={t('createAd.category')}>
                 <Select
-                  placeholder={t("createAd.selectCategory")}
+                  placeholder={t('createAd.selectCategory')}
                   allowClear
                   options={categories?.map((cat: any) => ({
                     value: cat.id,
@@ -537,7 +462,7 @@ export default function CreateAdPage() {
                   }))}
                   onChange={(value) => {
                     setSelectedCategoryId(value);
-                    form.setFieldValue("petBreedId", undefined);
+                    form.setFieldValue('petBreedId', undefined);
                   }}
                 />
               </Form.Item>
@@ -547,23 +472,23 @@ export default function CreateAdPage() {
             <Col xs={24} md={12}>
               <Form.Item
                 name="petBreedId"
-                label={t("createAd.breed")}
+                label={t('createAd.breed')}
                 rules={[
                   {
                     required: isBreedRequired,
-                    message: t("createAd.breedRequired"),
+                    message: t('createAd.breedRequired'),
                   },
                 ]}
               >
                 <Select
-                  placeholder={t("createAd.selectBreed")}
+                  placeholder={t('createAd.selectBreed')}
                   allowClear
                   disabled={!selectedCategoryId}
                   showSearch
                   optionFilterProp="children"
                   filterOption={(input, option) => {
                     const label = option?.label;
-                    if (typeof label === "string") {
+                    if (typeof label === 'string') {
                       return label.toLowerCase().includes(input.toLowerCase());
                     }
                     return false;
@@ -578,29 +503,19 @@ export default function CreateAdPage() {
 
             {/* City */}
             <Col xs={24} md={12}>
-              <Form.Item
-                name="cityId"
-                label={t("createAd.city")}
-                rules={[
-                  { required: true, message: t("createAd.cityRequired") },
-                ]}
-              >
+              <Form.Item name="cityId" label={t('createAd.city')} rules={[{ required: true, message: t('createAd.cityRequired') }]}>
                 <Select
                   showSearch
-                  placeholder={t("createAd.selectCity")}
+                  placeholder={t('createAd.selectCity')}
                   optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label ?? "")
-                      .toLowerCase()
-                      .includes(input.toLowerCase())
-                  }
+                  filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                   options={cities.map((city) => ({
                     value: city.id,
                     label: city.nameAz || city.nameEn || city.nameRu,
                   }))}
                   onChange={(value) => {
                     setSelectedCityId(value);
-                    form.setFieldValue("districtId", undefined);
+                    form.setFieldValue('districtId', undefined);
                   }}
                 />
               </Form.Item>
@@ -610,23 +525,23 @@ export default function CreateAdPage() {
             <Col xs={24} md={12}>
               <Form.Item
                 name="districtId"
-                label={t("createAd.district")}
+                label={t('createAd.district')}
                 rules={[
                   {
                     required: true,
-                    message: t("createAd.districtRequired"),
+                    message: t('createAd.districtRequired'),
                   },
                 ]}
               >
                 <Select
-                  placeholder={t("createAd.selectDistrict")}
+                  placeholder={t('createAd.selectDistrict')}
                   allowClear
                   disabled={!selectedCityId}
                   showSearch
                   optionFilterProp="children"
                   filterOption={(input, option) => {
                     const label = option?.label;
-                    if (typeof label === "string") {
+                    if (typeof label === 'string') {
                       return label.toLowerCase().includes(input.toLowerCase());
                     }
                     return false;
@@ -641,7 +556,7 @@ export default function CreateAdPage() {
 
             {/* Age - Year & Month */}
             <Col xs={24} md={12}>
-              <Form.Item label={t("createAd.age", "Yaş")}>
+              <Form.Item label={t('createAd.age', 'Yaş')}>
                 <Row gutter={12}>
                   <Col span={12}>
                     <Form.Item name="ageYears" noStyle>
@@ -649,27 +564,16 @@ export default function CreateAdPage() {
                         min={0}
                         max={30}
                         placeholder="0"
-                        style={{ width: "100%" }}
-                        addonAfter={t("createAd.year", "İl")}
+                        style={{ width: '100%' }}
+                        addonAfter={t('createAd.year', 'İl')}
                         controls={false}
                         keyboard={true}
                         parser={(value) => {
-                          const parsed = value?.replace(/[^0-9]/g, "") || "";
-                          return parsed ? Number(parsed) : ("" as any);
+                          const parsed = value?.replace(/[^0-9]/g, '') || '';
+                          return parsed ? Number(parsed) : ('' as any);
                         }}
                         onKeyDown={(e) => {
-                          if (
-                            !/[0-9]/.test(e.key) &&
-                            ![
-                              "Backspace",
-                              "Delete",
-                              "Tab",
-                              "ArrowLeft",
-                              "ArrowRight",
-                              "Home",
-                              "End",
-                            ].includes(e.key)
-                          ) {
+                          if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
                             e.preventDefault();
                           }
                         }}
@@ -682,27 +586,16 @@ export default function CreateAdPage() {
                         min={0}
                         max={11}
                         placeholder="0"
-                        style={{ width: "100%" }}
-                        addonAfter={t("createAd.month", "Ay")}
+                        style={{ width: '100%' }}
+                        addonAfter={t('createAd.month', 'Ay')}
                         controls={false}
                         keyboard={true}
                         parser={(value) => {
-                          const parsed = value?.replace(/[^0-9]/g, "") || "";
-                          return parsed ? Number(parsed) : ("" as any);
+                          const parsed = value?.replace(/[^0-9]/g, '') || '';
+                          return parsed ? Number(parsed) : ('' as any);
                         }}
                         onKeyDown={(e) => {
-                          if (
-                            !/[0-9]/.test(e.key) &&
-                            ![
-                              "Backspace",
-                              "Delete",
-                              "Tab",
-                              "ArrowLeft",
-                              "ArrowRight",
-                              "Home",
-                              "End",
-                            ].includes(e.key)
-                          ) {
+                          if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
                             e.preventDefault();
                           }
                         }}
@@ -715,26 +608,22 @@ export default function CreateAdPage() {
 
             {/* Gender */}
             <Col xs={24} md={12}>
-              <Form.Item name="gender" label={t("createAd.gender")}>
-                <Select
-                  placeholder={t("createAd.selectGender")}
-                  allowClear
-                  options={genderOptions}
-                />
+              <Form.Item name="gender" label={t('createAd.gender')}>
+                <Select placeholder={t('createAd.selectGender')} allowClear options={genderOptions} />
               </Form.Item>
             </Col>
 
             {/* Color */}
             <Col xs={24} md={12}>
-              <Form.Item name="color" label={t("createAd.color")}>
+              <Form.Item name="color" label={t('createAd.color')}>
                 <Select
-                  placeholder={t("createAd.selectColor")}
+                  placeholder={t('createAd.selectColor')}
                   allowClear
                   showSearch
                   optionFilterProp="children"
                   filterOption={(input, option) => {
                     const label = option?.label;
-                    if (typeof label === "string") {
+                    if (typeof label === 'string') {
                       return label.toLowerCase().includes(input.toLowerCase());
                     }
                     return false;
@@ -749,37 +638,26 @@ export default function CreateAdPage() {
 
             {/* Weight */}
             <Col xs={24} md={12}>
-              <Form.Item name="weight" label={t("createAd.weight")}>
+              <Form.Item name="weight" label={t('createAd.weight')}>
                 <InputNumber
                   min={0}
                   max={500}
-                  placeholder={t("createAd.weightPlaceholder")}
-                  style={{ width: "100%" }}
+                  placeholder={t('createAd.weightPlaceholder')}
+                  style={{ width: '100%' }}
                   precision={2}
                   addonAfter="kg"
                   controls={false}
                   parser={(value) => {
-                    const parsed = value?.replace(/[^0-9.]/g, "") || "";
-                    return parsed ? Number(parsed) : ("" as any);
+                    const parsed = value?.replace(/[^0-9.]/g, '') || '';
+                    return parsed ? Number(parsed) : ('' as any);
                   }}
                   onKeyDown={(e) => {
                     const currentValue = (e.target as HTMLInputElement).value;
-                    if (e.key === "." && currentValue.includes(".")) {
+                    if (e.key === '.' && currentValue.includes('.')) {
                       e.preventDefault();
                       return;
                     }
-                    if (
-                      !/[0-9.]/.test(e.key) &&
-                      ![
-                        "Backspace",
-                        "Delete",
-                        "Tab",
-                        "ArrowLeft",
-                        "ArrowRight",
-                        "Home",
-                        "End",
-                      ].includes(e.key)
-                    ) {
+                    if (!/[0-9.]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
                       e.preventDefault();
                     }
                   }}
@@ -789,12 +667,8 @@ export default function CreateAdPage() {
 
             {/* Size */}
             <Col xs={24} md={12}>
-              <Form.Item name="size" label={t("createAd.size")}>
-                <Select
-                  placeholder={t("createAd.selectSize")}
-                  allowClear
-                  options={sizeOptions}
-                />
+              <Form.Item name="size" label={t('createAd.size')}>
+                <Select placeholder={t('createAd.selectSize')} allowClear options={sizeOptions} />
               </Form.Item>
             </Col>
 
@@ -802,45 +676,34 @@ export default function CreateAdPage() {
             <Col xs={24} md={12}>
               <Form.Item
                 name="price"
-                label={t("createAd.price")}
+                label={t('createAd.price')}
                 rules={[
-                  { required: true, message: t("createAd.priceRequired") },
+                  { required: true, message: t('createAd.priceRequired') },
                   {
-                    type: "number",
+                    type: 'number',
                     min: 0,
-                    message: t("createAd.priceMinimum"),
+                    message: t('createAd.priceMinimum'),
                   },
                 ]}
               >
                 <InputNumber
                   min={0}
-                  placeholder={t("createAd.pricePlaceholder")}
-                  style={{ width: "100%" }}
+                  placeholder={t('createAd.pricePlaceholder')}
+                  style={{ width: '100%' }}
                   precision={2}
                   addonAfter="AZN"
                   controls={false}
                   parser={(value) => {
-                    const parsed = value?.replace(/[^0-9.]/g, "") || "";
-                    return parsed ? Number(parsed) : ("" as any);
+                    const parsed = value?.replace(/[^0-9.]/g, '') || '';
+                    return parsed ? Number(parsed) : ('' as any);
                   }}
                   onKeyDown={(e) => {
                     const currentValue = (e.target as HTMLInputElement).value;
-                    if (e.key === "." && currentValue.includes(".")) {
+                    if (e.key === '.' && currentValue.includes('.')) {
                       e.preventDefault();
                       return;
                     }
-                    if (
-                      !/[0-9.]/.test(e.key) &&
-                      ![
-                        "Backspace",
-                        "Delete",
-                        "Tab",
-                        "ArrowLeft",
-                        "ArrowRight",
-                        "Home",
-                        "End",
-                      ].includes(e.key)
-                    ) {
+                    if (!/[0-9.]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
                       e.preventDefault();
                     }
                   }}
@@ -850,22 +713,11 @@ export default function CreateAdPage() {
 
             {/* Images */}
             <Col xs={24}>
-              <Form.Item label={t("createAd.images")} required>
+              <Form.Item label={t('createAd.images')} required>
                 <div className="flex flex-wrap gap-3">
                   {uploadedImages.map((img, index) => (
-                    <div
-                      key={img.id}
-                      className="relative group w-[120px] h-[120px] rounded-lg overflow-hidden border border-gray-200"
-                    >
-                      <img
-                        src={
-                          img.url.startsWith("http")
-                            ? img.url
-                            : `${import.meta.env.VITE_API_URL?.replace("/api", "") || "http://localhost:5005"}${img.url}`
-                        }
-                        alt={`Image ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
+                    <div key={img.id} className="relative group w-[120px] h-[120px] rounded-lg overflow-hidden border border-gray-200">
+                      <img src={img.url.startsWith('http') ? img.url : img.url} alt={`Image ${index + 1}`} className="w-full h-full object-cover" />
 
                       {/* Main image badge */}
                       {index === 0 && (
@@ -889,13 +741,7 @@ export default function CreateAdPage() {
                         )}
 
                         {/* Delete */}
-                        <Button
-                          type="primary"
-                          danger
-                          size="small"
-                          icon={<DeleteOutlined />}
-                          onClick={() => removeImage(index)}
-                        />
+                        <Button type="primary" danger size="small" icon={<DeleteOutlined />} onClick={() => removeImage(index)} />
 
                         {/* Move right */}
                         {index < uploadedImages.length - 1 && (
@@ -924,23 +770,14 @@ export default function CreateAdPage() {
                   {/* Add button */}
                   {uploadedImages.length + uploadingCount < 10 && (
                     <label className="w-[120px] h-[120px] rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
-                      <PlusOutlined style={{ fontSize: 24, color: "#999" }} />
-                      <span className="text-xs text-gray-500 mt-1">
-                        {t("createAd.uploadImage")}
-                      </span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        onChange={handleImageUpload}
-                      />
+                      <PlusOutlined style={{ fontSize: 24, color: '#999' }} />
+                      <span className="text-xs text-gray-500 mt-1">{t('createAd.uploadImage')}</span>
+                      <input type="file" accept="image/*" multiple style={{ display: 'none' }} onChange={handleImageUpload} />
                     </label>
                   )}
                 </div>
                 <div className="text-gray-500 text-xs mt-2">
-                  {uploadedImages.length}/10 · İlk şəkil əsas şəkil olaraq
-                  istifadə olunur. Sıranı dəyişmək üçün şəkilin üzərinə gəlin.
+                  {uploadedImages.length}/10 · İlk şəkil əsas şəkil olaraq istifadə olunur. Sıranı dəyişmək üçün şəkilin üzərinə gəlin.
                 </div>
               </Form.Item>
             </Col>
@@ -948,17 +785,11 @@ export default function CreateAdPage() {
             {/* Submit Button */}
             <Col xs={24}>
               <Space>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  icon={<SaveOutlined />}
-                  loading={submitting}
-                  size="large"
-                >
-                  {t("createAd.submit")}
+                <Button type="primary" htmlType="submit" icon={<SaveOutlined />} loading={submitting} size="large">
+                  {t('createAd.submit')}
                 </Button>
-                <Button size="large" onClick={() => navigate("/listings")}>
-                  {t("common.cancel")}
+                <Button size="large" onClick={() => navigate('/listings')}>
+                  {t('common.cancel')}
                 </Button>
               </Space>
             </Col>

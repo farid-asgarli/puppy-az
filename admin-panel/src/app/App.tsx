@@ -1,19 +1,19 @@
-import { ConfigProvider, theme, App as AntApp } from "antd";
-import azAZ from "antd/locale/az_AZ";
-import enUS from "antd/locale/en_US";
-import ruRU from "antd/locale/ru_RU";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { BrowserRouter } from "react-router-dom";
-import { Suspense, useEffect } from "react";
-import { I18nextProvider, useTranslation } from "react-i18next";
-import { ErrorBoundary } from "@/shared/components/ErrorBoundary";
-import { AppRouter } from "./router";
-import { useThemeStore } from "@/shared/stores/themeStore";
-import { useAuthStore } from "@/shared/stores/authStore";
-import { scheduleTokenRefresh } from "@/shared/api/httpClient";
-import { i18n } from "./i18n";
-import { GlobalLoading } from "@/shared/components/GlobalLoading";
+import { ConfigProvider, theme, App as AntApp } from 'antd';
+import azAZ from 'antd/locale/az_AZ';
+import enUS from 'antd/locale/en_US';
+import ruRU from 'antd/locale/ru_RU';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { BrowserRouter } from 'react-router-dom';
+import { Suspense, useEffect } from 'react';
+import { I18nextProvider, useTranslation } from 'react-i18next';
+import { ErrorBoundary } from '@/shared/components/ErrorBoundary';
+import { AppRouter } from './router';
+import { useThemeStore } from '@/shared/stores/themeStore';
+import { useAuthStore } from '@/shared/stores/authStore';
+import { scheduleTokenRefresh } from '@/shared/api/httpClient';
+import { i18n } from './i18n';
+import { GlobalLoading } from '@/shared/components/GlobalLoading';
 
 const antdLocaleMap: Record<string, typeof azAZ> = {
   az: azAZ,
@@ -41,32 +41,30 @@ const queryClient = new QueryClient({
 const lightTheme = {
   algorithm: theme.defaultAlgorithm,
   token: {
-    fontFamily:
-      "'Cereal', 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif",
-    colorPrimary: "#a855f7",
-    colorSuccess: "#22c55e",
-    colorWarning: "#f59e0b",
-    colorError: "#ef4444",
-    colorInfo: "#6366f1",
+    fontFamily: "'Cereal', 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif",
+    colorPrimary: '#a855f7',
+    colorSuccess: '#22c55e',
+    colorWarning: '#f59e0b',
+    colorError: '#ef4444',
+    colorInfo: '#6366f1',
     borderRadius: 8,
-    colorBgContainer: "#ffffff",
-    colorBgLayout: "#f9fafb",
+    colorBgContainer: '#ffffff',
+    colorBgLayout: '#f9fafb',
   },
 };
 
 const darkTheme = {
   algorithm: theme.darkAlgorithm,
   token: {
-    fontFamily:
-      "'Cereal', 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif",
-    colorPrimary: "#a855f7",
-    colorSuccess: "#22c55e",
-    colorWarning: "#f59e0b",
-    colorError: "#ef4444",
-    colorInfo: "#6366f1",
+    fontFamily: "'Cereal', 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif",
+    colorPrimary: '#a855f7',
+    colorSuccess: '#22c55e',
+    colorWarning: '#f59e0b',
+    colorError: '#ef4444',
+    colorInfo: '#6366f1',
     borderRadius: 8,
-    colorBgContainer: "#1f2937",
-    colorBgLayout: "#111827",
+    colorBgContainer: '#1f2937',
+    colorBgLayout: '#111827',
   },
 };
 
@@ -88,12 +86,9 @@ export function App() {
     <ErrorBoundary>
       <I18nextProvider i18n={i18n}>
         <QueryClientProvider client={queryClient}>
-          <ConfigProvider
-            theme={isDark ? darkTheme : lightTheme}
-            locale={antdLocale}
-          >
+          <ConfigProvider theme={isDark ? darkTheme : lightTheme} locale={antdLocale}>
             <AntApp>
-              <BrowserRouter>
+              <BrowserRouter basename={import.meta.env.BASE_URL}>
                 <Suspense fallback={<GlobalLoading />}>
                   <AppRouter />
                 </Suspense>

@@ -25,7 +25,7 @@ jobs:
 
             APP_DIR="/var/www/petwebsite"
             BACKEND_DIR="$APP_DIR/back-api"
-            FRONTEND_DIR="$APP_DIR/front-public"
+            ADMIN_DIR="$APP_DIR/admin-panel"
 
             # Navigate to app directory
             cd $APP_DIR
@@ -39,33 +39,34 @@ jobs:
             echo "[2/7] Stopping Backend service..."
             sudo systemctl stop petwebsite-api
 
+            # Build Admin Panel
+            echo "[3/7] Building Admin Panel..."
+            cd "$ADMIN_DIR"
+            yarn install --frozen-lockfile
+            yarn build
+
+            # Copy admin panel build to backend wwwroot
+            echo "[4/7] Deploying Admin Panel to backend..."
+            mkdir -p "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin"
+            rm -rf "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin/"*
+            cp -r "$ADMIN_DIR/dist/"* "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin/"
+
             # Build Backend
-            echo "[3/7] Building Backend API..."
+            echo "[5/7] Building Backend API..."
             cd "$BACKEND_DIR/src/PetWebsite.API"
             dotnet restore
             dotnet publish -c Release -o "$BACKEND_DIR/publish" --no-restore
 
             # Copy wwwroot content (preserving uploads)
-            echo "[4/7] Updating static files..."
+            echo "[6/7] Updating static files..."
             if [ -d "$BACKEND_DIR/src/PetWebsite.API/wwwroot" ]; then
                 rsync -av --exclude='uploads' "$BACKEND_DIR/src/PetWebsite.API/wwwroot/" "$BACKEND_DIR/publish/wwwroot/"
             fi
 
             # Start Backend
-            echo "[5/7] Starting Backend service..."
+            echo "[7/7] Starting Backend service..."
             sudo systemctl start petwebsite-api
             sudo systemctl status petwebsite-api --no-pager
-
-            # Build Frontend
-            echo "[6/7] Building Frontend..."
-            cd "$FRONTEND_DIR"
-            yarn install --frozen-lockfile
-            yarn build
-
-            # Restart Frontend
-            echo "[7/7] Restarting Frontend..."
-            pm2 restart petwebsite-frontend || pm2 start npm --name "petwebsite-frontend" -- start -- -p 3000
-            pm2 save
 
             echo "=========================================="
             echo "Deployment completed successfully!"

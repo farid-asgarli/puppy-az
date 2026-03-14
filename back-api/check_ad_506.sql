@@ -1,1 +1,0 @@
-SELECT "Id", "Title", "UserId" FROM "PetAds" WHERE "Id" = 506;

@@ -104,6 +104,30 @@ app.ConfigureSwagger();
 
 // app.UseHttpsRedirection();
 
+// Serve admin panel SPA — middleware fallback for client-side routing
+app.Use(
+	async (context, next) =>
+	{
+		await next();
+
+		// If the response is 404 and the request is for an admin panel route (not a file),
+		// serve the admin SPA index.html so React Router can handle it
+		if (
+			context.Response.StatusCode == 404
+			&& !context.Response.HasStarted
+			&& context.Request.Path.StartsWithSegments("/admin")
+			&& !Path.HasExtension(context.Request.Path.Value)
+		)
+		{
+			context.Response.StatusCode = 200;
+			context.Response.ContentType = "text/html";
+			var indexPath = Path.Combine(app.Environment.WebRootPath, "admin", "index.html");
+			await context.Response.SendFileAsync(indexPath);
+		}
+	}
+);
+Console.WriteLine("[DEBUG] Admin panel SPA fallback configured");
+
 app.MapControllers();
 Console.WriteLine("[DEBUG] Controllers mapped");
 
@@ -118,8 +142,8 @@ Console.WriteLine("[DEBUG] Health check endpoints mapped");
 // Log application lifetime events
 var lifetime = app.Services.GetRequiredService<IHostApplicationLifetime>();
 lifetime.ApplicationStarted.Register(() => Console.WriteLine($"[DEBUG] Application STARTED at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC"));
-lifetime.ApplicationStopping.Register(
-	() => Console.WriteLine($"[DEBUG] Application STOPPING at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC")
+lifetime.ApplicationStopping.Register(() =>
+	Console.WriteLine($"[DEBUG] Application STOPPING at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC")
 );
 lifetime.ApplicationStopped.Register(() => Console.WriteLine($"[DEBUG] Application STOPPED at {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC"));
 

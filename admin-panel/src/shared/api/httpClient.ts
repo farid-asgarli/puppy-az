@@ -1,11 +1,9 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-  InternalAxiosRequestConfig,
-} from "axios";
-import { useAuthStore } from "@/shared/stores/authStore";
-import { endpoints } from "./endpoints";
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { useAuthStore } from '@/shared/stores/authStore';
+import { endpoints } from './endpoints';
+
+// Base path for SPA routing (e.g., '/admin' in production, '' in dev)
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // API Error type
 export interface ApiError {
@@ -35,8 +33,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
 
 // Refresh token function
 const refreshAccessToken = async (): Promise<string | null> => {
-  const { refreshToken, rememberMe, updateTokens, logout } =
-    useAuthStore.getState();
+  const { refreshToken, rememberMe, updateTokens, logout } = useAuthStore.getState();
 
   if (!refreshToken || !rememberMe) {
     return null;
@@ -44,9 +41,9 @@ const refreshAccessToken = async (): Promise<string | null> => {
 
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_API_URL || "/api"}${endpoints.auth.refreshToken}`,
+      `${import.meta.env.VITE_API_URL || '/api'}${endpoints.auth.refreshToken}`,
       { refreshToken },
-      { headers: { "Content-Type": "application/json" } },
+      { headers: { 'Content-Type': 'application/json' } },
     );
 
     const { accessToken, refreshToken: newRefreshToken } = response.data;
@@ -66,8 +63,7 @@ export const scheduleTokenRefresh = () => {
     clearTimeout(refreshTimer);
   }
 
-  const { tokenExpiresAt, rememberMe, isAuthenticated } =
-    useAuthStore.getState();
+  const { tokenExpiresAt, rememberMe, isAuthenticated } = useAuthStore.getState();
 
   if (!tokenExpiresAt || !rememberMe || !isAuthenticated) {
     return;
@@ -96,7 +92,7 @@ export const scheduleTokenRefresh = () => {
 // Create axios instance
 const createHttpClient = (): AxiosInstance => {
   const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:5005/api",
+    baseURL: import.meta.env.VITE_API_URL || '/api',
     timeout: 30000,
   });
 
@@ -109,17 +105,17 @@ const createHttpClient = (): AxiosInstance => {
       }
 
       // Add accept-language header based on current i18n language
-      const lang = localStorage.getItem("i18nextLng") || "en";
-      config.headers["Accept-Language"] = lang;
+      const lang = localStorage.getItem('i18nextLng') || 'en';
+      config.headers['Accept-Language'] = lang;
 
       // Set Content-Type based on data type
       if (config.data instanceof FormData) {
         // Remove any Content-Type so browser sets multipart/form-data with correct boundary
-        config.headers["Content-Type"] = undefined;
+        config.headers['Content-Type'] = undefined;
       } else {
         // Default to JSON for non-FormData requests
-        if (!config.headers["Content-Type"]) {
-          config.headers["Content-Type"] = "application/json";
+        if (!config.headers['Content-Type']) {
+          config.headers['Content-Type'] = 'application/json';
         }
       }
 
@@ -176,14 +172,14 @@ const createHttpClient = (): AxiosInstance => {
             } else {
               processQueue(normalizedError, null);
               // Redirect to login
-              if (window.location.pathname !== "/login") {
-                window.location.href = "/login?session=expired";
+              if (window.location.pathname !== `${basePath}/login`) {
+                window.location.href = `${basePath}/login?session=expired`;
               }
             }
           } catch (refreshError) {
             processQueue(refreshError, null);
-            if (window.location.pathname !== "/login") {
-              window.location.href = "/login?session=expired";
+            if (window.location.pathname !== `${basePath}/login`) {
+              window.location.href = `${basePath}/login?session=expired`;
             }
           } finally {
             isRefreshing = false;
@@ -193,8 +189,8 @@ const createHttpClient = (): AxiosInstance => {
           const { logout } = useAuthStore.getState();
           logout();
 
-          if (window.location.pathname !== "/login") {
-            window.location.href = "/login?session=expired";
+          if (window.location.pathname !== `${basePath}/login`) {
+            window.location.href = `${basePath}/login?session=expired`;
           }
         }
       }
@@ -207,17 +203,15 @@ const createHttpClient = (): AxiosInstance => {
 };
 
 // Normalize backend errors to consistent ApiError format
-const normalizeError = (
-  error: AxiosError<{ message?: string; errors?: Record<string, string[]> }>,
-): ApiError => {
+const normalizeError = (error: AxiosError<{ message?: string; errors?: Record<string, string[]> }>): ApiError => {
   if (error.response) {
     const { status, data } = error.response;
 
     // Handle validation errors (400)
     if (status === 400 && data?.errors) {
       return {
-        message: "Validation error",
-        code: "VALIDATION_ERROR",
+        message: 'Validation error',
+        code: 'VALIDATION_ERROR',
         status,
         details: data.errors,
       };
@@ -226,8 +220,8 @@ const normalizeError = (
     // Handle unauthorized (401)
     if (status === 401) {
       return {
-        message: data?.message || "Unauthorized. Please login again.",
-        code: "UNAUTHORIZED",
+        message: data?.message || 'Unauthorized. Please login again.',
+        code: 'UNAUTHORIZED',
         status,
       };
     }
@@ -235,9 +229,8 @@ const normalizeError = (
     // Handle forbidden (403)
     if (status === 403) {
       return {
-        message:
-          data?.message || "You do not have permission to perform this action.",
-        code: "FORBIDDEN",
+        message: data?.message || 'You do not have permission to perform this action.',
+        code: 'FORBIDDEN',
         status,
       };
     }
@@ -245,8 +238,8 @@ const normalizeError = (
     // Handle not found (404)
     if (status === 404) {
       return {
-        message: data?.message || "Resource not found.",
-        code: "NOT_FOUND",
+        message: data?.message || 'Resource not found.',
+        code: 'NOT_FOUND',
         status,
       };
     }
@@ -254,42 +247,42 @@ const normalizeError = (
     // Handle server errors (5xx)
     if (status >= 500) {
       return {
-        message: "Server error. Please try again later.",
-        code: "SERVER_ERROR",
+        message: 'Server error. Please try again later.',
+        code: 'SERVER_ERROR',
         status,
       };
     }
 
     // Generic error
     return {
-      message: data?.message || "An error occurred.",
-      code: "UNKNOWN_ERROR",
+      message: data?.message || 'An error occurred.',
+      code: 'UNKNOWN_ERROR',
       status,
     };
   }
 
   // Network error
-  if (error.code === "ERR_NETWORK") {
+  if (error.code === 'ERR_NETWORK') {
     return {
-      message: "Network error. Please check your connection.",
-      code: "NETWORK_ERROR",
+      message: 'Network error. Please check your connection.',
+      code: 'NETWORK_ERROR',
       status: 0,
     };
   }
 
   // Timeout
-  if (error.code === "ECONNABORTED") {
+  if (error.code === 'ECONNABORTED') {
     return {
-      message: "Request timed out. Please try again.",
-      code: "TIMEOUT",
+      message: 'Request timed out. Please try again.',
+      code: 'TIMEOUT',
       status: 0,
     };
   }
 
   // Fallback
   return {
-    message: error.message || "An unexpected error occurred.",
-    code: "UNKNOWN_ERROR",
+    message: error.message || 'An unexpected error occurred.',
+    code: 'UNKNOWN_ERROR',
     status: 0,
   };
 };
@@ -299,31 +292,20 @@ export const httpClient = createHttpClient();
 
 // Type-safe request helpers
 export const api = {
-  get: <T>(url: string, config?: AxiosRequestConfig) =>
-    httpClient.get<T>(url, config).then((res) => res.data),
+  get: <T>(url: string, config?: AxiosRequestConfig) => httpClient.get<T>(url, config).then((res) => res.data),
 
-  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    httpClient.post<T>(url, data, config).then((res) => res.data),
+  post: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) => httpClient.post<T>(url, data, config).then((res) => res.data),
 
-  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    httpClient.put<T>(url, data, config).then((res) => res.data),
+  put: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) => httpClient.put<T>(url, data, config).then((res) => res.data),
 
-  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) =>
-    httpClient.patch<T>(url, data, config).then((res) => res.data),
+  patch: <T>(url: string, data?: unknown, config?: AxiosRequestConfig) => httpClient.patch<T>(url, data, config).then((res) => res.data),
 
-  delete: <T>(url: string, config?: AxiosRequestConfig) =>
-    httpClient.delete<T>(url, config).then((res) => res.data),
+  delete: <T>(url: string, config?: AxiosRequestConfig) => httpClient.delete<T>(url, config).then((res) => res.data),
 };
 
 // Helper to check if error is ApiError
 export const isApiError = (error: unknown): error is ApiError => {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "message" in error &&
-    "code" in error &&
-    "status" in error
-  );
+  return typeof error === 'object' && error !== null && 'message' in error && 'code' in error && 'status' in error;
 };
 
 // Helper to get error message
@@ -334,5 +316,5 @@ export const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
     return error.message;
   }
-  return "An unexpected error occurred";
+  return 'An unexpected error occurred';
 };

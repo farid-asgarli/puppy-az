@@ -7,11 +7,12 @@ set -e
 # This script installs and configures:
 # - PostgreSQL 16
 # - .NET 8 SDK
-# - Node.js 20 LTS
-# - PM2 (Process Manager for Node.js)
+# - Node.js 20 LTS + Yarn
 # - Nginx (Reverse Proxy)
-# - Backend API (systemd service)
-# - Frontend (PM2 managed)
+# - Backend API (systemd service) — serves API + admin panel SPA
+# - Certbot (Let's Encrypt SSL for puppy-api.cloud)
+#
+# Frontend (Next.js) is hosted on Vercel at puppy.az
 # =============================================================================
 
 echo "=========================================="
@@ -19,13 +20,13 @@ echo "PetWebsite Deployment Script"
 echo "=========================================="
 
 # Configuration
-SERVER_IP="72.62.2.60"
+DOMAIN="puppy-api.cloud"
 DB_NAME="PetWebsiteDb"
 DB_USER="petwebsite_user"
 DB_PASS="PetWeb_Pr0d_X9k#2026!vPs"
 APP_DIR="/var/www/petwebsite"
 BACKEND_DIR="$APP_DIR/back-api"
-FRONTEND_DIR="$APP_DIR/front-public"
+ADMIN_DIR="$APP_DIR/admin-panel"
 
 # =============================================================================
 # 1. System Update
@@ -93,40 +94,50 @@ apt install -y dotnet-sdk-8.0
 echo ".NET SDK installed: $(dotnet --version)"
 
 # =============================================================================
-# 4. Install Node.js 20 LTS
+# 4. Install Node.js 20 LTS + Yarn
 # =============================================================================
 echo ""
-echo "[4/10] Installing Node.js 20 LTS..."
+echo "[4/10] Installing Node.js 20 LTS and Yarn..."
 
 # Install Node.js from NodeSource
 curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt install -y nodejs
 
+# Install Yarn
+npm install -g yarn
+
 echo "Node.js installed: $(node --version)"
 echo "npm installed: $(npm --version)"
+echo "Yarn installed: $(yarn --version)"
 
 # =============================================================================
-# 5. Install PM2
+# 5. Install Nginx + Certbot
 # =============================================================================
 echo ""
-echo "[5/10] Installing PM2..."
-npm install -g pm2
-
-# Configure PM2 to start on boot
-pm2 startup systemd -u root --hp /root
-echo "PM2 installed: $(pm2 --version)"
-
-# =============================================================================
-# 6. Install Nginx
-# =============================================================================
-echo ""
-echo "[6/10] Installing Nginx..."
-apt install -y nginx
+echo "[5/10] Installing Nginx and Certbot..."
+apt install -y nginx certbot python3-certbot-nginx
 
 systemctl start nginx
 systemctl enable nginx
 
 echo "Nginx installed: $(nginx -v 2>&1)"
+
+# =============================================================================
+# 6. Build Admin Panel
+# =============================================================================
+echo ""
+echo "[6/10] Building Admin Panel..."
+
+cd "$ADMIN_DIR"
+yarn install --frozen-lockfile
+yarn build
+
+# Copy admin panel build output to backend wwwroot
+mkdir -p "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin"
+rm -rf "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin/"*
+cp -r "$ADMIN_DIR/dist/"* "$BACKEND_DIR/src/PetWebsite.API/wwwroot/admin/"
+
+echo "Admin panel built and copied to backend wwwroot!"
 
 # =============================================================================
 # 7. Build Backend API
@@ -189,54 +200,30 @@ systemctl start petwebsite-api
 echo "Backend service created and started!"
 
 # =============================================================================
-# 9. Build and Start Frontend
+# 9. Configure Nginx
 # =============================================================================
 echo ""
-echo "[9/10] Building and starting Frontend..."
-
-cd "$FRONTEND_DIR"
-
-# Install dependencies (use npm install since project uses yarn.lock, not package-lock.json)
-npm install --production=false
-
-# Build Next.js
-npm run build
-
-# Start with PM2
-pm2 delete petwebsite-frontend 2>/dev/null || true
-pm2 start npm --name "petwebsite-frontend" -- start -- -p 3000
-pm2 save
-
-echo "Frontend built and started with PM2!"
-
-# =============================================================================
-# 10. Configure Nginx
-# =============================================================================
-echo ""
-echo "[10/10] Configuring Nginx..."
+echo "[9/10] Configuring Nginx..."
 
 # Remove default config
 rm -f /etc/nginx/sites-enabled/default
 
 # Create PetWebsite Nginx config
-cat > /etc/nginx/sites-available/petwebsite <<EOF
-# PetWebsite Nginx Configuration
-# Server IP: $SERVER_IP
+cat > /etc/nginx/sites-available/petwebsite <<'NGINXEOF'
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
 
 upstream backend {
     server 127.0.0.1:5005;
     keepalive 32;
 }
 
-upstream frontend {
-    server 127.0.0.1:3000;
-    keepalive 32;
-}
-
 server {
     listen 80;
     listen [::]:80;
-    server_name $SERVER_IP;
+    server_name puppy-api.cloud;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -248,69 +235,66 @@ server {
     gzip_vary on;
     gzip_min_length 1024;
     gzip_proxied any;
-    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml application/javascript application/json;
+    gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml application/javascript application/json image/svg+xml;
     gzip_disable "MSIE [1-6]\.";
 
     # Client max body size (for file uploads)
     client_max_body_size 15M;
 
-    # Backend API - routes already include /api/ prefix, don't rewrite
-    location /api/ {
+    # Admin panel static assets (aggressive cache)
+    location /admin/assets/ {
         proxy_pass http://backend;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_set_header X-Forwarded-Host \$host;
-        proxy_cache_bypass \$http_upgrade;
-        proxy_read_timeout 90s;
-        proxy_connect_timeout 90s;
-        proxy_send_timeout 90s;
+        proxy_set_header Host $host;
+        add_header Cache-Control "public, max-age=31536000, immutable";
     }
 
     # Static uploads from backend
     location /uploads/ {
         proxy_pass http://backend/uploads/;
         proxy_http_version 1.1;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        add_header Cache-Control "public, max-age=86400";
+        proxy_set_header Host $host;
+        add_header Cache-Control "public, max-age=31536000";
     }
 
-    # Frontend (Next.js)
-    location / {
-        proxy_pass http://frontend;
+    # SignalR hub (WebSocket support)
+    location /hubs/ {
+        proxy_pass http://backend;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade \$http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-        proxy_cache_bypass \$http_upgrade;
-    }
-
-    # Next.js static files
-    location /_next/static {
-        proxy_pass http://frontend;
-        proxy_http_version 1.1;
-        proxy_set_header Host \$host;
-        add_header Cache-Control "public, max-age=31536000, immutable";
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 300s;
     }
 
     # Health check endpoint
     location /health {
         proxy_pass http://backend/health;
         proxy_http_version 1.1;
-        proxy_set_header Host \$host;
+        proxy_set_header Host $host;
+    }
+
+    # All other requests (API + admin SPA fallback)
+    location / {
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 90s;
+        proxy_connect_timeout 90s;
+        proxy_send_timeout 90s;
     }
 }
-EOF
+NGINXEOF
 
 # Enable the site
 ln -sf /etc/nginx/sites-available/petwebsite /etc/nginx/sites-enabled/
@@ -322,6 +306,16 @@ nginx -t
 systemctl reload nginx
 
 echo "Nginx configured and reloaded!"
+
+# =============================================================================
+# 10. SSL Certificate (Let's Encrypt)
+# =============================================================================
+echo ""
+echo "[10/10] Obtaining SSL certificate..."
+certbot --nginx -d $DOMAIN --non-interactive --agree-tos --email admin@puppy.az --redirect || {
+    echo "WARNING: Certbot failed. You can run it manually later:"
+    echo "  certbot --nginx -d $DOMAIN"
+}
 
 # =============================================================================
 # Import Database Backup (if exists)
@@ -358,23 +352,21 @@ echo "Services Status:"
 echo "----------------"
 systemctl status petwebsite-api --no-pager -l | head -5
 echo ""
-pm2 status
-echo ""
 systemctl status nginx --no-pager -l | head -5
 echo ""
 echo "=========================================="
 echo "Access your application at:"
-echo "  Frontend: http://$SERVER_IP"
-echo "  API:      http://$SERVER_IP/api"
-echo "  Health:   http://$SERVER_IP/health"
+echo "  API:         https://$DOMAIN/api"
+echo "  Admin Panel: https://$DOMAIN/admin"
+echo "  Health:      https://$DOMAIN/health"
+echo "  Frontend:    https://puppy.az (Vercel)"
 echo "=========================================="
 echo ""
 echo "Useful commands:"
-echo "  - View API logs:      journalctl -u petwebsite-api -f"
-echo "  - View Frontend logs: pm2 logs petwebsite-frontend"
-echo "  - Restart API:        systemctl restart petwebsite-api"
-echo "  - Restart Frontend:   pm2 restart petwebsite-frontend"
-echo "  - Nginx logs:         tail -f /var/log/nginx/error.log"
+echo "  - View API logs:    journalctl -u petwebsite-api -f"
+echo "  - Restart API:      systemctl restart petwebsite-api"
+echo "  - Nginx logs:       tail -f /var/log/nginx/error.log"
+echo "  - Renew SSL:        certbot renew --dry-run"
 echo ""
 echo "Database credentials:"
 echo "  Database: $DB_NAME"
