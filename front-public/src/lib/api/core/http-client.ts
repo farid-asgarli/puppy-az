@@ -1,27 +1,12 @@
-import {
-  BaseClient,
-  ApiError,
-  ApiResponse,
-  RequestConfig,
-  API_CONFIG,
-} from "./base-client";
-import {
-  InterceptorManager,
-  RequestContext,
-  RequestInterceptor,
-  ResponseInterceptor,
-} from "./interceptors";
+import { BaseClient, ApiError, ApiResponse, RequestConfig, API_CONFIG } from './base-client';
+import { InterceptorManager, RequestContext, RequestInterceptor, ResponseInterceptor } from './interceptors';
 
 /**
  * Authentication interceptor
  * Automatically injects Bearer token into Authorization header
  */
 export class AuthInterceptor implements RequestInterceptor {
-  onRequest(
-    endpoint: string,
-    config: RequestConfig,
-    context: RequestContext,
-  ): { config: RequestConfig; context: RequestContext } {
+  onRequest(endpoint: string, config: RequestConfig, context: RequestContext): { config: RequestConfig; context: RequestContext } {
     // Skip auth for public endpoints or if token explicitly not needed
     if (!context.token) {
       return { config, context };
@@ -45,11 +30,7 @@ export class AuthInterceptor implements RequestInterceptor {
  * Injects Accept-Language header for i18n support
  */
 export class LocaleInterceptor implements RequestInterceptor {
-  onRequest(
-    endpoint: string,
-    config: RequestConfig,
-    context: RequestContext,
-  ): { config: RequestConfig; context: RequestContext } {
+  onRequest(endpoint: string, config: RequestConfig, context: RequestContext): { config: RequestConfig; context: RequestContext } {
     // Skip if no locale specified
     if (!context.locale) {
       return { config, context };
@@ -58,7 +39,7 @@ export class LocaleInterceptor implements RequestInterceptor {
     // Inject Accept-Language header
     const headers = {
       ...config.headers,
-      "Accept-Language": context.locale,
+      'Accept-Language': context.locale,
     };
 
     return {
@@ -72,18 +53,10 @@ export class LocaleInterceptor implements RequestInterceptor {
  * Logging interceptor
  * Logs requests and responses for debugging
  */
-export class LoggingInterceptor
-  implements RequestInterceptor, ResponseInterceptor
-{
-  constructor(
-    private readonly enabled: boolean = process.env.NODE_ENV === "development",
-  ) {}
+export class LoggingInterceptor implements RequestInterceptor, ResponseInterceptor {
+  constructor(private readonly enabled: boolean = process.env.NODE_ENV === 'development') {}
 
-  onRequest(
-    endpoint: string,
-    config: RequestConfig,
-    context: RequestContext,
-  ): { config: RequestConfig; context: RequestContext } {
+  onRequest(endpoint: string, config: RequestConfig, context: RequestContext): { config: RequestConfig; context: RequestContext } {
     if (!this.enabled) {
       return { config, context };
     }
@@ -98,7 +71,7 @@ export class LoggingInterceptor
       },
     };
 
-    console.log(`[HTTP] ${config.method || "GET"} ${endpoint}`, {
+    console.log(`[HTTP] ${config.method || 'GET'} ${endpoint}`, {
       requestId: enhancedContext.metadata?.requestId,
       headers: config.headers,
       body: config.body,
@@ -107,17 +80,12 @@ export class LoggingInterceptor
     return { config, context: enhancedContext };
   }
 
-  onResponse<T>(
-    response: ApiResponse<T>,
-    context: RequestContext,
-  ): ApiResponse<T> {
+  onResponse<T>(response: ApiResponse<T>, context: RequestContext): ApiResponse<T> {
     if (!this.enabled) {
       return response;
     }
 
-    const duration = context.metadata?.startTime
-      ? Date.now() - context.metadata.startTime
-      : 0;
+    const duration = context.metadata?.startTime ? Date.now() - context.metadata.startTime : 0;
 
     console.log(`[HTTP] Response ${response.status}`, {
       requestId: context.metadata?.requestId,
@@ -130,25 +98,17 @@ export class LoggingInterceptor
 
   onError(error: Error, context: RequestContext): never {
     if (this.enabled) {
-      const duration = context.metadata?.startTime
-        ? Date.now() - context.metadata.startTime
-        : 0;
+      const duration = context.metadata?.startTime ? Date.now() - context.metadata.startTime : 0;
 
       // Silently skip 404 errors (expected for missing resources like deleted ads)
-      const is404 =
-        (error instanceof ApiError && error.status === 404) ||
-        error.message?.includes("404") ||
-        error.message?.includes("Not Found");
+      const is404 = (error instanceof ApiError && error.status === 404) || error.message?.includes('404') || error.message?.includes('Not Found');
 
       if (!is404) {
-        console.error(
-          `[HTTP] Error ${context.method?.toUpperCase() || "?"} ${context.url}`,
-          {
-            requestId: context.metadata?.requestId,
-            duration: `${duration}ms`,
-            error: error.message || String(error),
-          },
-        );
+        console.error(`[HTTP] Error ${context.method?.toUpperCase() || '?'} ${context.url}`, {
+          requestId: context.metadata?.requestId,
+          duration: `${duration}ms`,
+          error: error.message || String(error),
+        });
       }
     }
 
@@ -173,7 +133,7 @@ export class HttpClient {
   private baseClient: BaseClient;
   private interceptorManager: InterceptorManager;
 
-  constructor(baseUrl: string = API_CONFIG.BASE_URL) {
+  constructor(baseUrl: string = API_CONFIG.BASE_URL!) {
     this.baseClient = new BaseClient(baseUrl);
     this.interceptorManager = new InterceptorManager();
 
@@ -211,45 +171,30 @@ export class HttpClient {
   /**
    * Execute HTTP request with interceptor chain
    */
-  async request<T>(
-    endpoint: string,
-    config: RequestConfig = {},
-    context: RequestContext = {},
-  ): Promise<T> {
+  async request<T>(endpoint: string, config: RequestConfig = {}, context: RequestContext = {}): Promise<T> {
     // Enrich context with method and url upfront so error interceptors can log them
-    context.method = config.method || "GET";
+    context.method = config.method || 'GET';
     context.url = endpoint;
 
     try {
       // Execute request interceptors
-      const { config: modifiedConfig, context: modifiedContext } =
-        await this.interceptorManager.executeRequestInterceptors(
-          endpoint,
-          config,
-          context,
-        );
-
-      // Execute base HTTP request
-      const response = await this.baseClient.request<T>(
+      const { config: modifiedConfig, context: modifiedContext } = await this.interceptorManager.executeRequestInterceptors(
         endpoint,
-        modifiedConfig,
+        config,
+        context,
       );
 
+      // Execute base HTTP request
+      const response = await this.baseClient.request<T>(endpoint, modifiedConfig);
+
       // Execute response interceptors
-      const modifiedResponse =
-        await this.interceptorManager.executeResponseInterceptors(
-          response,
-          modifiedContext,
-        );
+      const modifiedResponse = await this.interceptorManager.executeResponseInterceptors(response, modifiedContext);
 
       // Return data only (not the full response wrapper)
       return modifiedResponse.data;
     } catch (error) {
       // Execute error interceptors
-      await this.interceptorManager.executeErrorInterceptors(
-        error as Error,
-        context,
-      );
+      await this.interceptorManager.executeErrorInterceptors(error as Error, context);
 
       // This line won't be reached, but TypeScript needs it
       throw error;
@@ -260,47 +205,35 @@ export class HttpClient {
    * GET request
    */
   async get<T>(endpoint: string, context?: RequestContext): Promise<T> {
-    return this.request<T>(endpoint, { method: "GET" }, context);
+    return this.request<T>(endpoint, { method: 'GET' }, context);
   }
 
   /**
    * POST request
    */
-  async post<T>(
-    endpoint: string,
-    body?: unknown,
-    context?: RequestContext,
-  ): Promise<T> {
-    return this.request<T>(endpoint, { method: "POST", body }, context);
+  async post<T>(endpoint: string, body?: unknown, context?: RequestContext): Promise<T> {
+    return this.request<T>(endpoint, { method: 'POST', body }, context);
   }
 
   /**
    * PUT request
    */
-  async put<T>(
-    endpoint: string,
-    body?: unknown,
-    context?: RequestContext,
-  ): Promise<T> {
-    return this.request<T>(endpoint, { method: "PUT", body }, context);
+  async put<T>(endpoint: string, body?: unknown, context?: RequestContext): Promise<T> {
+    return this.request<T>(endpoint, { method: 'PUT', body }, context);
   }
 
   /**
    * PATCH request
    */
-  async patch<T>(
-    endpoint: string,
-    body?: unknown,
-    context?: RequestContext,
-  ): Promise<T> {
-    return this.request<T>(endpoint, { method: "PATCH", body }, context);
+  async patch<T>(endpoint: string, body?: unknown, context?: RequestContext): Promise<T> {
+    return this.request<T>(endpoint, { method: 'PATCH', body }, context);
   }
 
   /**
    * DELETE request
    */
   async delete<T>(endpoint: string, context?: RequestContext): Promise<T> {
-    return this.request<T>(endpoint, { method: "DELETE" }, context);
+    return this.request<T>(endpoint, { method: 'DELETE' }, context);
   }
 }
 

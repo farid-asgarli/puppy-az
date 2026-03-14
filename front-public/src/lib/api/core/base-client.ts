@@ -69,7 +69,7 @@ export interface ApiResponse<T> {
  * (These are handled by the higher-level http-client with interceptors)
  */
 export class BaseClient {
-  constructor(private readonly baseUrl: string = API_CONFIG.BASE_URL) {}
+  constructor(private readonly baseUrl: string = API_CONFIG.BASE_URL!) {}
 
   /**
    * Execute HTTP request with proper error handling

@@ -37,7 +37,7 @@ interface FetchOptions extends RequestInit {
 export class ApiClient {
   private baseUrl: string;
 
-  constructor(baseUrl: string = API_CONFIG.BASE_URL) {
+  constructor(baseUrl: string = API_CONFIG.BASE_URL!) {
     this.baseUrl = baseUrl;
   }
 
