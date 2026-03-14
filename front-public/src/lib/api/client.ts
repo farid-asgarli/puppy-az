@@ -4,10 +4,7 @@ import type { ProblemDetails } from './types/auth.types';
  * API configuration
  */
 export const API_CONFIG = {
-  BASE_URL:
-    typeof window === 'undefined'
-      ? process.env.NEXT_SERVER_API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005'
-      : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005',
+  BASE_URL: typeof window === 'undefined' ? process.env.NEXT_SERVER_API_URL || process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL,
   TIMEOUT: 30000, // 30 seconds
 } as const;
 
@@ -15,7 +12,11 @@ export const API_CONFIG = {
  * Custom error class for API errors
  */
 export class ApiError extends Error {
-  constructor(public status: number, public statusText: string, public details?: ProblemDetails) {
+  constructor(
+    public status: number,
+    public statusText: string,
+    public details?: ProblemDetails,
+  ) {
     super(details?.detail || details?.title || statusText);
     this.name = 'ApiError';
   }

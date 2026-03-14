@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 
 export const LoginSideContent = () => {
   const t = useTranslations('login');
-  const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5005';
+  const backendUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <div className="relative w-full h-full bg-gray-900 overflow-hidden">

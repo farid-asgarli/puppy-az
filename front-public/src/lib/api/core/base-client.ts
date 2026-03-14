@@ -1,15 +1,10 @@
-import type { ProblemDetails } from "../types/auth.types";
+import type { ProblemDetails } from '../types/auth.types';
 
 /**
  * API configuration
  */
 export const API_CONFIG = {
-  BASE_URL:
-    typeof window === "undefined"
-      ? process.env.NEXT_SERVER_API_URL ||
-        process.env.NEXT_PUBLIC_API_URL ||
-        "http://localhost:5005"
-      : process.env.NEXT_PUBLIC_API_URL || "http://localhost:5005",
+  BASE_URL: typeof window === 'undefined' ? process.env.NEXT_SERVER_API_URL || process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL,
   TIMEOUT: 30000, // 30 seconds
 } as const;
 
@@ -24,14 +19,14 @@ export class ApiError extends Error {
     public details?: ProblemDetails,
   ) {
     super(details?.detail || details?.title || statusText);
-    this.name = "ApiError";
+    this.name = 'ApiError';
   }
 }
 
 /**
  * HTTP request configuration
  */
-export interface RequestConfig extends Omit<RequestInit, "body"> {
+export interface RequestConfig extends Omit<RequestInit, 'body'> {
   /**
    * Request body - will be automatically serialized to JSON
    */
@@ -79,16 +74,8 @@ export class BaseClient {
   /**
    * Execute HTTP request with proper error handling
    */
-  async request<T>(
-    endpoint: string,
-    config: RequestConfig = {},
-  ): Promise<ApiResponse<T>> {
-    const {
-      body,
-      headers = {},
-      timeout = API_CONFIG.TIMEOUT,
-      ...fetchOptions
-    } = config;
+  async request<T>(endpoint: string, config: RequestConfig = {}): Promise<ApiResponse<T>> {
+    const { body, headers = {}, timeout = API_CONFIG.TIMEOUT, ...fetchOptions } = config;
 
     const url = `${this.baseUrl}${endpoint}`;
 
@@ -97,7 +84,7 @@ export class BaseClient {
     const requestHeaders: HeadersInit = {
       ...headers,
       // Only set Content-Type for JSON, let browser set it for FormData
-      ...(!isFormData && { "Content-Type": "application/json" }),
+      ...(!isFormData && { 'Content-Type': 'application/json' }),
     };
 
     // Setup abort controller for timeout
@@ -111,7 +98,7 @@ export class BaseClient {
         body: isFormData ? body : body ? JSON.stringify(body) : undefined,
         signal: controller.signal,
         // Disable Next.js caching for all API requests to ensure fresh data
-        cache: "no-store",
+        cache: 'no-store',
       });
 
       clearTimeout(timeoutId);
@@ -139,8 +126,8 @@ export class BaseClient {
       }
 
       // Handle abort/timeout
-      if (error instanceof Error && error.name === "AbortError") {
-        throw new ApiError(408, "Request Timeout");
+      if (error instanceof Error && error.name === 'AbortError') {
+        throw new ApiError(408, 'Request Timeout');
       }
 
       // Handle network errors
@@ -149,7 +136,7 @@ export class BaseClient {
       }
 
       // Unknown error
-      throw new ApiError(0, "Unknown error occurred");
+      throw new ApiError(0, 'Unknown error occurred');
     }
   }
 
@@ -163,8 +150,8 @@ export class BaseClient {
     }
 
     // Parse JSON responses
-    const contentType = response.headers.get("content-type");
-    if (contentType?.includes("application/json")) {
+    const contentType = response.headers.get('content-type');
+    if (contentType?.includes('application/json')) {
       return await response.json();
     }
 
@@ -179,11 +166,8 @@ export class BaseClient {
     let details: ProblemDetails | undefined;
 
     try {
-      const contentType = response.headers.get("content-type");
-      if (
-        contentType?.includes("application/json") ||
-        contentType?.includes("application/problem+json")
-      ) {
+      const contentType = response.headers.get('content-type');
+      if (contentType?.includes('application/json') || contentType?.includes('application/problem+json')) {
         details = await response.json();
       }
     } catch {
@@ -196,53 +180,35 @@ export class BaseClient {
   /**
    * Convenience method: GET request
    */
-  async get<T>(
-    endpoint: string,
-    config?: Omit<RequestConfig, "method" | "body">,
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { ...config, method: "GET" });
+  async get<T>(endpoint: string, config?: Omit<RequestConfig, 'method' | 'body'>): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...config, method: 'GET' });
   }
 
   /**
    * Convenience method: POST request
    */
-  async post<T>(
-    endpoint: string,
-    body?: unknown,
-    config?: Omit<RequestConfig, "method" | "body">,
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { ...config, method: "POST", body });
+  async post<T>(endpoint: string, body?: unknown, config?: Omit<RequestConfig, 'method' | 'body'>): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...config, method: 'POST', body });
   }
 
   /**
    * Convenience method: PUT request
    */
-  async put<T>(
-    endpoint: string,
-    body?: unknown,
-    config?: Omit<RequestConfig, "method" | "body">,
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { ...config, method: "PUT", body });
+  async put<T>(endpoint: string, body?: unknown, config?: Omit<RequestConfig, 'method' | 'body'>): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...config, method: 'PUT', body });
   }
 
   /**
    * Convenience method: PATCH request
    */
-  async patch<T>(
-    endpoint: string,
-    body?: unknown,
-    config?: Omit<RequestConfig, "method" | "body">,
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { ...config, method: "PATCH", body });
+  async patch<T>(endpoint: string, body?: unknown, config?: Omit<RequestConfig, 'method' | 'body'>): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...config, method: 'PATCH', body });
   }
 
   /**
    * Convenience method: DELETE request
    */
-  async delete<T>(
-    endpoint: string,
-    config?: Omit<RequestConfig, "method" | "body">,
-  ): Promise<ApiResponse<T>> {
-    return this.request<T>(endpoint, { ...config, method: "DELETE" });
+  async delete<T>(endpoint: string, config?: Omit<RequestConfig, 'method' | 'body'>): Promise<ApiResponse<T>> {
+    return this.request<T>(endpoint, { ...config, method: 'DELETE' });
   }
 }

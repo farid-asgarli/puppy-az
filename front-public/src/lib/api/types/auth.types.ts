@@ -1,5 +1,4 @@
 // Generated from Swagger API definition
-// Base URL: http://localhost:5005
 
 /**
  * Login credentials email/password
@@ -34,7 +33,7 @@ export interface RegisterCommand {
  */
 export interface SendVerificationCodeCommand {
   phoneNumber: string;
-  purpose: "Registration" | "Login" | "PasswordReset";
+  purpose: 'Registration' | 'Login' | 'PasswordReset';
 }
 
 /**
@@ -139,6 +138,4 @@ export interface ProblemDetails {
 /**
  * API response wrapper for typed responses
  */
-export type ApiResponse<T> =
-  | { success: true; data: T }
-  | { success: false; error: ProblemDetails };
+export type ApiResponse<T> = { success: true; data: T } | { success: false; error: ProblemDetails };
