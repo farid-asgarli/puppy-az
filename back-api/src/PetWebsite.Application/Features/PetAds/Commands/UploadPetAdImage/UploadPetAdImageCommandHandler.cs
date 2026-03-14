@@ -21,12 +21,15 @@ public class UploadPetAdImageCommandHandler(
 	public async Task<Result<PetAdImageDto>> Handle(UploadPetAdImageCommand request, CancellationToken ct)
 	{
 		var isAdmin = currentUserService.IsInAnyRole("Admin", "SuperAdmin");
-		
-		// If admin specified a target user, use that user's ID (image belongs to user, not admin)
+
+		// Determine uploader ID:
+		// - Admin uploading for a specific user: use that user's ID
+		// - Admin uploading directly (creating ad): null (no RegularUser FK)
+		// - Regular user uploading: their own ID
 		Guid? uploaderId;
-		if (request.UploadForUserId.HasValue && isAdmin)
+		if (isAdmin)
 		{
-			uploaderId = request.UploadForUserId.Value;
+			uploaderId = request.UploadForUserId; // may be null — that's fine
 		}
 		else
 		{
@@ -91,7 +94,7 @@ public class UploadPetAdImageCommandHandler(
 			FileName = fileMetadata.FileName,
 			FileSize = fileMetadata.Size,
 			ContentType = fileMetadata.ContentType,
-			UploadedById = uploaderId.Value,
+			UploadedById = uploaderId,
 			UploadedAt = DateTime.UtcNow,
 			IsPrimary = false,
 			PetAdId = null, // Orphaned state - not yet attached to an ad

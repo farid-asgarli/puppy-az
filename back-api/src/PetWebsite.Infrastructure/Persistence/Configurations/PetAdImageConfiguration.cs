@@ -25,7 +25,7 @@ public class PetAdImageConfiguration : IEntityTypeConfiguration<PetAdImage>
 
 		builder.Property(e => e.UploadedAt).IsRequired();
 
-		builder.Property(e => e.UploadedById).IsRequired();
+		builder.Property(e => e.UploadedById).IsRequired(false);
 
 		builder.Property(e => e.AttachedAt).IsRequired(false);
 

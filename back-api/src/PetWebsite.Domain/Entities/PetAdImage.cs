@@ -39,14 +39,14 @@ public class PetAdImage : BaseEntity
 
 	/// <summary>
 	/// Gets or sets the user ID who uploaded this image.
-	/// Used for ownership verification before attaching to pet ad.
+	/// Null when uploaded by an admin on behalf of an ad (no specific user).
 	/// </summary>
-	public Guid UploadedById { get; set; }
+	public Guid? UploadedById { get; set; }
 
 	/// <summary>
 	/// Navigation property to the user who uploaded this image.
 	/// </summary>
-	public User UploadedBy { get; set; } = null!;
+	public User? UploadedBy { get; set; }
 
 	/// <summary>
 	/// Gets or sets when the image was attached to a pet ad.
