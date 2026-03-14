@@ -27,6 +27,9 @@ jobs:
             BACKEND_DIR="$APP_DIR/back-api"
             ADMIN_DIR="$APP_DIR/admin-panel"
 
+            # Always restart the service on exit (success or failure)
+            trap 'systemctl start petwebsite-api || true' EXIT
+
             # Navigate to app directory
             cd $APP_DIR
 
@@ -37,7 +40,7 @@ jobs:
 
             # Stop Backend Service BEFORE building
             echo "[2/7] Stopping Backend service..."
-            sudo systemctl stop petwebsite-api
+            systemctl stop petwebsite-api
 
             # Build Admin Panel
             echo "[3/7] Building Admin Panel..."
@@ -62,11 +65,14 @@ jobs:
             if [ -d "$BACKEND_DIR/src/PetWebsite.API/wwwroot" ]; then
                 rsync -av --exclude='uploads' "$BACKEND_DIR/src/PetWebsite.API/wwwroot/" "$BACKEND_DIR/publish/wwwroot/"
             fi
+            chown -R www-data:www-data "$BACKEND_DIR/publish"
 
-            # Start Backend
+            # Start Backend (trap will also start it, but we want the status check here)
             echo "[7/7] Starting Backend service..."
-            sudo systemctl start petwebsite-api
-            sudo systemctl status petwebsite-api --no-pager
+            trap - EXIT
+            systemctl start petwebsite-api
+            sleep 3
+            systemctl status petwebsite-api --no-pager
 
             echo "=========================================="
             echo "Deployment completed successfully!"
