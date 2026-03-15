@@ -22,19 +22,21 @@ public static class ServiceCollectionExtensions
 		{
 			if (environment.IsDevelopment())
 			{
-				// Development: Allow localhost origins
+				var devOrigins = new[]
+				{
+					"http://localhost:3000",
+					"http://localhost:3001",
+					"http://localhost:4200",
+					"http://localhost:5173",
+					"http://localhost:8080"
+				};
+				Console.WriteLine($"[CORS] Development mode — allowing origins: {string.Join(", ", devOrigins)}");
 				options.AddPolicy(
 					"AllowedOrigins",
 					policy =>
 					{
 						policy
-							.WithOrigins(
-								"http://localhost:3000",
-								"http://localhost:3001",
-								"http://localhost:4200",
-								"http://localhost:5173",
-								"http://localhost:8080"
-							)
+							.WithOrigins(devOrigins)
 							.AllowAnyMethod()
 							.AllowAnyHeader()
 							.AllowCredentials()
@@ -46,6 +48,11 @@ public static class ServiceCollectionExtensions
 			{
 				// Production: Read from configuration
 				var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
+				if (allowedOrigins.Length == 0)
+					Console.WriteLine("[CORS] WARNING: No Cors:AllowedOrigins configured in appsettings — all browser requests will be blocked by CORS!");
+				else
+					Console.WriteLine($"[CORS] Production mode — {allowedOrigins.Length} allowed origin(s): {string.Join(", ", allowedOrigins)}");
 
 				options.AddPolicy(
 					"AllowedOrigins",

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Enums;
@@ -8,11 +9,14 @@ namespace PetWebsite.Application.Features.Public.Statistics.Queries.GetPublicSta
 /// <summary>
 /// Handler for getting public statistics.
 /// </summary>
-public class GetPublicStatsQueryHandler(IApplicationDbContext dbContext) 
+public class GetPublicStatsQueryHandler(
+	IApplicationDbContext dbContext,
+	ILogger<GetPublicStatsQueryHandler> logger)
 	: IQueryHandler<GetPublicStatsQuery, Result<PublicStatsDto>>
 {
 	public async Task<Result<PublicStatsDto>> Handle(GetPublicStatsQuery request, CancellationToken cancellationToken)
 	{
+		logger.LogDebug("[Statistics] GetPublicStats query started");
 		try
 		{
 			var activeAdsCount = await dbContext.PetAds
@@ -21,6 +25,8 @@ public class GetPublicStatsQueryHandler(IApplicationDbContext dbContext)
 
 			var totalUsersCount = await dbContext.RegularUsers
 				.CountAsync(cancellationToken);
+
+			logger.LogInformation("[Statistics] ActiveAds={ActiveAds}, TotalUsers={TotalUsers}", activeAdsCount, totalUsersCount);
 
 			var stats = new PublicStatsDto
 			{
@@ -32,6 +38,7 @@ public class GetPublicStatsQueryHandler(IApplicationDbContext dbContext)
 		}
 		catch (Exception ex)
 		{
+			logger.LogError(ex, "[Statistics] Failed to retrieve public statistics: {Message}", ex.Message);
 			return Result<PublicStatsDto>.Failure($"Failed to retrieve statistics: {ex.Message}");
 		}
 	}

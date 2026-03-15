@@ -50,6 +50,14 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpContextAccessor();
 
+// Log key configuration at startup so it appears in journalctl
+var apiUrl = builder.Configuration["App:BaseUrl"] ?? "(not set)";
+var dbConn = builder.Configuration.GetConnectionString("DefaultConnection") ?? "(not set)";
+var env = builder.Environment.EnvironmentName;
+Console.WriteLine($"[STARTUP] Environment    : {env}");
+Console.WriteLine($"[STARTUP] App:BaseUrl    : {apiUrl}");
+Console.WriteLine($"[STARTUP] DB connection  : {dbConn}");
+
 // Configure custom services
 builder.Services.AddSingleton(TimeProvider.System);
 

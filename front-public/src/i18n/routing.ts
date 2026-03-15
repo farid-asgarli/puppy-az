@@ -1,6 +1,6 @@
-import { defineRouting } from 'next-intl/routing';
+import { defineRouting } from "next-intl/routing";
 
-export const locales = ['az', 'en', 'ru'] as const;
+export const locales = ["az", "en", "ru"] as const;
 export type Locale = (typeof locales)[number];
 
 export const routing = defineRouting({
@@ -8,5 +8,8 @@ export const routing = defineRouting({
   locales,
 
   // Used when no locale matches
-  defaultLocale: 'az',
+  defaultLocale: "az",
+
+  // Disable browser locale detection so the site always opens in Azerbaijani
+  localeDetection: false,
 });
