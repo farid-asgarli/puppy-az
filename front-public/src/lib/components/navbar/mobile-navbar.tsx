@@ -15,6 +15,7 @@ import { IconArrowLeft } from "@tabler/icons-react";
 import { useViewTransition } from "@/lib/hooks/use-view-transition";
 import { cn } from "@/lib/external/utils";
 import { useLocale } from "@/lib/hooks/use-client-locale";
+import LanguageSelector from "@/lib/components/navbar/language-selector";
 
 interface MobileNavbarProps {
   categories: PetCategoryDetailedDto[];
@@ -124,6 +125,13 @@ export function MobileNavbar({
           {isSearchRoute && (
             <div className="flex-shrink-0">
               <FilterButton className="lg:hidden border-0 p-2" />
+            </div>
+          )}
+
+          {/* Language Selector - visible on non-search routes */}
+          {!isSearchRoute && (
+            <div className="flex-shrink-0">
+              <LanguageSelector />
             </div>
           )}
         </div>

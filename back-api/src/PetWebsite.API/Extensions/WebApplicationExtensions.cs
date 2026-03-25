@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using PetWebsite.API.Middleware;
 using PetWebsite.Domain.Entities;
 using PetWebsite.Infrastructure.Persistence;
@@ -66,7 +67,7 @@ public static class WebApplicationExtensions
 
 		app.UseRequestLocalization();
 		app.UseCors("AllowedOrigins");
-
+		Console.WriteLine("[CORS] UseCors(AllowedOrigins) applied to middleware pipeline");
 		// Add token blacklist middleware after authentication
 		app.UseAuthentication();
 		app.UseMiddleware<TokenBlacklistMiddleware>();
