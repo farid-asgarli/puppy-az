@@ -102,7 +102,7 @@ const MessagesView = () => {
               {!searchQuery && (
                 <TransitionLink
                   href="/ads/s"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-linear-to-r from-primary-600 to-primary-700 text-white font-medium rounded-xl hover:from-primary-700 hover:to-primary-800 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   {t('browseAds')}
                 </TransitionLink>
@@ -142,12 +142,12 @@ const ConversationItem = ({ conversation }: { conversation: ConversationDto }) =
                 {conversation.otherPartyName}
               </Heading>
               {hasUnread && (
-                <div className="flex-shrink-0 min-w-5 h-5 px-1.5 rounded-full bg-primary-600 text-white text-xs flex items-center justify-center font-bold">
+                <div className="shrink-0 min-w-5 h-5 px-1.5 rounded-full bg-primary-600 text-white text-xs flex items-center justify-center font-bold">
                   {conversation.unreadCount}
                 </div>
               )}
             </div>
-            <Text variant="tiny" className="text-gray-500 flex-shrink-0">
+            <Text variant="tiny" className="text-gray-500 shrink-0">
               {timeAgo}
             </Text>
           </div>
@@ -157,7 +157,7 @@ const ConversationItem = ({ conversation }: { conversation: ConversationDto }) =
           </Text>
 
           <div className="flex items-center gap-1">
-            {hasUnread && <span className="flex-shrink-0 w-2 h-2 rounded-full bg-primary-600"></span>}
+            {hasUnread && <span className="shrink-0 w-2 h-2 rounded-full bg-primary-600"></span>}
             <Text variant="small" className={cn('truncate', hasUnread ? 'font-semibold text-gray-900' : 'text-gray-500')}>
               {conversation.lastMessageContent}
             </Text>
@@ -166,7 +166,7 @@ const ConversationItem = ({ conversation }: { conversation: ConversationDto }) =
 
         {/* Pet Ad Thumbnail */}
         {conversation.petAdImageUrl && (
-          <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100">
+          <div className="shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100">
             <img
               src={`${process.env.NEXT_PUBLIC_API_URL}${conversation.petAdImageUrl}`}
               alt={conversation.petAdTitle}
