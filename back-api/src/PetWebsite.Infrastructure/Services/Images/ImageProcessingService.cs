@@ -47,8 +47,11 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 			return CreateUnprocessedResult(imageStream, fileName, originalSize, extension);
 		}
 
-		// If file is below threshold, don't process
-		if (originalSize <= _options.CompressionThreshold)
+		// If file is below threshold AND no watermark is needed, skip processing entirely
+		bool belowThreshold = originalSize <= _options.CompressionThreshold;
+		bool hasWatermark = !string.IsNullOrEmpty(_options.WatermarkText);
+
+		if (belowThreshold && !hasWatermark)
 		{
 			_logger.LogDebug(
 				"Image {FileName} ({Size} bytes) is below compression threshold ({Threshold} bytes), skipping processing",
@@ -138,8 +141,13 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 				}
 			}
 
-			// Encode the image - try progressively lower quality if needed
-			using var image = SKImage.FromBitmap(bitmapToEncode);
+			// Apply watermark before encoding so it is baked into every stored image
+			bool watermarkApplied = false;
+			if (!string.IsNullOrEmpty(_options.WatermarkText))
+			{
+				ApplyWatermark(bitmapToEncode, _options.WatermarkText);
+				watermarkApplied = true;
+			}
 
 			// For large files (> 1MB), be more aggressive with compression
 			var qualityLevels = originalSize > 1024 * 1024 ? new[] { quality, 75, 65, 55 } : new[] { quality, 75 };
@@ -176,8 +184,8 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 
 				var currentSize = tempStream.Length;
 
-				// If this quality produces a smaller file than original and is the best so far
-				if (currentSize < originalSize && currentSize < bestSize)
+				// Accept if: watermark was applied (must produce output regardless of size), or the file shrank
+				if ((watermarkApplied || currentSize < originalSize) && currentSize < bestSize)
 				{
 					bestOutputStream?.Dispose();
 					bestOutputStream = tempStream;
@@ -336,6 +344,46 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Stamps a semi-transparent watermark on the supplied bitmap in-place.
+	/// </summary>
+	private void ApplyWatermark(SKBitmap bitmap, string text)
+	{
+		// Create a canvas that writes directly into the bitmap's pixel memory
+		using var surface = SKSurface.Create(
+			new SKImageInfo(bitmap.Width, bitmap.Height, bitmap.ColorType, bitmap.AlphaType),
+			bitmap.GetPixels(),
+			bitmap.RowBytes
+		);
+
+		var canvas = surface.Canvas;
+
+		// Scale font relative to image width so it looks consistent across resolutions
+		var fontSize = Math.Max(18f, bitmap.Width / 8f);
+		using var typeface = SKTypeface.FromFamilyName(null, SKFontStyle.Bold) ?? SKTypeface.Default;
+		using var font = new SKFont(typeface, fontSize);
+
+		var textWidth = font.MeasureText(text);
+		float cx = bitmap.Width / 2f;
+		float cy = bitmap.Height / 2f;
+
+		canvas.Save();
+		canvas.RotateDegrees(-25f, cx, cy);
+
+		// Subtle dark shadow improves legibility on bright backgrounds
+		using var shadowPaint = new SKPaint { Color = new SKColor(0, 0, 0, 35), IsAntialias = true };
+		canvas.DrawText(text, cx - textWidth / 2f + 1f, cy + fontSize / 3f + 1f, font, shadowPaint);
+
+		// White semi-transparent text (~18 % opacity)
+		using var paint = new SKPaint { Color = new SKColor(255, 255, 255, 46), IsAntialias = true };
+		canvas.DrawText(text, cx - textWidth / 2f, cy + fontSize / 3f, font, paint);
+
+		canvas.Restore();
+		canvas.Flush();
+
+		_logger.LogDebug("Watermark '{Text}' applied to image ({Width}x{Height})", text, bitmap.Width, bitmap.Height);
 	}
 
 	private static ImageProcessingResult CreateUnprocessedResult(Stream stream, string fileName, long size, string extension)

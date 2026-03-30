@@ -55,4 +55,11 @@ public class ImageProcessingOptions
 	/// Default: false (strip metadata for smaller files and privacy)
 	/// </summary>
 	public bool PreserveMetadata { get; set; } = false;
+
+	/// <summary>
+	/// Text to stamp as a semi-transparent watermark on every uploaded image.
+	/// Leave empty to disable watermarking.
+	/// Default: "" (disabled)
+	/// </summary>
+	public string WatermarkText { get; set; } = string.Empty;
 }
