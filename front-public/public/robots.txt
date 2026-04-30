@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /*/auth
+Disallow: /my-account
+Disallow: /*/my-account
+Disallow: /ads/ad-placement
+
+Sitemap: https://puppy.az/sitemap.xml
