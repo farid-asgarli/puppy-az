@@ -239,6 +239,7 @@
   "SMS.VerificationCodeAlreadyUsed": "Код подтверждения уже использован.",
   "SMS.VerificationCodeNotFound": "Неверный код подтверждения.",
   "SMS.CodeSent": "Код подтверждения успешно отправлен.",
+  "SMS.VerificationCodeMessage": "Ваш код подтверждения: {0}. Действителен {1} минут.",
   "SMS.TooManyRequests": "Слишком много запросов. Пожалуйста, подождите перед запросом нового кода.",
 
   "Message.ReceiverRequired": "Получатель сообщения обязателен.",

@@ -62,7 +62,7 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 			// Send SMS with verification code
 			try
 			{
-				var smsMessage = $"Your verification code is: {code}. Valid for {EXPIRY_MINUTES} minutes.";
+				var smsMessage = L(LocalizationKeys.Sms.VerificationCodeMessage, code, EXPIRY_MINUTES);
 				var smsOptions = new SendSmsOptions { Msisdn = phoneNumber, Body = smsMessage };
 
 				await _smsService.SendSmsAsync(smsOptions, cancellationToken);

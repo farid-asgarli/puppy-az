@@ -241,6 +241,7 @@
   "SMS.VerificationCodeAlreadyUsed": "Verification code has already been used.",
   "SMS.VerificationCodeNotFound": "Invalid verification code.",
   "SMS.CodeSent": "Verification code sent successfully.",
+  "SMS.VerificationCodeMessage": "Your verification code is: {0}. Valid for {1} minutes.",
   "SMS.TooManyRequests": "Too many requests. Please wait before requesting a new code.",
 
   "Message.ReceiverRequired": "Message receiver is required.",

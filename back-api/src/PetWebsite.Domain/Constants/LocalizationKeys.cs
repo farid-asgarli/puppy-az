@@ -375,6 +375,7 @@ public static class LocalizationKeys
 		public const string VerificationCodeAlreadyUsed = "SMS.VerificationCodeAlreadyUsed";
 		public const string VerificationCodeNotFound = "SMS.VerificationCodeNotFound";
 		public const string CodeSent = "SMS.CodeSent";
+		public const string VerificationCodeMessage = "SMS.VerificationCodeMessage";
 		public const string TooManyRequests = "SMS.TooManyRequests";
 		public const string PurposeRequired = "SMS.PurposeRequired";
 		public const string InvalidPurpose = "SMS.InvalidPurpose";
