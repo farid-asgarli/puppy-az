@@ -1,0 +1,39 @@
+SMS sending (over HTTP) API
+To send sms call this url by HTTP GET:
+https://click.atlsms.az/index.php?app=quick_sms_redex&login=LOGIN&key=KEY&se
+nder=SENDER&msisdn=MSISDN&text=MSG_BODY
+MSG_BODY NEW LINE = %0a
+LOGIN - YOUR LOGIN
+KEY - MD5(YOUR PASSWORD)
+SENDER - YOUR SENDER
+MSISDN - YOUR NUMBER
+MSG_BODY - YOUR SMS
+Any positive integer indicates success and is transaction id to be used when
+getting delivery reports.
+Checking for delivery reports
+https://click.atlsms.az/index.php?app=quick_sms_report&login=LOGIN&key=KEY&tr
+ans_id=TRANS_ID
+LOGIN - YOUR LOGIN
+KEY - MD5(YOUR PASSWORD)
+TRANS_ID - transaction id received upon successfull sms submit operation
+Delivery reports:
+100 - In queue
+101 - Delivered
+102 - Undelivered
+103 - Expired
+104 - Rejected
+105 - Cancelled
+106 - Error
+107 - Unknown
+108 - Sent
+109 - BLACK_LIST
+Error responses:
+-100 - invalid key
+-101 - text more than allowed length
+-102 - wrong number format
+-103 - invalid sender name
+-104 - insufficient balance
+-106 - invalid transaction id
+-108 - invalid hash
+-110 - invalid login
+-500 - internal error

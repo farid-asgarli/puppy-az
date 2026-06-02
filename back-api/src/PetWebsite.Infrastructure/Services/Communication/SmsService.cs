@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,7 +14,8 @@ using PetWebsite.Infrastructure.Configuration;
 namespace PetWebsite.Infrastructure.Services.Communication;
 
 /// <summary>
-/// Service for sending SMS messages via LSIM (Falkon.az) provider.
+/// Service for sending SMS messages via ATL InfoTech (atlsms.az) provider.
+/// Uses the JSON API for sending and the XML Bulk API for balance checks.
 /// </summary>
 public class SmsService(
 	IOptions<SmsSettings> settings,
@@ -42,24 +44,23 @@ public class SmsService(
 
 		try
 		{
-			// Generate password hash (MD5)
-			var passwordHash = ComputeMd5Hash(_settings.Password);
+			var key = ComputeMd5Hash(_settings.Password);
 
-			// Generate key hash: MD5(passwordHash + login + message + msisdn + sender)
-			var keyInput = passwordHash + _settings.Login + options.Body + options.Msisdn + _settings.Sender;
-			var keyHash = ComputeMd5Hash(keyInput);
-
-			// URL encode message and sender
-			var textEncoded = Uri.EscapeDataString(options.Body);
-			var senderEncoded = Uri.EscapeDataString(_settings.Sender);
-
-			// Build the request URL
-			var url =
-				$"{_settings.SendMessageUrl}login={_settings.Login}&msisdn={options.Msisdn}"
-				+ $"&text={textEncoded}&sender={senderEncoded}&key={keyHash}";
+			var payload = new
+			{
+				login = _settings.Login,
+				key,
+				sender = _settings.Sender,
+				scheduled = "NOW",
+				text = options.Body,
+				msisdn = options.Msisdn,
+				unicode = false,
+			};
 
 			var httpClient = _httpClientFactory.CreateClient();
-			var response = await httpClient.GetAsync(url, cancellationToken);
+			var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+
+			var response = await httpClient.PostAsync(_settings.SendMessageUrl, jsonContent, cancellationToken);
 
 			if (!response.IsSuccessStatusCode)
 			{
@@ -67,7 +68,24 @@ public class SmsService(
 				throw new SmsException(LocalizationKeys.Sms.SendFailed, _localizer[LocalizationKeys.Sms.SendFailed, response.StatusCode]);
 			}
 
-			_logger.LogInformation("SMS sent successfully to {Msisdn}", options.Msisdn);
+			var content = await response.Content.ReadAsStringAsync(cancellationToken);
+			var atlResponse = JsonSerializer.Deserialize<AtlSmsResponse>(
+				content,
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+			);
+
+			if (atlResponse?.ErrorCode != null)
+			{
+				_logger.LogError(
+					"ATL SMS error for {Msisdn}. Code: {ErrorCode}, Message: {Message}",
+					options.Msisdn,
+					atlResponse.ErrorCode,
+					atlResponse.Message
+				);
+				throw new SmsException(LocalizationKeys.Sms.SendFailed, _localizer[LocalizationKeys.Sms.SendFailed, atlResponse.ErrorCode]);
+			}
+
+			_logger.LogInformation("SMS sent successfully to {Msisdn}. TransId: {TransId}", options.Msisdn, atlResponse?.TransId);
 		}
 		catch (HttpRequestException ex)
 		{
@@ -90,18 +108,22 @@ public class SmsService(
 	{
 		try
 		{
-			// Generate password hash (MD5)
-			var passwordHash = ComputeMd5Hash(_settings.Password);
-
-			// Generate key hash: MD5(passwordHash + login)
-			var keyInput = passwordHash + _settings.Login;
-			var keyHash = ComputeMd5Hash(keyInput);
-
-			// Build the request URL
-			var url = $"{_settings.CheckBalanceUrl}login={_settings.Login}&key={keyHash}";
+			// ATL balance check uses the XML Bulk API
+			var xmlRequest = new XDocument(
+				new XElement(
+					"request",
+					new XElement(
+						"head",
+						new XElement("operation", "units"),
+						new XElement("login", _settings.Login),
+						new XElement("password", _settings.Password)
+					)
+				)
+			);
 
 			var httpClient = _httpClientFactory.CreateClient();
-			var response = await httpClient.GetAsync(url, cancellationToken);
+			var xmlContent = new StringContent(xmlRequest.ToString(), Encoding.UTF8, "application/xml");
+			var response = await httpClient.PostAsync(_settings.BulkApiUrl, xmlContent, cancellationToken);
 
 			if (!response.IsSuccessStatusCode)
 			{
@@ -113,31 +135,32 @@ public class SmsService(
 			}
 
 			var content = await response.Content.ReadAsStringAsync(cancellationToken);
-			var lsimResponse = JsonSerializer.Deserialize<LsimResponse>(
-				content,
-				new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
-			);
+			var xmlResponse = XDocument.Parse(content);
 
-			if (lsimResponse?.Data == null)
+			var responseCode = xmlResponse.Root?.Element("head")?.Element("responsecode")?.Value;
+			if (responseCode != "000")
 			{
-				_logger.LogWarning("SMS balance check returned null or invalid response");
+				_logger.LogWarning("SMS balance check failed with response code: {ResponseCode}", responseCode);
+				throw new SmsException(
+					LocalizationKeys.Sms.BalanceCheckFailed,
+					_localizer[LocalizationKeys.Sms.BalanceCheckFailed, responseCode ?? "unknown"]
+				);
+			}
+
+			var unitsStr = xmlResponse.Root?.Element("body")?.Element("units")?.Value;
+			if (!decimal.TryParse(unitsStr, out var balance))
+			{
+				_logger.LogWarning("SMS balance check returned invalid units value: {Units}", unitsStr);
 				throw new SmsException(LocalizationKeys.Sms.InvalidResponse, _localizer[LocalizationKeys.Sms.InvalidResponse]);
 			}
 
-			var balance = lsimResponse.Data.Obj;
 			_logger.LogInformation("SMS balance checked successfully. Balance: {Balance}", balance);
-
 			return balance;
 		}
 		catch (HttpRequestException ex)
 		{
 			_logger.LogError(ex, "HTTP request failed while checking SMS balance");
 			throw new SmsException(LocalizationKeys.Sms.NetworkError, _localizer[LocalizationKeys.Sms.NetworkError], ex);
-		}
-		catch (JsonException ex)
-		{
-			_logger.LogError(ex, "Failed to parse SMS balance response");
-			throw new SmsException(LocalizationKeys.Sms.InvalidResponse, _localizer[LocalizationKeys.Sms.InvalidResponse], ex);
 		}
 		catch (SmsException)
 		{

@@ -1,16 +1,11 @@
 namespace PetWebsite.Infrastructure.Configuration;
 
 /// <summary>
-/// Configuration options for SMS service (LSIM/Falkon.az provider).
+/// Configuration options for SMS service (ATL InfoTech / atlsms.az provider).
 /// </summary>
 public class SmsSettings
 {
 	public const string SectionName = "SmsSettings";
-
-	/// <summary>
-	/// Secret key for SMS service.
-	/// </summary>
-	public string Secret { get; set; } = string.Empty;
 
 	/// <summary>
 	/// Login username for SMS provider.
@@ -23,22 +18,17 @@ public class SmsSettings
 	public string Sender { get; set; } = string.Empty;
 
 	/// <summary>
-	/// Password for SMS provider authentication.
+	/// Password for SMS provider authentication. MD5 hash of this is used as the key.
 	/// </summary>
 	public string Password { get; set; } = string.Empty;
 
 	/// <summary>
-	/// API endpoint for sending SMS messages.
+	/// API endpoint for sending SMS messages (JSON API).
 	/// </summary>
-	public string SendMessageUrl { get; set; } = "http://apps.lsim.az/quicksms/v1/send?";
+	public string SendMessageUrl { get; set; } = "https://click.atlsms.az/index.php?app=json_api_send";
 
 	/// <summary>
-	/// API endpoint for checking SMS balance.
+	/// API endpoint for the XML Bulk API (used for balance checks).
 	/// </summary>
-	public string CheckBalanceUrl { get; set; } = "http://apps.lsim.az/quicksms/v1/balance?";
-
-	/// <summary>
-	/// Login URL for the SMS provider portal.
-	/// </summary>
-	public string LoginUrl { get; set; } = "https://ci.falkon.az/login";
+	public string BulkApiUrl { get; set; } = "https://click.atlsms.az/bulksms/api";
 }

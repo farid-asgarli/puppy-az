@@ -1,0 +1,70 @@
+ATL InfoTech
+JSON SMS CONNECTION
+1. All requests should be sent:
+https://click.atlsms.az/index.php?app=json_api_send
+login Your login
+key MD5(Your Password)
+sender Your Sender name
+scheduled NOW or date-time ( 2021-12-19 15:40:05)
+text Your Message text (1000)
+msisdn Recipients phone number (994709990907)
+unicode true or false
+Examples:
+{
+"login":"test",
+"key":"0c5d8d552599dc84fbf3a08fc9h52a0",
+"sender":"ATL_SMS",
+"scheduled":"NOW",
+"text":"hello",
+"msisdn":"994551234567",
+"unicode ":false
+}
+If operation is successful, you will get response from server with TRANSACTION_ID :
+Examples:
+{
+"message": "Sms sent successfully.",
+" transId":"159686209"
+}
+else,
+{
+"message":" Unable Error.",
+"error_code":ERROR_CODE
+}
+2. Get delivery reports
+https://click.atlsms.az/index.php?app=json_api_report
+login Your login
+key MD5(Password)
+transid Transaction_id
+Examples:
+{
+"login":"test",
+"key":"0c5d8d552599dc84fbf3a08fc9h52a0",
+"transid":"318695390"
+}
+If operation is successful, you will get delivery status response from server
+Examples:
+{
+"message": "Report is successfully.",
+"delivery_status": "101"
+}
+else,
+{
+"message":" Unable Error.",
+"error_code":ERROR_CODE
+}
+Code Delivery Status
+100 QUEUED
+101 DELIVRD
+102 UNDELIV
+103 EXPIRED
+109 BLACK_LIST
+3. Error Response Codes
+Code Description (ERROR_CODE)
+-20 Invalid login
+-18 Invalid key
+-13 Invalid sender
+-15 Invalid scheduled
+-16 Invalid transId
+-11 Long Sms error
+-14 No Balance
+-12 Data is incomplete.

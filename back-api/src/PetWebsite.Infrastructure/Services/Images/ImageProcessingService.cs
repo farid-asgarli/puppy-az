@@ -156,6 +156,8 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 			long bestSize = long.MaxValue;
 			int usedQuality = quality;
 
+			using var image = SKImage.FromBitmap(bitmapToEncode);
+
 			foreach (var q in qualityLevels)
 			{
 				SKData? encodedData;

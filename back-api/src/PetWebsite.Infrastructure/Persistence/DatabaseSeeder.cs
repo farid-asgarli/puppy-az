@@ -127,21 +127,12 @@ public static partial class DatabaseSeeder
 		if (azLocale == null || enLocale == null || ruLocale == null)
 			return;
 
-		// Read seed.json file
-		var seedJsonPath = Path.Combine(AppContext.BaseDirectory, "seed.json");
-		if (!File.Exists(seedJsonPath))
+		// Read seed.json for category metadata
+		var seedJsonPath = ResolveSeedFilePath("seed.json");
+		if (seedJsonPath == null)
 		{
-			// Try alternative path (development scenario)
-			var alternativePath = Path.Combine(Directory.GetCurrentDirectory(), "seed.json");
-			if (File.Exists(alternativePath))
-			{
-				seedJsonPath = alternativePath;
-			}
-			else
-			{
-				Console.WriteLine("Warning: seed.json file not found. Skipping pet categories and breeds seeding.");
-				return;
-			}
+			Console.WriteLine("Warning: seed.json file not found. Skipping pet categories and breeds seeding.");
+			return;
 		}
 
 		var jsonContent = await File.ReadAllTextAsync(seedJsonPath);
@@ -153,25 +144,50 @@ public static partial class DatabaseSeeder
 		if (seedData == null)
 			return;
 
-		// Category key mapping for the 10 official pet categories
-		var categoryKeyMapping = new Dictionary<string, string>
+		// Read seed-breeds.json for trilingual breed data
+		var breedsJsonPath = ResolveSeedFilePath("seed-breeds.json");
+		if (breedsJsonPath == null)
 		{
-			{ "dog", "dog" }, // 1. İtlər / Dogs / Собаки
-			{ "cat", "cat" }, // 2. Pişiklər / Cats / Кошки
-			{ "bird", "bird" }, // 3. Quşlar / Birds / Птицы
-			{ "fish", "fish" }, // 4. Balıqlar / Fish / Рыбы
-			{ "reptile", "reptile" }, // 5. Sürünənlər / Reptiles / Рептилии
-			{ "insect", "insect" }, // 6. Həşəratlar / Insects / Насекомые
-			{ "farmAnimal", "farm-animal" }, // 7. Ferma heyvanları / Farm Animals / Сельскохозяйственные животные
-			{ "rodent", "rodent" }, // 8. Gəmiricilər / Rodents / Грызуны
-			{ "wildAnimal", "wild-animal" }, // 9. Vəhşi heyvanlar / Wild Animals / Дикие животные
-			{ "other", "other" }, // 10. Digər / Other / Другие
+			Console.WriteLine("Warning: seed-breeds.json file not found. Skipping breeds seeding.");
+			return;
+		}
+
+		var breedsJsonContent = await File.ReadAllTextAsync(breedsJsonPath);
+		var breedsData = JsonSerializer.Deserialize<Dictionary<string, List<BreedSeedData>>>(
+			breedsJsonContent,
+			new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+		);
+
+		// Map category keys from seed.json to breed keys in seed-breeds.json
+		var categoryToBreedKey = new Dictionary<string, string>
+		{
+			{ "dog", "dog" },
+			{ "cat", "cat" },
+			{ "bird", "bird" },
+			{ "fish", "fish" },
+			{ "reptile", "reptile" },
+			{ "insect", "insect" },
+			{ "farmAnimal", "farm" },
+			{ "rodent", "rodent" },
+			{ "wildAnimal", "wild" },
+			{ "other", "other" },
 		};
 
-		var orderedCategories = seedData.Values.Where(d => d.Order > 0).OrderBy(d => d.Order).ToList();
+		var orderedCategories = seedData.OrderBy(kvp => kvp.Value.Order).ToList();
 
-		foreach (var data in orderedCategories)
+		// Track used slugs per locale to avoid unique constraint violations
+		var usedSlugs = new Dictionary<int, HashSet<string>>
 		{
+			{ azLocale.Id, new HashSet<string>() },
+			{ enLocale.Id, new HashSet<string>() },
+			{ ruLocale.Id, new HashSet<string>() },
+		};
+
+		foreach (var (categoryKey, data) in orderedCategories)
+		{
+			if (data.Order <= 0)
+				continue;
+
 			var category = new PetCategory
 			{
 				SvgIcon = data.Icon,
@@ -181,7 +197,7 @@ public static partial class DatabaseSeeder
 				CreatedAt = DateTime.UtcNow,
 			};
 
-			// Add localizations for AZ / EN / RU
+			// Add category localizations for AZ / EN / RU
 			category.Localizations.Add(
 				new PetCategoryLocalization
 				{
@@ -210,10 +226,14 @@ public static partial class DatabaseSeeder
 				}
 			);
 
-			// Add breeds
-			if (data.Breeds != null && data.Breeds.Count > 0)
+			// Add breeds from trilingual seed-breeds.json
+			if (
+				breedsData != null
+				&& categoryToBreedKey.TryGetValue(categoryKey, out var breedKey)
+				&& breedsData.TryGetValue(breedKey, out var breeds)
+			)
 			{
-				foreach (var breedName in data.Breeds)
+				foreach (var breedEntry in breeds)
 				{
 					var breed = new PetBreed { IsActive = true, CreatedAt = DateTime.UtcNow };
 
@@ -221,8 +241,24 @@ public static partial class DatabaseSeeder
 						new PetBreedLocalization
 						{
 							AppLocaleId = azLocale.Id,
-							Title = breedName,
-							Slug = Slugify(breedName),
+							Title = breedEntry.Az,
+							Slug = GetUniqueSlug(breedEntry.Az, azLocale.Id, usedSlugs),
+						}
+					);
+					breed.Localizations.Add(
+						new PetBreedLocalization
+						{
+							AppLocaleId = enLocale.Id,
+							Title = breedEntry.En,
+							Slug = GetUniqueSlug(breedEntry.En, enLocale.Id, usedSlugs),
+						}
+					);
+					breed.Localizations.Add(
+						new PetBreedLocalization
+						{
+							AppLocaleId = ruLocale.Id,
+							Title = breedEntry.Ru,
+							Slug = GetUniqueSlug(breedEntry.Ru, ruLocale.Id, usedSlugs),
 						}
 					);
 
@@ -234,9 +270,37 @@ public static partial class DatabaseSeeder
 		}
 
 		await context.SaveChangesAsync();
+		Console.WriteLine($"Successfully seeded {orderedCategories.Count} pet categories with trilingual breeds.");
 	}
 
-	// Helper class for JSON deserialization
+	private static string? ResolveSeedFilePath(string fileName)
+	{
+		var path = Path.Combine(AppContext.BaseDirectory, fileName);
+		if (File.Exists(path))
+			return path;
+
+		var altPath = Path.Combine(Directory.GetCurrentDirectory(), fileName);
+		if (File.Exists(altPath))
+			return altPath;
+
+		return null;
+	}
+
+	private static string GetUniqueSlug(string text, int localeId, Dictionary<int, HashSet<string>> usedSlugs)
+	{
+		var slug = Slugify(text);
+		var localeSet = usedSlugs[localeId];
+		if (localeSet.Add(slug))
+			return slug;
+
+		var counter = 2;
+		while (!localeSet.Add($"{slug}-{counter}"))
+			counter++;
+
+		return $"{slug}-{counter}";
+	}
+
+	// Helper classes for JSON deserialization
 	private class PetCategorySeedData
 	{
 		public int Order { get; set; }
@@ -251,6 +315,13 @@ public static partial class DatabaseSeeder
 		public string SubtitleRu { get; set; } = string.Empty;
 		public int Count { get; set; }
 		public List<string> Breeds { get; set; } = [];
+	}
+
+	private class BreedSeedData
+	{
+		public string Az { get; set; } = string.Empty;
+		public string En { get; set; } = string.Empty;
+		public string Ru { get; set; } = string.Empty;
 	}
 
 	private static async Task SeedPetColorsAsync(ApplicationDbContext context)
@@ -1210,256 +1281,6 @@ public static partial class DatabaseSeeder
 
 		await context.Cities.AddRangeAsync(cities);
 		await context.SaveChangesAsync();
-	}
-
-	private static async Task SeedTestUsersAsync(ApplicationDbContext context)
-	{
-		if (await context.RegularUsers.AnyAsync())
-			return;
-
-		var users = new List<User>
-		{
-			new()
-			{
-				Id = Guid.NewGuid(),
-				UserName = "user1@example.com",
-				NormalizedUserName = "USER1@EXAMPLE.COM",
-				Email = "user1@example.com",
-				NormalizedEmail = "USER1@EXAMPLE.COM",
-				EmailConfirmed = true,
-				FirstName = "Ayşə",
-				LastName = "Məmmədova",
-				PhoneNumber = "+994501234567",
-				PhoneNumberConfirmed = true,
-				IsActive = true,
-				CreatedAt = DateTime.UtcNow,
-			},
-			new()
-			{
-				Id = Guid.NewGuid(),
-				UserName = "user2@example.com",
-				NormalizedUserName = "USER2@EXAMPLE.COM",
-				Email = "user2@example.com",
-				NormalizedEmail = "USER2@EXAMPLE.COM",
-				EmailConfirmed = true,
-				FirstName = "Elçin",
-				LastName = "Əliyev",
-				PhoneNumber = "+994502345678",
-				PhoneNumberConfirmed = true,
-				IsActive = true,
-				CreatedAt = DateTime.UtcNow,
-			},
-			new()
-			{
-				Id = Guid.NewGuid(),
-				UserName = "user3@example.com",
-				NormalizedUserName = "USER3@EXAMPLE.COM",
-				Email = "user3@example.com",
-				NormalizedEmail = "USER3@EXAMPLE.COM",
-				EmailConfirmed = true,
-				FirstName = "Nigar",
-				LastName = "Həsənova",
-				PhoneNumber = "+994503456789",
-				PhoneNumberConfirmed = true,
-				IsActive = true,
-				CreatedAt = DateTime.UtcNow,
-			},
-		};
-
-		await context.RegularUsers.AddRangeAsync(users);
-		await context.SaveChangesAsync();
-	}
-
-	private static async Task SeedPetAdsAsync(ApplicationDbContext context)
-	{
-		if (await context.PetAds.AnyAsync())
-			return;
-
-		var breeds = await context.PetBreeds.Include(it => it.Localizations).ToListAsync();
-		var cities = await context.Cities.ToListAsync();
-		var users = await context.RegularUsers.ToListAsync();
-
-		if (breeds.Count == 0 || cities.Count == 0 || users.Count == 0)
-		{
-			Console.WriteLine("Warning: Cannot seed pet ads. Required data (breeds, cities, or users) not found.");
-			return;
-		}
-
-		// Get seed photos from wwwroot/seed_photo
-		var wwwrootPath = Path.Combine(AppContext.BaseDirectory, "wwwroot");
-		if (!Directory.Exists(wwwrootPath))
-		{
-			// Try alternative path (development scenario)
-			var alternativeWwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-			if (Directory.Exists(alternativeWwwroot))
-			{
-				wwwrootPath = alternativeWwwroot;
-			}
-			else
-			{
-				Console.WriteLine("Warning: wwwroot directory not found. Skipping pet ads seeding.");
-				return;
-			}
-		}
-
-		var seedPhotoPath = Path.Combine(wwwrootPath, "uploads", "seed_photo");
-		if (!Directory.Exists(seedPhotoPath))
-		{
-			Console.WriteLine("Warning: wwwroot/uploads/seed_photo directory not found. Skipping pet ads seeding.");
-			return;
-		}
-
-		var photoFiles = Directory.GetFiles(seedPhotoPath, "*.jpg").ToList();
-		if (photoFiles.Count == 0)
-		{
-			Console.WriteLine("Warning: No photos found in wwwroot/seed_photo directory.");
-			return;
-		}
-
-		var random = new Random(12345); // Fixed seed for reproducibility
-		var petAds = new List<PetAd>();
-
-		// Sample data for generating random ads
-		var petNames = new[]
-		{
-			"Max",
-			"Bella",
-			"Charlie",
-			"Luna",
-			"Cooper",
-			"Lucy",
-			"Buddy",
-			"Daisy",
-			"Rocky",
-			"Molly",
-			"Simba",
-			"Nala",
-			"Oliver",
-			"Milo",
-			"Leo",
-			"Felix",
-			"Whiskers",
-			"Shadow",
-			"Fluffy",
-			"Snowball",
-			"Oreo",
-			"Mittens",
-			"Tiger",
-			"Pepper",
-		};
-
-		var colors = new[]
-		{
-			"Qara",
-			"Ağ",
-			"Qəhvəyi",
-			"Boz",
-			"Sarı",
-			"Qızılı",
-			"Çoxrəngli",
-			"Black",
-			"White",
-			"Brown",
-			"Gray",
-			"Golden",
-			"Cream",
-			"Spotted",
-		};
-
-		var descriptions = new[]
-		{
-			"Çox mehriban və oynaşmağı sevir. Ailə üçün əladır.",
-			"Sağlam və enerjili bir dost axtarırsınızsa, bu sizin seçiminizdir.",
-			"Uşaqlarla çox yaxşı anlaşır, çox mehriban və sadiqdir.",
-			"Gözəl xasiyyəti var, tərbiyəlidir və itaətkardir.",
-			"Çox aktiv və oynaşmağı sevir. Böyük həyət lazımdır.",
-			"Sakit və rahat xasiyyətlidir. Apartament üçün idealdır.",
-			"Peşəkar təlim keçib, çox ağıllıdır.",
-			"Ailə ilə qalmağı çox sevir, tək qalmağı sevmir.",
-			"Very friendly and loves to play. Great for families.",
-			"Healthy and energetic companion looking for a loving home.",
-			"Gets along great with children, very affectionate and loyal.",
-			"Beautiful temperament, well-trained and obedient.",
-			"Very active and playful. Needs a large yard.",
-			"Calm and relaxed personality. Perfect for apartments.",
-			"Professionally trained, very intelligent.",
-			"Loves being with family, doesn't like being alone.",
-		};
-
-		// Generate 500 random pet ads
-		for (int i = 0; i < 500; i++)
-		{
-			var breed = breeds[random.Next(breeds.Count)];
-			var city = cities[random.Next(cities.Count)];
-			var user = users[random.Next(users.Count)];
-			var adType = (PetAdType)random.Next(1, 6); // 1-5
-			var gender = (PetGender)random.Next(1, 3); // 1-2
-			var size = (PetSize)random.Next(1, 6); // 1-5
-			var status = random.Next(100) < 80 ? PetAdStatus.Published : PetAdStatus.Pending; // 80% published
-
-			var ageInMonths = random.Next(1, 120); // 1 month to 10 years
-			var isPremium = random.Next(100) < 20; // 20% premium ads
-
-			var petAd = new PetAd
-			{
-				Title = $"{petNames[random.Next(petNames.Length)]} - {breed.Localizations.FirstOrDefault()?.Title} cinsi",
-				Description = descriptions[random.Next(descriptions.Length)],
-				AgeInMonths = ageInMonths,
-				Gender = gender,
-				AdType = adType,
-				Color = colors[random.Next(colors.Length)],
-				Weight =
-					adType == PetAdType.Sale || adType == PetAdType.Match
-						? Math.Round((decimal)(random.NextDouble() * 30 + 2), 1) // 2-32 kg
-						: null,
-				Size = size,
-				Price = adType == PetAdType.Sale ? random.Next(50, 5000) : 0,
-				CityId = city.Id,
-				Status = status,
-				IsAvailable = status == PetAdStatus.Published && random.Next(100) < 90, // 90% available
-				IsPremium = isPremium,
-				PremiumActivatedAt = isPremium ? DateTime.UtcNow.AddDays(-random.Next(1, 15)) : null,
-				PremiumExpiresAt = isPremium ? DateTime.UtcNow.AddDays(random.Next(15, 30)) : null,
-				ViewCount = random.Next(0, 500),
-				PublishedAt = status == PetAdStatus.Published ? DateTime.UtcNow.AddDays(-random.Next(1, 60)) : null,
-				ExpiresAt = DateTime.UtcNow.AddDays(random.Next(30, 90)),
-				PetBreedId = breed.Id,
-				UserId = user.Id,
-				CreatedAt = DateTime.UtcNow.AddDays(-random.Next(1, 90)),
-			};
-
-			// Add 1-4 random images to the ad
-			var imageCount = random.Next(1, 5);
-			var selectedPhotos = photoFiles.OrderBy(x => random.Next()).Take(imageCount).ToList();
-
-			for (int j = 0; j < selectedPhotos.Count; j++)
-			{
-				var photoFile = selectedPhotos[j];
-				var fileName = Path.GetFileName(photoFile);
-				var fileInfo = new FileInfo(photoFile);
-
-				var image = new PetAdImage
-				{
-					FilePath = $"/uploads/seed_photo/{fileName}",
-					FileName = fileName,
-					FileSize = fileInfo.Length,
-					ContentType = "image/jpeg",
-					IsPrimary = j == 0, // First image is primary
-					UploadedAt = petAd.CreatedAt,
-					UploadedById = user.Id,
-					AttachedAt = petAd.CreatedAt,
-				};
-
-				petAd.Images.Add(image);
-			}
-
-			petAds.Add(petAd);
-		}
-
-		await context.PetAds.AddRangeAsync(petAds);
-		await context.SaveChangesAsync();
-
-		Console.WriteLine($"Successfully seeded {petAds.Count} pet ads with images.");
 	}
 
 	/// <summary>

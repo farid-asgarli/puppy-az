@@ -1,0 +1,187 @@
+ATL InfoTech
+Bulk SMS API
+Contents
+➢ Introduction................................................................................................................................................ 1
+➢ Submit requests for broadcasting.......................................................................................................2
+➢ Get delivery reports (only numbers) ................................................................................................ 4
+➢ Get detailed delivery reports ...............................................................................................................5
+➢ Get remained units..................................................................................................................................7
+➢ Response codes......................................................................................................................................... 8
+1. Introduction
+This document covers instructions for integrating SMS Broadcasting service into different
+systems using our application programming interface (API). Using this API you can submit
+requests for broadcasting, get delivery reports (only numbers or detailed) and information about
+remained units in your account.
+All requests are HTTP POST requests with XML body sent to the appropriate host and port.
+Responses to submitted requests will be in XML form too. To issue a request you will be supplied
+with personal account.
+At the end you can find reponse codes and their descriptions as a result of sent requests.
+https://click.atlsms.az/bulksms/api
+1
+2. Submit requests for broadcasting
+2
+To submit a request for broadcasting you must prepare XML string with elements from the
+following table and submit as body of the HTTP POST request.
+request head operation Type of operation, “submit” in this case
+login Supplied login
+password Supplied password
+title Message title
+bulkmessage Message for all recipients, if isbulk is “true”
+scheduled Scheduled date for broadcasting, “YYYY-MM-DD HH:mm:ss”
+isbulk “true” - bulkmessage will be used for all recipients
+“false” - individual messages will be used
+body msisdn Recipients phone number
+message Individual message for current recipient
+Examples:
+Request (bulk): Response:
+<?xml version="1.0" encoding="UTF-8"?> <?xml version="1.0" encoding="UTF-8"?>
+<request> <response>
+<head> <head>
+<operation>submit</operation> <responsecode>000</responsecode>
+<login>login</login> </head>
+<password>password</password> <body>
+<title>TITLE</title> <taskid>4837</taskid>
+<bulkmessage>message</bulkmessage> </body>
+<scheduled>2011-10-01 15:40:05</scheduled> </response>
+<isbulk>true</isbulk>
+<controlid>111</controlid>
+</head>
+<body>
+<msisdn>994519574083</msisdn>
+</body>
+<body>
+<msisdn>994518989447</msisdn>
+</body>
+</request>
+3
+Request (individual): Response:
+<?xml version="1.0" encoding="UTF-8"?> <?xml version="1.0" encoding="UTF-8"?>
+<request> <response>
+<head> <head>
+<operation>submit</operation> <responsecode>000</responsecode>
+<login>login</login> </head>
+<password>password</password> <body>
+<title>TITLE</title> <taskid>4837</taskid>
+<scheduled>2011-10-01 15:40:05</scheduled> </body>
+<isbulk>false</isbulk>
+<controlid>111</controlid> </response>
+</head>
+<body>
+<msisdn>994519574083</msisdn>
+<message>message one</message>
+</body>
+<body>
+<msisdn>994518989447</msisdn>
+<message>message two</message>
+</body>
+</request>
+After successful operation you will get taskid. With this value you can get delivery reports.
+3. Get delivery reports (only numbers)
+4
+To get a report you must prepare XML string with elements from the following table and
+submit as body of the HTTP POST request. This kind of report contains only numbers.
+Response:
+<?xml version="1.0" encoding="UTF-8"?> <?xml version="1.0" encoding="UTF-8"?>
+<request> <response>
+<head> <head>
+<operation>report</operation> <responsecode>000</responsecode>
+<login>login</login> </head>
+<password>password</password> <body>
+<taskid>4837</taskid> <pending>0</pending>
+</head> <delivered>1</delivered>
+</request> <failed>1</failed>
+<removed>0</removed>
+<error>0</error>
+</body>
+</response>
+Descriptions of the statuses are as followed:
+pending Message is queued
+delivered Message was successfully delivered
+failed Message delivery failed
+removed Message was removed from list
+error System error
+request head operation Type of operation, “report” in this case
+login Supplied login
+password Supplied password
+taskid Unique id of the submitted request for broadcasting
+Examples:
+Request:
+4. Get detailed delivery reports
+5
+To get a detailed report you must prepare XML string with elements from the following table
+and submit as body of the HTTP POST request. This kind of report contains full report.
+request head operation Type of operation, “detailedreport” in this case
+login Supplied login
+password Supplied password
+taskid Unique id of the submitted request for broadcasting
+Examples:
+Request: Response:
+<?xml version="1.0" encoding="UTF-8"?> <?xml version="1.0" encoding="UTF-8"?>
+<request> <response>
+<head> <head>
+<operation>detailedreport</operation> <responsecode>000</responsecode>
+<login>login</login> </head>
+<password>password</password> <body>
+<taskid>4837</taskid> <msisdn>994519574083</msisdn>
+</head> <message>message one</message>
+</request> <status>2</status>
+</body>
+<body>
+<msisdn>994518989447</msisdn>
+<message>message two</message>
+<status>3</status>
+</body>
+</response>
+6
+Descriptions of the statuses are as followed:
+1 Message is queued
+2 Message was successfully delivered
+3 Message delivery failed
+4 Message was removed from list
+5 System error
+5. Get remained units
+7
+To get remained units in your account you must prepare XML string with elements from
+the following table and submit as body of the HTTP POST request.
+request head operation Type of operation, “units” in this case
+login Supplied login
+password Supplied password
+Examples:
+Request: Response:
+<?xml version="1.0" encoding="UTF-8"?> <?xml version="1.0" encoding="UTF-8"?>
+<request> <response>
+<head> <head>
+<operation>units</operation> <responsecode>000</responsecode>
+<login>login</login> </head>
+<password>password</password> <body>
+</head> <units>234</units>
+</request> </body>
+</response>
+6. Response Codes
+8
+Code Description
+000 Operation is successfull
+001 Processing, report is not ready
+002 Duplicate <control_id> (it must be unique for each task)
+100 Bad request
+101 Operation type is empty
+102 Invalid operation
+103 Login is empty
+104 Password is empty
+105 Invalid authentification information
+106 Title is empty
+107 Invalid title
+108 Task id is empty
+109 Invalid task id
+110 Task with supplied id is canceled
+111 Scheduled date is empty
+112 Invalid scheduled date
+113 Old scheduled date
+114 isbulk is empty
+115 Invalid isbulk value, must “true” or “false”
+116 Invalid bulk message
+117 Invalid body
+118 Not enough units
+235 Invalid TITLE please contact Account Manager
+2XX System error, report to administrator
+300 Internal server error, report to administrator
