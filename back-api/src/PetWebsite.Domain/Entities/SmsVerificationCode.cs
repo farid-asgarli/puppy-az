@@ -42,4 +42,9 @@ public class SmsVerificationCode
 	/// Purpose of the verification code (e.g., "Registration", "PasswordReset").
 	/// </summary>
 	public string Purpose { get; set; } = "Registration";
+
+	/// <summary>
+	/// Number of failed verification attempts. Code is invalidated after exceeding the limit.
+	/// </summary>
+	public int AttemptCount { get; set; } = 0;
 }

@@ -5,6 +5,7 @@ using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Constants;
 using PetWebsite.Domain.Entities;
+using System.Security.Cryptography;
 
 namespace PetWebsite.Infrastructure.Services;
 
@@ -18,7 +19,9 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 	private readonly IApplicationDbContext _dbContext = dbContext;
 	private readonly ISmsService _smsService = smsService;
 	private const int EXPIRY_MINUTES = 10;
-	private const int RATE_LIMIT_MINUTES = 1;
+	private const int RATE_LIMIT_MINUTES = 2;
+	private const int DAILY_SEND_LIMIT = 5;
+	private const int MAX_VERIFY_ATTEMPTS = 5;
 	private const int CLEANUP_HOURS = 24;
 
 	public async Task<Result> SendVerificationCodeAsync(string phoneNumber, string purpose, CancellationToken cancellationToken = default)
@@ -36,15 +39,23 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 				.OrderByDescending(x => x.CreatedAt)
 				.FirstOrDefaultAsync(cancellationToken);
 
-			// If a valid code exists and was sent less than 1 minute ago, prevent spam
+			// If a valid code exists and was sent less than 2 minutes ago, prevent spam
 			if (existingCode != null && existingCode.CreatedAt > DateTime.UtcNow.AddMinutes(-RATE_LIMIT_MINUTES))
 			{
 				return Result.Failure(L(LocalizationKeys.Sms.TooManyRequests), 429);
 			}
 
+			// Enforce daily send limit per phone number to prevent harassment
+			var sentTodayCount = await _dbContext.SmsVerificationCodes
+				.CountAsync(x => x.PhoneNumber == phoneNumber && x.CreatedAt > DateTime.UtcNow.AddHours(-24), cancellationToken);
+
+			if (sentTodayCount >= DAILY_SEND_LIMIT)
+			{
+				return Result.Failure(L(LocalizationKeys.Sms.TooManyRequests), 429);
+			}
+
 			// Generate random 6-digit verification code
-			var random = new Random();
-			var code = random.Next(100000, 999999).ToString();
+			var code = RandomNumberGenerator.GetInt32(100000, 1000000).ToString();
 
 			// Create verification code record
 			var verificationCode = new SmsVerificationCode
@@ -94,8 +105,9 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 	{
 		try
 		{
+			// Fetch by phone+purpose only — do NOT filter by code here, so we can track failed attempts
 			var verificationCode = await _dbContext
-				.SmsVerificationCodes.Where(x => x.PhoneNumber == phoneNumber && x.Code == code && x.Purpose == purpose && !x.IsVerified)
+				.SmsVerificationCodes.Where(x => x.PhoneNumber == phoneNumber && x.Purpose == purpose && !x.IsVerified)
 				.OrderByDescending(x => x.CreatedAt)
 				.FirstOrDefaultAsync(cancellationToken);
 
@@ -109,9 +121,16 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 				return Result.Failure(L(LocalizationKeys.Sms.VerificationCodeExpired), 400);
 			}
 
-			if (verificationCode.IsVerified)
+			if (verificationCode.AttemptCount >= MAX_VERIFY_ATTEMPTS)
 			{
-				return Result.Failure(L(LocalizationKeys.Sms.VerificationCodeAlreadyUsed), 400);
+				return Result.Failure(L(LocalizationKeys.Sms.VerificationCodeNotFound), 400);
+			}
+
+			if (verificationCode.Code != code)
+			{
+				verificationCode.AttemptCount++;
+				await _dbContext.SaveChangesAsync(cancellationToken);
+				return Result.Failure(L(LocalizationKeys.Sms.VerificationCodeNotFound), 400);
 			}
 
 			// Mark verification code as used if requested

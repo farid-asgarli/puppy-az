@@ -12,7 +12,7 @@ public static class RateLimitingExtensions
 			// Global rate limit: 100 requests per minute per IP
 			options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
 				RateLimitPartition.GetFixedWindowLimiter(
-					partitionKey: context.Request.Headers.Host.ToString(),
+					partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? context.Request.Headers["X-Forwarded-For"].ToString(),
 					factory: partition => new FixedWindowRateLimiterOptions
 					{
 						PermitLimit = 100,

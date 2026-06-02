@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Localization;
 using PetWebsite.API.Controllers.Base;
 using PetWebsite.API.Extensions;
@@ -31,6 +32,7 @@ public class AuthController(IMediator mediator, IStringLocalizer<AuthController>
 	/// <param name="cancellationToken">Cancellation token</param>
 	/// <returns>Success result</returns>
 	[HttpPost("send-verification-code")]
+	[EnableRateLimiting("sms")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status429TooManyRequests)]
