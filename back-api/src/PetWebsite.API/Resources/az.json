@@ -239,7 +239,7 @@
   "SMS.VerificationCodeAlreadyUsed": "Doğrulama kodu artıq istifadə edilib.",
   "SMS.VerificationCodeNotFound": "Yanlış doğrulama kodu.",
   "SMS.CodeSent": "Doğrulama kodu uğurla göndərildi.",
-  "SMS.VerificationCodeMessage": "Təsdiq kodunuz: {0}. {1} dəqiqə ərzində etibarlıdır.",
+  "SMS.VerificationCodeMessage": "Tesdiq kodunuz: {0}. {1} deqiqe erzinde etibarlidir.",
   "SMS.TooManyRequests": "Çox sayda sorğu. Yeni kod tələb etməzdən əvvəl gözləyin.",
 
   "Message.ReceiverRequired": "Mesaj alan tələb olunur.",
