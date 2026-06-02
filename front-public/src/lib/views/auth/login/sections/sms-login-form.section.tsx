@@ -58,7 +58,7 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
 
     if (!phoneNumber) {
       newErrors.phone = t('validation.phoneRequired');
-    } else if (!/^[0-9]{9}$/.test(phoneNumber)) {
+    } else if (!/^(10|50|51|55|60|65|70|77|99)\d{7}$/.test(phoneNumber)) {
       newErrors.phone = t('validation.phoneInvalid');
     }
 
@@ -76,8 +76,7 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
     setErrorDetails([]);
 
     try {
-      const fullPhoneNumber = `0${phoneNumber}`;
-      const result = await sendVerificationCodeAction({ phoneNumber: fullPhoneNumber, purpose: 'Login' });
+      const result = await sendVerificationCodeAction({ phoneNumber: phoneNumber, purpose: 'Login' });
 
       if (result.success) {
         setStep('otp');
@@ -114,9 +113,8 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
     setErrorDetails([]);
 
     try {
-      const fullPhoneNumber = `0${phoneNumber}`;
       const result = await loginWithMobileAction({
-        phoneNumber: fullPhoneNumber,
+        phoneNumber: phoneNumber,
         verificationCode: codeToVerify,
       });
 

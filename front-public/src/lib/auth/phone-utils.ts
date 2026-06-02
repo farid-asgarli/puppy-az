@@ -35,11 +35,11 @@ export function getCleanPhone(phoneNumber: string): string {
 }
 
 /**
- * Formats phone number for API with country code
+ * Formats phone number for API
  * @param phoneNumber - Formatted phone number (XX XXX XX XX)
- * @param includeCountryCode - Whether to include +994 prefix (default true)
+ * @param includeCountryCode - Whether to include +994 prefix (default false)
  */
 export function formatPhoneForApi(phoneNumber: string, includeCountryCode: boolean = false): string {
   const cleanPhone = getCleanPhone(phoneNumber);
-  return includeCountryCode ? `+994${cleanPhone}` : `0${cleanPhone}`;
+  return includeCountryCode ? `+994${cleanPhone}` : cleanPhone;
 }

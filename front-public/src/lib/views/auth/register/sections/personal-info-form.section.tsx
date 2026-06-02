@@ -201,7 +201,7 @@ export function PersonalInfoFormSection({
             {...register("phoneNumber", {
               required: t("validation.phoneRequired"),
               pattern: {
-                value: /^[0-9]{9}$/,
+                value: /^(10|50|51|55|60|65|70|77|99)\d{7}$/,
                 message: t("validation.phoneInvalid"),
               },
               onChange: (e) => {
