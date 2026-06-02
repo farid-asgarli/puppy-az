@@ -46,6 +46,11 @@ public class SmsService(
 		{
 			var key = ComputeMd5Hash(_settings.Password);
 
+			// ATL requires full international format: 994XXXXXXXXX
+			var msisdn = options.Msisdn.TrimStart('+');
+			if (!msisdn.StartsWith("994"))
+				msisdn = "994" + msisdn;
+
 			var payload = new
 			{
 				login = _settings.Login,
@@ -53,7 +58,7 @@ public class SmsService(
 				sender = _settings.Sender,
 				scheduled = "NOW",
 				text = options.Body,
-				msisdn = options.Msisdn,
+				msisdn,
 				unicode = false,
 			};
 
