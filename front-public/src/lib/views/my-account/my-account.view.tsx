@@ -34,6 +34,7 @@ import { AccountMenuItem } from "@/lib/components/views/my-account/menu-item/acc
 import type { Icon } from "@tabler/icons-react";
 import { messageService } from "@/lib/api/services/message.service";
 import { useSignalROptional } from "@/lib/hooks/use-signalr";
+import { WelcomeModal } from "@/lib/components/welcome-modal/welcome-modal.component";
 
 interface MenuItem {
   icon: Icon;
@@ -308,6 +309,8 @@ const MyAccountView = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      {/* One-time welcome dialog for first-time logins */}
+      <WelcomeModal />
       {/* Header */}
       <div className="border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">

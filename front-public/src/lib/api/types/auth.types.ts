@@ -56,6 +56,8 @@ export interface AuthenticationResponse {
   accessToken: string;
   refreshToken: string;
   expiresAt: string; // ISO date-time
+  /** True on the user's first successful login (used to show a one-time welcome). */
+  isNewUser?: boolean;
 }
 
 /**

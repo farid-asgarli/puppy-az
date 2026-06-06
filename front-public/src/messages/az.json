@@ -181,6 +181,13 @@
       }
     }
   },
+  "welcome": {
+    "title": "Xoş gəlmisiniz!",
+    "subtitle": "Hesabınız hazırdır. Alıcı və satıcıların sizi tanıması üçün profil məlumatlarınızı tamamlayın.",
+    "completeProfile": "Profili tamamla",
+    "explore": "Sayta bax",
+    "close": "Bağla"
+  },
   "login": {
     "header": {
       "title": "Xoş gəlmisiniz",

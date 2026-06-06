@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using PetWebsite.Application.Common.Handlers;
@@ -5,7 +6,6 @@ using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Constants;
 using PetWebsite.Domain.Entities;
-using System.Security.Cryptography;
 
 namespace PetWebsite.Infrastructure.Services;
 
@@ -46,8 +46,10 @@ public class SmsVerificationService(IApplicationDbContext dbContext, ISmsService
 			}
 
 			// Enforce daily send limit per phone number to prevent harassment
-			var sentTodayCount = await _dbContext.SmsVerificationCodes
-				.CountAsync(x => x.PhoneNumber == phoneNumber && x.CreatedAt > DateTime.UtcNow.AddHours(-24), cancellationToken);
+			var sentTodayCount = await _dbContext.SmsVerificationCodes.CountAsync(
+				x => x.PhoneNumber == phoneNumber && x.CreatedAt > DateTime.UtcNow.AddHours(-24),
+				cancellationToken
+			);
 
 			if (sentTodayCount >= DAILY_SEND_LIMIT)
 			{

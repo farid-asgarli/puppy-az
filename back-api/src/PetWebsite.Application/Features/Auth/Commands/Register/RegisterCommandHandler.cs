@@ -7,6 +7,7 @@ using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Constants;
 using PetWebsite.Domain.Entities;
+using PetWebsite.Domain.Helpers;
 
 namespace PetWebsite.Application.Features.Auth.Commands.Register;
 
@@ -55,7 +56,7 @@ public class RegisterCommandHandler(
 				Email = request.Email,
 				FirstName = request.FirstName,
 				LastName = request.LastName,
-				PhoneNumber = request.PhoneNumber,
+				PhoneNumber = PhoneNumberHelper.Normalize(request.PhoneNumber),
 				PhoneNumberConfirmed = true, // Already verified via SMS
 				CreatedAt = DateTime.UtcNow,
 				IsActive = true,

@@ -5,6 +5,7 @@ using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Constants;
 using PetWebsite.Domain.Entities;
+using PetWebsite.Domain.Helpers;
 
 namespace PetWebsite.Application.Features.Users.Commands.UpdateProfile;
 
@@ -27,7 +28,7 @@ public class UpdateUserProfileCommandHandler(
 		// Update user properties
 		user.FirstName = request.FirstName;
 		user.LastName = request.LastName;
-		user.PhoneNumber = request.PhoneNumber;
+		user.PhoneNumber = PhoneNumberHelper.Normalize(request.PhoneNumber);
 		user.ProfilePictureUrl = request.ProfilePictureUrl;
 
 		var updateResult = await userManager.UpdateAsync(user);

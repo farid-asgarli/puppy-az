@@ -13,4 +13,11 @@ public class AuthenticationResponse
 	public string AccessToken { get; set; } = string.Empty;
 	public string RefreshToken { get; set; } = string.Empty;
 	public DateTime ExpiresAt { get; set; }
+
+	/// <summary>
+	/// Indicates whether this is the user's first successful login
+	/// (account just created, or never logged in before). Used by the client
+	/// to show a one-time welcome experience.
+	/// </summary>
+	public bool IsNewUser { get; set; } = false;
 }

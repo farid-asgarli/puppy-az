@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Entities;
+using PetWebsite.Domain.Helpers;
 
 namespace PetWebsite.Application.Features.Admin.RegularUsers.Commands.CreateRegularUser;
 
@@ -24,9 +25,14 @@ public class CreateRegularUserCommandHandler(
 	{
 		try
 		{
+			// Normalize the phone number to the canonical format so admin-created users
+			// can be matched on SMS login and correctly linked to their ads.
+			var phoneNumber = PhoneNumberHelper.Normalize(request.PhoneNumber)!;
+			var lookupCandidates = PhoneNumberHelper.GetLookupCandidates(request.PhoneNumber);
+
 			// Check if user with this phone number already exists
 			var existingUser = await userManager.Users
-				.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber, cancellationToken);
+				.FirstOrDefaultAsync(u => u.PhoneNumber != null && lookupCandidates.Contains(u.PhoneNumber), cancellationToken);
 
 			if (existingUser != null)
 			{
@@ -36,9 +42,9 @@ public class CreateRegularUserCommandHandler(
 			// Create new user
 			var user = new User
 			{
-				PhoneNumber = request.PhoneNumber,
+				PhoneNumber = phoneNumber,
 				PhoneNumberConfirmed = true, // Auto-confirm for admin-created users
-				UserName = request.PhoneNumber, // Use phone as username
+				UserName = phoneNumber, // Use phone as username
 				Email = $"{Guid.NewGuid()}@placeholder.local", // Placeholder email
 				EmailConfirmed = false,
 				FirstName = request.FirstName ?? "User",

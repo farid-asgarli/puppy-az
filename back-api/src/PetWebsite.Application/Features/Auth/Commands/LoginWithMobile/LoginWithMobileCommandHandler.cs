@@ -8,6 +8,7 @@ using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
 using PetWebsite.Domain.Constants;
 using PetWebsite.Domain.Entities;
+using PetWebsite.Domain.Helpers;
 
 namespace PetWebsite.Application.Features.Auth.Commands.LoginWithMobile;
 
@@ -42,18 +43,51 @@ public class LoginWithMobileCommandHandler(
 				return Result<AuthenticationResponse>.Failure(verificationResult.Error!, verificationResult.StatusCode);
 			}
 
-			// Find user by phone number
-			var user = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber, cancellationToken);
+			// Normalize the phone number and match against all equivalent formats so that
+			// accounts created by an admin (or before normalization) are still found.
+			var phoneNumber = PhoneNumberHelper.Normalize(request.PhoneNumber)!;
+			var lookupCandidates = PhoneNumberHelper.GetLookupCandidates(request.PhoneNumber);
 
+			// Find user by phone number
+			var user = await _userManager.Users.FirstOrDefaultAsync(
+				u => u.PhoneNumber != null && lookupCandidates.Contains(u.PhoneNumber),
+				cancellationToken
+			);
+
+			// First-time SMS login with no existing account: create a passwordless
+			// account on the fly so the user can sign in without interruption.
 			if (user == null)
 			{
-				return Result<AuthenticationResponse>.Failure(L(LocalizationKeys.User.NotFound), 404);
+				user = new User
+				{
+					PhoneNumber = phoneNumber,
+					PhoneNumberConfirmed = true, // Verified via SMS
+					UserName = phoneNumber,
+					Email = $"{Guid.NewGuid()}@placeholder.local", // Placeholder email
+					EmailConfirmed = false,
+					FirstName = "",
+					LastName = "",
+					IsActive = true,
+					IsCreatedByAdmin = false,
+					CreatedAt = DateTime.UtcNow,
+				};
+
+				var createResult = await _userManager.CreateAsync(user);
+				if (!createResult.Succeeded)
+				{
+					var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+					return Result<AuthenticationResponse>.Failure($"{L(LocalizationKeys.Auth.LoginFailed)}: {errors}", 400);
+				}
 			}
 
 			if (!user.IsActive)
 			{
 				return Result<AuthenticationResponse>.Failure(L(LocalizationKeys.Auth.AccountInactive), 403);
 			}
+
+			// Treat any account that has never logged in before as a first-time login.
+			// This covers both freshly auto-created accounts and admin-created accounts.
+			var isNewUser = user.LastLoginAt is null;
 
 			// Regular users don't have roles in your architecture
 			var accessToken = _jwtTokenService.GenerateAccessToken(user, []);
@@ -78,6 +112,7 @@ public class LoginWithMobileCommandHandler(
 				AccessToken = accessToken,
 				RefreshToken = refreshToken,
 				ExpiresAt = DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationMinutes),
+				IsNewUser = isNewUser,
 			};
 
 			return Result<AuthenticationResponse>.Success(response);
