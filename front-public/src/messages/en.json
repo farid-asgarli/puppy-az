@@ -1909,7 +1909,7 @@
     "data": {
       "lastUpdated": "November 4, 2025",
       "supportEmail": "support@puppy.az",
-      "phoneNumber": "+994 55 338 81 06",
+      "phoneNumber": "+994 51 992 06 60",
       "workingHours": "Monday - Friday, 09:00 - 18:00"
     },
     "categories": {
@@ -3283,20 +3283,7 @@
       "statusActive": "Active",
       "statusPending": "Pending",
       "adType": "Ad type",
-      "months": [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
-      ],
+      "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       "noteTitle": "Note",
       "noteDescription": "Ad type and category cannot be changed. You can only update the main details of the ad."
     },

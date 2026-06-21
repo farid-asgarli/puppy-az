@@ -18,9 +18,17 @@ interface ColorModalProps {
   open: boolean;
   color: PetColor | null;
   onClose: () => void;
+  initialTitle?: string;
+  onSuccess?: (color: PetColor) => void;
 }
 
-export function ColorModal({ open, color, onClose }: ColorModalProps) {
+export function ColorModal({
+  open,
+  color,
+  onClose,
+  initialTitle,
+  onSuccess,
+}: ColorModalProps) {
   const { t } = useTranslation();
   const isEdit = !!color;
 
@@ -63,14 +71,14 @@ export function ColorModal({ open, color, onClose }: ColorModalProps) {
     } else if (open && !color) {
       reset({
         key: "",
-        title: "",
+        title: initialTitle || "",
         backgroundColor: "#ffffff",
         textColor: "#000000",
         borderColor: "#d9d9d9",
         isActive: true,
       });
     }
-  }, [open, color, reset]);
+  }, [open, color, reset, initialTitle]);
 
   const onSubmit = async (data: ColorFormData) => {
     try {
@@ -80,7 +88,10 @@ export function ColorModal({ open, color, onClose }: ColorModalProps) {
           data: { id: color.id, ...data },
         });
       } else {
-        await createMutation.mutateAsync(data as Omit<PetColor, "id">);
+        const created = await createMutation.mutateAsync(
+          data as Omit<PetColor, "id">,
+        );
+        onSuccess?.(created);
       }
       onClose();
     } catch {

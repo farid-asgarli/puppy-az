@@ -21,6 +21,8 @@ interface CategoryModalProps {
   open: boolean;
   category: Category | null;
   onClose: () => void;
+  initialAzName?: string;
+  onSuccess?: (categoryId: number) => void;
 }
 
 const LOCALES = [
@@ -29,7 +31,13 @@ const LOCALES = [
   { code: "ru", label: "Русский" },
 ];
 
-export function CategoryModal({ open, category, onClose }: CategoryModalProps) {
+export function CategoryModal({
+  open,
+  category,
+  onClose,
+  initialAzName,
+  onSuccess,
+}: CategoryModalProps) {
   const { t } = useTranslation();
   const isEdit = !!category;
 
@@ -84,12 +92,12 @@ export function CategoryModal({ open, category, onClose }: CategoryModalProps) {
         isActive: true,
         localizations: LOCALES.map((l) => ({
           localeCode: l.code,
-          title: "",
+          title: l.code === "az" && initialAzName ? initialAzName : "",
           subtitle: "",
         })),
       });
     }
-  }, [open, category, reset]);
+  }, [open, category, reset, initialAzName]);
 
   const onSubmit = async (data: CategoryFormData) => {
     try {
@@ -112,7 +120,10 @@ export function CategoryModal({ open, category, onClose }: CategoryModalProps) {
           data: { ...payload, id: category.id },
         });
       } else {
-        await createMutation.mutateAsync(payload);
+        const created = await createMutation.mutateAsync(payload);
+        if (created?.id) {
+          onSuccess?.(created.id);
+        }
       }
       onClose();
     } catch {

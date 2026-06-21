@@ -30,18 +30,6 @@ export default function BasicsView() {
   const isAgeOptional =
     formData.adType === PetAdType.Found || formData.adType === PetAdType.Owning;
 
-  // DEBUG
-  console.log("BasicsView DEBUG:", {
-    adType: formData.adType,
-    adTypeValue: typeof formData.adType,
-    isAgeOptional,
-    Found: PetAdType.Found,
-    Owning: PetAdType.Owning,
-    gender,
-    size,
-    ageInMonths,
-  });
-
   const petSizes = useMemo(() => getPetSizes(tCommon), [tCommon]);
   const petGenders = useMemo(() => getPetGender(tCommon), [tCommon]);
 

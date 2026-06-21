@@ -123,9 +123,7 @@ export function SmsLoginFormSection({ isLoading, setIsLoading, redirectUrl }: Sm
         await refetch();
 
         // First-time logins get a one-time welcome on the destination page.
-        const target = result.data?.isNewUser
-          ? `${redirectUrl}${redirectUrl.includes('?') ? '&' : '?'}welcome=1`
-          : redirectUrl;
+        const target = result.data?.isNewUser ? `${redirectUrl}${redirectUrl.includes('?') ? '&' : '?'}welcome=1` : redirectUrl;
         router.push(target);
       } else {
         setErrors({ general: result.error || t('errors.verifyFailed') });

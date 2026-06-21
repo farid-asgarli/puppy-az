@@ -13,9 +13,17 @@ interface CityModalProps {
   open: boolean;
   city: City | null;
   onClose: () => void;
+  initialAzName?: string;
+  onSuccess?: (cityId: number) => void;
 }
 
-export function CityModal({ open, city, onClose }: CityModalProps) {
+export function CityModal({
+  open,
+  city,
+  onClose,
+  initialAzName,
+  onSuccess,
+}: CityModalProps) {
   const { t } = useTranslation();
   const isEdit = !!city;
 
@@ -48,12 +56,12 @@ export function CityModal({ open, city, onClose }: CityModalProps) {
       });
     } else if (open && !city) {
       reset({
-        nameAz: "",
+        nameAz: initialAzName || "",
         nameEn: "",
         nameRu: "",
       });
     }
-  }, [open, city, reset]);
+  }, [open, city, reset, initialAzName]);
 
   const onSubmit = async (data: CityFormData) => {
     try {
@@ -63,7 +71,10 @@ export function CityModal({ open, city, onClose }: CityModalProps) {
           data: { ...data, id: city.id },
         });
       } else {
-        await createMutation.mutateAsync(data);
+        const created = await createMutation.mutateAsync(data);
+        if (created?.id) {
+          onSuccess?.(created.id);
+        }
       }
       onClose();
     } catch {

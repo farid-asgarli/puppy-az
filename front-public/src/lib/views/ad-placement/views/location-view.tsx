@@ -179,12 +179,12 @@ export default function LocationView() {
     navigateWithTransition("/ads/ad-placement/details");
   };
 
+  // District is optional: a city is enough to proceed. The only extra
+  // requirement is that an in-progress custom district entry must be submitted.
   const canProceed =
     selectedCityId !== null &&
-    (selectedDistrictId !== null ||
-      (isCustomDistrict &&
-        customDistrictSubmitted &&
-        customDistrictName.trim().length > 0));
+    (!isCustomDistrict ||
+      (customDistrictSubmitted && customDistrictName.trim().length > 0));
 
   const selectedCityName = useMemo(
     () => cities.find((c) => c.id === selectedCityId)?.name || "",

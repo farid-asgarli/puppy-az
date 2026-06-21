@@ -63,14 +63,6 @@ public static class PhoneNumberHelper
 			return string.IsNullOrWhiteSpace(phoneNumber) ? [] : [phoneNumber!];
 		}
 
-		return new[]
-		{
-			normalized,
-			$"+994{normalized}",
-			$"994{normalized}",
-			$"0{normalized}",
-		}
-		.Distinct()
-		.ToArray();
+		return new[] { normalized, $"+994{normalized}", $"994{normalized}", $"0{normalized}" }.Distinct().ToArray();
 	}
 }

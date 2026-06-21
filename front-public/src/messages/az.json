@@ -1925,7 +1925,7 @@
     "data": {
       "lastUpdated": "15 Yanvar 2025",
       "supportEmail": "support@puppy.az",
-      "phoneNumber": "+994 55 338 81 06",
+      "phoneNumber": "+994 51 992 06 60",
       "workingHours": "Bazar ertəsi - Cümə, 09:00-18:00"
     },
     "categories": {
@@ -2059,7 +2059,7 @@
         "faqs": {
           "technicalIssue": {
             "question": "Texniki problem yaşayıram, nə etməliyəm?",
-            "answer": "Əvvəlcə səhifəni yeniləməyi, brauzeri və ya cihazı dəyişməyi sınayın. Problem davam edərsə, support@puppy.az ünvanına və ya +994 55 338 81 06 nömrəsinə müraciət edin. Problem haqqında ətraflı məlumat verin."
+            "answer": "Əvvəlcə səhifəni yeniləməyi, brauzeri və ya cihazı dəyişməyi sınayın. Problem davam edərsə, support@puppy.az ünvanına və ya +994 51 992 06 60 nömrəsinə müraciət edin. Problem haqqında ətraflı məlumat verin."
           },
           "photoUpload": {
             "question": "Şəkil yükləyə bilmirəm, niyə?",
@@ -2071,7 +2071,7 @@
           },
           "contactSupport": {
             "question": "Dəstək komandası ilə necə əlaqə saxlaya bilərəm?",
-            "answer": "E-poçt: support@puppy.az, Telefon: +994 55 338 81 06, İş saatları: Bazar ertəsi - Cümə, 09:00-18:00. Həmçinin 'Yardım Mərkəzi' səhifəsindəki əlaqə formasından istifadə edə bilərsiniz."
+            "answer": "E-poçt: support@puppy.az, Telefon: +994 51 992 06 60, İş saatları: Bazar ertəsi - Cümə, 09:00-18:00. Həmçinin 'Yardım Mərkəzi' səhifəsindəki əlaqə formasından istifadə edə bilərsiniz."
           }
         }
       },
@@ -3326,20 +3326,7 @@
       "statusActive": "Aktiv",
       "statusPending": "Gözləyir",
       "adType": "Elan növü",
-      "months": [
-        "Yanvar",
-        "Fevral",
-        "Mart",
-        "Aprel",
-        "May",
-        "İyun",
-        "İyul",
-        "Avqust",
-        "Sentyabr",
-        "Oktyabr",
-        "Noyabr",
-        "Dekabr"
-      ],
+      "months": ["Yanvar", "Fevral", "Mart", "Aprel", "May", "İyun", "İyul", "Avqust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"],
       "noteTitle": "Qeyd",
       "noteDescription": "Elan növü və kateqoriya dəyişdirilə bilməz. Yalnız elanın əsas təfərrüatlarını yeniləyə bilərsiniz."
     },

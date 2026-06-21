@@ -3,15 +3,18 @@ import { Form, Input, InputNumber, Select, Button, Card, Typography, message, Ro
 import { PlusOutlined, SaveOutlined, UserAddOutlined, DeleteOutlined, LeftOutlined, RightOutlined, StarFilled } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useCategories } from '@/features/categories';
-import { useCities } from '@/features/cities';
+import { useCategories, CategoryModal } from '@/features/categories';
+import { useCities, CityModal } from '@/features/cities';
 import { useRegularUsers } from '@/features/users';
-import { useDistrictsByCity } from '@/features/districts';
+import { useDistrictsByCity, DistrictModal } from '@/features/districts';
+import { BreedModal } from '@/features/breeds';
+import { ColorModal } from '@/features/colors';
 
 import { ListingType, Gender, AnimalSize } from '@/shared/api/types';
+import type { PetColor } from '@/shared/api/types';
 
 import { api } from '@/shared/api/httpClient';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -38,6 +41,7 @@ export default function CreateAdPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form] = Form.useForm<CreateAdFormValues>();
+  const queryClient = useQueryClient();
   const [submitting, setSubmitting] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<{ id: number; url: string }[]>([]);
   const [uploadingCount, setUploadingCount] = useState(0);
@@ -49,6 +53,18 @@ export default function CreateAdPage() {
   const [newUserFirstName, setNewUserFirstName] = useState('');
   const [newUserLastName, setNewUserLastName] = useState('');
   const [creatingUser, setCreatingUser] = useState(false);
+
+  // Inline create modal state (lets admins add a missing entity without leaving the wizard)
+  const [breedModalOpen, setBreedModalOpen] = useState(false);
+  const [breedInitialName, setBreedInitialName] = useState('');
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
+  const [categoryInitialName, setCategoryInitialName] = useState('');
+  const [cityModalOpen, setCityModalOpen] = useState(false);
+  const [cityInitialName, setCityInitialName] = useState('');
+  const [districtModalOpen, setDistrictModalOpen] = useState(false);
+  const [districtInitialName, setDistrictInitialName] = useState('');
+  const [colorModalOpen, setColorModalOpen] = useState(false);
+  const [colorInitialName, setColorInitialName] = useState('');
 
   // Queries
   const { data: usersResponse } = useRegularUsers({
@@ -273,6 +289,58 @@ export default function CreateAdPage() {
   // Determine if breed is required based on ad type
   const isBreedRequired = selectedAdType === ListingType.Sale || selectedAdType === ListingType.Match || selectedAdType === ListingType.Lost;
 
+  // Inline-create success handlers: refresh the relevant list and auto-select the new entity
+  const handleCategoryCreated = async (categoryId: number) => {
+    await queryClient.invalidateQueries({ queryKey: ['categories'] });
+    setSelectedCategoryId(categoryId);
+    form.setFieldValue('petCategoryId', categoryId);
+    form.setFieldValue('petBreedId', undefined);
+    setCategoryModalOpen(false);
+  };
+
+  const handleBreedCreated = async (breedId: number) => {
+    await queryClient.invalidateQueries({ queryKey: ['public-breeds'] });
+    form.setFieldValue('petBreedId', breedId);
+    setBreedModalOpen(false);
+  };
+
+  const handleCityCreated = async (cityId: number) => {
+    await queryClient.invalidateQueries({ queryKey: ['cities'] });
+    setSelectedCityId(cityId);
+    form.setFieldValue('cityId', cityId);
+    form.setFieldValue('districtId', undefined);
+    setCityModalOpen(false);
+  };
+
+  const handleDistrictCreated = async (districtId: number) => {
+    await queryClient.invalidateQueries({ queryKey: ['districts'] });
+    form.setFieldValue('districtId', districtId);
+    setDistrictModalOpen(false);
+  };
+
+  const handleColorCreated = async (color: PetColor) => {
+    await queryClient.invalidateQueries({ queryKey: ['public-colors-az'] });
+    form.setFieldValue('color', color.title);
+    setColorModalOpen(false);
+  };
+
+  const renderAddNew = (onAdd: () => void, disabled = false) => (
+    <Button
+      type="link"
+      size="small"
+      icon={<PlusOutlined />}
+      disabled={disabled}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onAdd();
+      }}
+      style={{ padding: 0, height: 'auto', marginLeft: 8 }}
+    >
+      {t('createAd.addNew', 'Yeni əlavə et')}
+    </Button>
+  );
+
   return (
     <div className="p-6">
       <div className="mb-6">
@@ -452,10 +520,21 @@ export default function CreateAdPage() {
 
             {/* Category */}
             <Col xs={24} md={12}>
-              <Form.Item name="petCategoryId" label={t('createAd.category')}>
+              <Form.Item
+                name="petCategoryId"
+                label={
+                  <span>
+                    {t('createAd.category')}
+                    {renderAddNew(() => setCategoryModalOpen(true))}
+                  </span>
+                }
+              >
                 <Select
                   placeholder={t('createAd.selectCategory')}
                   allowClear
+                  showSearch
+                  optionFilterProp="label"
+                  onSearch={setCategoryInitialName}
                   options={categories?.map((cat: any) => ({
                     value: cat.id,
                     label: cat.title,
@@ -472,7 +551,12 @@ export default function CreateAdPage() {
             <Col xs={24} md={12}>
               <Form.Item
                 name="petBreedId"
-                label={t('createAd.breed')}
+                label={
+                  <span>
+                    {t('createAd.breed')}
+                    {renderAddNew(() => setBreedModalOpen(true), !selectedCategoryId)}
+                  </span>
+                }
                 rules={[
                   {
                     required: isBreedRequired,
@@ -486,6 +570,7 @@ export default function CreateAdPage() {
                   disabled={!selectedCategoryId}
                   showSearch
                   optionFilterProp="children"
+                  onSearch={setBreedInitialName}
                   filterOption={(input, option) => {
                     const label = option?.label;
                     if (typeof label === 'string') {
@@ -503,11 +588,21 @@ export default function CreateAdPage() {
 
             {/* City */}
             <Col xs={24} md={12}>
-              <Form.Item name="cityId" label={t('createAd.city')} rules={[{ required: true, message: t('createAd.cityRequired') }]}>
+              <Form.Item
+                name="cityId"
+                label={
+                  <span>
+                    {t('createAd.city')}
+                    {renderAddNew(() => setCityModalOpen(true))}
+                  </span>
+                }
+                rules={[{ required: true, message: t('createAd.cityRequired') }]}
+              >
                 <Select
                   showSearch
                   placeholder={t('createAd.selectCity')}
                   optionFilterProp="children"
+                  onSearch={setCityInitialName}
                   filterOption={(input, option) => (option?.label ?? '').toLowerCase().includes(input.toLowerCase())}
                   options={cities.map((city) => ({
                     value: city.id,
@@ -525,7 +620,12 @@ export default function CreateAdPage() {
             <Col xs={24} md={12}>
               <Form.Item
                 name="districtId"
-                label={t('createAd.district')}
+                label={
+                  <span>
+                    {t('createAd.district')}
+                    {renderAddNew(() => setDistrictModalOpen(true), !selectedCityId)}
+                  </span>
+                }
                 rules={[
                   {
                     required: true,
@@ -539,6 +639,7 @@ export default function CreateAdPage() {
                   disabled={!selectedCityId}
                   showSearch
                   optionFilterProp="children"
+                  onSearch={setDistrictInitialName}
                   filterOption={(input, option) => {
                     const label = option?.label;
                     if (typeof label === 'string') {
@@ -615,12 +716,21 @@ export default function CreateAdPage() {
 
             {/* Color */}
             <Col xs={24} md={12}>
-              <Form.Item name="color" label={t('createAd.color')}>
+              <Form.Item
+                name="color"
+                label={
+                  <span>
+                    {t('createAd.color')}
+                    {renderAddNew(() => setColorModalOpen(true))}
+                  </span>
+                }
+              >
                 <Select
                   placeholder={t('createAd.selectColor')}
                   allowClear
                   showSearch
                   optionFilterProp="children"
+                  onSearch={setColorInitialName}
                   filterOption={(input, option) => {
                     const label = option?.label;
                     if (typeof label === 'string') {
@@ -796,6 +906,45 @@ export default function CreateAdPage() {
           </Row>
         </Form>
       </Card>
+
+      {/* Inline create modals — add a missing entity without leaving the wizard */}
+      <CategoryModal
+        open={categoryModalOpen}
+        category={null}
+        onClose={() => setCategoryModalOpen(false)}
+        initialAzName={categoryInitialName}
+        onSuccess={handleCategoryCreated}
+      />
+      <BreedModal
+        open={breedModalOpen}
+        breed={null}
+        onClose={() => setBreedModalOpen(false)}
+        defaultCategoryId={selectedCategoryId}
+        initialAzName={breedInitialName}
+        onSuccess={handleBreedCreated}
+      />
+      <CityModal
+        open={cityModalOpen}
+        city={null}
+        onClose={() => setCityModalOpen(false)}
+        initialAzName={cityInitialName}
+        onSuccess={handleCityCreated}
+      />
+      <DistrictModal
+        open={districtModalOpen}
+        district={null}
+        onClose={() => setDistrictModalOpen(false)}
+        defaultCityId={selectedCityId}
+        initialAzName={districtInitialName}
+        onSuccess={handleDistrictCreated}
+      />
+      <ColorModal
+        open={colorModalOpen}
+        color={null}
+        onClose={() => setColorModalOpen(false)}
+        initialTitle={colorInitialName}
+        onSuccess={handleColorCreated}
+      />
     </div>
   );
 }

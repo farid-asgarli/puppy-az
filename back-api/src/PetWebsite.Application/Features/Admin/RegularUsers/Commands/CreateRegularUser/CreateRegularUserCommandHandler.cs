@@ -18,8 +18,8 @@ public class CreateRegularUserCommandHandler(
 	UserManager<User> userManager,
 	IApplicationDbContext dbContext,
 	IStringLocalizer<CreateRegularUserCommandHandler> localizer,
-	ILogger<CreateRegularUserCommandHandler> logger)
-	: IRequestHandler<CreateRegularUserCommand, Result<Guid>>
+	ILogger<CreateRegularUserCommandHandler> logger
+) : IRequestHandler<CreateRegularUserCommand, Result<Guid>>
 {
 	public async Task<Result<Guid>> Handle(CreateRegularUserCommand request, CancellationToken cancellationToken)
 	{
@@ -31,8 +31,10 @@ public class CreateRegularUserCommandHandler(
 			var lookupCandidates = PhoneNumberHelper.GetLookupCandidates(request.PhoneNumber);
 
 			// Check if user with this phone number already exists
-			var existingUser = await userManager.Users
-				.FirstOrDefaultAsync(u => u.PhoneNumber != null && lookupCandidates.Contains(u.PhoneNumber), cancellationToken);
+			var existingUser = await userManager.Users.FirstOrDefaultAsync(
+				u => u.PhoneNumber != null && lookupCandidates.Contains(u.PhoneNumber),
+				cancellationToken
+			);
 
 			if (existingUser != null)
 			{
@@ -51,7 +53,7 @@ public class CreateRegularUserCommandHandler(
 				LastName = request.LastName ?? "",
 				IsActive = true,
 				IsCreatedByAdmin = true,
-				CreatedAt = DateTime.UtcNow
+				CreatedAt = DateTime.UtcNow,
 			};
 
 			// Create user without password (phone-based auth)
@@ -64,8 +66,7 @@ public class CreateRegularUserCommandHandler(
 				return Result<Guid>.Failure(localizer["UserCreationFailed", errors]);
 			}
 
-			logger.LogInformation("Admin created new regular user {UserId} with phone {PhoneNumber}", 
-				user.Id, request.PhoneNumber);
+			logger.LogInformation("Admin created new regular user {UserId} with phone {PhoneNumber}", user.Id, request.PhoneNumber);
 
 			return Result<Guid>.Success(user.Id);
 		}
