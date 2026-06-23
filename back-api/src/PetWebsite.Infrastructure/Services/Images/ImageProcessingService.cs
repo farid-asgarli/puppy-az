@@ -375,11 +375,11 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 		canvas.RotateDegrees(-25f, cx, cy);
 
 		// Subtle dark shadow improves legibility on bright backgrounds
-		using var shadowPaint = new SKPaint { Color = new SKColor(0, 0, 0, 35), IsAntialias = true };
+		using var shadowPaint = new SKPaint { Color = new SKColor(0, 0, 0, 90), IsAntialias = true };
 		canvas.DrawText(text, cx - textWidth / 2f + 1f, cy + fontSize / 3f + 1f, font, shadowPaint);
 
-		// White semi-transparent text (~18 % opacity)
-		using var paint = new SKPaint { Color = new SKColor(255, 255, 255, 46), IsAntialias = true };
+		// White semi-transparent text (~45 % opacity)
+		using var paint = new SKPaint { Color = new SKColor(255, 255, 255, 115), IsAntialias = true };
 		canvas.DrawText(text, cx - textWidth / 2f, cy + fontSize / 3f, font, paint);
 
 		canvas.Restore();

@@ -14,7 +14,7 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 
 	// Bump this when stored asset bytes change without the path changing
 	// (e.g. re-watermarking existing uploads) to bust CDN/browser image caches.
-	private const string AssetVersion = "2";
+	private const string AssetVersion = "3";
 
 	private static string AppendVersion(string url)
 	{
