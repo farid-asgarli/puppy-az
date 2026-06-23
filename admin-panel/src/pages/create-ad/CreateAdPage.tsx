@@ -626,12 +626,6 @@ export default function CreateAdPage() {
                     {renderAddNew(() => setDistrictModalOpen(true), !selectedCityId)}
                   </span>
                 }
-                rules={[
-                  {
-                    required: true,
-                    message: t('createAd.districtRequired'),
-                  },
-                ]}
               >
                 <Select
                   placeholder={t('createAd.selectDistrict')}
