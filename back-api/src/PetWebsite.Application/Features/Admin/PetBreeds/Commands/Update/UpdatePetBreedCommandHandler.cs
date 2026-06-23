@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using PetWebsite.Application.Common;
 using PetWebsite.Application.Common.Handlers;
 using PetWebsite.Application.Common.Interfaces;
 using PetWebsite.Application.Common.Models;
@@ -57,17 +58,51 @@ public class UpdatePetBreedCommandHandler(IApplicationDbContext dbContext, IStri
 				{
 					existingLoc.AppLocaleId = locale.Id;
 					existingLoc.Title = locDto.Title;
+
+					// Backfill slug if missing (e.g. legacy rows created without a slug)
+					if (string.IsNullOrWhiteSpace(existingLoc.Slug))
+						existingLoc.Slug = await GenerateUniqueSlugAsync(locDto.Title, locale.Id, existingLoc.Id, ct);
 				}
 			}
 			else
 			{
 				// Add new localization
-				breed.Localizations.Add(new PetBreedLocalization { AppLocaleId = locale.Id, Title = locDto.Title });
+				var slug = await GenerateUniqueSlugAsync(locDto.Title, locale.Id, null, ct);
+				breed.Localizations.Add(
+					new PetBreedLocalization
+					{
+						AppLocaleId = locale.Id,
+						Title = locDto.Title,
+						Slug = slug,
+					}
+				);
 			}
 		}
 
 		await dbContext.SaveChangesAsync(ct);
 
 		return Result.Success();
+	}
+
+	private async Task<string> GenerateUniqueSlugAsync(string title, int localeId, int? excludeLocalizationId, CancellationToken ct)
+	{
+		var baseSlug = SlugGenerator.Slugify(title);
+		if (string.IsNullOrEmpty(baseSlug))
+			baseSlug = "breed";
+
+		var slug = baseSlug;
+		var counter = 2;
+		while (
+			await dbContext.PetBreedLocalizations.AnyAsync(
+				l => l.AppLocaleId == localeId && l.Slug == slug && (excludeLocalizationId == null || l.Id != excludeLocalizationId),
+				ct
+			)
+		)
+		{
+			slug = $"{baseSlug}-{counter}";
+			counter++;
+		}
+
+		return slug;
 	}
 }
