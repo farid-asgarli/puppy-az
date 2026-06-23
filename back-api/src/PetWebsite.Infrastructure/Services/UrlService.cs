@@ -12,6 +12,16 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 	private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 	private readonly string? _configuredBaseUrl = configuration["App:BaseUrl"]?.TrimEnd('/');
 
+	// Bump this when stored asset bytes change without the path changing
+	// (e.g. re-watermarking existing uploads) to bust CDN/browser image caches.
+	private const string AssetVersion = "2";
+
+	private static string AppendVersion(string url)
+	{
+		var separator = url.Contains('?') ? "&" : "?";
+		return $"{url}{separator}v={AssetVersion}";
+	}
+
 	public string ToAbsoluteUrl(string? relativePath)
 	{
 		if (string.IsNullOrWhiteSpace(relativePath))
@@ -35,13 +45,13 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 		// Priority 1: Use explicitly configured base URL (most reliable for production)
 		if (!string.IsNullOrEmpty(_configuredBaseUrl))
 		{
-			return $"{_configuredBaseUrl}{path}";
+			return AppendVersion($"{_configuredBaseUrl}{path}");
 		}
 
 		// Priority 2: Try to build from HTTP context with forwarded headers support
 		var httpContext = _httpContextAccessor.HttpContext;
 		if (httpContext == null)
-			return path; // Fallback to relative path if no context
+			return AppendVersion(path); // Fallback to relative path if no context
 
 		var request = httpContext.Request;
 
@@ -52,7 +62,7 @@ public class UrlService(IHttpContextAccessor httpContextAccessor, IConfiguration
 		var host = !string.IsNullOrEmpty(forwardedHost) ? forwardedHost : request.Host.Value;
 		var scheme = !string.IsNullOrEmpty(forwardedProto) ? forwardedProto : request.Scheme;
 
-		return $"{scheme}://{host}{path}";
+		return AppendVersion($"{scheme}://{host}{path}");
 	}
 
 	/// <summary>
