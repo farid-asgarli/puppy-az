@@ -12,7 +12,7 @@ export function mapAdToCardItem(
     adType: ad.adType,
     imgUrl: ad.primaryImageUrl,
     price: ad.price ?? 0,
-    age: ad.ageInMonths ? Math.floor(ad.ageInMonths / 12) : null,
+    ageInMonths: ad.ageInMonths ?? null,
     location: ad.districtName
       ? `${ad.cityName} — ${ad.districtName}`
       : ad.cityName,
@@ -20,4 +20,16 @@ export function mapAdToCardItem(
     postedDate: formatDate(ad.publishedAt, t),
     isPremium: ad.isPremium,
   };
+}
+
+export function formatCardAge(
+  ageInMonths: number | null | undefined,
+  tSearch: (key: string) => string,
+): string | null {
+  if (!ageInMonths || ageInMonths <= 0) return null;
+  if (ageInMonths < 12) {
+    return `${ageInMonths} ${tSearch("monthsOld")}`;
+  }
+  const years = Math.floor(ageInMonths / 12);
+  return `${years} ${tSearch("yearsOld")}`;
 }

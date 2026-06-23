@@ -7,6 +7,7 @@ import TransitionLink from "@/lib/components/transition-link";
 import { useFavorites } from "@/lib/hooks/use-favorites";
 import { AnimatedLikeButton } from "./animated-like-button";
 import { PetAdCardType } from "@/lib/types/ad-card";
+import { formatCardAge } from "./ad-card.utils";
 import { useTranslations } from "next-intl";
 
 export default function AdCard(props: PetAdCardType) {
@@ -112,9 +113,9 @@ export default function AdCard(props: PetAdCardType) {
             <IconMapPin size={14} />
             {props.location}
           </div>
-          {props.age !== null && props.age !== undefined && (
+          {formatCardAge(props.ageInMonths, tSearch) && (
             <span className="text-xs text-gray-500">
-              {props.age} {tSearch("yearsOld")}
+              {formatCardAge(props.ageInMonths, tSearch)}
             </span>
           )}
         </div>

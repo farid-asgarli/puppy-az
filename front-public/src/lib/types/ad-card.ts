@@ -6,7 +6,7 @@ export type PetAdCardType = {
   adType: PetAdType;
   imgUrl: string;
   price: string | number | null;
-  age: number | null;
+  ageInMonths: number | null;
   location: string;
   animalCategory: string;
   postedDate: string;

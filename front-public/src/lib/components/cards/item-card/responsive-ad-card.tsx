@@ -8,6 +8,7 @@ import { useFavorites } from "@/lib/hooks/use-favorites";
 import { AnimatedLikeButton } from "./animated-like-button";
 import TransitionLink from "@/lib/components/transition-link";
 import { PetAdCardType } from "@/lib/types/ad-card";
+import { formatCardAge } from "./ad-card.utils";
 import { useTranslations } from "next-intl";
 
 interface ResponsiveAdCardProps extends PetAdCardType {
@@ -209,9 +210,11 @@ export default function ResponsiveAdCard({
             />
             <span className="truncate">{props.location}</span>
           </div>
-          <span className="text-xs text-gray-500 whitespace-nowrap">
-            {props.age} {tSearch("yearsOld")}
-          </span>
+          {formatCardAge(props.ageInMonths, tSearch) && (
+            <span className="text-xs text-gray-500 whitespace-nowrap">
+              {formatCardAge(props.ageInMonths, tSearch)}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center justify-between gap-2 mt-auto">
