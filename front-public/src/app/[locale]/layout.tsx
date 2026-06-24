@@ -14,6 +14,7 @@ import { getMessages } from "next-intl/server";
 import { routing, notFound } from "@/i18n";
 import { ToastProvider } from "@/lib/components/toast";
 import { Footer } from "@/lib/components/footer/footer.component";
+import { ScrollToTop } from "@/lib/components/scroll-to-top";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -52,6 +53,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <ScrollToTop />
       <AuthProvider initialAuth={initialAuth}>
         <SignalRProvider>
           <FavoritesProvider initialFavorites={initialFavorites}>
