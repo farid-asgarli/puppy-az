@@ -64,7 +64,7 @@ export const ResultsHeader = ({ totalCount, isLoading, categoryTitle }: ResultsH
 
   return (
     <div className="border-b border-gray-200 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2 sm:py-2.5">
         <div className="flex items-center justify-between gap-4">
           {/* Results count */}
           <div className="flex items-center gap-3 min-w-0">
