@@ -19,9 +19,9 @@ public class CreateRegularUserCommandHandler(
 	IApplicationDbContext dbContext,
 	IStringLocalizer<CreateRegularUserCommandHandler> localizer,
 	ILogger<CreateRegularUserCommandHandler> logger
-) : IRequestHandler<CreateRegularUserCommand, Result<Guid>>
+) : IRequestHandler<CreateRegularUserCommand, Result<CreateRegularUserResult>>
 {
-	public async Task<Result<Guid>> Handle(CreateRegularUserCommand request, CancellationToken cancellationToken)
+	public async Task<Result<CreateRegularUserResult>> Handle(CreateRegularUserCommand request, CancellationToken cancellationToken)
 	{
 		try
 		{
@@ -38,7 +38,17 @@ public class CreateRegularUserCommandHandler(
 
 			if (existingUser != null)
 			{
-				return Result<Guid>.Failure(localizer["UserWithPhoneAlreadyExists", request.PhoneNumber]);
+				// The person likely registered themselves already. Return the existing
+				// user so the admin UI can switch to "existing user" and select them
+				// instead of failing the create.
+				logger.LogInformation(
+					"Admin create matched existing user {UserId} for phone {PhoneNumber}",
+					existingUser.Id,
+					request.PhoneNumber
+				);
+				return Result<CreateRegularUserResult>.Success(
+					new CreateRegularUserResult(existingUser.Id, AlreadyExisted: true)
+				);
 			}
 
 			// Create new user
@@ -63,17 +73,17 @@ public class CreateRegularUserCommandHandler(
 			{
 				var errors = string.Join(", ", result.Errors.Select(e => e.Description));
 				logger.LogError("Failed to create user: {Errors}", errors);
-				return Result<Guid>.Failure(localizer["UserCreationFailed", errors]);
+				return Result<CreateRegularUserResult>.Failure(localizer["UserCreationFailed", errors]);
 			}
 
 			logger.LogInformation("Admin created new regular user {UserId} with phone {PhoneNumber}", user.Id, request.PhoneNumber);
 
-			return Result<Guid>.Success(user.Id);
+			return Result<CreateRegularUserResult>.Success(new CreateRegularUserResult(user.Id, AlreadyExisted: false));
 		}
 		catch (Exception ex)
 		{
 			logger.LogError(ex, "Error creating regular user with phone {PhoneNumber}", request.PhoneNumber);
-			return Result<Guid>.Failure(localizer["UnexpectedError"]);
+			return Result<CreateRegularUserResult>.Failure(localizer["UnexpectedError"]);
 		}
 	}
 }

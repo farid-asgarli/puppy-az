@@ -426,6 +426,7 @@ const resources = {
       "createAd.createUser": "Create User",
       "createAd.phoneRequired": "Phone number is required",
       "createAd.userCreatedSuccess": "User created successfully",
+      "createAd.userAlreadySelected": "A user with this phone already exists — selected the existing user",
       "createAd.userCreationError": "Failed to create user",
       "createAd.createUserFirst": "Please create the user first",
 
@@ -948,6 +949,7 @@ const resources = {
       "createAd.createUser": "İstifadəçi Yarat",
       "createAd.phoneRequired": "Telefon nömrəsi tələb olunur",
       "createAd.userCreatedSuccess": "İstifadəçi uğurla yaradıldı",
+      "createAd.userAlreadySelected": "Bu nömrə ilə istifadəçi artıq mövcuddur — mövcud istifadəçi seçildi",
       "createAd.userCreationError": "İstifadəçi yaradılmadı",
       "createAd.createUserFirst": "Əvvəlcə istifadəçi yaradın",
 
@@ -1473,6 +1475,7 @@ const resources = {
       "createAd.createUser": "Создать пользователя",
       "createAd.phoneRequired": "Требуется номер телефона",
       "createAd.userCreatedSuccess": "Пользователь успешно создан",
+      "createAd.userAlreadySelected": "Пользователь с этим номером уже существует — выбран существующий пользователь",
       "createAd.userCreationError": "Не удалось создать пользователя",
       "createAd.createUserFirst": "Сначала создайте пользователя",
 

@@ -13,4 +13,4 @@ public record CreateRegularUserCommand(
 	string PhoneNumber,
 	string? FirstName = null,
 	string? LastName = null
-) : IRequest<Result<Guid>>;
+) : IRequest<Result<CreateRegularUserResult>>;

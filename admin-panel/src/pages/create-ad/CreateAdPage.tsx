@@ -213,13 +213,21 @@ export default function CreateAdPage() {
       // Remove spaces from phone number before sending
       const phoneNumberWithoutSpaces = newUserPhone.replace(/\s/g, '');
 
-      const response = await api.post<{ id: string }>('/admin/regular-users', {
+      const response = await api.post<{ id: string; alreadyExisted?: boolean }>('/admin/regular-users', {
         phoneNumber: phoneNumberWithoutSpaces,
         firstName: newUserFirstName || undefined,
         lastName: newUserLastName || undefined,
       });
 
-      message.success(t('createAd.userCreatedSuccess'));
+      // Make sure the (new or already-existing) user is present in the
+      // existing-user Select options with a proper label.
+      await queryClient.invalidateQueries({ queryKey: ['regular-users'] });
+
+      if (response.alreadyExisted) {
+        message.info(t('createAd.userAlreadySelected'));
+      } else {
+        message.success(t('createAd.userCreatedSuccess'));
+      }
       form.setFieldValue('userId', response.id);
       setIsNewUser(false);
       setNewUserPhone('+994 ');

@@ -58,7 +58,7 @@ public class RegularUsersController(IMediator mediator, IStringLocalizer<Regular
         var result = await Mediator.Send(command, cancellationToken);
 
         if (result.IsSuccess)
-            return CreatedAtAction(nameof(GetAllRegularUsers), new { }, new { id = result.Data });
+            return CreatedAtAction(nameof(GetAllRegularUsers), new { }, new { id = result.Data.UserId, alreadyExisted = result.Data.AlreadyExisted });
 
         return result.ToActionResult();
     }
