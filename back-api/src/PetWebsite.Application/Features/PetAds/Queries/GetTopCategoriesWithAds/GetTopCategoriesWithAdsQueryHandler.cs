@@ -66,6 +66,11 @@ public class GetTopCategoriesWithAdsQueryHandler(
 							.OrderByDescending(l => l.AppLocale.Code == currentCulture)
 							.Select(l => l.Title)
 							.FirstOrDefault() ?? "",
+					Slug =
+						c.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
+							.OrderByDescending(l => l.AppLocale.Code == currentCulture)
+							.Select(l => l.Slug)
+							.FirstOrDefault() ?? "",
 					Subtitle =
 						c.Localizations.Where(l => l.AppLocale.Code == currentCulture || l.AppLocale.IsDefault)
 							.OrderByDescending(l => l.AppLocale.Code == currentCulture)
