@@ -27,7 +27,7 @@ export default async function Page() {
       petAdService.searchPetAds(
         {
           pagination: { number: 1, size: 12 },
-          sorting: [{ key: "CreatedAt", direction: SortDirection.DESCENDING }],
+          sorting: [{ key: "publishedAt", direction: SortDirection.DESCENDING }],
         },
         locale,
       ),
