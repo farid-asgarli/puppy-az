@@ -80,6 +80,29 @@ public class UploadPetAdImageCommandHandler(
 		// Save file to storage (in pet-ads subfolder)
 		var fileMetadata = await fileService.SaveFileAsync(streamToSave, fileNameToSave, "pet-ads", ct);
 
+		// Generate a watermarked twin from the clean processed image. The canonical FilePath
+		// stays clean (used for the primary/cover image in carousels); the twin is served for
+		// non-primary images in detail galleries. If watermarking is disabled or fails, the
+		// twin is simply omitted and callers fall back to the clean file.
+		string? watermarkedRelativePath = null;
+		if (imageProcessingService.IsSupportedImageFormat(fileNameToSave))
+		{
+			streamToSave.Position = 0;
+			await using var watermarkedStream = await imageProcessingService.CreateWatermarkedStreamAsync(streamToSave, fileNameToSave, ct);
+			if (watermarkedStream is not null)
+			{
+				try
+				{
+					var watermarkedMetadata = await fileService.SaveFileAsync(watermarkedStream, fileNameToSave, "pet-ads", ct);
+					watermarkedRelativePath = $"/uploads/{watermarkedMetadata.RelativePath}";
+				}
+				catch (Exception ex)
+				{
+					logger.LogWarning(ex, "Failed to save watermarked twin for {FileName}; serving clean image only", fileNameToSave);
+				}
+			}
+		}
+
 		// Dispose the processed stream if it was created
 		if (streamToSave != originalStream)
 		{
@@ -91,6 +114,7 @@ public class UploadPetAdImageCommandHandler(
 		var petAdImage = new PetAdImage
 		{
 			FilePath = $"/uploads/{fileMetadata.RelativePath}",
+			WatermarkedFilePath = watermarkedRelativePath,
 			FileName = fileMetadata.FileName,
 			FileSize = fileMetadata.Size,
 			ContentType = fileMetadata.ContentType,

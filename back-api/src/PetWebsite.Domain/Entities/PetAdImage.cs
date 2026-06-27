@@ -13,6 +13,15 @@ public class PetAdImage : BaseEntity
 	public string FilePath { get; set; } = string.Empty;
 
 	/// <summary>
+	/// Gets or sets the path to the watermarked variant of this image.
+	/// The canonical <see cref="FilePath"/> stays clean (no watermark) and is used for the
+	/// primary/cover image shown in carousels; this watermarked twin is served for
+	/// non-primary images in detail galleries. Null for legacy images uploaded before
+	/// watermark twins existed (callers fall back to <see cref="FilePath"/>).
+	/// </summary>
+	public string? WatermarkedFilePath { get; set; }
+
+	/// <summary>
 	/// Gets or sets the original file name.
 	/// </summary>
 	public string FileName { get; set; } = string.Empty;

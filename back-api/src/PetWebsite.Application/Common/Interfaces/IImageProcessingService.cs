@@ -16,6 +16,17 @@ public interface IImageProcessingService
 	Task<ImageProcessingResult> ProcessImageAsync(Stream imageStream, string fileName, CancellationToken cancellationToken = default);
 
 	/// <summary>
+	/// Produces a watermarked copy of an already-processed (clean) image.
+	/// Returns null when watermarking is disabled, the format is unsupported, or the
+	/// operation fails — in which case callers should fall back to the clean image.
+	/// The caller is responsible for disposing the returned stream.
+	/// </summary>
+	/// <param name="imageStream">The clean image stream to watermark. Will be read from position 0.</param>
+	/// <param name="fileName">The file name (used to determine format).</param>
+	/// <param name="cancellationToken">Cancellation token.</param>
+	Task<Stream?> CreateWatermarkedStreamAsync(Stream imageStream, string fileName, CancellationToken cancellationToken = default);
+
+	/// <summary>
 	/// Checks if a file is a supported image format.
 	/// </summary>
 	/// <param name="fileName">The file name to check.</param>

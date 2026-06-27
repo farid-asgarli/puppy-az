@@ -75,7 +75,12 @@ public class GetMyPetAdByIdQueryHandler(
 					.Select(i => new PetAdImageDto
 					{
 						Id = i.Id,
-						Url = i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath,
+						// Detail gallery: ALL images (including the primary/cover) show the
+						// watermark. Use the watermarked twin when present, else the stored file
+						// (legacy rows already have the watermark baked into FilePath).
+						Url = i.WatermarkedFilePath != null
+							? i.WatermarkedFilePath
+							: (i.FilePath.StartsWith("/") ? i.FilePath : "/" + i.FilePath),
 						IsPrimary = i.IsPrimary,
 					})
 					.ToList(),

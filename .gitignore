@@ -1,0 +1,20 @@
+# Build outputs
+**/bin/
+**/obj/
+**/dist/
+**/out/
+**/.next/
+*.tsbuildinfo
+**/node_modules/
+# .NET publish (deployed app)
+**/publish/
+# Built admin panel served by the API
+back-api/src/PetWebsite.API/wwwroot/admin/
+back-api/src/PetWebsite.API/wwwroot/uploads/
+# Secrets (NOTE: appsettings.Production.json & .env are already tracked; this
+# only prevents NEW accidental commits — existing ones need git rm --cached)
+**/appsettings.Production.json
+**/appsettings.*.Local.json
+**/.env
+**/.env.*
+!**/.env.example

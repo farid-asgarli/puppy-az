@@ -47,11 +47,12 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 			return CreateUnprocessedResult(imageStream, fileName, originalSize, extension);
 		}
 
-		// If file is below threshold AND no watermark is needed, skip processing entirely
+		// The canonical output is always kept CLEAN (no watermark). The watermarked twin is
+		// produced separately via CreateWatermarkedStreamAsync. If the file is below the
+		// compression threshold, skip processing entirely and return the original bytes.
 		bool belowThreshold = originalSize <= _options.CompressionThreshold;
-		bool hasWatermark = !string.IsNullOrEmpty(_options.WatermarkText);
 
-		if (belowThreshold && !hasWatermark)
+		if (belowThreshold)
 		{
 			_logger.LogDebug(
 				"Image {FileName} ({Size} bytes) is below compression threshold ({Threshold} bytes), skipping processing",
@@ -141,13 +142,8 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 				}
 			}
 
-			// Apply watermark before encoding so it is baked into every stored image
-			bool watermarkApplied = false;
-			if (!string.IsNullOrEmpty(_options.WatermarkText))
-			{
-				ApplyWatermark(bitmapToEncode, _options.WatermarkText);
-				watermarkApplied = true;
-			}
+			// The canonical stored image is always kept clean — the watermark is baked only
+			// into a separate twin produced by CreateWatermarkedStreamAsync.
 
 			// For large files (> 1MB), be more aggressive with compression
 			var qualityLevels = originalSize > 1024 * 1024 ? new[] { quality, 75, 65, 55 } : new[] { quality, 75 };
@@ -186,8 +182,8 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 
 				var currentSize = tempStream.Length;
 
-				// Accept if: watermark was applied (must produce output regardless of size), or the file shrank
-				if ((watermarkApplied || currentSize < originalSize) && currentSize < bestSize)
+				// Accept only if the file actually shrank
+				if (currentSize < originalSize && currentSize < bestSize)
 				{
 					bestOutputStream?.Dispose();
 					bestOutputStream = tempStream;
@@ -346,6 +342,61 @@ public class ImageProcessingService(IOptions<ImageProcessingOptions> options, IL
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Produces a watermarked copy of an already-processed (clean) image.
+	/// Returns null when watermarking is disabled, the format is unsupported, or the operation fails.
+	/// </summary>
+	public async Task<Stream?> CreateWatermarkedStreamAsync(Stream imageStream, string fileName, CancellationToken cancellationToken = default)
+	{
+		ArgumentNullException.ThrowIfNull(imageStream);
+		ArgumentNullException.ThrowIfNull(fileName);
+
+		if (string.IsNullOrEmpty(_options.WatermarkText) || !IsSupportedImageFormat(fileName))
+		{
+			return null;
+		}
+
+		try
+		{
+			imageStream.Position = 0;
+			using var bitmap = SKBitmap.Decode(imageStream);
+			if (bitmap == null)
+			{
+				_logger.LogWarning("Failed to decode image {FileName} for watermarking", fileName);
+				return null;
+			}
+
+			ApplyWatermark(bitmap, _options.WatermarkText);
+
+			var extension = Path.GetExtension(fileName).ToLowerInvariant();
+			var (outputFormat, _, quality) = DetermineOutputFormat(bitmap, extension);
+
+			using var image = SKImage.FromBitmap(bitmap);
+			using var encodedData = outputFormat switch
+			{
+				SKEncodedImageFormat.Png => image.Encode(SKEncodedImageFormat.Png, 100),
+				SKEncodedImageFormat.Webp => image.Encode(SKEncodedImageFormat.Webp, quality),
+				_ => image.Encode(SKEncodedImageFormat.Jpeg, quality),
+			};
+
+			if (encodedData == null)
+			{
+				_logger.LogWarning("Failed to encode watermarked image {FileName}", fileName);
+				return null;
+			}
+
+			var outputStream = new MemoryStream();
+			await encodedData.AsStream().CopyToAsync(outputStream, cancellationToken);
+			outputStream.Position = 0;
+			return outputStream;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogWarning(ex, "Failed to create watermarked copy of {FileName}", fileName);
+			return null;
+		}
 	}
 
 	/// <summary>

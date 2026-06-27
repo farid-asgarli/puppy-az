@@ -35,21 +35,35 @@ public class DeletePetAdImageCommandHandler(
 		if (image.PetAdId.HasValue)
 			return Result.Failure(L(LocalizationKeys.PetAd.ImageAlreadyAttached), 400);
 
-		// Delete physical file
-		try
-		{
-			await fileService.DeleteFileAsync(image.FilePath, ct);
-		}
-		catch
-		{
-			// Log but don't fail - we'll still remove the database record
-			// File might already be deleted or inaccessible
-		}
+		// Delete physical file (and its watermarked twin, if any).
+		// Stored paths are web paths like "/uploads/pet-ads/x.jpg"; the file storage root
+		// already points at the "uploads" folder, so strip that prefix before deleting.
+		await TryDeletePhysicalFileAsync(fileService, image.FilePath, ct);
+		await TryDeletePhysicalFileAsync(fileService, image.WatermarkedFilePath, ct);
 
 		// Delete database record
 		dbContext.PetAdImages.Remove(image);
 		await dbContext.SaveChangesAsync(ct);
 
 		return Result.Success();
+	}
+
+	private static async Task TryDeletePhysicalFileAsync(IFileService fileService, string? storedPath, CancellationToken ct)
+	{
+		if (string.IsNullOrEmpty(storedPath))
+			return;
+
+		var relativePath = storedPath.StartsWith("/uploads/", StringComparison.OrdinalIgnoreCase)
+			? storedPath["/uploads/".Length..]
+			: storedPath.TrimStart('/');
+
+		try
+		{
+			await fileService.DeleteFileAsync(relativePath, ct);
+		}
+		catch
+		{
+			// Best-effort cleanup; the file may already be gone or inaccessible.
+		}
 	}
 }

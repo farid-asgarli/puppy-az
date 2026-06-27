@@ -163,7 +163,10 @@ public static class PetAdProjections
 			Images = p.Images.OrderByDescending(i => i.IsPrimary).ThenBy(i => i.Id).Select(i => new PetAdImageDto
 			{
 				Id = i.Id,
-				Url = i.FilePath,
+				// Detail gallery: ALL images (including the primary/cover) show the watermark.
+				// Use the watermarked twin when present, else the stored file (legacy rows
+				// already have the watermark baked into FilePath).
+				Url = i.WatermarkedFilePath ?? i.FilePath,
 				IsPrimary = i.IsPrimary,
 			}).ToList(),
 		};

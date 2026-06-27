@@ -15,6 +15,8 @@ public class PetAdImageConfiguration : IEntityTypeConfiguration<PetAdImage>
 
 		builder.Property(e => e.FilePath).IsRequired().HasMaxLength(500);
 
+		builder.Property(e => e.WatermarkedFilePath).IsRequired(false).HasMaxLength(500);
+
 		builder.Property(e => e.FileName).IsRequired().HasMaxLength(255);
 
 		builder.Property(e => e.FileSize).IsRequired();
