@@ -116,6 +116,13 @@ public class MyPetAdListItemDto : PetAdListItemDto
 	public int ViewCount { get; init; }
 	public DateTime CreatedAt { get; init; }
 	public DateTime? ExpiresAt { get; init; }
+
+	// Full editable fields (used by the admin edit form, which needs to prefill these).
+	public string Description { get; init; } = string.Empty;
+
+	[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+	public decimal? Weight { get; init; }
+
 	public List<PetAdImageDto> Images { get; set; } = [];
 }
 

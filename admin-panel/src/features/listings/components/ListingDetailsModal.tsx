@@ -28,6 +28,7 @@ import {
   StarOutlined,
   SwapOutlined,
   PlusCircleOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -53,6 +54,7 @@ import {
 import dayjs from "dayjs";
 import { BreedModal } from "@/features/breeds/components/BreedModal";
 import { DistrictModal } from "@/features/districts/components/DistrictModal";
+import { ListingEditModal } from "./ListingEditModal";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -84,6 +86,7 @@ export function ListingDetailsModal({
   const assignDistrictMutation = useAssignDistrictToListing();
   const [showBreedModal, setShowBreedModal] = useState(false);
   const [showDistrictModal, setShowDistrictModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const listing = listingProp;
 
@@ -314,6 +317,15 @@ export function ListingDetailsModal({
             }
           />
           {listing.language && <LanguageBadge language={listing.language} />}
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
+            size="small"
+            className="ml-auto"
+            onClick={() => setShowEditModal(true)}
+          >
+            {t("listings.edit.button", "Redaktə et")}
+          </Button>
         </div>
 
         {/* Title & Price */}
@@ -953,6 +965,13 @@ export function ListingDetailsModal({
           onSuccess={handleDistrictCreated}
         />
       )}
+
+      {/* Listing Edit Modal */}
+      <ListingEditModal
+        open={showEditModal}
+        listing={listing}
+        onClose={() => setShowEditModal(false)}
+      />
     </Modal>
   );
 }

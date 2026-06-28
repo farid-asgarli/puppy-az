@@ -108,6 +108,8 @@ export interface Listing {
   districtName?: string;
   customDistrictName?: string | null;
   status?: ListingStatus;
+  color?: string;
+  weight?: number | null;
   isPremium: boolean;
   premiumUntil?: string;
   premiumExpiresAt?: string;
@@ -163,6 +165,25 @@ export interface SetPremiumRequest {
 export interface SetVipRequest {
   isVip: boolean;
   durationInDays?: number;
+}
+
+// Payload for admin update of a pet ad (matches UpdatePetAdByAdminCommand).
+export interface UpdateListingRequest {
+  id: number;
+  title: string;
+  description: string;
+  ageInMonths?: number | null;
+  gender?: Gender | null;
+  adType: ListingType;
+  color: string;
+  weight?: number | null;
+  size?: AnimalSize | null;
+  price?: number | null;
+  cityId: number;
+  districtId?: number | null;
+  petBreedId?: number | null;
+  petCategoryId?: number | null;
+  imageIds?: number[] | null;
 }
 
 export interface ListingStats {

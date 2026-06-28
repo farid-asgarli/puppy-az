@@ -96,6 +96,8 @@ public static class PetAdProjections
 		{
 			Id = p.Id,
 			Title = p.Title,
+			Description = p.Description,
+			Weight = p.Weight,
 			AgeInMonths = p.AgeInMonths,
 			Gender = p.Gender,
 			AdType = p.AdType,

@@ -39,6 +39,7 @@ export const endpoints = {
   listings: {
     search: `${ADMIN_BASE}/pet-ads/search`,
     getById: (id: number) => `${ADMIN_BASE}/pet-ads/${id}`,
+    update: (id: number) => `${ADMIN_BASE}/pet-ads/${id}`,
     review: (id: number) => `${ADMIN_BASE}/pet-ads/${id}/review`,
     premium: (id: number) => `${ADMIN_BASE}/pet-ads/${id}/premium`,
     vip: (id: number) => `${ADMIN_BASE}/pet-ads/${id}/vip`,

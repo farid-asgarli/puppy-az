@@ -8,6 +8,7 @@ import type {
   PaginatedResponse,
   SetPremiumRequest,
   SetVipRequest,
+  UpdateListingRequest,
 } from "@/shared/api/types";
 import { ListingStatus } from "@/shared/api/types";
 import { App } from "antd";
@@ -267,6 +268,31 @@ export function useListingById(id: number | undefined) {
     queryKey: listingsKeys.detail(id!),
     queryFn: () => api.get<Listing>(endpoints.listings.getById(id!)),
     enabled: !!id,
+  });
+}
+
+// Update a listing (admin - full edit of any ad)
+export function useUpdateListing() {
+  const queryClient = useQueryClient();
+  const { message } = App.useApp();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: (data: UpdateListingRequest) =>
+      api.put(endpoints.listings.update(data.id), data),
+    onSuccess: (_result, variables) => {
+      queryClient.invalidateQueries({ queryKey: listingsKeys.all });
+      queryClient.invalidateQueries({
+        queryKey: listingsKeys.detail(variables.id),
+      });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      message.success(
+        t("listings.updateSuccess", "Elan uğurla yeniləndi"),
+      );
+    },
+    onError: () => {
+      message.error(t("error.generic"));
+    },
   });
 }
 
