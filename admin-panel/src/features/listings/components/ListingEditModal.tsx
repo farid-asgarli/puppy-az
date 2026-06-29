@@ -92,32 +92,38 @@ export function ListingEditModal({
   );
   const { data: districts = [] } = useDistrictsByCity(selectedCityId);
 
+  const prefillForm = () => {
+    if (!listing) return;
+    form.setFieldsValue({
+      title: listing.title ?? "",
+      description: listing.description ?? "",
+      adType: listing.adType,
+      petCategoryId: listing.petCategoryId ?? listing.categoryId ?? null,
+      petBreedId: listing.petBreedId ?? listing.breedId ?? null,
+      cityId: listing.cityId as number,
+      districtId: listing.districtId ?? null,
+      gender: listing.gender ?? null,
+      size: listing.size ?? null,
+      ageInMonths: listing.ageInMonths ?? null,
+      color: listing.color ?? "",
+      weight: listing.weight ?? null,
+      price: listing.price ?? null,
+    });
+    // Seed the image list from the ad's current images, primary first.
+    const seeded = (listing.images ?? [])
+      .map((img) => ({
+        id: img.id,
+        url: (img.url || img.imageUrl) ?? "",
+      }))
+      .filter((img) => img.id != null);
+    setImages(seeded);
+  };
+
   useEffect(() => {
     if (open && listing) {
-      form.setFieldsValue({
-        title: listing.title ?? "",
-        description: listing.description ?? "",
-        adType: listing.adType,
-        petCategoryId: listing.petCategoryId ?? listing.categoryId ?? null,
-        petBreedId: listing.petBreedId ?? listing.breedId ?? null,
-        cityId: listing.cityId as number,
-        districtId: listing.districtId ?? null,
-        gender: listing.gender ?? null,
-        size: listing.size ?? null,
-        ageInMonths: listing.ageInMonths ?? null,
-        color: listing.color ?? "",
-        weight: listing.weight ?? null,
-        price: listing.price ?? null,
-      });
-      // Seed the image list from the ad's current images, primary first.
-      const seeded = (listing.images ?? [])
-        .map((img) => ({
-          id: img.id,
-          url: (img.url || img.imageUrl) ?? "",
-        }))
-        .filter((img) => img.id != null);
-      setImages(seeded);
+      prefillForm();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, listing, form]);
 
   const handleImageSelect = async (
@@ -286,7 +292,10 @@ export function ListingEditModal({
       width={"95vw"}
       style={{ maxWidth: 760 }}
       centered
-      destroyOnHidden
+      forceRender
+      afterOpenChange={(opened) => {
+        if (opened) prefillForm();
+      }}
       footer={[
         <Button key="cancel" onClick={onClose}>
           {t("common.cancel", "Ləğv et")}
