@@ -296,6 +296,36 @@ export function useUpdateListing() {
   });
 }
 
+// Upload one or more images for a listing (admin). Returns the created image
+// records (orphaned until attached via the update endpoint's imageIds).
+export interface UploadedListingImage {
+  id: number;
+  url: string;
+}
+
+export function useUploadListingImages() {
+  const { message } = App.useApp();
+  const { t } = useTranslation();
+
+  return useMutation({
+    mutationFn: async (params: { file: File; userId?: string | null }) => {
+      const formData = new FormData();
+      formData.append("file", params.file);
+      if (params.userId) {
+        formData.append("userId", params.userId);
+      }
+      const result = await api.post<UploadedListingImage[]>(
+        endpoints.listings.uploadImages,
+        formData,
+      );
+      return result[0];
+    },
+    onError: () => {
+      message.error(t("listings.imageUploadError", "Şəkil yüklənmədi"));
+    },
+  });
+}
+
 // Assign breed to a listing (after creating breed from suggestion)
 export function useAssignBreedToListing() {
   const queryClient = useQueryClient();

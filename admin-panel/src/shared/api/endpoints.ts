@@ -47,6 +47,7 @@ export const endpoints = {
     assignBreed: (id: number) => `${ADMIN_BASE}/pet-ads/${id}/assign-breed`,
     assignDistrict: (id: number) =>
       `${ADMIN_BASE}/pet-ads/${id}/assign-district`,
+    uploadImages: `${ADMIN_BASE}/pet-ads/images/upload`,
   },
 
   // Pet Categories

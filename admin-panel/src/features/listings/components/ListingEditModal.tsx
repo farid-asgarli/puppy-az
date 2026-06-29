@@ -1,7 +1,25 @@
-import { useEffect, useMemo } from "react";
-import { Modal, Form, Input, InputNumber, Select, Button } from "antd";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Modal,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  Button,
+  Image,
+  Tooltip,
+  Spin,
+  App,
+} from "antd";
+import {
+  PlusOutlined,
+  DeleteOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useUpdateListing } from "../api/listingsApi";
+import { useUpdateListing, useUploadListingImages } from "../api/listingsApi";
 import type { Listing } from "@/shared/api/types";
 import { ListingType, Gender, AnimalSize } from "@/shared/api/types";
 import { useAllCities } from "@/features/cities";
@@ -11,10 +29,17 @@ import { useDistrictsByCity } from "@/features/districts";
 
 const { TextArea } = Input;
 
+const MAX_IMAGES = 10;
+
 interface ListingEditModalProps {
   open: boolean;
   listing: Listing | null;
   onClose: () => void;
+}
+
+interface EditImage {
+  id: number;
+  url: string;
 }
 
 interface EditFormValues {
@@ -42,10 +67,17 @@ export function ListingEditModal({
   onClose,
 }: ListingEditModalProps) {
   const { t, i18n } = useTranslation();
+  const { message } = App.useApp();
   const [form] = Form.useForm<EditFormValues>();
   const updateMutation = useUpdateListing();
+  const uploadMutation = useUploadListingImages();
 
   const locale = i18n.language;
+
+  // Local, ordered image list. The first entry is the cover (primary) image.
+  const [images, setImages] = useState<EditImage[]>([]);
+  const [uploadingCount, setUploadingCount] = useState(0);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: cities = [] } = useAllCities();
   const { data: categories = [] } = useCategories();
@@ -77,8 +109,70 @@ export function ListingEditModal({
         weight: listing.weight ?? null,
         price: listing.price ?? null,
       });
+      // Seed the image list from the ad's current images, primary first.
+      const seeded = (listing.images ?? [])
+        .map((img) => ({
+          id: img.id,
+          url: (img.url || img.imageUrl) ?? "",
+        }))
+        .filter((img) => img.id != null);
+      setImages(seeded);
     }
   }, [open, listing, form]);
+
+  const handleImageSelect = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const remainingSlots = MAX_IMAGES - images.length;
+    const filesToUpload = Array.from(files).slice(0, remainingSlots);
+
+    if (filesToUpload.length === 0) {
+      message.warning(
+        t("listings.edit.maxImages", `Maksimum ${MAX_IMAGES} şəkil`),
+      );
+      e.target.value = "";
+      return;
+    }
+
+    setUploadingCount(filesToUpload.length);
+    for (const file of filesToUpload) {
+      try {
+        const uploaded = await uploadMutation.mutateAsync({
+          file,
+          userId: listing?.userId ?? null,
+        });
+        if (uploaded?.id) {
+          setImages((prev) => [
+            ...prev,
+            { id: uploaded.id, url: uploaded.url },
+          ]);
+        }
+      } catch {
+        // error toast handled inside the hook
+      } finally {
+        setUploadingCount((prev) => Math.max(0, prev - 1));
+      }
+    }
+    // Reset so the same file can be re-selected.
+    e.target.value = "";
+  };
+
+  const moveImage = (fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= images.length) return;
+    setImages((prev) => {
+      const updated = [...prev];
+      const [removed] = updated.splice(fromIndex, 1);
+      if (removed) updated.splice(toIndex, 0, removed);
+      return updated;
+    });
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const getCategoryName = (cat: (typeof categories)[number]) => {
     const loc = cat.localizations?.find((l) => l.localeCode === locale);
@@ -146,6 +240,14 @@ export function ListingEditModal({
   const handleSubmit = async () => {
     if (!listing) return;
     const values = await form.validateFields();
+
+    if (images.length === 0) {
+      message.warning(
+        t("listings.edit.atLeastOneImage", "Ən azı bir şəkil olmalıdır"),
+      );
+      return;
+    }
+
     updateMutation.mutate(
       {
         id: listing.id,
@@ -162,9 +264,9 @@ export function ListingEditModal({
         color: values.color ?? "",
         weight: values.weight ?? null,
         price: values.price ?? null,
-        // imageIds omitted on purpose: leaving it null preserves the
-        // existing images (the backend only touches images when a
-        // non-empty list is provided).
+        // Ordered list; the first image becomes the primary/cover. The
+        // backend detaches removed images and attaches newly uploaded ones.
+        imageIds: images.map((img) => img.id),
       },
       {
         onSuccess: () => {
@@ -212,8 +314,116 @@ export function ListingEditModal({
           }
         }}
       >
+        {/* Image management: upload, reorder, delete. First image is the cover. */}
+        <div className="mb-5">
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-medium text-gray-700 dark:text-gray-200">
+              {t("listings.edit.images", "Şəkillər")}{" "}
+              <span className="text-xs text-gray-400">
+                ({images.length}/{MAX_IMAGES})
+              </span>
+            </span>
+            <Button
+              size="small"
+              icon={<PlusOutlined />}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={images.length >= MAX_IMAGES || uploadingCount > 0}
+            >
+              {t("listings.edit.addImage", "Şəkil əlavə et")}
+            </Button>
+          </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
+            multiple
+            className="hidden"
+            onChange={handleImageSelect}
+          />
+          <div className="text-xs text-gray-400 mb-2">
+            {t(
+              "listings.edit.imagesHint",
+              "İlk şəkil əsas (cover) şəkildir. Sıralamanı oxlarla dəyişə bilərsiniz.",
+            )}
+          </div>
+          <div className="flex flex-wrap gap-3">
+            {images.map((img, index) => (
+              <div
+                key={img.id}
+                className="relative group w-24 h-24 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700"
+              >
+                <Image
+                  src={img.url}
+                  alt={`image-${img.id}`}
+                  width={96}
+                  height={96}
+                  className="object-cover"
+                  style={{ objectFit: "cover", width: 96, height: 96 }}
+                />
+                {index === 0 && (
+                  <div className="absolute top-1 left-1 bg-amber-500 text-white rounded px-1 py-0.5 text-[10px] flex items-center gap-0.5 z-10">
+                    <StarFilled style={{ fontSize: 10 }} />
+                    {t("listings.edit.cover", "Əsas")}
+                  </div>
+                )}
+                <div className="absolute inset-x-0 bottom-0 flex justify-center gap-1 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity py-1 z-10">
+                  <Tooltip title={t("listings.edit.moveLeft", "Sola")}>
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={
+                        <ArrowLeftOutlined style={{ color: "#fff" }} />
+                      }
+                      disabled={index === 0}
+                      onClick={() => moveImage(index, index - 1)}
+                    />
+                  </Tooltip>
+                  <Tooltip title={t("listings.edit.delete", "Sil")}>
+                    <Button
+                      type="text"
+                      size="small"
+                      danger
+                      icon={
+                        <DeleteOutlined style={{ color: "#ff7875" }} />
+                      }
+                      onClick={() => removeImage(index)}
+                    />
+                  </Tooltip>
+                  <Tooltip title={t("listings.edit.moveRight", "Sağa")}>
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={
+                        <ArrowRightOutlined style={{ color: "#fff" }} />
+                      }
+                      disabled={index === images.length - 1}
+                      onClick={() => moveImage(index, index + 1)}
+                    />
+                  </Tooltip>
+                </div>
+              </div>
+            ))}
+            {uploadingCount > 0 && (
+              <div className="w-24 h-24 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center">
+                <Spin />
+              </div>
+            )}
+            {images.length === 0 && uploadingCount === 0 && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-24 h-24 rounded-lg border border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-gray-400 hover:text-blue-500 hover:border-blue-400 transition-colors"
+              >
+                <PlusOutlined />
+                <span className="text-[10px] mt-1">
+                  {t("listings.edit.addImage", "Şəkil əlavə et")}
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+
         <Form.Item
-          name="title"
           label={t("listings.edit.fieldTitle", "Başlıq")}
           rules={[
             {
