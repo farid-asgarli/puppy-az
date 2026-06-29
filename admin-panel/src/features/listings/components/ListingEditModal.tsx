@@ -261,9 +261,11 @@ export function ListingEditModal({
         gender: values.gender ?? null,
         size: values.size ?? null,
         ageInMonths: values.ageInMonths ?? null,
-        color: values.color ?? "",
-        weight: values.weight ?? null,
-        price: values.price ?? null,
+        color: values.color?.trim() ?? "",
+        // Weight must be > 0 when sent; treat 0/empty as "not set".
+        weight: values.weight && values.weight > 0 ? values.weight : null,
+        // Price is a non-nullable decimal on the backend.
+        price: values.price ?? 0,
         // Ordered list; the first image becomes the primary/cover. The
         // backend detaches removed images and attaches newly uploaded ones.
         imageIds: images.map((img) => img.id),
@@ -448,7 +450,7 @@ export function ListingEditModal({
             },
           ]}
         >
-          <TextArea rows={4} maxLength={4000} showCount />
+          <TextArea rows={4} maxLength={2000} showCount />
         </Form.Item>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4">
@@ -562,12 +564,18 @@ export function ListingEditModal({
             name="weight"
             label={t("listings.edit.fieldWeight", "Çəki (kq)")}
           >
-            <InputNumber min={0} step={0.1} style={{ width: "100%" }} />
+            <InputNumber min={0.1} step={0.1} style={{ width: "100%" }} />
           </Form.Item>
 
           <Form.Item
             name="color"
             label={t("listings.edit.fieldColor", "Rəng")}
+            rules={[
+              {
+                required: true,
+                message: t("listings.edit.colorRequired", "Rəng tələb olunur"),
+              },
+            ]}
           >
             <Input maxLength={100} />
           </Form.Item>
