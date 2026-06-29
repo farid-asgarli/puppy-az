@@ -92,9 +92,13 @@ export function ListingEditModal({
   );
   const { data: districts = [] } = useDistrictsByCity(selectedCityId);
 
-  const prefillForm = () => {
-    if (!listing) return;
-    form.setFieldsValue({
+  // Build the form's initial values directly from the listing. Using
+  // initialValues (instead of setFieldsValue in an effect) avoids the antd
+  // "form instance not connected" timing problem where the prefill ran before
+  // the Form mounted, leaving fields (e.g. Title) empty and breaking submit.
+  const initialValues = useMemo<Partial<EditFormValues>>(() => {
+    if (!listing) return {};
+    return {
       title: listing.title ?? "",
       description: listing.description ?? "",
       adType: listing.adType,
@@ -108,23 +112,21 @@ export function ListingEditModal({
       color: listing.color ?? "",
       weight: listing.weight ?? null,
       price: listing.price ?? null,
-    });
-    // Seed the image list from the ad's current images, primary first.
-    const seeded = (listing.images ?? [])
-      .map((img) => ({
-        id: img.id,
-        url: (img.url || img.imageUrl) ?? "",
-      }))
-      .filter((img) => img.id != null);
-    setImages(seeded);
-  };
+    };
+  }, [listing]);
 
+  // Seed the local image list from the ad's current images (primary first).
   useEffect(() => {
     if (open && listing) {
-      prefillForm();
+      const seeded = (listing.images ?? [])
+        .map((img) => ({
+          id: img.id,
+          url: (img.url || img.imageUrl) ?? "",
+        }))
+        .filter((img) => img.id != null);
+      setImages(seeded);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, listing, form]);
+  }, [open, listing]);
 
   const handleImageSelect = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -254,20 +256,39 @@ export function ListingEditModal({
       return;
     }
 
+    // Fall back to the listing's own values for required fields so the request
+    // can never be sent with a missing Title/Description/etc.
+    const title = (values.title ?? listing.title ?? "").trim();
+    const description = (
+      values.description ??
+      listing.description ??
+      ""
+    ).trim();
+    const color = (
+      values.color ??
+      listing.color ??
+      ""
+    ).trim();
+
     updateMutation.mutate(
       {
         id: listing.id,
-        title: values.title,
-        description: values.description,
-        adType: values.adType,
-        petCategoryId: values.petCategoryId ?? null,
-        petBreedId: values.petBreedId ?? null,
-        cityId: values.cityId,
-        districtId: values.districtId ?? null,
+        title,
+        description,
+        adType: values.adType ?? listing.adType,
+        petCategoryId:
+          values.petCategoryId ??
+          listing.petCategoryId ??
+          listing.categoryId ??
+          null,
+        petBreedId:
+          values.petBreedId ?? listing.petBreedId ?? listing.breedId ?? null,
+        cityId: values.cityId ?? (listing.cityId as number),
+        districtId: values.districtId ?? listing.districtId ?? null,
         gender: values.gender ?? null,
         size: values.size ?? null,
         ageInMonths: values.ageInMonths ?? null,
-        color: values.color?.trim() ?? "",
+        color,
         // Weight must be > 0 when sent; treat 0/empty as "not set".
         weight: values.weight && values.weight > 0 ? values.weight : null,
         // Price is a non-nullable decimal on the backend.
@@ -292,10 +313,7 @@ export function ListingEditModal({
       width={"95vw"}
       style={{ maxWidth: 760 }}
       centered
-      forceRender
-      afterOpenChange={(opened) => {
-        if (opened) prefillForm();
-      }}
+      destroyOnHidden
       footer={[
         <Button key="cancel" onClick={onClose}>
           {t("common.cancel", "Ləğv et")}
@@ -311,10 +329,12 @@ export function ListingEditModal({
       ]}
     >
       <Form
+        key={listing?.id ?? "edit"}
         form={form}
         layout="vertical"
         requiredMark="optional"
         className="mt-2"
+        initialValues={initialValues}
         onValuesChange={(changed) => {
           // Reset breed when category changes; reset district when city changes.
           if ("petCategoryId" in changed) {
