@@ -10,9 +10,9 @@ import {
   IconClockCheck,
   IconMessageCircle,
   IconBrandInstagram,
-  IconBrandFacebook,
+  // IconBrandFacebook,
   IconBrandTiktok,
-  IconBrandLinkedin,
+  // IconBrandLinkedin,
   IconMail,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
@@ -383,7 +383,7 @@ const AboutView = () => {
                     {t("contact.info.socialMedia")}
                   </Text>
                   <div className="flex items-center gap-3">
-                    <a
+                    {/* <a
                       href="https://facebook.com/puppy.az"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -391,9 +391,9 @@ const AboutView = () => {
                       aria-label="Facebook"
                     >
                       <IconBrandFacebook size={20} className="text-gray-700" />
-                    </a>
+                    </a> */}
                     <a
-                      href="https://instagram.com/puppy.az"
+                      href="https://instagram.com/puppy.az_"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
@@ -410,7 +410,7 @@ const AboutView = () => {
                     >
                       <IconBrandTiktok size={20} className="text-gray-700" />
                     </a>
-                    <a
+                    {/* <a
                       href="https://linkedin.com/company/puppy-az"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -418,7 +418,7 @@ const AboutView = () => {
                       aria-label="LinkedIn"
                     >
                       <IconBrandLinkedin size={20} className="text-gray-700" />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>

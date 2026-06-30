@@ -4,10 +4,10 @@ import TransitionLink from "@/lib/components/transition-link";
 import { cn } from "@/lib/external/utils";
 import {
   IconChevronDown,
-  IconBrandFacebook,
+  // IconBrandFacebook,
   IconBrandInstagram,
   IconBrandTiktok,
-  IconBrandLinkedin,
+  // IconBrandLinkedin,
   IconWorld,
 } from "@tabler/icons-react";
 import { useState, useRef } from "react";
@@ -83,7 +83,7 @@ export function MobileFooter() {
           </Text>
           {/* Social Links */}
           <div className="flex items-center gap-2">
-            <a
+            {/* <a
               href="https://facebook.com/puppy.az"
               target="_blank"
               rel="noopener noreferrer"
@@ -91,9 +91,9 @@ export function MobileFooter() {
               aria-label={tAccessibility("facebook")}
             >
               <IconBrandFacebook size={18} />
-            </a>
+            </a> */}
             <a
-              href="https://instagram.com/puppy.az"
+              href="https://instagram.com/puppy.az_"
               target="_blank"
               rel="noopener noreferrer"
               className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-600 transition-all"
@@ -110,7 +110,7 @@ export function MobileFooter() {
             >
               <IconBrandTiktok size={18} />
             </a>
-            <a
+            {/* <a
               href="https://linkedin.com/company/puppy-az"
               target="_blank"
               rel="noopener noreferrer"
@@ -118,7 +118,7 @@ export function MobileFooter() {
               aria-label={tAccessibility("linkedin")}
             >
               <IconBrandLinkedin size={18} />
-            </a>
+            </a> */}
           </div>
         </div>
 

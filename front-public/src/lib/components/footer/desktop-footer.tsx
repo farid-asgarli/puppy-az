@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  IconBrandFacebook,
+  // IconBrandFacebook,
   IconBrandInstagram,
   IconBrandTiktok,
-  IconBrandLinkedin,
+  // IconBrandLinkedin,
   IconWorld,
   IconChevronDown,
 } from "@tabler/icons-react";
@@ -48,7 +48,7 @@ export function DesktopFooter() {
             </Text>
             {/* Social Links */}
             <div className="flex items-center gap-2">
-              <a
+              {/* <a
                 href="https://facebook.com/puppy.az"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -56,9 +56,9 @@ export function DesktopFooter() {
                 aria-label={tAccessibility("facebook")}
               >
                 <IconBrandFacebook size={20} />
-              </a>
+              </a> */}
               <a
-                href="https://instagram.com/puppy.az"
+                href="https://instagram.com/puppy.az_"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-600 transition-all duration-200"
@@ -75,7 +75,7 @@ export function DesktopFooter() {
               >
                 <IconBrandTiktok size={20} />
               </a>
-              <a
+              {/* <a
                 href="https://linkedin.com/company/puppy-az"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -83,7 +83,7 @@ export function DesktopFooter() {
                 aria-label={tAccessibility("linkedin")}
               >
                 <IconBrandLinkedin size={20} />
-              </a>
+              </a> */}
             </div>
           </div>
 

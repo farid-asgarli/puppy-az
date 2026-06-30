@@ -121,7 +121,7 @@ const EventsView = () => {
             </Text>
             <div className="flex items-center justify-center gap-3">
               <a
-                href="https://instagram.com/puppy.az"
+                href="https://instagram.com/puppy.az_"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gray-900 text-white font-medium hover:bg-gray-800 transition-colors"

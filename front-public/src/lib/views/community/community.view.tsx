@@ -7,7 +7,7 @@ import {
   IconBulb,
   IconArrowRight,
   IconBrandInstagram,
-  IconBrandFacebook,
+  // IconBrandFacebook,
   IconBrandTiktok,
   IconSparkles,
   IconPaw,
@@ -46,15 +46,15 @@ const CommunityView = () => {
     {
       icon: IconBrandInstagram,
       name: "Instagram",
-      href: "https://instagram.com/puppy.az",
+      href: "https://instagram.com/puppy.az_",
       description: t("social.instagram"),
     },
-    {
-      icon: IconBrandFacebook,
-      name: "Facebook",
-      href: "https://facebook.com/puppy.az",
-      description: t("social.facebook"),
-    },
+    // {
+    //   icon: IconBrandFacebook,
+    //   name: "Facebook",
+    //   href: "https://facebook.com/puppy.az",
+    //   description: t("social.facebook"),
+    // },
     {
       icon: IconBrandTiktok,
       name: "TikTok",

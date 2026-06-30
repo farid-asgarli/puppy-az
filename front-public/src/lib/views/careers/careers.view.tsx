@@ -9,7 +9,7 @@ import {
   IconArrowRight,
   IconSparkles,
   IconBrandInstagram,
-  IconBrandLinkedin,
+  // IconBrandLinkedin,
 } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { Heading, Text } from "@/lib/primitives/typography";
@@ -175,21 +175,21 @@ const CareersView = () => {
 
             <div className="flex items-center justify-center gap-4">
               <a
-                href="https://instagram.com/puppy.az"
+                href="https://instagram.com/puppy.az_"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
               >
                 <IconBrandInstagram size={24} className="text-gray-700" />
               </a>
-              <a
+              {/* <a
                 href="https://linkedin.com/company/puppy-az"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
               >
                 <IconBrandLinkedin size={24} className="text-gray-700" />
-              </a>
+              </a> */}
             </div>
           </div>
 
