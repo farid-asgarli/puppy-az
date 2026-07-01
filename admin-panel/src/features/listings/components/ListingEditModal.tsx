@@ -455,6 +455,7 @@ export function ListingEditModal({
         </div>
 
         <Form.Item
+          name="title"
           label={t("listings.edit.fieldTitle", "Başlıq")}
           rules={[
             {
