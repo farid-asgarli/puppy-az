@@ -37,17 +37,50 @@ public class AdminSearchPetAdsQueryHandler(
 			.PetAds.WhereNotDeleted<PetAd, int>()
 			.AsNoTracking();
 
+		// "Posted by" filter. This compares two columns (CreatedBy vs UserId),
+		// which the generic key/value filter cannot express, so we handle it
+		// here on the entity query and strip it from the generic filter entries.
+		// Admin-created ads have a creator (CreatedBy) that differs from the
+		// owner (UserId); self-posted ads are created by the owner themselves.
+		var filter = request.Filter;
+		if (filter?.Entries is not null)
+		{
+			var postedByEntry = filter.Entries.FirstOrDefault(e =>
+				string.Equals(e.Key, "IsAdminPosted", StringComparison.OrdinalIgnoreCase));
+
+			if (postedByEntry is not null)
+			{
+				var isAdminPosted =
+					postedByEntry.Value.ValueKind == System.Text.Json.JsonValueKind.True
+					|| (postedByEntry.Value.ValueKind == System.Text.Json.JsonValueKind.String
+						&& bool.TryParse(postedByEntry.Value.GetString(), out var parsed) && parsed);
+
+				baseQuery = isAdminPosted
+					? baseQuery.Where(p => p.CreatedBy != null && p.CreatedBy != p.UserId)
+					: baseQuery.Where(p => p.CreatedBy == null || p.CreatedBy == p.UserId);
+
+				// Pass the remaining entries (without IsAdminPosted) to the generic filter.
+				var remaining = filter.Entries
+					.Where(e => !string.Equals(e.Key, "IsAdminPosted", StringComparison.OrdinalIgnoreCase))
+					.ToList();
+
+				filter = remaining.Count > 0
+					? new FilterSpecification { Entries = remaining, LogicalOperator = filter.LogicalOperator }
+					: null;
+			}
+		}
+
 		// Log the number of base records
 		var totalBeforeFilter = await baseQuery.CountAsync(ct);
 		logger.LogInformation("[AdminSearchPetAds] Total ads before filter: {Count}", totalBeforeFilter);
 		
 		// Log filter details if provided
-		if (request.Filter?.Entries != null && request.Filter.Entries.Any())
+		if (filter?.Entries != null && filter.Entries.Any())
 		{
-			foreach (var filter in request.Filter.Entries)
+			foreach (var f in filter.Entries)
 			{
 				logger.LogInformation("[AdminSearchPetAds] Filter: Key={Key}, Equation={Equation}, Value={Value}", 
-					filter.Key, filter.Equation, filter.Value);
+					f.Key, f.Equation, f.Value);
 			}
 		}
 
@@ -55,7 +88,7 @@ public class AdminSearchPetAdsQueryHandler(
 
 		var (items, totalCount) = await queryRepo
 			.WithQuery(query)
-			.ApplyFilters(request.Filter)
+			.ApplyFilters(filter)
 			.ApplySorting(request.Sorting, "PublishedAt", SortDirection.Descending)
 			.ApplyPagination(request.Pagination)
 			.ToListWithCountAsync(ct);

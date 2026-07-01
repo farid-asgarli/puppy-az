@@ -150,6 +150,8 @@ export interface ListingSearchRequest extends PaginatedRequest {
   language?: Locale;
   minPrice?: number;
   maxPrice?: number;
+  // "all" | "self" (owner posted) | "admin" (posted by admin on behalf of a user)
+  postedBy?: "all" | "self" | "admin";
 }
 
 export interface ListingReviewRequest {

@@ -84,6 +84,7 @@ export function ListingsFilters({
       petCategoryId: undefined,
       language: undefined,
       membership: undefined,
+      postedBy: undefined,
       minPrice: undefined,
       maxPrice: undefined,
     });
@@ -122,6 +123,18 @@ export function ListingsFilters({
     { value: "standard", label: t("listings.membership.standard") },
     { value: "premium", label: t("listings.membership.premium") },
     { value: "vip", label: t("listings.membership.vip") },
+  ];
+
+  const postedByOptions = [
+    { value: undefined, label: t("listings.postedBy.all", "Hamısı") },
+    {
+      value: "self",
+      label: t("listings.postedBy.self", "Özü elan paylaşanlar"),
+    },
+    {
+      value: "admin",
+      label: t("listings.postedBy.admin", "Admin tərəfindən paylaşılanlar"),
+    },
   ];
 
   const categoryOptions = [
@@ -214,6 +227,19 @@ export function ListingsFilters({
               >
                 <Select
                   options={membershipOptions}
+                  allowClear
+                  placeholder={t("common.select")}
+                />
+              </Form.Item>
+            </Col>
+
+            <Col xs={24} sm={12} md={8} lg={6}>
+              <Form.Item
+                name="postedBy"
+                label={t("listings.postedBy.label", "Paylaşan")}
+              >
+                <Select
+                  options={postedByOptions}
                   allowClear
                   placeholder={t("common.select")}
                 />

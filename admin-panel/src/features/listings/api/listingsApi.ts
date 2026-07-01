@@ -102,6 +102,21 @@ function toQuerySpecification(filters: ListingSearchRequest) {
     });
   }
 
+  // postedBy filter (self vs admin-created). "all"/undefined => no filter.
+  if (filters.postedBy === "admin") {
+    entries.push({
+      key: "IsAdminPosted",
+      equation: 0, // EQUALS
+      value: true,
+    });
+  } else if (filters.postedBy === "self") {
+    entries.push({
+      key: "IsAdminPosted",
+      equation: 0, // EQUALS
+      value: false,
+    });
+  }
+
   return {
     pagination: {
       number: filters.page ?? 1,
