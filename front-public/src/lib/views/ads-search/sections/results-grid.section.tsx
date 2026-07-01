@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { IconSearch, IconFilterOff } from '@tabler/icons-react';
 import { cn } from '@/lib/external/utils';
 import { AdGrid } from '@/lib/components/views/ads';
 import ResponsiveAdCard from '@/lib/components/cards/item-card/responsive-ad-card';
 import { EmptyState } from '@/lib/primitives';
-import { Spinner } from '@/lib/primitives';
 import { usePaginatedAds } from '@/lib/hooks/use-paginated-ads';
 import { petAdService } from '@/lib/api/services/pet-ad.service';
 import { useFilterUrl } from '@/lib/filtering/use-filter-url';
@@ -27,7 +26,6 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
   const tDateTime = useTranslations('dateTime');
   const locale = useLocale();
   const { filters } = useFilterUrl();
-  const [hasClickedLoadMore, setHasClickedLoadMore] = useState(false);
 
   // Build search filter and sorting from URL params
   const searchFilter = buildSearchFilter(filters);
@@ -74,7 +72,6 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
   });
 
   const handleLoadMore = async () => {
-    setHasClickedLoadMore(true);
     await loadMore();
   };
 
@@ -158,33 +155,24 @@ export const ResultsGridSection = ({ onTotalCountChange }: ResultsGridSectionPro
             ))}
           </AdGrid>
 
-          {/* Load More / Loading Indicator */}
+          {/* Load More Button */}
           {hasMore && (
             <div className="flex justify-center pt-4">
-              {!hasClickedLoadMore ? (
-                // Show button first
-                <button
-                  onClick={handleLoadMore}
-                  disabled={isLoadingMore}
-                  className={cn(
-                    'px-8 py-3 rounded-lg',
-                    'border-2 border-gray-200',
-                    'text-sm font-semibold text-gray-700',
-                    'hover:border-gray-400 hover:bg-gray-50',
-                    'transition-all duration-200',
-                    'focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2',
-                    isLoadingMore && 'opacity-50 cursor-not-allowed'
-                  )}
-                >
-                  {isLoadingMore ? t('loading') : t('loadMore')}
-                </button>
-              ) : isLoadingMore ? (
-                // Show spinner when auto-loading
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Spinner size="md" />
-                  <span className="text-sm font-medium">{t('loading')}</span>
-                </div>
-              ) : null}
+              <button
+                onClick={handleLoadMore}
+                disabled={isLoadingMore}
+                className={cn(
+                  'px-8 py-3 rounded-lg',
+                  'border-2 border-gray-200',
+                  'text-sm font-semibold text-gray-700',
+                  'hover:border-gray-400 hover:bg-gray-50',
+                  'transition-all duration-200',
+                  'focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2',
+                  isLoadingMore && 'opacity-50 cursor-not-allowed'
+                )}
+              >
+                {isLoadingMore ? t('loading') : t('loadMore')}
+              </button>
             </div>
           )}
 
